@@ -1,0 +1,5 @@
+/.idea
+/venv
+/ng_shell_config.egg-info/
+/build/
+/dist/
