@@ -1,3 +1,4 @@
+import sys
 import subprocess
 
 from geopy.geocoders import Nominatim
@@ -23,5 +24,6 @@ def get_lat_lon():
 def get_command_output(command):
     try:
         return subprocess.check_output(command.split()).decode('utf-8').splitlines()
-    except:
+    except Exception as e:
+        print("get_command_output() {}".format(e), file=sys.stderr)
         return []
