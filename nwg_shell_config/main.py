@@ -7,6 +7,7 @@ from nwg_shell_config.tools import *
 
 def main():
     print(get_lat_lon())
+    print(check_dependencies())
 
 
 if __name__ == '__main__':
