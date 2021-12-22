@@ -1,0 +1,3 @@
+exec_always autotiling
+exec_always nwg-panel -c config-personal
+exec wlsunset -l 52.25 -L 22.12 -t 4500

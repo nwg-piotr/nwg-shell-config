@@ -16,7 +16,7 @@ font pango:monospace 11
 # mod key used for most binds
 # Mod1 = Alt
 # Mod4 = Super
-set $mod Mod4
+set $Mod Mod4
 
 # direction keys
 set $up l
@@ -52,23 +52,14 @@ include ~/.config/sway/outputs
 include ~/.config/sway/autostart
 #
 
-bindsym $mod+equal      gaps inner current plus 5
-bindsym $mod+minus      gaps inner current minus 5
-bindsym $mod+plus       gaps outer current plus 5
-bindsym $mod+underscore gaps outer current minus 5
-
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | nwgdmenu_run | xargs swaymsg exec --
+# set $menu dmenu_path | nwgdmenu_run | xargs swaymsg exec --
 
 # monitors (edit & unhash)
 # set $Mon1 eDP-1
 # set $Mon2 HDMI-A-1
-
-	# output HDMI-A-1 pos 0 0
-	output LVDS-1 pos 0 0
-  
 
 ### Turn off screen on lid closed
 set $laptop eDP-1
@@ -100,7 +91,7 @@ exec swayidle -w \
 # Read `man 5 sway-input` for more information about this section.
 
 # keyboard layout
-input * xkb_layout "pl"
+input * xkb_layout $lang
 
 # numlock on/off
 # input * xkb_numlock disabled
@@ -108,26 +99,28 @@ input * xkb_layout "pl"
 #############         Bindings           ##################
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $Mod+Shift+q kill
 bindsym Mod1+q kill
 bindsym Mod1+F4 kill
 
 # launchers
 bindsym Control+space exec $drawer
-bindsym $mod+d exec $dock
+bindsym $Mod+d exec $dock
 
 # core
-bindsym $mod+w          exec $browser
-bindsym $mod+f          exec $filemanager
-bindsym $mod+t          exec $term
-bindsym $mod+Return     exec $term
+bindsym $Mod+w          exec $browser
+bindsym $Mod+f          exec $filemanager
+bindsym $Mod+t          exec $term
+bindsym $Mod+Return     exec $term
 bindsym Control+Shift+t exec $term
 
 # exit menu
-bindsym $mod+x exec $exit
+bindsym $Mod+x exec $exit
 
 # screenshot
-bindsym Shift+Print exec grim -g "$(slurp)" - | swappy -f -
+bindsym Print exec ~/.local/bin/screenshot fullscreen
+bindsym Control+Print exec swappy -g "0,0 1920x1080"
+bindsym Shift+Control+Print exec grim -g "$(slurp)" - | swappy -f -
 
 # audio
 bindsym XF86AudioPlay exec playerctl play-pause
@@ -143,10 +136,10 @@ bindsym XF86MonBrightnessUp exec light -A 1
 bindsym XF86MonBrightnessDown exec --no-startup-id light -U 1
 
 # Reload the configuration file
-bindsym $mod+Shift+c reload
+bindsym $Mod+Shift+c reload
 
 # Exit sway (default way to log you out of your Wayland session)
-bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+bindsym $Mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 
 ###########          Workspace Bindings          ###############
 
@@ -161,38 +154,38 @@ bindsym $Mod+7 workspace number 7
 bindsym $Mod+8 workspace number 8
 
 # switch to workspace - numpad alternatives
-bindsym $mod+Mod2+KP_1 workspace number 1
-bindsym $mod+Mod2+KP_2 workspace number 2
-bindsym $mod+Mod2+KP_3 workspace number 3
-bindsym $mod+Mod2+KP_4 workspace number 4
-bindsym $mod+Mod2+KP_5 workspace number 5
-bindsym $mod+Mod2+KP_6 workspace number 6
-bindsym $mod+Mod2+KP_7 workspace number 7
-bindsym $mod+Mod2+KP_8 workspace number 8
+bindsym $Mod+Mod2+KP_1 workspace number 1
+bindsym $Mod+Mod2+KP_2 workspace number 2
+bindsym $Mod+Mod2+KP_3 workspace number 3
+bindsym $Mod+Mod2+KP_4 workspace number 4
+bindsym $Mod+Mod2+KP_5 workspace number 5
+bindsym $Mod+Mod2+KP_6 workspace number 6
+bindsym $Mod+Mod2+KP_7 workspace number 7
+bindsym $Mod+Mod2+KP_8 workspace number 8
 
 # switch to next or previous workspace
-bindsym $mod+Mod1+Left workspace prev
-bindsym $mod+Mod1+Right workspace next
+bindsym $Mod+Mod1+Left workspace prev
+bindsym $Mod+Mod1+Right workspace next
 
 # move focused container to workspace
-bindsym $Mod+Shift+1 move container to workspace 1; workspace number 1
-bindsym $Mod+Shift+2 move container to workspace 2; workspace number 2
-bindsym $Mod+Shift+3 move container to workspace 3; workspace number 3
-bindsym $Mod+Shift+4 move container to workspace 4; workspace number 4
-bindsym $Mod+Shift+5 move container to workspace 5; workspace number 5
-bindsym $Mod+Shift+6 move container to workspace 6; workspace number 6
-bindsym $Mod+Shift+7 move container to workspace 7; workspace number 7
-bindsym $Mod+Shift+8 move container to workspace 8; workspace number 8
+bindsym $Mod+Shift+1 move container to workspace number 1; workspace number 1
+bindsym $Mod+Shift+2 move container to workspace number 2; workspace number 2
+bindsym $Mod+Shift+3 move container to workspace number 3; workspace number 3
+bindsym $Mod+Shift+4 move container to workspace number 4; workspace number 4
+bindsym $Mod+Shift+5 move container to workspace number 5; workspace number 5
+bindsym $Mod+Shift+6 move container to workspace number 6; workspace number 6
+bindsym $Mod+Shift+7 move container to workspace number 7; workspace number 7
+bindsym $Mod+Shift+8 move container to workspace number 8; workspace number 8
 
 # move focused container to workspace - numpad alternatives
-bindsym $Mod+Shift+Mod2+KP_End   move container to workspace 1; workspace number 1
-bindsym $Mod+Shift+Mod2+KP_Down  move container to workspace 2; workspace number 2
-bindsym $Mod+Shift+Mod2+KP_Next  move container to workspace 3; workspace number 3
-bindsym $Mod+Shift+Mod2+KP_Left  move container to workspace 4; workspace number 4
-bindsym $Mod+Shift+Mod2+KP_Begin move container to workspace 5; workspace number 5
-bindsym $Mod+Shift+Mod2+KP_Right move container to workspace 6; workspace number 7
-bindsym $Mod+Shift+Mod2+KP_Home  move container to workspace 7; workspace number 7
-bindsym $Mod+Shift+Mod2+KP_Up    move container to workspace 8; workspace number 8
+bindsym $Mod+Shift+Mod2+KP_End   move container to workspace number 1; workspace number 1
+bindsym $Mod+Shift+Mod2+KP_Down  move container to workspace number 2; workspace number 2
+bindsym $Mod+Shift+Mod2+KP_Next  move container to workspace number 3; workspace number 3
+bindsym $Mod+Shift+Mod2+KP_Left  move container to workspace number 4; workspace number 4
+bindsym $Mod+Shift+Mod2+KP_Begin move container to workspace number 5; workspace number 5
+bindsym $Mod+Shift+Mod2+KP_Right move container to workspace number 6; workspace number 7
+bindsym $Mod+Shift+Mod2+KP_Home  move container to workspace number 7; workspace number 7
+bindsym $Mod+Shift+Mod2+KP_Up    move container to workspace number 8; workspace number 8
 
 # Workspace to monitor assignment (edit & unhash)
 # workspace 1 output $Mon1
@@ -210,7 +203,14 @@ bindsym $Mod+Shift+Mod2+KP_Up    move container to workspace 8; workspace number
 bindsym $Mod+space floating toggle
 floating_modifier Mod1 normal
 
+# Sway has a "scratchpad", which is a bag of holding for windows.
+# You can send windows there and get them back later.
+
+# Move the currently focused window to the scratchpad
 bindsym $Mod+Shift+z move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
 bindsym $Mod+z scratchpad show
 
 # change focus
@@ -263,11 +263,21 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+r rmode "resize"
+bindsym $Mod+r mode "resize"
+
+# Size
+bindsym Mod1+Up    resize shrink height 10 px or 1 ppt
+bindsym Mod1+Down  resize grow   height 10 px or 1 ppt
+bindsym Mod1+Left  resize shrink width  10 px or 1 ppt
+bindsym Mod1+Right resize grow   width  10 px or 1 ppt
 
 # layout toggle
-bindsym mod1+Tab layout toggle tabbed split
-bindsym $mod+Tab layout toggle splitv splith
+bindsym Mod1+Tab layout toggle tabbed split
+bindsym $Mod+Tab layout toggle splitv splith
+
+# switch to workspace with urgent window
+for_window [urgent="latest"] focus
+focus_on_window_activation   focus
 
 # container layout
 bindsym $Mod+h split h
@@ -276,133 +286,47 @@ bindsym $Mod+Shift+t layout tabbed
 bindsym $Mod+Shift+s layout stacking
 bindsym $Mod+Shift+h layout toggle split
 
-### Key bindings
-#
-# Basics:
-#
+default_orientation horizontal
 
-#
-# Moving around:
-#
+# make the current focus fullscreen
+bindsym $Mod+Shift+f fullscreen
 
-    # Move the focused window with the same, but add Shift
-    bindsym $mod+Shift+$left move left
-    bindsym $mod+Shift+$down move down
-    bindsym $mod+Shift+$up move up
-    bindsym $mod+Shift+$right move right
-    # Ditto, with arrow keys
-    bindsym $mod+Shift+Left move left
-    bindsym $mod+Shift+Down move down
-    bindsym $mod+Shift+Up move up
-    bindsym $mod+Shift+Right move right
+# swap focus between the tiling area and the floating area
+bindsym $Mod+space focus mode_toggle
 
-#
-# Layout stuff:
-#
-    # You can "split" the current object of your focus with
-    # $mod+b or $mod+v, for horizontal and vertical splits
-    # respectively.
-    bindsym $mod+b splith
-    bindsym $mod+v splitv
+###############      Border & Gaps     ###############
 
-    # Switch the current container between different layout styles
-    bindsym $mod+Shift+t layout tabbed
-    bindsym $mod+Shift+s layout stacking
-    bindsym mod1+Tab layout toggle tabbed split
-	bindsym $mod+Tab layout toggle splitv splith
+hide_edge_borders both
 
-    # Make the current focus fullscreen
-    bindsym $mod+Shift+f fullscreen
+# changing border style
+bindsym $Mod+n border normal
+bindsym $Mod+y border pixel 1
+bindsym $Mod+u border none
 
-    # Toggle the current focus between tiling and floating mode
-    bindsym $mod+Shift+space floating toggle
+# change gaps
+bindsym $Mod+plus                gaps inner current plus  5
+bindsym $Mod+minus               gaps inner current minus 5
+bindsym $Mod+Shift+plus          gaps outer current plus  5
+bindsym $Mod+Shift+minus         gaps outer current minus 5
+bindsym $Mod+Control+plus        gaps inner all     plus  5
+bindsym $Mod+Control+minus       gaps inner all     minus 5
+bindsym $Mod+Control+Shift+plus  gaps outer all     plus  5
+bindsym $Mod+Control+Shift+minus gaps outer all     minus 5
 
-    # Swap focus between the tiling area and the floating area
-    bindsym $mod+space focus mode_toggle
+bindsym $Mod+plus                gaps inner current plus  5
+bindsym $Mod+minus               gaps inner current minus 5
+bindsym $Mod+Shift+plus          gaps outer current plus  5
+bindsym $Mod+Shift+minus         gaps outer current minus 5
+bindsym $Mod+Control+plus        gaps inner all     plus  5
+bindsym $Mod+Control+minus       gaps inner all     minus 5
+bindsym $Mod+Control+Shift+plus  gaps outer all     plus  5
+bindsym $Mod+Control+Shift+minus gaps outer all     minus 5
 
-#
-# Scratchpad:
-#
-    # Sway has a "scratchpad", which is a bag of holding for windows.
-    # You can send windows there and get them back later.
+############    application settings   ############
 
-    # Move the currently focused window to the scratchpad
-    bindsym $mod+Shift+z move scratchpad
+# focus, floating, & sticky
+for_window [app_id="(?i)(?:pavucontrol|blueman-manager|galculator|azote|gnome-disks)"] floating enable
+for_window [app_id="(?i)(?:firefox|chromium)"] border none
+for_window [title="(?i)(?:copying|deleting|moving)"] floating enable
 
-    # Show the next scratchpad window or hide the focused scratchpad window.
-    # If there are multiple scratchpad windows, this command cycles through them.
-    bindsym $mod+z scratchpad show
-#
-# Resizing containers:
-#
-mode "resize" {
-    # left will shrink the containers width
-    # right will grow the containers width
-    # up will shrink the containers height
-    # down will grow the containers height
-    bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
-    bindsym $right resize grow width 10px
-
-    # Ditto, with arrow keys
-    bindsym Left resize shrink width 10px
-    bindsym Down resize grow height 10px
-    bindsym Up resize shrink height 10px
-    bindsym Right resize grow width 10px
-
-    # Return to default mode
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-bindsym $mod+r mode "resize"
-
-  # Size
-	bindsym Mod1+Up    resize shrink height 10 px or 1 ppt
-	bindsym Mod1+Down  resize grow   height 10 px or 1 ppt
-	bindsym Mod1+Left  resize shrink width  10 px or 1 ppt
-	bindsym Mod1+Right resize grow   width  10 px or 1 ppt
-
-#
-# application settings
-#
-  for_window [class="(?i)(?:mousepad|Chromium|tint2conf)"] floating disable, focus
-  for_window [class="(?i)(?:google-chrome)"] border none
-  for_window [title="MellowPlayer"] move scratchpad
-  for_window [app_id="(?i)(?:blueman-manager|pamac-manager)"] floating enable
-
-  # Assign Applications to specific workspace
-  #assign [class="(?i)(?:Chromium|qutebrowser)"] → workspace number 2
-  #assign [class="(?i)(?:jetbrains*|codeblocks)"] → workspace number 8
-
-  # focus, floating, & sticky
-	for_window [title="(?i)(?:copying|deleting|moving|catfish|nwgcc)"] floating enable, border none
-	for_window [class="(?i)(?:pavucontrol|termite|game.py|galculator|baobab|gnome-disks)"] floating enable, focus
-  for_window [title="Google Hangouts*"] resize set width 580 px
-  for_window [class="(?i)(?:codeblocks|tilix|alacritty|jetbrains*)"] focus
-	for_window [title="Azote~|galculator*|pamac*"] floating enable, focus
-	for_window [title="~nwg"] floating disable
-
-#
-# Status Bar:
-#
-# Read `man 5 sway-bar` for more information about this section.
-bar {
-    #position top
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    #status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
-
-    #colors {
-    #    statusline #ffffff
-    #    background #323232
-    #    inactive_workspace #32323200 #32323200 #5c5c5c
-    # swaybar_command waybar    
-    }
-}
-
-bindsym Print exec sleep 5 && /home/piotr/.local/bin/screenshot fullscreen
-bindsym Control+Print exec sleep 5 && swappy -g "0,0 1920x1080"
-bindsym Shift+Control+Print exec grim -g "$(slurp)" - | swappy -f -
-
+popup_during_fullscreen smart
