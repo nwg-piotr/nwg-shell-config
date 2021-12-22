@@ -219,12 +219,6 @@ bindsym $Mod+$down  focus down
 bindsym $Mod+$up    focus up
 bindsym $Mod+$right focus right
 
-# change focus
-bindsym $Mod+$left  focus left
-bindsym $Mod+$down  focus down
-bindsym $Mod+$up    focus up
-bindsym $Mod+$right focus right
-
 # alternatively, you can use the cursor keys:
 bindsym $Mod+Left   focus left
 bindsym $Mod+Down   focus down
@@ -291,9 +285,6 @@ default_orientation horizontal
 # make the current focus fullscreen
 bindsym $Mod+Shift+f fullscreen
 
-# swap focus between the tiling area and the floating area
-bindsym $Mod+space focus mode_toggle
-
 ###############      Border & Gaps     ###############
 
 hide_edge_borders both
@@ -304,15 +295,6 @@ bindsym $Mod+y border pixel 1
 bindsym $Mod+u border none
 
 # change gaps
-bindsym $Mod+plus                gaps inner current plus  5
-bindsym $Mod+minus               gaps inner current minus 5
-bindsym $Mod+Shift+plus          gaps outer current plus  5
-bindsym $Mod+Shift+minus         gaps outer current minus 5
-bindsym $Mod+Control+plus        gaps inner all     plus  5
-bindsym $Mod+Control+minus       gaps inner all     minus 5
-bindsym $Mod+Control+Shift+plus  gaps outer all     plus  5
-bindsym $Mod+Control+Shift+minus gaps outer all     minus 5
-
 bindsym $Mod+plus                gaps inner current plus  5
 bindsym $Mod+minus               gaps inner current minus 5
 bindsym $Mod+Shift+plus          gaps outer current plus  5
