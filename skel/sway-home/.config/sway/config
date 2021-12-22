@@ -56,6 +56,7 @@ include ~/.config/sway/autostart
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
 # set $menu dmenu_path | nwgdmenu_run | xargs swaymsg exec --
+set $launcher nwg-drawer
 
 # monitors (edit & unhash)
 # set $Mon1 eDP-1
@@ -104,15 +105,15 @@ bindsym Mod1+q kill
 bindsym Mod1+F4 kill
 
 # launchers
-bindsym Control+space exec $drawer
-bindsym $Mod+d exec $dock
+bindsym Control+space   exec $launcher
+bindsym Mod1+F1         exec $launcher
 
 # core
-bindsym $Mod+w          exec $browser
-bindsym $Mod+f          exec $filemanager
 bindsym $Mod+t          exec $term
 bindsym $Mod+Return     exec $term
 bindsym Control+Shift+t exec $term
+bindsym $Mod+w          exec $browser
+bindsym $Mod+f          exec $filemanager
 
 # exit menu
 bindsym $Mod+x exec $exit
