@@ -55,8 +55,7 @@ include ~/.config/sway/autostart
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-# set $menu dmenu_path | nwgdmenu_run | xargs swaymsg exec --
-set $launcher nwg-drawer
+set $launcher nwg-drawer | xargs swaymsg exec --
 
 # monitors (edit & unhash)
 # set $Mon1 eDP-1
@@ -69,10 +68,10 @@ bindswitch lid:off output $laptop enable
 
 ### Idle configuration
 exec swayidle -w \
-         timeout 3000 'swaylock -f -c 000000' \
-         timeout 3300 'swaymsg "output * dpms off"' \
-              resume 'swaymsg "output * dpms on"' \
-         before-sleep 'swaylock -f -c 000000'
+    timeout 3000 'swaylock -f -c 000000' \
+    timeout 3300 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
+    before-sleep 'swaylock -f -c 000000'
 #
 # This will lock your screen after 3000 seconds of inactivity, then turn off
 # your displays after another 3300 seconds, and turn your screens back on when
