@@ -114,8 +114,11 @@ bindsym Control+Shift+t exec $term
 bindsym $Mod+w          exec $browser
 bindsym $Mod+f          exec $filemanager
 
-# exit menu
+# Exit menu
 bindsym $Mod+x exec $exit
+
+# Exit sway (default way to log you out of your Wayland session)
+bindsym $Mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 
 # screenshot
 bindsym Print exec ~/.local/bin/screenshot fullscreen
@@ -137,9 +140,6 @@ bindsym XF86MonBrightnessDown exec light -U 5
 
 # Reload the configuration file
 bindsym $Mod+Shift+c reload
-
-# Exit sway (default way to log you out of your Wayland session)
-bindsym $Mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 
 ###########          Workspace Bindings          ###############
 
