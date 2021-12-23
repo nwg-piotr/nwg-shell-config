@@ -52,14 +52,16 @@ include ~/.config/sway/outputs
 include ~/.config/sway/autostart
 #
 
-# Your preferred application launcher
-# Note: pass the final command to swaymsg so that the resulting window can be opened
-# on the original workspace that the command was run on.
-set $launcher nwg-drawer | xargs swaymsg exec --
+output * adaptive_sync on
 
 # monitors (edit & unhash)
 # set $Mon1 eDP-1
 # set $Mon2 HDMI-A-1
+
+# Your preferred application launcher
+# Note: pass the final command to swaymsg so that the resulting window can be opened
+# on the original workspace that the command was run on.
+set $launcher nwg-drawer | xargs swaymsg exec --
 
 ### Turn off screen on lid closed
 set $laptop eDP-1
@@ -86,12 +88,22 @@ exec swayidle -w \
 #     tap enabled
 #     middle_emulation enabled
 # }
-#
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
 
+input "type:touchpad" {
+	tap enabled
+	dwt enabled
+	drag enabled
+	scroll_factor 0.7
+	pointer_accel 0.1
+	accel_profile flat
+}
+
 # keyboard layout
-input * xkb_layout $lang
+input "type:keyboard" {
+    xkb_layout $lang
+}
 
 # numlock on/off
 # input * xkb_numlock disabled
