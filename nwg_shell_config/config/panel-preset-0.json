@@ -54,7 +54,7 @@
         },
         {
           "name": "Outputs",
-          "icon": "network.cycles.wdisplays",
+          "icon": "wdisplays",
           "cmd": "wdisplays && sway-save-outputs"
         },
         {
@@ -91,7 +91,7 @@
       "hover-opens": false,
       "leave-closes": true,
       "css-name": "controls-window",
-      "net-interface": "wlo1",
+      "net-interface": "wlan0",
       "Exit": "Exittt",
       "system-shutdown-symbolic": "system-shutdown",
       "output-switcher": true,
@@ -160,6 +160,8 @@
     "scratchpad": {},
     "clock": {},
     "menu-start-settings": {},
+    "playerctl": {},
+    "sway-workspaces": {},
     "modules-left": [
       "sway-taskbar"
     ],
@@ -177,7 +179,7 @@
       "show-app-icon": true,
       "show-layout": true,
       "show-app-name": true,
-      "name-max-len": 15,
+      "name-max-len": 10,
       "workspaces-spacing": 0,
       "task-padding": 0,
       "all-outputs": false,
