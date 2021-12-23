@@ -6,8 +6,10 @@ import locale
 
 from nwg_shell_config.tools import *
 
+dir_name = os.path.dirname(__file__)
+
 config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
-        os.getenv("HOME"), ".config/")
+    os.getenv("HOME"), ".config/")
 
 lang = locale.getlocale()[0].split("_")[0]
 
