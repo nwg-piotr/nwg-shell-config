@@ -1,7 +1,39 @@
+import os
 import sys
 import subprocess
 
 from geopy.geocoders import Nominatim
+
+
+def get_data_dir():
+    data_dir = ""
+    home = os.getenv("HOME")
+    xdg_data_home = os.getenv("XDG_DATA_HOME")
+
+    if xdg_data_home:
+        data_dir = os.path.join(xdg_data_home, "nwg-shell-config/")
+    else:
+        if home:
+            data_dir = os.path.join(home, ".local/share/nwg-shell-config/")
+
+    if not os.path.isdir(data_dir):
+        print("Creating '{}'".format(data_dir))
+        os.mkdir(data_dir)
+
+    return data_dir
+
+
+def get_config_home():
+    xdg_config_home = os.getenv('XDG_CONFIG_HOME')
+    config_home = xdg_config_home if xdg_config_home else os.path.join(
+        os.getenv("HOME"), ".config")
+    config_dir = os.path.join(config_home, "scraper/")
+
+    if not os.path.isdir(config_dir):
+        print("Creating '{}'".format(config_dir))
+        os.mkdir(config_dir)
+
+    return config_dir
 
 
 def get_lat_lon():
@@ -34,7 +66,7 @@ def is_command(cmd):
         return False
 
 
-def check_dependencies():
+def check_deps():
     d = {}
     for cmd in ["foot", "grim", "slurp", "swayidle", "swaylock", "xorg-xwayland", "wlsunset", "light",
                 "wdisplays", "lxappearance", "autotiling", "azote", "imagemagick", "nwg-panel", "nwg-wrapper",
