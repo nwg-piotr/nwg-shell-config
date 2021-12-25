@@ -1,6 +1,7 @@
 set $term foot
 set $browser MOZ_ENABLE_WAYLAND=1 firefox
 set $filemanager thunar
+set $editor mousepad
 set $dock nwg-dock -d
 set $drawer nwg-drawer
 set $exit nwg-bar

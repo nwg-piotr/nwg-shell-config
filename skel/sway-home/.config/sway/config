@@ -125,6 +125,7 @@ bindsym $Mod+Return     exec $term
 bindsym Control+Shift+t exec $term
 bindsym $Mod+w          exec $browser
 bindsym $Mod+f          exec $filemanager
+bindsym $Mod+e          exec $editor
 
 # Exit menu
 bindsym $Mod+x exec $exit
