@@ -21,11 +21,22 @@ settings = {"keyboard-layout": "",
             "night-gamma": 1.0, "night-on": True,
             "terminal": "", "file-manager": "", "editor": "", "browser": "",
             "launcher-columns": 6, "launcher-icon-size": 64, "launcher-file-search-columns": 2,
-            "launcher-search-files": True, "launcher-categories": True, "launcher-overlay": False, "launcher-on": True,
+            "launcher-search-files": True, "launcher-categories": True, "launcher-resident": True,
+            "launcher-overlay": False, "launcher-on": True,
             "exit-position": "center", "exit-full": False, "exit-alignment": "middle", "exit-margin": 0,
             "exit-icon-size": 48, "exit-on": True,
             "dock-position": "bottom", "dock-full": False, "dock-autohide": True,
             "dock-alignment": "center", "dock-margin": 0, "dock-icon-size": 48, "dock-on": False}
+
+
+def validate_workspaces(gtk_entry):
+    valid_text = ""
+    for char in gtk_entry.get_text():
+        if char.isdigit() or char == " ":
+            valid_text += char
+    while '  ' in valid_text:
+        valid_text = valid_text.replace('  ', ' ')
+    gtk_entry.set_text(valid_text)
 
 
 class MainWindow(Gtk.Window):
@@ -38,10 +49,13 @@ class MainWindow(Gtk.Window):
         self.keyboard_layout = builder.get_object("keyboard-layout")
 
         self.autotiling_workspaces = builder.get_object("autotiling-workspaces")
+        self.autotiling_workspaces.connect("changed", validate_workspaces)
         self.autotiling_on = builder.get_object("autotiling-on")
 
         self.night_lat = builder.get_object("night-lat")
+        self.night_lat_info = builder.get_object("night-lat-info")
         self.night_long = builder.get_object("night-long")
+        self.night_long_info = builder.get_object("night-long-info")
         self.night_temp_low = builder.get_object("night-temp-low")
         self.night_temp_high = builder.get_object("night-temp-high")
         self.night_gamma = builder.get_object("night-gamma")
@@ -62,6 +76,7 @@ class MainWindow(Gtk.Window):
         self.launcher_file_search_columns = builder.get_object("launcher-file-search-columns")
         self.launcher_search_files = builder.get_object("launcher-search-files")
         self.launcher_categories = builder.get_object("launcher-categories")
+        self.launcher_resident = builder.get_object("launcher-resident")
         self.launcher_overlay = builder.get_object("launcher-overlay")
         self.launcher_on = builder.get_object("launcher-on")
 
@@ -79,6 +94,12 @@ class MainWindow(Gtk.Window):
         self.dock_margin = builder.get_object("dock-margin")
         self.dock_icon_size = builder.get_object("dock-icon-size")
         self.dock_on = builder.get_object("dock-on")
+
+        self.btn_close = builder.get_object("btn-close")
+        self.btn_save = builder.get_object("btn-save")
+        self.btn_save.connect("clicked", self.on_save_btn)
+
+        self.tz, self.lat, self.long = get_lat_lon()
 
         self.fill_in_from_settings(self)
         self.fill_in_missing_values(self)
@@ -102,12 +123,14 @@ class MainWindow(Gtk.Window):
                              page_size=0.1)
         self.night_lat.configure(adj, 0.1, 4)
         self.night_lat.set_value(settings["night-lat"])
+        self.night_lat_info.set_tooltip_text("When undefined, the value for '{}' will be used.".format(self.tz))
 
         self.night_long.set_value(settings["night-long"])
         adj = Gtk.Adjustment(lower=-180.0, upper=180.1, step_increment=0.1, page_increment=10.0,
                              page_size=0.1)
         self.night_long.configure(adj, 0.1, 4)
         self.night_long.set_value(settings["night-long"])
+        self.night_long_info.set_tooltip_text("When undefined, the value for '{}' will be used.".format(self.tz))
 
         self.night_temp_low.set_value(settings["night-temp-low"])
         adj = Gtk.Adjustment(lower=1000, upper=6500, step_increment=1, page_increment=10.0,
@@ -116,8 +139,8 @@ class MainWindow(Gtk.Window):
         self.night_temp_low.set_value(settings["night-temp-low"])
 
         self.night_temp_high.set_value(settings["night-temp-high"])
-        adj = Gtk.Adjustment(lower=1000, upper=6500, step_increment=1, page_increment=10.0,
-                             page_size=0.1)
+        adj = Gtk.Adjustment(lower=1000, upper=6501, step_increment=1, page_increment=10.0,
+                             page_size=1)
         self.night_temp_high.configure(adj, 1, 0)
         self.night_temp_high.set_value(settings["night-temp-high"])
 
@@ -137,6 +160,7 @@ class MainWindow(Gtk.Window):
         self.launcher_file_search_columns.set_value(settings["launcher-file-search-columns"])
         self.launcher_search_files.set_active(settings["launcher-search-files"])
         self.launcher_categories.set_active(settings["launcher-categories"])
+        self.launcher_resident.set_active(settings["launcher-resident"])
         self.launcher_overlay.set_active(settings["launcher-overlay"])
         self.launcher_on.set_active(settings["launcher-on"])
 
@@ -201,10 +225,9 @@ class MainWindow(Gtk.Window):
             self.autotiling_workspaces.set_text(settings["autotiling-workspaces"])
 
         if self.night_lat.get_value() == -1.0 and self.night_long.get_value() == -1:
-            tz, lat, long = get_lat_lon()
-            self.night_lat.set_value(lat)
-            self.night_long.set_value(long)
-            print("Coordinates {}, {} auto-set from configured location: {}".format(lat, long, tz))
+            self.night_lat.set_value(self.lat)
+            self.night_long.set_value(self.long)
+            print("Coordinates {}, {} auto-set from configured location: {}".format(self.lat, self.long, self.tz))
 
         if self.terminal.get_text() == "":
             self.terminal.set_text(get_terminal())
@@ -217,6 +240,45 @@ class MainWindow(Gtk.Window):
 
         if self.browser.get_text() == "":
             self.browser.set_text(get_browser_command())
+
+    def read_form(self):
+        settings["keyboard-layout"] = self.keyboard_layout.get_text()
+        settings["autotiling-workspaces"] = self.autotiling_workspaces.get_text()
+        settings["night-lat"] = self.night_lat.get_value()
+        settings["night-long"] = self.night_long.get_value()
+        settings["night-temp-low"] = int(self.night_temp_low.get_value())
+        settings["night-temp-high"] = int(self.night_temp_high.get_value())
+        settings["night-gamma"] = self.night_gamma.get_value()
+        settings["night-on"] = self.night_on.get_active()
+        settings["terminal"] = self.terminal.get_text()
+        settings["file-manager"] = self.file_manager.get_text()
+        settings["editor"] = self.editor.get_text()
+        settings["browser"] = self.browser.get_text()
+        settings["launcher-columns"] = int(self.launcher_columns.get_value())
+        settings["launcher-icon-size"] = int(self.launcher_icon_size.get_value())
+        settings["launcher-file-search-columns"] = int(self.launcher_file_search_columns.get_value())
+        settings["launcher-search-files"] = self.launcher_search_files.get_active()
+        settings["launcher-categories"] = self.launcher_categories.get_active()
+        settings["launcher-resident"] = self.launcher_resident.get_active()
+        settings["launcher-overlay"] = self.launcher_overlay.get_active()
+        settings["launcher-on"] = self.launcher_on.get_active()
+        settings["exit-position"] = self.exit_position.get_active_text()
+        settings["exit-full"] = self.exit_full.get_active()
+        settings["exit-alignment"] = self.exit_alignment.get_active_text()
+        settings["exit-margin"] = int(self.exit_margin.get_value())
+        settings["exit-icon-size"] = int(self.exit_icon_size.get_value())
+        settings["exit-on"] = self.exit_on.get_active()
+        settings["dock-position"] = self.dock_position.get_active_text()
+        settings["dock-full"] = self.dock_full.get_active()
+        settings["dock-autohide"] = self.dock_autohide.get_active()
+        settings["dock-alignment"] = self.dock_alignment.get_active_text()
+        settings["dock-margin"] = int(self.dock_margin.get_value())
+        settings["dock-icon-size"] = int(self.dock_icon_size.get_value())
+        settings["dock-on"] = self.dock_on.get_active()
+
+    def on_save_btn(self, b):
+        self.read_form()
+        print(settings)
 
 
 def main():
