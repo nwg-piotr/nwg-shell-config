@@ -49,7 +49,7 @@
                               <object class="GtkLabel">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="label" translatable="yes">nwg shell config</property>
+                                <property name="label" translatable="yes">nwg-shell settings</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -58,7 +58,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel">
+                              <object class="GtkLabel" id="version">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <property name="label" translatable="yes">version {}</property>
@@ -912,6 +912,7 @@
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
                                     <property name="halign">start</property>
+                                    <property name="width-chars">7</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -977,6 +978,7 @@
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
                                     <property name="halign">start</property>
+                                    <property name="width-chars">7</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1014,6 +1016,7 @@
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
                                     <property name="halign">start</property>
+                                    <property name="width-chars">4</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1051,6 +1054,7 @@
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
                                     <property name="halign">start</property>
+                                    <property name="width-chars">4</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1088,6 +1092,7 @@
                                     <property name="visible">True</property>
                                     <property name="can-focus">True</property>
                                     <property name="halign">start</property>
+                                    <property name="width-chars">3</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1322,6 +1327,19 @@
                     <property name="can-focus">False</property>
                     <property name="spacing">20</property>
                     <property name="homogeneous">True</property>
+                    <child>
+                      <object class="GtkButton" id="btn-restore">
+                        <property name="label" translatable="yes">Restore</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
                     <child>
                       <object class="GtkButton" id="btn-save">
                         <property name="label">Save</property>

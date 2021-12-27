@@ -46,6 +46,9 @@ class MainWindow(Gtk.Window):
 
         self.window = builder.get_object("main-window")
         self.window.connect('destroy', Gtk.main_quit)
+
+        self.version = builder.get_object("version")
+
         self.keyboard_layout = builder.get_object("keyboard-layout")
 
         self.autotiling_workspaces = builder.get_object("autotiling-workspaces")
@@ -95,9 +98,14 @@ class MainWindow(Gtk.Window):
         self.dock_icon_size = builder.get_object("dock-icon-size")
         self.dock_on = builder.get_object("dock-on")
 
-        self.btn_close = builder.get_object("btn-close")
-        self.btn_save = builder.get_object("btn-save")
-        self.btn_save.connect("clicked", self.on_save_btn)
+        btn_restore = builder.get_object("btn-restore")
+        btn_restore.connect("clicked", self.restore)
+
+        btn_close = builder.get_object("btn-close")
+        btn_close.connect("clicked", Gtk.main_quit)
+
+        btn_save = builder.get_object("btn-save")
+        btn_save.connect("clicked", self.on_save_btn)
 
         self.tz, self.lat, self.long = get_lat_lon()
 
@@ -105,6 +113,10 @@ class MainWindow(Gtk.Window):
         self.fill_in_missing_values(self)
 
         self.window.show_all()
+
+    def restore(self, b):
+        self.fill_in_from_settings()
+        self.fill_in_missing_values()
 
     def set_chromium(self, *args):
         self.browser.set_text("chromium --disable-gpu-memory-buffer-video-frames --enable-features=UseOzonePlatform --ozone-platform=wayland")
@@ -133,13 +145,13 @@ class MainWindow(Gtk.Window):
         self.night_long_info.set_tooltip_text("When undefined, the value for '{}' will be used.".format(self.tz))
 
         self.night_temp_low.set_value(settings["night-temp-low"])
-        adj = Gtk.Adjustment(lower=1000, upper=6500, step_increment=1, page_increment=10.0,
+        adj = Gtk.Adjustment(lower=1000, upper=10001, step_increment=1, page_increment=10.0,
                              page_size=0.1)
         self.night_temp_low.configure(adj, 1, 0)
         self.night_temp_low.set_value(settings["night-temp-low"])
 
         self.night_temp_high.set_value(settings["night-temp-high"])
-        adj = Gtk.Adjustment(lower=1000, upper=6501, step_increment=1, page_increment=10.0,
+        adj = Gtk.Adjustment(lower=1000, upper=10001, step_increment=1, page_increment=10.0,
                              page_size=1)
         self.night_temp_high.configure(adj, 1, 0)
         self.night_temp_high.set_value(settings["night-temp-high"])
@@ -197,6 +209,8 @@ class MainWindow(Gtk.Window):
                              page_size=1)
         self.exit_icon_size.configure(adj, 1, 0)
         self.exit_icon_size.set_value(settings["exit-icon-size"])
+
+        self.exit_on.set_active(settings["exit-on"])
 
         self.dock_position.set_active_id(settings["dock-position"])
         self.dock_full.set_active(settings["dock-full"])

@@ -58,11 +58,6 @@ output * adaptive_sync on
 # set $Mon1 eDP-1
 # set $Mon2 HDMI-A-1
 
-# Your preferred application launcher
-# Note: pass the final command to swaymsg so that the resulting window can be opened
-# on the original workspace that the command was run on.
-set $launcher nwg-drawer | xargs swaymsg exec --
-
 ### Turn off screen on lid closed
 set $laptop eDP-1
 bindswitch lid:on output $laptop disable
