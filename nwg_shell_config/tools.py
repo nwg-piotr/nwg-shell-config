@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+import json
 
 from geopy.geocoders import Nominatim
 
@@ -81,3 +82,50 @@ def get_command_output(command):
     except Exception as e:
         print("get_command_output() {}".format(e), file=sys.stderr)
         return []
+
+
+def load_json(path):
+    try:
+        with open(path, 'r') as f:
+            return json.load(f)
+    except Exception as e:
+        print("Error loading json: {}".format(e))
+        return None
+
+
+def save_json(src_dict, path):
+    with open(path, 'w') as f:
+        json.dump(src_dict, f, indent=2)
+
+
+def get_terminal():
+    for t in ["foot", "alacritty", "kitty", "gnome-terminal", "sakura", "wterm"]:
+        if is_command(t):
+            return t
+    return "foot"
+
+
+def get_file_manager():
+    for f in ["thunar", "pcmanfm", "nautilus", "caja"]:
+        if is_command(f):
+            return f
+    return ""
+
+
+def get_editor():
+    for e in ["mousepad", "geany", "atom", "emacs"]:
+        if is_command(e):
+            return e
+    return ""
+
+
+def get_browser_command():
+    commands = {
+        "chromium": "chromium --disable-gpu-memory-buffer-video-frames --enable-features=UseOzonePlatform --ozone-platform=wayland",
+        "firefox": "MOZ_ENABLE_WAYLAND=1 firefox",
+        "epiphany": "epiphany",
+        "surf": "surf"}
+    for b in ["chromium", "firefox", "epiphany", "qutebrowser", "surf"]:
+        if is_command(b):
+            return commands[b]
+    return ""
