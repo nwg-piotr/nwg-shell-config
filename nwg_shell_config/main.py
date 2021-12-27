@@ -15,13 +15,16 @@ dir_name = os.path.dirname(__file__)
 config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
     os.getenv("HOME"), ".config/")
 
-settings = {"keyboard-layout": "", "autotiling-workspaces": "1 2 3 4 5 6 7 8", "autotiling-on": True,
-            "night-lat": -1.0, "night-long": -1.0, "night-temp-low": 4000, "night-temp-high": 6500, "night-gamma": 1.0,
-            "night-on": True, "terminal": "foot", "file-manager": "", "editor": "", "browser": "",
-            "launcher-columns": 3, "launcher-icon-size": 64, "launcher-file-search-columns": 2,
-            "launcher-search-files": True, "launcher-categories": True, "launcher-overlay": False,
+settings = {"keyboard-layout": "",
+            "autotiling-workspaces": "1 2 3 4 5 6 7 8", "autotiling-on": True,
+            "night-lat": -1.0, "night-long": -1.0, "night-temp-low": 4000, "night-temp-high": 6500,
+            "night-gamma": 1.0, "night-on": True,
+            "terminal": "", "file-manager": "", "editor": "", "browser": "",
+            "launcher-columns": 6, "launcher-icon-size": 64, "launcher-file-search-columns": 2,
+            "launcher-search-files": True, "launcher-categories": True, "launcher-overlay": False, "launcher-on": True,
             "exit-position": "center", "exit-full": False, "exit-alignment": "middle", "exit-margin": 0,
-            "exit-icon-size": 48, "exit-on": True, "dock-position": "bottom", "dock-full": False,
+            "exit-icon-size": 48, "exit-on": True,
+            "dock-position": "bottom", "dock-full": False, "dock-autohide": True,
             "dock-alignment": "center", "dock-margin": 0, "dock-icon-size": 48, "dock-on": False}
 
 
@@ -60,6 +63,7 @@ class MainWindow(Gtk.Window):
         self.launcher_search_files = builder.get_object("launcher-search-files")
         self.launcher_categories = builder.get_object("launcher-categories")
         self.launcher_overlay = builder.get_object("launcher-overlay")
+        self.launcher_on = builder.get_object("launcher-on")
 
         self.exit_position = builder.get_object("exit-position")
         self.exit_full = builder.get_object("exit-full")
@@ -70,6 +74,7 @@ class MainWindow(Gtk.Window):
 
         self.dock_position = builder.get_object("dock-position")
         self.dock_full = builder.get_object("dock-full")
+        self.dock_autohide = builder.get_object("dock-autohide")
         self.dock_alignment = builder.get_object("dock-alignment")
         self.dock_margin = builder.get_object("dock-margin")
         self.dock_icon_size = builder.get_object("dock-icon-size")
@@ -93,31 +98,31 @@ class MainWindow(Gtk.Window):
         self.autotiling_on.set_active(settings["autotiling-on"])
 
         self.night_lat.set_numeric(True)
-        adj = Gtk.Adjustment(value=0.0, lower=-90.0, upper=90.1, step_increment=0.1, page_increment=10.0,
+        adj = Gtk.Adjustment(lower=-90.0, upper=90.1, step_increment=0.1, page_increment=10.0,
                              page_size=0.1)
         self.night_lat.configure(adj, 0.1, 4)
         self.night_lat.set_value(settings["night-lat"])
 
         self.night_long.set_value(settings["night-long"])
-        adj = Gtk.Adjustment(value=0.0, lower=-180.0, upper=180.1, step_increment=0.1, page_increment=10.0,
+        adj = Gtk.Adjustment(lower=-180.0, upper=180.1, step_increment=0.1, page_increment=10.0,
                              page_size=0.1)
         self.night_long.configure(adj, 0.1, 4)
         self.night_long.set_value(settings["night-long"])
 
         self.night_temp_low.set_value(settings["night-temp-low"])
-        adj = Gtk.Adjustment(value=0.0, lower=1000, upper=6500, step_increment=1, page_increment=10.0,
+        adj = Gtk.Adjustment(lower=1000, upper=6500, step_increment=1, page_increment=10.0,
                              page_size=0.1)
         self.night_temp_low.configure(adj, 1, 0)
         self.night_temp_low.set_value(settings["night-temp-low"])
 
         self.night_temp_high.set_value(settings["night-temp-high"])
-        adj = Gtk.Adjustment(value=0.0, lower=1000, upper=6500, step_increment=1, page_increment=10.0,
+        adj = Gtk.Adjustment(lower=1000, upper=6500, step_increment=1, page_increment=10.0,
                              page_size=0.1)
         self.night_temp_high.configure(adj, 1, 0)
         self.night_temp_high.set_value(settings["night-temp-high"])
 
         self.night_gamma.set_value(settings["night-gamma"])
-        adj = Gtk.Adjustment(value=0.0, lower=0.1, upper=1.1, step_increment=0.1, page_increment=1,
+        adj = Gtk.Adjustment(lower=0.1, upper=1.1, step_increment=0.1, page_increment=1,
                              page_size=0.1)
         self.night_gamma.configure(adj, 0.1, 1)
         self.night_gamma.set_value(settings["night-gamma"])
@@ -133,6 +138,58 @@ class MainWindow(Gtk.Window):
         self.launcher_search_files.set_active(settings["launcher-search-files"])
         self.launcher_categories.set_active(settings["launcher-categories"])
         self.launcher_overlay.set_active(settings["launcher-overlay"])
+        self.launcher_on.set_active(settings["launcher-on"])
+
+        self.launcher_columns.set_numeric(True)
+        adj = Gtk.Adjustment(lower=1, upper=10, step_increment=1, page_increment=1,
+                             page_size=1)
+        self.launcher_columns.configure(adj, 1, 0)
+        self.launcher_columns.set_value(settings["launcher-columns"])
+
+        self.launcher_icon_size.set_numeric(True)
+        adj = Gtk.Adjustment(lower=8, upper=256, step_increment=1, page_increment=1,
+                             page_size=1)
+        self.launcher_icon_size.configure(adj, 1, 0)
+        self.launcher_icon_size.set_value(settings["launcher-icon-size"])
+
+        self.launcher_file_search_columns.set_numeric(True)
+        adj = Gtk.Adjustment(lower=1, upper=12, step_increment=1, page_increment=1,
+                             page_size=1)
+        self.launcher_file_search_columns.configure(adj, 1, 0)
+        self.launcher_file_search_columns.set_value(settings["launcher-file-search-columns"])
+
+        self.exit_position.set_active_id(settings["exit-position"])
+        self.exit_full.set_active(settings["exit-full"])
+        self.exit_alignment.set_active_id(settings["exit-alignment"])
+
+        self.exit_margin.set_numeric(True)
+        adj = Gtk.Adjustment(lower=0, upper=256, step_increment=1, page_increment=10,
+                             page_size=1)
+        self.exit_margin.configure(adj, 1, 0)
+        self.exit_margin.set_value(settings["exit-margin"])
+
+        self.exit_icon_size.set_numeric(True)
+        adj = Gtk.Adjustment(lower=8, upper=256, step_increment=1, page_increment=10,
+                             page_size=1)
+        self.exit_icon_size.configure(adj, 1, 0)
+        self.exit_icon_size.set_value(settings["exit-icon-size"])
+
+        self.dock_position.set_active_id(settings["dock-position"])
+        self.dock_full.set_active(settings["dock-full"])
+        self.dock_autohide.set_active(settings["dock-autohide"])
+        self.dock_alignment.set_active_id(settings["dock-alignment"])
+
+        self.dock_margin.set_numeric(True)
+        adj = Gtk.Adjustment(lower=0, upper=256, step_increment=1, page_increment=10,
+                             page_size=1)
+        self.dock_margin.configure(adj, 1, 0)
+        self.dock_margin.set_value(settings["dock-margin"])
+
+        self.dock_icon_size.set_numeric(True)
+        adj = Gtk.Adjustment(lower=0, upper=256, step_increment=1, page_increment=10,
+                             page_size=1)
+        self.dock_icon_size.configure(adj, 1, 0)
+        self.dock_icon_size.set_value(settings["dock-icon-size"])
 
     def fill_in_missing_values(self, *args):
         if self.keyboard_layout.get_text() == "":
