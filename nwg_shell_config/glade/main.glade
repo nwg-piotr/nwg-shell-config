@@ -1369,7 +1369,7 @@
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="spacing">20</property>
+                    <property name="spacing">10</property>
                     <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkButton" id="btn-restore">
@@ -1386,7 +1386,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="btn-save">
-                        <property name="label">Save</property>
+                        <property name="label">Apply</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>

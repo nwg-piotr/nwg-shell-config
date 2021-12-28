@@ -118,6 +118,7 @@ class MainWindow(Gtk.Window):
 
         btn_close = builder.get_object("btn-close")
         btn_close.connect("clicked", Gtk.main_quit)
+        btn_close.grab_focus()
 
         btn_save = builder.get_object("btn-save")
         btn_save.connect("clicked", self.on_save_btn)
