@@ -7,7 +7,7 @@ import locale
 import gi
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, GLib
+from gi.repository import Gtk, Gdk, GLib
 
 from nwg_shell_config.tools import *
 
@@ -44,6 +44,11 @@ def validate_workspaces(gtk_entry):
     gtk_entry.set_text(valid_text)
 
 
+def handle_keyboard(window, event):
+    if event.type == Gdk.EventType.KEY_RELEASE and event.keyval == Gdk.KEY_Escape:
+        window.close()
+
+
 class MainWindow(Gtk.Window):
     def __init__(self):
         builder = Gtk.Builder()
@@ -51,6 +56,7 @@ class MainWindow(Gtk.Window):
 
         self.window = builder.get_object("main-window")
         self.window.connect('destroy', Gtk.main_quit)
+        self.window.connect("key-release-event", handle_keyboard)
 
         self.version = builder.get_object("version")
 
