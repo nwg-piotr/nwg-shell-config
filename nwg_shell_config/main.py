@@ -29,8 +29,9 @@ settings = {"keyboard-layout": "",
             "launcher-overlay": False, "launcher-on": True,
             "exit-position": "center", "exit-full": False, "exit-alignment": "middle", "exit-margin": 0,
             "exit-icon-size": 48, "exit-on": True,
-            "dock-position": "bottom", "dock-full": False, "dock-autohide": True,
-            "dock-alignment": "center", "dock-margin": 0, "dock-icon-size": 48, "dock-on": False,
+            "dock-position": "bottom", "dock-full": False, "dock-autohide": True, "dock-autostart": False,
+            "dock-exclusive": False, "dock-alignment": "center", "dock-margin": 0, "dock-icon-size": 48,
+            "dock-on": False,
             "panel-preset": "preset-0"}
 
 
@@ -105,6 +106,8 @@ class MainWindow(Gtk.Window):
         self.dock_full = builder.get_object("dock-full")
         self.dock_autohide = builder.get_object("dock-autohide")
         self.dock_alignment = builder.get_object("dock-alignment")
+        self.dock_autostart = builder.get_object("dock-autostart")
+        self.dock_exclusive = builder.get_object("dock-exclusive")
         self.dock_margin = builder.get_object("dock-margin")
         self.dock_icon_size = builder.get_object("dock-icon-size")
         self.dock_on = builder.get_object("dock-on")
@@ -237,6 +240,8 @@ class MainWindow(Gtk.Window):
         self.dock_position.set_active_id(settings["dock-position"])
         self.dock_full.set_active(settings["dock-full"])
         self.dock_autohide.set_active(settings["dock-autohide"])
+        self.dock_autostart.set_active(settings["dock-autostart"])
+        self.dock_exclusive.set_active(settings["dock-exclusive"])
         self.dock_alignment.set_active_id(settings["dock-alignment"])
 
         self.dock_margin.set_numeric(True)
@@ -311,6 +316,8 @@ class MainWindow(Gtk.Window):
         settings["dock-position"] = self.dock_position.get_active_text()
         settings["dock-full"] = self.dock_full.get_active()
         settings["dock-autohide"] = self.dock_autohide.get_active()
+        settings["dock-autostart"] = self.dock_autostart.get_active()
+        settings["dock-exclusive"] = self.dock_exclusive.get_active()
         settings["dock-alignment"] = self.dock_alignment.get_active_text()
         settings["dock-margin"] = int(self.dock_margin.get_value())
         settings["dock-icon-size"] = int(self.dock_icon_size.get_value())
@@ -390,9 +397,7 @@ def save_includes():
     if settings["dock-icon-size"]:
         cmd_dock += " -i {}".format(settings["dock-icon-size"])
 
-    if settings["dock-on"] and settings["dock-autohide"]:
-        variables.append("set $dock nwg-dock")
-    else:
+    if settings["dock-on"] and not settings["dock-autohide"]:
         variables.append("set $dock {}".format(cmd_dock))
 
     for line in variables:
