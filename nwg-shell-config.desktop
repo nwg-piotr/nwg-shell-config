@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Application
+
+Name=nwg-shell Settings
+Name[pl]=Ustawienia nwg-shell
+
+GenericName=nwg-shell configurator
+GenericName[pl]=Ustawienia nwg-shell
+
+Comment=Tool to configure nwg-shell
+Comment[pl]=Narzędzie do konfiguracji powłoki nwg-shell
+
+Exec=nwg-shell-config
+Icon=nwg-shell
+Terminal=false
+Categories=Settings;DesktopSettings;
