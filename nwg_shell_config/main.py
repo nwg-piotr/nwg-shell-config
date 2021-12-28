@@ -245,6 +245,8 @@ class MainWindow(Gtk.Window):
         self.dock_icon_size.set_value(settings["dock-icon-size"])
 
         self.panel_preset.set_active_id(settings["panel-preset"])
+        # this must be after the previous line or will get overridden by the `switch_dock` method
+        self.dock_on.set_active(settings["dock-on"])
 
     def fill_in_missing_values(self, *args):
         if self.keyboard_layout.get_text() == "":
@@ -311,8 +313,8 @@ class MainWindow(Gtk.Window):
 
     def on_save_btn(self, b):
         self.read_form()
-        print(settings)
         save_includes()
+        save_json(settings, os.path.join(data_dir, "settings"))
 
 
 def save_includes():
