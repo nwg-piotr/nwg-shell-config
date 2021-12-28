@@ -3,12 +3,15 @@
 # Dependencies: python-geopy
 
 import locale
+
 import gi
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, GLib
+from gi.repository import Gtk, GLib
 
 from nwg_shell_config.tools import *
+
+from nwg_shell_config.__about__ import __version__
 
 dir_name = os.path.dirname(__file__)
 
@@ -114,6 +117,8 @@ class MainWindow(Gtk.Window):
         btn_save.connect("clicked", self.on_save_btn)
 
         self.tz, self.lat, self.long = get_lat_lon()
+
+        self.version.set_text("version {}".format(__version__))
 
         self.fill_in_from_settings(self)
         self.fill_in_missing_values(self)
