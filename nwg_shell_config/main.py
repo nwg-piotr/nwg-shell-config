@@ -12,6 +12,7 @@ from nwg_shell_config.tools import *
 
 dir_name = os.path.dirname(__file__)
 
+data_dir = ""
 config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
     os.getenv("HOME"), ".config/")
 
@@ -26,7 +27,8 @@ settings = {"keyboard-layout": "",
             "exit-position": "center", "exit-full": False, "exit-alignment": "middle", "exit-margin": 0,
             "exit-icon-size": 48, "exit-on": True,
             "dock-position": "bottom", "dock-full": False, "dock-autohide": True,
-            "dock-alignment": "center", "dock-margin": 0, "dock-icon-size": 48, "dock-on": False}
+            "dock-alignment": "center", "dock-margin": 0, "dock-icon-size": 48, "dock-on": False,
+            "panel-preset": "preset-0"}
 
 
 def validate_workspaces(gtk_entry):
@@ -98,6 +100,10 @@ class MainWindow(Gtk.Window):
         self.dock_icon_size = builder.get_object("dock-icon-size")
         self.dock_on = builder.get_object("dock-on")
 
+        self.panel_preset = builder.get_object("panel-preset")
+        self.panel_preset.connect("changed", self.switch_dock)
+        self.panel_custom = builder.get_object("panel-custom")
+
         btn_restore = builder.get_object("btn-restore")
         btn_restore.connect("clicked", self.restore)
 
@@ -114,12 +120,16 @@ class MainWindow(Gtk.Window):
 
         self.window.show_all()
 
+    def switch_dock(self, combo):
+        self.dock_on.set_active(combo.get_active_text() == "preset-1")
+
     def restore(self, b):
         self.fill_in_from_settings()
         self.fill_in_missing_values()
 
     def set_chromium(self, *args):
-        self.browser.set_text("chromium --disable-gpu-memory-buffer-video-frames --enable-features=UseOzonePlatform --ozone-platform=wayland")
+        self.browser.set_text(
+            "chromium --disable-gpu-memory-buffer-video-frames --enable-features=UseOzonePlatform --ozone-platform=wayland")
 
     def set_firefox(self, *args):
         self.browser.set_text("MOZ_ENABLE_WAYLAND=1 firefox")
@@ -229,6 +239,8 @@ class MainWindow(Gtk.Window):
         self.dock_icon_size.configure(adj, 1, 0)
         self.dock_icon_size.set_value(settings["dock-icon-size"])
 
+        self.panel_preset.set_active_id(settings["panel-preset"])
+
     def fill_in_missing_values(self, *args):
         if self.keyboard_layout.get_text() == "":
             lang = locale.getlocale()[0].split("_")[0]
@@ -241,7 +253,6 @@ class MainWindow(Gtk.Window):
         if self.night_lat.get_value() == -1.0 and self.night_long.get_value() == -1:
             self.night_lat.set_value(self.lat)
             self.night_long.set_value(self.long)
-            print("Coordinates {}, {} auto-set from configured location: {}".format(self.lat, self.long, self.tz))
 
         if self.terminal.get_text() == "":
             self.terminal.set_text(get_terminal())
@@ -258,6 +269,7 @@ class MainWindow(Gtk.Window):
     def read_form(self):
         settings["keyboard-layout"] = self.keyboard_layout.get_text()
         settings["autotiling-workspaces"] = self.autotiling_workspaces.get_text()
+        settings["autotiling-on"] = self.autotiling_on.get_active()
         settings["night-lat"] = self.night_lat.get_value()
         settings["night-long"] = self.night_long.get_value()
         settings["night-temp-low"] = int(self.night_temp_low.get_value())
@@ -289,17 +301,147 @@ class MainWindow(Gtk.Window):
         settings["dock-margin"] = int(self.dock_margin.get_value())
         settings["dock-icon-size"] = int(self.dock_icon_size.get_value())
         settings["dock-on"] = self.dock_on.get_active()
+        settings["panel-preset"] = self.panel_preset.get_active_text()
+        settings["panel-custom"] = self.panel_custom.get_text()
 
     def on_save_btn(self, b):
         self.read_form()
         print(settings)
+        save_includes()
+
+
+def save_includes():
+    cmd_launcher_autostart = ""
+
+    # ~/.config/sway/variables
+    variables = []
+    if settings["keyboard-layout"]:
+        variables.append("set $lang {}".format(settings["keyboard-layout"]))
+    if settings["terminal"]:
+        variables.append("set $term {}".format(settings["terminal"]))
+    if settings["browser"]:
+        variables.append("set $browser {}".format(settings["browser"]))
+    if settings["file-manager"]:
+        variables.append("set $filemanager {}".format(settings["file-manager"]))
+    if settings["editor"]:
+        variables.append("set $editor {}".format(settings["editor"]))
+
+    cmd_launcher = "nwg-drawer"
+    if settings["launcher-resident"]:
+        cmd_launcher += " -r"
+    if settings["launcher-columns"]:
+        cmd_launcher += " -c {}".format(settings["launcher-columns"])
+    if settings["launcher-icon-size"]:
+        cmd_launcher += " -is {}".format(settings["launcher-icon-size"])
+    if settings["launcher-file-search-columns"]:
+        cmd_launcher += " -fscol {}".format(settings["launcher-file-search-columns"])
+    if not settings["launcher-search-files"]:
+        cmd_launcher += " -nofs"
+    if not settings["launcher-categories"]:
+        cmd_launcher += " -nocats"
+    if settings["launcher-overlay"]:
+        cmd_launcher += " -ovl"
+
+    if settings["launcher-on"]:
+        if settings["launcher-resident"]:
+            cmd_launcher_autostart = "exec_always {}".format(cmd_launcher)
+            variables.append("set $launcher nwg-drawer")
+        else:
+            variables.append("set $launcher {}".format(cmd_launcher))
+
+    cmd_exit = "nwg-bar"
+    if settings["exit-position"]:
+        cmd_exit += " -p {}".format(settings["exit-position"])
+    if settings["exit-full"]:
+        cmd_exit += " -f"
+    if settings["exit-alignment"]:
+        cmd_exit += " -a {}".format(settings["exit-alignment"])
+    if settings["exit-margin"]:
+        cmd_exit += " -mb {} -ml {} -mr {} -mt {}".format(settings["exit-margin"], settings["exit-margin"],
+                                                          settings["exit-margin"], settings["exit-margin"])
+    variables.append("set $exit {}".format(cmd_exit))
+
+    cmd_dock = "nwg-dock"
+    if settings["dock-autohide"]:
+        cmd_dock += " -d"
+    if settings["dock-position"]:
+        cmd_dock += " -p {}".format(settings["dock-position"])
+    if settings["dock-full"]:
+        cmd_dock += " -f"
+    if settings["dock-alignment"]:
+        cmd_dock += " -a {}".format(settings["dock-alignment"])
+    if settings["dock-margin"]:
+        cmd_dock += " -mb {} -ml {} -mr {} -mt {}".format(settings["dock-margin"], settings["dock-margin"],
+                                                          settings["dock-margin"], settings["dock-margin"])
+    if settings["dock-icon-size"]:
+        cmd_dock += " -i {}".format(settings["dock-icon-size"])
+
+    if settings["dock-on"] and settings["dock-autohide"]:
+        variables.append("set $dock nwg-dock")
+    else:
+        variables.append("set $dock {}".format(cmd_dock))
+
+    for line in variables:
+        print(line)
+    save_list_to_text_file(variables, os.path.join(config_home, "sway/variables"))
+
+    # ~/.config/sway/autostart
+    autostart = []
+    if settings["night-on"]:
+        cmd_night = "exec wlsunset"
+        if settings["night-lat"]:
+            cmd_night += " -l {}".format(settings["night-lat"])
+        if settings["night-long"]:
+            cmd_night += " -L {}".format(settings["night-long"])
+        if settings["night-temp-low"]:
+            cmd_night += " -t {}".format(settings["night-temp-low"])
+        if settings["night-temp-high"]:
+            cmd_night += " -T {}".format(settings["night-temp-high"])
+        if settings["night-gamma"]:
+            cmd_night += " -g {}".format(settings["night-gamma"])
+        autostart.append(cmd_night)
+
+    if settings["autotiling-on"]:
+        cmd_autoiling = "exec_always autotiling"
+        if settings["autotiling-workspaces"]:
+            cmd_autoiling += " -w {}".format(settings["autotiling-workspaces"])
+        autostart.append(cmd_autoiling)
+
+    if cmd_launcher_autostart:
+        autostart.append(cmd_launcher_autostart)
+
+    if settings["dock-on"] and settings["dock-autohide"]:
+        autostart.append("exec_always {}".format(cmd_dock))
+
+    if settings["panel-preset"] != "custom":
+        autostart.append("exec_always nwg-panel -c {}".format(settings["panel-preset"]))
+    elif settings["panel-custom"]:
+        autostart.append("exec_always nwg-panel -c {}".format(settings["panel-custom"]))
+    else:
+        autostart.append("exec_always nwg-panel")
+
+    for line in autostart:
+        print(line)
+    save_list_to_text_file(autostart, os.path.join(config_home, "sway/autostart"))
+
+    restart()
+
+
+def restart():
+    for cmd in ["pkill -f nwg-drawer", "pkill -f nwg-dock", "pkill -f nwg-bar", "pkill -f nwg-panel", "sway reload"]:
+        os.system(cmd)
 
 
 def main():
     GLib.set_prgname('nwg-shell')
 
+    global data_dir
     data_dir = get_data_dir()
     settings_file = os.path.join(data_dir, "settings")
+
+    print("Data dir: {}".format(data_dir))
+    print("Config home: {}".format(config_home))
+
     global settings
     if os.path.isfile(settings_file):
         settings = load_json(settings_file)
@@ -309,11 +451,6 @@ def main():
         print("Created initial settings in {}".format(settings_file))
 
     win = MainWindow()
-
-    print(get_lat_lon())
-    print(data_dir)
-    print(config_home)
-    print(check_deps())
 
     Gtk.main()
 

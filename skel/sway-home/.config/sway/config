@@ -116,11 +116,12 @@ bindsym Mod1+F1         exec $launcher
 
 # core
 bindsym $Mod+t          exec $term
-bindsym $Mod+Return     exec $term
+bindsym $Mod+Return     exec foot
 bindsym Control+Shift+t exec $term
 bindsym $Mod+w          exec $browser
 bindsym $Mod+f          exec $filemanager
 bindsym $Mod+e          exec $editor
+bindsym $Mod+d          exec $dock
 
 # Exit menu
 bindsym $Mod+x exec $exit

@@ -67,15 +67,6 @@ def is_command(cmd):
         return False
 
 
-def check_deps():
-    d = {}
-    for cmd in ["foot", "grim", "slurp", "swayidle", "swaylock", "xorg-xwayland", "wlsunset", "light",
-                "wdisplays", "lxappearance", "autotiling", "azote", "imagemagick", "nwg-panel", "nwg-wrapper",
-                "gopsuinfo", "nwg-drawer", "nwg-bar", "nwg-menu"]:
-        d[cmd] = is_command(cmd)
-    return d
-
-
 def get_command_output(command):
     try:
         return subprocess.check_output(command.split()).decode('utf-8').splitlines()
@@ -96,6 +87,13 @@ def load_json(path):
 def save_json(src_dict, path):
     with open(path, 'w') as f:
         json.dump(src_dict, f, indent=2)
+
+
+def save_list_to_text_file(data, file_path):
+    text_file = open(file_path, "w")
+    for line in data:
+        text_file.write(line + "\n")
+    text_file.close()
 
 
 def get_terminal():
