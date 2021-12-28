@@ -438,7 +438,7 @@ def restart():
 
 
 def main():
-    GLib.set_prgname('nwg-shell')
+    GLib.set_prgname('nwg-shell-config')
 
     global data_dir
     data_dir = get_data_dir()
