@@ -33,7 +33,7 @@
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <property name="icon-name">nwg-shell</property>
-                            <property name="icon_size">1</property>
+                            <property name="icon_size">6</property>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -68,7 +68,7 @@
                       </object>
                       <packing>
                         <property name="expand">True</property>
-                        <property name="fill">False</property>
+                        <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
@@ -106,6 +106,9 @@
                                 <property name="can-focus">False</property>
                                 <property name="halign">end</property>
                                 <property name="label" translatable="yes">Keyboard:</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
                               </object>
                               <packing>
                                 <property name="left-attach">0</property>
@@ -119,6 +122,9 @@
                                 <property name="halign">end</property>
                                 <property name="valign">start</property>
                                 <property name="label" translatable="yes">Launcher:</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
                               </object>
                               <packing>
                                 <property name="left-attach">0</property>
@@ -343,6 +349,9 @@
                                 <property name="can-focus">False</property>
                                 <property name="halign">end</property>
                                 <property name="label" translatable="yes">Browser:</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
                               </object>
                               <packing>
                                 <property name="left-attach">0</property>
@@ -366,6 +375,9 @@
                                 <property name="can-focus">False</property>
                                 <property name="halign">end</property>
                                 <property name="label" translatable="yes">Terminal:</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
                               </object>
                               <packing>
                                 <property name="left-attach">0</property>
@@ -390,6 +402,9 @@
                                 <property name="can-focus">False</property>
                                 <property name="halign">end</property>
                                 <property name="label" translatable="yes">File manager:</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
                               </object>
                               <packing>
                                 <property name="left-attach">2</property>
@@ -414,6 +429,9 @@
                                 <property name="can-focus">False</property>
                                 <property name="halign">end</property>
                                 <property name="label" translatable="yes">Text editor:</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
                               </object>
                               <packing>
                                 <property name="left-attach">4</property>
@@ -439,6 +457,9 @@
                                 <property name="halign">end</property>
                                 <property name="valign">start</property>
                                 <property name="label" translatable="yes">Night light:</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
                               </object>
                               <packing>
                                 <property name="left-attach">0</property>
@@ -711,6 +732,9 @@
                                 <property name="halign">end</property>
                                 <property name="valign">center</property>
                                 <property name="label" translatable="yes">Autotiling:</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
                               </object>
                               <packing>
                                 <property name="left-attach">0</property>
@@ -815,6 +839,9 @@
                                 <property name="can-focus">False</property>
                                 <property name="halign">end</property>
                                 <property name="label" translatable="yes">Panel:</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
                               </object>
                               <packing>
                                 <property name="left-attach">2</property>
@@ -895,6 +922,9 @@
                                 <property name="halign">end</property>
                                 <property name="valign">start</property>
                                 <property name="label" translatable="yes">Exit menu:</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
                               </object>
                               <packing>
                                 <property name="left-attach">0</property>
@@ -1095,6 +1125,9 @@
                                 <property name="halign">end</property>
                                 <property name="valign">start</property>
                                 <property name="label" translatable="yes">Dock:</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
                               </object>
                               <packing>
                                 <property name="left-attach">0</property>
@@ -1471,7 +1504,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton">
-                    <property name="label" translatable="yes">show this window on startup</property>
+                    <property name="label" translatable="yes">show on startup</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>

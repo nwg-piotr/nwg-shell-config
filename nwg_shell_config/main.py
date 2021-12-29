@@ -34,7 +34,8 @@ settings = {"keyboard-layout": "",
             "dock-position": "bottom", "dock-output": "", "dock-full": False, "dock-autohide": True,
             "dock-autostart": False, "dock-exclusive": False, "dock-alignment": "center", "dock-margin": 0,
             "dock-icon-size": 48, "dock-on": False,
-            "panel-preset": "preset-0"}
+            "panel-preset": "preset-0",
+            "show-on-startup": True}
 
 
 def validate_workspaces(gtk_entry):
