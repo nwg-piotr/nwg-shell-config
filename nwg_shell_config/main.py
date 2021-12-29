@@ -126,6 +126,8 @@ class MainWindow(Gtk.Window):
         self.panel_preset.connect("changed", self.switch_dock)
         self.panel_custom = builder.get_object("panel-custom")
 
+        self.show_on_startup = builder.get_object("show-on-startup")
+
         btn_restore = builder.get_object("btn-restore")
         btn_restore.connect("clicked", self.restore)
 
@@ -273,6 +275,8 @@ class MainWindow(Gtk.Window):
         # this must be after the previous line or will get overridden by the `switch_dock` method
         self.dock_on.set_active(settings["dock-on"])
 
+        self.show_on_startup.set_active(settings["show-on-startup"])
+
     def fill_in_missing_values(self, *args):
         if self.keyboard_layout.get_text() == "":
             lang = locale.getlocale()[0].split("_")[0]
@@ -339,6 +343,7 @@ class MainWindow(Gtk.Window):
         settings["dock-on"] = self.dock_on.get_active()
         settings["panel-preset"] = self.panel_preset.get_active_text()
         settings["panel-custom"] = self.panel_custom.get_text()
+        settings["show-on-startup"] = self.show_on_startup.get_active()
 
     def on_save_btn(self, b):
         self.read_form()

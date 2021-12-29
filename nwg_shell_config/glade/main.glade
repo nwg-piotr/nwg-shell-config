@@ -1503,8 +1503,8 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkCheckButton">
-                    <property name="label" translatable="yes">show on startup</property>
+                  <object class="GtkCheckButton" id="show-on-startup">
+                    <property name="label" translatable="yes">show this window on startup</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
