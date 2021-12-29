@@ -109,6 +109,8 @@ class MainWindow(Gtk.Window):
         self.dock_output = builder.get_object("dock-output")
         for output in outputs:
             self.dock_output.append(output, output)
+        if not settings["dock-output"]:
+            self.dock_output.set_active_id(outputs[0])
 
         self.dock_full = builder.get_object("dock-full")
         self.dock_autohide = builder.get_object("dock-autohide")
