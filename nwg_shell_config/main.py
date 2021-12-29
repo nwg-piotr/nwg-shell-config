@@ -484,8 +484,18 @@ def main():
 
     global settings
     if os.path.isfile(settings_file):
+        default_settings = settings.copy()
+        substitutes = 0
+        print("Loading settings from {}".format(settings_file))
         settings = load_json(settings_file)
-        print("Settings loaded from {}".format(settings_file))
+        for key in default_settings:
+            if key not in settings:
+                print("Missing key: '{}', default value: {}".format(key, default_settings[key]))
+                settings[key] = default_settings[key]
+                substitutes += 1
+
+        if substitutes > 0:
+            print("{} missing values substituted from defaults".format(substitutes))
     else:
         save_json(settings, settings_file)
         print("Created initial settings in {}".format(settings_file))
