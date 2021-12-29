@@ -37,6 +37,26 @@ def get_config_home():
     return config_dir
 
 
+def list_outputs():
+    """
+    for now support for sway only
+    """
+    outputs = []
+    try:
+        from i3ipc import Connection
+    except ModuleNotFoundError:
+        print("'python-i3ipc' package required on sway, terminating")
+        sys.exit(1)
+
+    i3 = Connection()
+    tree = i3.get_tree()
+    for item in tree:
+        if item.type == "output" and not item.name.startswith("__"):
+            outputs.append(item.name)
+
+    return outputs
+
+
 def get_lat_lon():
     # Placeholder in case something goes wrong
     tz, lat, lon = "Europe/Warsaw", 52.2322, 20.9841

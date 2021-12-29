@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Dependencies: python-geopy
+# Dependencies: python-geopy i3ipc
 
 import locale
 
@@ -19,6 +19,8 @@ data_dir = ""
 config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
     os.getenv("HOME"), ".config/")
 
+outputs = []
+
 settings = {"keyboard-layout": "",
             "autotiling-workspaces": "1 2 3 4 5 6 7 8", "autotiling-on": True,
             "night-lat": -1.0, "night-long": -1.0, "night-temp-low": 4000, "night-temp-high": 6500,
@@ -29,9 +31,9 @@ settings = {"keyboard-layout": "",
             "launcher-overlay": False, "launcher-on": True,
             "exit-position": "center", "exit-full": False, "exit-alignment": "middle", "exit-margin": 0,
             "exit-icon-size": 48, "exit-on": True,
-            "dock-position": "bottom", "dock-full": False, "dock-autohide": True, "dock-autostart": False,
-            "dock-exclusive": False, "dock-alignment": "center", "dock-margin": 0, "dock-icon-size": 48,
-            "dock-on": False,
+            "dock-position": "bottom", "dock-output": "", "dock-full": False, "dock-autohide": True,
+            "dock-autostart": False, "dock-exclusive": False, "dock-alignment": "center", "dock-margin": 0,
+            "dock-icon-size": 48, "dock-on": False,
             "panel-preset": "preset-0"}
 
 
@@ -103,6 +105,11 @@ class MainWindow(Gtk.Window):
         self.exit_on = builder.get_object("exit-on")
 
         self.dock_position = builder.get_object("dock-position")
+
+        self.dock_output = builder.get_object("dock-output")
+        for output in outputs:
+            self.dock_output.append(output, output)
+
         self.dock_full = builder.get_object("dock-full")
         self.dock_autohide = builder.get_object("dock-autohide")
         self.dock_alignment = builder.get_object("dock-alignment")
@@ -238,6 +245,9 @@ class MainWindow(Gtk.Window):
         self.exit_on.set_active(settings["exit-on"])
 
         self.dock_position.set_active_id(settings["dock-position"])
+        if settings["dock-output"]:
+            self.dock_output.set_active_id(settings["dock-output"])
+
         self.dock_full.set_active(settings["dock-full"])
         self.dock_autohide.set_active(settings["dock-autohide"])
         self.dock_autostart.set_active(settings["dock-autostart"])
@@ -314,6 +324,8 @@ class MainWindow(Gtk.Window):
         settings["exit-icon-size"] = int(self.exit_icon_size.get_value())
         settings["exit-on"] = self.exit_on.get_active()
         settings["dock-position"] = self.dock_position.get_active_text()
+        if self.dock_output.get_active_text():
+            settings["dock-output"] = self.dock_output.get_active_text()
         settings["dock-full"] = self.dock_full.get_active()
         settings["dock-autohide"] = self.dock_autohide.get_active()
         settings["dock-autostart"] = self.dock_autostart.get_active()
@@ -387,6 +399,8 @@ def save_includes():
         cmd_dock += " -d"
     if settings["dock-position"]:
         cmd_dock += " -p {}".format(settings["dock-position"])
+    if settings["dock-output"]:
+        cmd_dock += " -o {}".format(settings["dock-output"])
     if settings["dock-full"]:
         cmd_dock += " -f"
     if settings["dock-alignment"]:
@@ -396,6 +410,9 @@ def save_includes():
                                                           settings["dock-margin"], settings["dock-margin"])
     if settings["dock-icon-size"]:
         cmd_dock += " -i {}".format(settings["dock-icon-size"])
+
+    if settings["dock-exclusive"]:
+        cmd_dock += " -x"
 
     if settings["dock-on"] and not settings["dock-autohide"]:
         variables.append("set $dock {}".format(cmd_dock))
@@ -429,7 +446,7 @@ def save_includes():
     if cmd_launcher_autostart:
         autostart.append(cmd_launcher_autostart)
 
-    if settings["dock-on"] and settings["dock-autohide"]:
+    if settings["dock-on"] and (settings["dock-autohide"] or settings["dock-autostart"]):
         autostart.append("exec_always {}".format(cmd_dock))
 
     if settings["panel-preset"] != "custom":
@@ -458,6 +475,10 @@ def main():
     data_dir = get_data_dir()
     settings_file = os.path.join(data_dir, "settings")
 
+    global outputs
+    outputs = list_outputs()
+
+    print("Outputs: {}".format(outputs))
     print("Data dir: {}".format(data_dir))
     print("Config home: {}".format(config_home))
 
