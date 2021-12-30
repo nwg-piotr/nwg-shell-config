@@ -14,7 +14,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     package_data={
-        "": ["config/*", "glade/*"]
+        "": ["glade/*", "panel/*", "shell/*"]
     },
     url='https://github.com/nwg-piotr/nwg-shell-config',
     license='MIT',
