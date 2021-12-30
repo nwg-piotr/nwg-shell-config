@@ -26,6 +26,8 @@ settings = {"keyboard-layout": "",
             "night-lat": -1.0, "night-long": -1.0, "night-temp-low": 4000, "night-temp-high": 6500,
             "night-gamma": 1.0, "night-on": True,
             "terminal": "", "file-manager": "", "editor": "", "browser": "",
+            "panel-preset": "preset-0", "panel-custom": "",
+            "show-on-startup": True,
             "launcher-columns": 6, "launcher-icon-size": 64, "launcher-file-search-columns": 2,
             "launcher-search-files": True, "launcher-categories": True, "launcher-resident": False,
             "launcher-overlay": False, "launcher-on": True,
@@ -33,9 +35,7 @@ settings = {"keyboard-layout": "",
             "exit-icon-size": 48, "exit-on": True,
             "dock-position": "bottom", "dock-output": "", "dock-full": False, "dock-autohide": True,
             "dock-autostart": False, "dock-exclusive": False, "dock-alignment": "center", "dock-margin": 0,
-            "dock-icon-size": 48, "dock-on": False,
-            "panel-preset": "preset-0",
-            "show-on-startup": True}
+            "dock-icon-size": 48, "dock-on": False}
 
 
 def validate_workspaces(gtk_entry):
@@ -53,7 +53,7 @@ def handle_keyboard(window, event):
         window.close()
 
 
-class MainWindow(Gtk.Window):
+class GUI(object):
     def __init__(self):
         builder = Gtk.Builder()
         builder.add_from_file(os.path.join(dir_name, "glade/main.glade"))
@@ -123,7 +123,7 @@ class MainWindow(Gtk.Window):
         self.dock_on = builder.get_object("dock-on")
 
         self.panel_preset = builder.get_object("panel-preset")
-        self.panel_preset.connect("changed", self.switch_dock)
+        self.panel_preset.connect("changed", self.on_preset_changed)
         self.panel_custom = builder.get_object("panel-custom")
 
         self.show_on_startup = builder.get_object("show-on-startup")
@@ -145,10 +145,17 @@ class MainWindow(Gtk.Window):
         self.fill_in_from_settings(self)
         self.fill_in_missing_values(self)
 
-        self.window.show_all()
+    def on_preset_changed(self, combo):
+        preset = combo.get_active_text()
+        settings["panel-preset"] = preset
+        self.panel_custom.set_sensitive(preset == "custom")
+        if preset != "custom":
+            self.load_preset()
+        else:
+            load_settings()
+            self.fill_in_from_settings(skip_preset=True)
 
-    def switch_dock(self, combo):
-        self.dock_on.set_active(combo.get_active_text() == "preset-1")
+        self.fill_in_missing_values()
 
     def restore(self, b):
         self.fill_in_from_settings()
@@ -161,8 +168,7 @@ class MainWindow(Gtk.Window):
     def set_firefox(self, *args):
         self.browser.set_text("MOZ_ENABLE_WAYLAND=1 firefox")
 
-    def fill_in_from_settings(self, *args):
-        print(settings)
+    def fill_in_from_settings(self, *args, skip_preset=False):
         self.keyboard_layout.set_text(settings["keyboard-layout"])
         self.autotiling_workspaces.set_text(settings["autotiling-workspaces"])
         self.autotiling_on.set_active(settings["autotiling-on"])
@@ -271,7 +277,8 @@ class MainWindow(Gtk.Window):
         self.dock_icon_size.configure(adj, 1, 0)
         self.dock_icon_size.set_value(settings["dock-icon-size"])
 
-        self.panel_preset.set_active_id(settings["panel-preset"])
+        if not skip_preset:
+            self.panel_preset.set_active_id(settings["panel-preset"])
         # this must be after the previous line or will get overridden by the `switch_dock` method
         self.dock_on.set_active(settings["dock-on"])
 
@@ -344,6 +351,17 @@ class MainWindow(Gtk.Window):
         settings["panel-preset"] = self.panel_preset.get_active_text()
         settings["panel-custom"] = self.panel_custom.get_text()
         settings["show-on-startup"] = self.show_on_startup.get_active()
+
+    def load_preset(self):
+        preset_file = os.path.join(data_dir, settings["panel-preset"])
+        if os.path.isfile(preset_file):
+            print("Loading preset from {}".format(preset_file))
+            preset = load_json(preset_file)
+            for key in preset:
+                settings[key] = preset[key]
+            self.fill_in_from_settings()
+        else:
+            print("ERROR: failed loading {}".format(preset_file), file=sys.stderr)
 
     def on_save_btn(self, b):
         self.read_form()
@@ -476,20 +494,8 @@ def restart():
         os.system(cmd)
 
 
-def main():
-    GLib.set_prgname('nwg-shell-config')
-
-    global data_dir
-    data_dir = get_data_dir()
+def load_settings():
     settings_file = os.path.join(data_dir, "settings")
-
-    global outputs
-    outputs = list_outputs()
-
-    print("Outputs: {}".format(outputs))
-    print("Data dir: {}".format(data_dir))
-    print("Config home: {}".format(config_home))
-
     global settings
     if os.path.isfile(settings_file):
         default_settings = settings.copy()
@@ -508,7 +514,23 @@ def main():
         save_json(settings, settings_file)
         print("Created initial settings in {}".format(settings_file))
 
-    win = MainWindow()
+
+def main():
+    GLib.set_prgname('nwg-shell-config')
+
+    global data_dir
+    data_dir = get_data_dir()
+
+    global outputs
+    outputs = list_outputs()
+
+    print("Outputs: {}".format(outputs))
+    print("Data dir: {}".format(data_dir))
+    print("Config home: {}".format(config_home))
+
+    ui = GUI()
+    load_settings()
+    ui.window.show_all()
 
     Gtk.main()
 
