@@ -2,6 +2,7 @@ import os
 import sys
 import subprocess
 import json
+from shutil import copyfile
 
 from geopy.geocoders import Nominatim
 
@@ -35,6 +36,17 @@ def get_config_home():
         os.mkdir(config_dir)
 
     return config_dir
+
+
+def init_files(src_dir, dst_dir):
+    src_files = os.listdir(src_dir)
+    for file in src_files:
+        if os.path.isfile(os.path.join(src_dir, file)):
+            if not os.path.isfile(os.path.join(dst_dir, file)):
+                copyfile(os.path.join(src_dir, file),
+                         os.path.join(dst_dir, file))
+                print("Copying default file to '{}'".format(
+                    os.path.join(dst_dir, file)))
 
 
 def list_outputs():

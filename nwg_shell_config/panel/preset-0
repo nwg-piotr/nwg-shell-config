@@ -2,7 +2,7 @@
   {
     "name": "top",
     "output": "",
-    "layer": "bottom",
+    "layer": "top",
     "position": "top",
     "width": "auto",
     "height": 30,
@@ -50,17 +50,22 @@
         {
           "name": "Look & Feel",
           "icon": "preferences-desktop-theme",
-          "cmd": "lxappearance"
+          "cmd": "lxappearance; import-gsettings gtk-theme:gtk-theme-name icon-theme:gtk-icon-theme-name cursor-theme:gtk-cursor-theme-name"
         },
         {
           "name": "Outputs",
-          "icon": "wdisplays",
+          "icon": "network.cycles.wdisplays",
           "cmd": "wdisplays && sway-save-outputs"
         },
         {
           "name": "Panel settings",
           "icon": "nwg-panel",
           "cmd": "nwg-panel-config"
+        },
+        {
+          "name": "Shell settings",
+          "icon": "nwg-shell",
+          "cmd": "nwg-shell-config"
         }
       ],
       "menu": {
@@ -91,7 +96,7 @@
       "hover-opens": false,
       "leave-closes": true,
       "css-name": "controls-window",
-      "net-interface": "wlan0",
+      "net-interface": "wlo1",
       "Exit": "Exittt",
       "system-shutdown-symbolic": "system-shutdown",
       "output-switcher": true,
@@ -142,7 +147,7 @@
   {
     "name": "bottom",
     "output": "",
-    "layer": "bottom",
+    "layer": "top",
     "position": "bottom",
     "height": 30,
     "margin-top": 0,
@@ -160,8 +165,6 @@
     "scratchpad": {},
     "clock": {},
     "menu-start-settings": {},
-    "playerctl": {},
-    "sway-workspaces": {},
     "modules-left": [
       "sway-taskbar"
     ],
@@ -179,7 +182,7 @@
       "show-app-icon": true,
       "show-layout": true,
       "show-app-name": true,
-      "name-max-len": 10,
+      "name-max-len": 15,
       "workspaces-spacing": 0,
       "task-padding": 0,
       "all-outputs": false,
@@ -273,6 +276,8 @@
       "css-name": "",
       "icon-size": 16,
       "icon-placement": "left"
-    }
+    },
+    "playerctl": {},
+    "sway-workspaces": {}
   }
 ]

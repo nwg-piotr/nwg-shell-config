@@ -542,6 +542,9 @@ def main():
     print("Data dir: {}".format(data_dir))
     print("Config home: {}".format(config_home))
 
+    init_files(os.path.join(dir_name, "shell"), data_dir)
+    init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"))
+
     load_settings()
     ui = GUI()
     ui.window.show_all()
