@@ -14,7 +14,7 @@
   "exit-icon-size": 48,
   "exit-on": true,
   "dock-position": "bottom",
-  "dock-output": "LVDS-1",
+  "dock-output": "",
   "dock-full": false,
   "dock-autohide": false,
   "dock-autostart": false,
