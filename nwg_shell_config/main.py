@@ -363,10 +363,24 @@ class GUI(object):
         else:
             print("ERROR: failed loading {}".format(preset_file), file=sys.stderr)
 
+    def save_preset(self):
+        p = {}
+        for key in settings:
+            if key.startswith("launcher-") or key.startswith("exit-") or key.startswith("dock-"):
+                p[key] = settings[key]
+        f = os.path.join(data_dir, settings["panel-preset"])
+        print("Saving {}".format(f))
+        save_json(p, f)
+
     def on_save_btn(self, b):
+        # update settings from the form
         self.read_form()
+        if settings["panel-preset"] != "custom":
+            self.save_preset()
         save_includes()
-        save_json(settings, os.path.join(data_dir, "settings"))
+        f = os.path.join(data_dir, "settings")
+        print("Saving {}".format(f))
+        save_json(settings, f)
 
 
 def save_includes():
@@ -443,8 +457,8 @@ def save_includes():
     if settings["dock-on"] and not settings["dock-autohide"]:
         variables.append("set $dock {}".format(cmd_dock))
 
-    for line in variables:
-        print(line)
+    """for line in variables:
+        print(line)"""
     save_list_to_text_file(variables, os.path.join(config_home, "sway/variables"))
 
     # ~/.config/sway/autostart
@@ -482,8 +496,8 @@ def save_includes():
     else:
         autostart.append("exec_always nwg-panel")
 
-    for line in autostart:
-        print(line)
+    """for line in autostart:
+        print(line)"""
     save_list_to_text_file(autostart, os.path.join(config_home, "sway/autostart"))
 
     restart()
@@ -528,8 +542,8 @@ def main():
     print("Data dir: {}".format(data_dir))
     print("Config home: {}".format(config_home))
 
-    ui = GUI()
     load_settings()
+    ui = GUI()
     ui.window.show_all()
 
     Gtk.main()
