@@ -55,8 +55,8 @@
         "brightness",
         "battery",
         "volume",
-        "bluetooth",
-        "net"
+        "net",
+        "bluetooth"
       ],
       "commands": {
         "battery": "",
@@ -72,12 +72,22 @@
         {
           "name": "Look & Feel",
           "icon": "preferences-desktop-theme",
-          "cmd": "lxappearance"
+          "cmd": "lxappearance; import-gsettings gtk-theme:gtk-theme-name icon-theme:gtk-icon-theme-name cursor-theme:gtk-cursor-theme-name"
+        },
+        {
+          "name": "Outputs",
+          "icon": "system",
+          "cmd": "wdisplays && sway-save-outputs"
         },
         {
           "name": "Panel settings",
           "icon": "nwg-panel",
           "cmd": "nwg-panel-config"
+        },
+        {
+          "name": "Shell settings",
+          "icon": "nwg-shell",
+          "cmd": "nwg-shell-config"
         }
       ],
       "menu": {
