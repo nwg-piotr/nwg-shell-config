@@ -23,7 +23,7 @@ outputs = []
 
 settings = {"keyboard-layout": "",
             "autotiling-workspaces": "1 2 3 4 5 6 7 8", "autotiling-on": True,
-            "night-lat": -1.0, "night-long": -1.0, "night-temp-low": 4000, "night-temp-high": 6500,
+            "night-lat": -1.0, "night-long": -1.0, "night-temp-low": 4500, "night-temp-high": 6500,
             "night-gamma": 1.0, "night-on": True,
             "terminal": "", "file-manager": "", "editor": "", "browser": "",
             "panel-preset": "preset-0", "panel-custom": "", "panel-css": "",
