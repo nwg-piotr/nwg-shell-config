@@ -17,7 +17,7 @@
   "dock-output": "",
   "dock-full": false,
   "dock-autohide": true,
-  "dock-autostart": false,
+  "dock-permanent": false,
   "dock-exclusive": false,
   "dock-alignment": "center",
   "dock-margin": 0,

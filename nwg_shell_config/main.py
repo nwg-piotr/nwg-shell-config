@@ -34,7 +34,7 @@ settings = {"keyboard-layout": "",
             "exit-position": "center", "exit-full": False, "exit-alignment": "middle", "exit-margin": 0,
             "exit-icon-size": 48, "exit-on": True,
             "dock-position": "bottom", "dock-output": "", "dock-full": False, "dock-autohide": True,
-            "dock-autostart": False, "dock-exclusive": False, "dock-alignment": "center", "dock-margin": 0,
+            "dock-permanent": False, "dock-exclusive": False, "dock-alignment": "center", "dock-margin": 0,
             "dock-icon-size": 48, "dock-on": False}
 
 
@@ -116,7 +116,7 @@ class GUI(object):
         self.dock_full = builder.get_object("dock-full")
         self.dock_autohide = builder.get_object("dock-autohide")
         self.dock_alignment = builder.get_object("dock-alignment")
-        self.dock_autostart = builder.get_object("dock-autostart")
+        self.dock_permanent = builder.get_object("dock-permanent")
         self.dock_exclusive = builder.get_object("dock-exclusive")
         self.dock_margin = builder.get_object("dock-margin")
         self.dock_icon_size = builder.get_object("dock-icon-size")
@@ -261,7 +261,7 @@ class GUI(object):
 
         self.dock_full.set_active(settings["dock-full"])
         self.dock_autohide.set_active(settings["dock-autohide"])
-        self.dock_autostart.set_active(settings["dock-autostart"])
+        self.dock_permanent.set_active(settings["dock-permanent"])
         self.dock_exclusive.set_active(settings["dock-exclusive"])
         self.dock_alignment.set_active_id(settings["dock-alignment"])
 
@@ -342,7 +342,7 @@ class GUI(object):
             settings["dock-output"] = self.dock_output.get_active_text()
         settings["dock-full"] = self.dock_full.get_active()
         settings["dock-autohide"] = self.dock_autohide.get_active()
-        settings["dock-autostart"] = self.dock_autostart.get_active()
+        settings["dock-permanent"] = self.dock_permanent.get_active()
         settings["dock-exclusive"] = self.dock_exclusive.get_active()
         settings["dock-alignment"] = self.dock_alignment.get_active_text()
         settings["dock-margin"] = int(self.dock_margin.get_value())
@@ -437,6 +437,8 @@ def save_includes():
     cmd_dock = "nwg-dock"
     if settings["dock-autohide"]:
         cmd_dock += " -d"
+    elif settings["dock-permanent"]:
+        cmd_dock += " -r"
     if settings["dock-position"]:
         cmd_dock += " -p {}".format(settings["dock-position"])
     if settings["dock-output"]:
@@ -454,11 +456,9 @@ def save_includes():
     if settings["dock-exclusive"]:
         cmd_dock += " -x"
 
-    if settings["dock-on"] and not settings["dock-autohide"]:
+    if settings["dock-on"] and not settings["dock-autohide"] and not settings["dock-permanent"]:
         variables.append("set $dock {}".format(cmd_dock))
 
-    """for line in variables:
-        print(line)"""
     save_list_to_text_file(variables, os.path.join(config_home, "sway/variables"))
 
     # ~/.config/sway/autostart
@@ -486,7 +486,7 @@ def save_includes():
     if cmd_launcher_autostart:
         autostart.append(cmd_launcher_autostart)
 
-    if settings["dock-on"] and (settings["dock-autohide"] or settings["dock-autostart"]):
+    if settings["dock-on"] and (settings["dock-autohide"] or settings["dock-permanent"]):
         autostart.append("exec_always {}".format(cmd_dock))
 
     if settings["panel-preset"] != "custom":
@@ -496,8 +496,6 @@ def save_includes():
     else:
         autostart.append("exec_always nwg-panel")
 
-    """for line in autostart:
-        print(line)"""
     save_list_to_text_file(autostart, os.path.join(config_home, "sway/autostart"))
 
     restart()
