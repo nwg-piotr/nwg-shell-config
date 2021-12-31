@@ -379,7 +379,7 @@ class GUI(object):
     def save_preset(self):
         p = {}
         for key in settings:
-            if key.startswith("launcher-") or key.startswith("exit-") or key.startswith("dock-"):
+            if key.startswith("launcher-") or key.startswith("exit-") or key.startswith("dock-") or key == "panel-css":
                 p[key] = settings[key]
         f = os.path.join(data_dir, settings["panel-preset"])
         print("Saving {}".format(f))
