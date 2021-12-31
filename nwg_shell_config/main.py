@@ -96,6 +96,7 @@ class GUI(object):
         self.launcher_categories = builder.get_object("launcher-categories")
         self.launcher_resident = builder.get_object("launcher-resident")
         self.launcher_overlay = builder.get_object("launcher-overlay")
+        self.launcher_css = builder.get_object("launcher-css")
         self.launcher_on = builder.get_object("launcher-on")
 
         self.exit_position = builder.get_object("exit-position")
@@ -103,6 +104,7 @@ class GUI(object):
         self.exit_alignment = builder.get_object("exit-alignment")
         self.exit_margin = builder.get_object("exit-margin")
         self.exit_icon_size = builder.get_object("exit-icon-size")
+        self.exit_css = builder.get_object("exit-css")
         self.exit_on = builder.get_object("exit-on")
 
         self.dock_position = builder.get_object("dock-position")
@@ -120,11 +122,13 @@ class GUI(object):
         self.dock_exclusive = builder.get_object("dock-exclusive")
         self.dock_margin = builder.get_object("dock-margin")
         self.dock_icon_size = builder.get_object("dock-icon-size")
+        self.dock_css = builder.get_object("dock-css")
         self.dock_on = builder.get_object("dock-on")
 
         self.panel_preset = builder.get_object("panel-preset")
         self.panel_preset.connect("changed", self.on_preset_changed)
         self.panel_custom = builder.get_object("panel-custom")
+        self.panel_css = builder.get_object("panel-css")
 
         self.show_on_startup = builder.get_object("show-on-startup")
 
@@ -217,6 +221,7 @@ class GUI(object):
         self.launcher_categories.set_active(settings["launcher-categories"])
         self.launcher_resident.set_active(settings["launcher-resident"])
         self.launcher_overlay.set_active(settings["launcher-overlay"])
+        self.launcher_css.set_text(settings["launcher-css"])
         self.launcher_on.set_active(settings["launcher-on"])
 
         self.launcher_columns.set_numeric(True)
@@ -252,7 +257,7 @@ class GUI(object):
                              page_size=1)
         self.exit_icon_size.configure(adj, 1, 0)
         self.exit_icon_size.set_value(settings["exit-icon-size"])
-
+        self.exit_css.set_text(settings["exit-css"])
         self.exit_on.set_active(settings["exit-on"])
 
         self.dock_position.set_active_id(settings["dock-position"])
@@ -280,7 +285,10 @@ class GUI(object):
         if not skip_preset:
             self.panel_preset.set_active_id(settings["panel-preset"])
         # this must be after the previous line or will get overridden by the `switch_dock` method
+        self.dock_css.set_text(settings["dock-css"])
         self.dock_on.set_active(settings["dock-on"])
+
+        self.panel_css.set_text(settings["panel-css"])
 
         self.show_on_startup.set_active(settings["show-on-startup"])
 
@@ -330,12 +338,14 @@ class GUI(object):
         settings["launcher-categories"] = self.launcher_categories.get_active()
         settings["launcher-resident"] = self.launcher_resident.get_active()
         settings["launcher-overlay"] = self.launcher_overlay.get_active()
+        settings["launcher-css"] = self.launcher_css.get_text()
         settings["launcher-on"] = self.launcher_on.get_active()
         settings["exit-position"] = self.exit_position.get_active_text()
         settings["exit-full"] = self.exit_full.get_active()
         settings["exit-alignment"] = self.exit_alignment.get_active_text()
         settings["exit-margin"] = int(self.exit_margin.get_value())
         settings["exit-icon-size"] = int(self.exit_icon_size.get_value())
+        settings["exit-css"] = self.exit_css.get_text()
         settings["exit-on"] = self.exit_on.get_active()
         settings["dock-position"] = self.dock_position.get_active_text()
         if self.dock_output.get_active_text():
@@ -347,9 +357,12 @@ class GUI(object):
         settings["dock-alignment"] = self.dock_alignment.get_active_text()
         settings["dock-margin"] = int(self.dock_margin.get_value())
         settings["dock-icon-size"] = int(self.dock_icon_size.get_value())
+        settings["dock-css"] = self.dock_css.get_text()
         settings["dock-on"] = self.dock_on.get_active()
+
         settings["panel-preset"] = self.panel_preset.get_active_text()
         settings["panel-custom"] = self.panel_custom.get_text()
+        settings["panel-css"] = self.panel_css.get_text()
         settings["show-on-startup"] = self.show_on_startup.get_active()
 
     def load_preset(self):
