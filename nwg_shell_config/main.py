@@ -20,6 +20,7 @@ config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else 
     os.getenv("HOME"), ".config/")
 
 outputs = []
+panel_custom_config = ""
 panel_custom_css = ""
 
 settings = {"keyboard-layout": "",
@@ -290,6 +291,7 @@ class GUI(object):
         self.dock_on.set_active(settings["dock-on"])
 
         self.panel_css.set_text(settings["panel-css"])
+        self.panel_custom.set_text(settings["panel-custom"])
 
         self.show_on_startup.set_active(settings["show-on-startup"])
 
@@ -369,7 +371,8 @@ class GUI(object):
         if settings["panel-preset"] == "custom":
             global panel_custom_css
             panel_custom_css = settings["panel-css"]
-            print(">>> panel_custom_css =", panel_custom_css)
+            global panel_custom_config
+            panel_custom_config = settings["panel-custom"]
 
     def load_preset(self):
         preset_file = os.path.join(data_dir, settings["panel-preset"])
@@ -398,6 +401,8 @@ class GUI(object):
             self.save_preset()
 
         settings["panel-css"] = panel_custom_css
+        settings["panel-custom"] = panel_custom_config
+
         save_includes()
         f = os.path.join(data_dir, "settings")
         print("Saving {}".format(f))
@@ -535,8 +540,12 @@ def load_settings():
         substitutes = 0
         print("Loading settings from {}".format(settings_file))
         settings = load_json(settings_file)
+
         global panel_custom_css
         panel_custom_css = settings["panel-css"]
+        global panel_custom_config
+        panel_custom_config = settings["panel-custom"]
+
         for key in default_settings:
             if key not in settings:
                 print("Missing key: '{}', default value: {}".format(key, default_settings[key]))
