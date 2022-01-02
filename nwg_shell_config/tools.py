@@ -20,7 +20,7 @@ def get_data_dir():
 
     if not os.path.isdir(data_dir):
         print("Creating '{}'".format(data_dir))
-        os.mkdir(data_dir)
+        os.makedirs(data_dir, exist_ok=True)
 
     return data_dir
 
@@ -33,7 +33,7 @@ def get_config_home():
 
     if not os.path.isdir(config_dir):
         print("Creating '{}'".format(config_dir))
-        os.mkdir(config_dir)
+        os.makedirs(config_dir, exist_ok=True)
 
     return config_dir
 
