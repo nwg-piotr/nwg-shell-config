@@ -487,10 +487,8 @@ def save_includes():
     cmd_panel = "exec_always nwg-panel"
     if settings["panel-preset"] != "custom":
         cmd_panel += " -c {}".format(settings["panel-preset"])
-        # autostart.append("exec_always nwg-panel -c {}".format(settings["panel-preset"]))
     elif settings["panel-custom"]:
         cmd_panel += " -c {}".format(settings["panel-custom"])
-        # autostart.append("exec_always nwg-panel -c {}".format(settings["panel-custom"]))
     if preset["panel-css"]:
         cmd_panel += " -s {}".format(preset["panel-css"])
     autostart.append(cmd_panel)
@@ -510,20 +508,6 @@ def load_settings():
     global settings
     if os.path.isfile(settings_file):
         settings = load_json(settings_file)
-        pass
-        """default_settings = settings.copy()
-        substitutes = 0
-        print("Loading settings from {}".format(settings_file))
-        settings = load_json(settings_file)
-
-        for key in default_settings:
-            if key not in settings:
-                print("Missing key: '{}', default value: {}".format(key, default_settings[key]))
-                settings[key] = default_settings[key]
-                substitutes += 1
-
-        if substitutes > 0:
-            print("{} missing values substituted from defaults".format(substitutes))"""
     else:
         save_json(settings, settings_file)
         print("Created initial settings in {}".format(settings_file))
