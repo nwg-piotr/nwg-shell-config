@@ -20,6 +20,7 @@ config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else 
     os.getenv("HOME"), ".config/")
 
 outputs = []
+panel_custom_css = ""
 
 settings = {"keyboard-layout": "",
             "autotiling-workspaces": "1 2 3 4 5 6 7 8", "autotiling-on": True,
@@ -365,6 +366,11 @@ class GUI(object):
         settings["panel-css"] = self.panel_css.get_text()
         settings["show-on-startup"] = self.show_on_startup.get_active()
 
+        if settings["panel-preset"] == "custom":
+            global panel_custom_css
+            panel_custom_css = settings["panel-css"]
+            print(">>> panel_custom_css =", panel_custom_css)
+
     def load_preset(self):
         preset_file = os.path.join(data_dir, settings["panel-preset"])
         if os.path.isfile(preset_file):
@@ -390,6 +396,8 @@ class GUI(object):
         self.read_form()
         if settings["panel-preset"] != "custom":
             self.save_preset()
+
+        settings["panel-css"] = panel_custom_css
         save_includes()
         f = os.path.join(data_dir, "settings")
         print("Saving {}".format(f))
@@ -527,6 +535,8 @@ def load_settings():
         substitutes = 0
         print("Loading settings from {}".format(settings_file))
         settings = load_json(settings_file)
+        global panel_custom_css
+        panel_custom_css = settings["panel-css"]
         for key in default_settings:
             if key not in settings:
                 print("Missing key: '{}', default value: {}".format(key, default_settings[key]))
