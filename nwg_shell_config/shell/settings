@@ -13,6 +13,6 @@
   "editor": "mousepad",
   "browser": "chromium --disable-gpu-memory-buffer-video-frames --enable-features=UseOzonePlatform --ozone-platform=wayland",
   "panel-preset": "preset-0",
-  "panel-custom": "config-personal",
+  "panel-custom": "",
   "show-on-startup": true
 }

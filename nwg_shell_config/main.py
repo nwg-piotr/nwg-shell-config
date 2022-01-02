@@ -389,6 +389,8 @@ def save_includes():
         cmd_launcher += " -nocats"
     if preset["launcher-overlay"]:
         cmd_launcher += " -ovl"
+    if preset["launcher-css"]:
+        cmd_launcher += " -s {}".format(preset["launcher-css"])
 
     if preset["launcher-on"]:
         if preset["launcher-resident"]:
@@ -407,6 +409,9 @@ def save_includes():
     if preset["exit-margin"]:
         cmd_exit += " -mb {} -ml {} -mr {} -mt {}".format(preset["exit-margin"], preset["exit-margin"],
                                                           preset["exit-margin"], preset["exit-margin"])
+    if preset["exit-css"]:
+        cmd_exit += " -s {}".format(preset["exit-css"])
+
     variables.append("set $exit {}".format(cmd_exit))
 
     cmd_dock = "nwg-dock"
@@ -430,6 +435,9 @@ def save_includes():
 
     if preset["dock-exclusive"]:
         cmd_dock += " -x"
+
+    if preset["dock-css"]:
+        cmd_dock += " -s {}".format(preset["dock-css"])
 
     if preset["dock-on"] and not preset["dock-autohide"] and not preset["dock-permanent"]:
         variables.append("set $dock {}".format(cmd_dock))
@@ -530,6 +538,7 @@ def main():
 
     init_files(os.path.join(dir_name, "shell"), data_dir)
     init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"))
+    init_files(os.path.join(dir_name, "dock"), os.path.join(config_home, "nwg-dock"))
 
     load_settings()
     load_preset()
