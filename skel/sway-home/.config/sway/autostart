@@ -1,4 +1,1 @@
-exec wlsunset -l 52.4 -L 22.2 -t 4500
-exec_always autotiling
-exec_always nwg-drawer -r
-exec_always nwg-panel -c panel-preset-0.json
+exec nwg-shell-config

@@ -1,5 +1,0 @@
-output "LVDS-1" {
-	mode 1366x768@59Hz
-	pos 0 0
-	transform normal
-}
