@@ -473,6 +473,9 @@ def save_includes():
         cmd_panel += " -s {}".format(preset["panel-css"])
     autostart.append(cmd_panel)
 
+    if settings["show-on-startup"]:
+        autostart.append("exec nwg-shell-config")
+
     save_list_to_text_file(autostart, os.path.join(config_home, "sway/autostart"))
 
     restart()
