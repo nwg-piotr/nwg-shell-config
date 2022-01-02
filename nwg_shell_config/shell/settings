@@ -1,0 +1,18 @@
+{
+  "keyboard-layout": "pl",
+  "autotiling-workspaces": "1 2 3 4 5 6 7 8",
+  "autotiling-on": true,
+  "night-lat": 52.2322,
+  "night-long": 20.9841,
+  "night-temp-low": 4500,
+  "night-temp-high": 6500,
+  "night-gamma": 1.0,
+  "night-on": true,
+  "terminal": "foot",
+  "file-manager": "thunar",
+  "editor": "mousepad",
+  "browser": "chromium --disable-gpu-memory-buffer-video-frames --enable-features=UseOzonePlatform --ozone-platform=wayland",
+  "panel-preset": "preset-0",
+  "panel-custom": "config-personal",
+  "show-on-startup": true
+}

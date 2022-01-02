@@ -20,24 +20,26 @@ config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else 
     os.getenv("HOME"), ".config/")
 
 outputs = []
-panel_custom_config = ""
-panel_custom_css = ""
+settings = {}
+preset = {}
 
-settings = {"keyboard-layout": "",
+"""settings = {"keyboard-layout": "",
             "autotiling-workspaces": "1 2 3 4 5 6 7 8", "autotiling-on": True,
             "night-lat": -1.0, "night-long": -1.0, "night-temp-low": 4500, "night-temp-high": 6500,
             "night-gamma": 1.0, "night-on": True,
             "terminal": "", "file-manager": "", "editor": "", "browser": "",
-            "panel-preset": "preset-0", "panel-custom": "", "panel-css": "",
-            "show-on-startup": True,
-            "launcher-columns": 6, "launcher-icon-size": 64, "launcher-file-search-columns": 2,
-            "launcher-search-files": True, "launcher-categories": True, "launcher-resident": False,
-            "launcher-overlay": False, "launcher-css": "", "launcher-on": True,
-            "exit-position": "center", "exit-full": False, "exit-alignment": "middle", "exit-margin": 0,
-            "exit-icon-size": 48, "exit-css": "", "exit-on": True,
-            "dock-position": "bottom", "dock-output": "", "dock-full": False, "dock-autohide": True,
-            "dock-permanent": False, "dock-exclusive": False, "dock-alignment": "center", "dock-margin": 0,
-            "dock-icon-size": 48, "dock-css": "", "dock-on": False}
+            "panel-preset": "preset-0",
+            "show-on-startup": True}
+
+preset = {"panel-custom": "", "panel-css": "",
+          "launcher-columns": 6, "launcher-icon-size": 64, "launcher-file-search-columns": 2,
+          "launcher-search-files": True, "launcher-categories": True, "launcher-resident": False,
+          "launcher-overlay": False, "launcher-css": "", "launcher-on": True,
+          "exit-position": "center", "exit-full": False, "exit-alignment": "middle", "exit-margin": 0,
+          "exit-icon-size": 48, "exit-css": "", "exit-on": True,
+          "dock-position": "bottom", "dock-output": "", "dock-full": False, "dock-autohide": True,
+          "dock-permanent": False, "dock-exclusive": False, "dock-alignment": "center", "dock-margin": 0,
+          "dock-icon-size": 48, "dock-css": "", "dock-on": False}"""
 
 
 def validate_workspaces(gtk_entry):
@@ -114,7 +116,7 @@ class GUI(object):
         self.dock_output = builder.get_object("dock-output")
         for output in outputs:
             self.dock_output.append(output, output)
-        if not settings["dock-output"]:
+        if not preset["dock-output"]:
             self.dock_output.set_active_id(outputs[0])
 
         self.dock_full = builder.get_object("dock-full")
@@ -154,13 +156,9 @@ class GUI(object):
     def on_preset_changed(self, combo):
         preset = combo.get_active_text()
         settings["panel-preset"] = preset
-        self.panel_custom.set_sensitive(preset == "custom")
-        if preset != "custom":
-            self.load_preset()
-        else:
-            load_settings()
-            self.fill_in_from_settings(skip_preset=True)
-
+        self.panel_custom.set_visible(preset == "custom")
+        load_preset()
+        self.fill_in_from_settings()
         self.fill_in_missing_values()
 
     def restore(self, b):
@@ -216,84 +214,83 @@ class GUI(object):
         self.file_manager.set_text(settings["file-manager"])
         self.editor.set_text(settings["editor"])
         self.browser.set_text(settings["browser"])
-        self.launcher_columns.set_value(settings["launcher-columns"])
-        self.launcher_icon_size.set_value(settings["launcher-icon-size"])
-        self.launcher_file_search_columns.set_value(settings["launcher-file-search-columns"])
-        self.launcher_search_files.set_active(settings["launcher-search-files"])
-        self.launcher_categories.set_active(settings["launcher-categories"])
-        self.launcher_resident.set_active(settings["launcher-resident"])
-        self.launcher_overlay.set_active(settings["launcher-overlay"])
-        self.launcher_css.set_text(settings["launcher-css"])
-        self.launcher_on.set_active(settings["launcher-on"])
+        self.show_on_startup.set_active(settings["show-on-startup"])
+
+        self.launcher_columns.set_value(preset["launcher-columns"])
+        self.launcher_icon_size.set_value(preset["launcher-icon-size"])
+        self.launcher_file_search_columns.set_value(preset["launcher-file-search-columns"])
+        self.launcher_search_files.set_active(preset["launcher-search-files"])
+        self.launcher_categories.set_active(preset["launcher-categories"])
+        self.launcher_resident.set_active(preset["launcher-resident"])
+        self.launcher_overlay.set_active(preset["launcher-overlay"])
+        self.launcher_css.set_text(preset["launcher-css"])
+        self.launcher_on.set_active(preset["launcher-on"])
 
         self.launcher_columns.set_numeric(True)
         adj = Gtk.Adjustment(lower=1, upper=10, step_increment=1, page_increment=1,
                              page_size=1)
         self.launcher_columns.configure(adj, 1, 0)
-        self.launcher_columns.set_value(settings["launcher-columns"])
+        self.launcher_columns.set_value(preset["launcher-columns"])
 
         self.launcher_icon_size.set_numeric(True)
         adj = Gtk.Adjustment(lower=8, upper=256, step_increment=1, page_increment=1,
                              page_size=1)
         self.launcher_icon_size.configure(adj, 1, 0)
-        self.launcher_icon_size.set_value(settings["launcher-icon-size"])
+        self.launcher_icon_size.set_value(preset["launcher-icon-size"])
 
         self.launcher_file_search_columns.set_numeric(True)
         adj = Gtk.Adjustment(lower=1, upper=12, step_increment=1, page_increment=1,
                              page_size=1)
         self.launcher_file_search_columns.configure(adj, 1, 0)
-        self.launcher_file_search_columns.set_value(settings["launcher-file-search-columns"])
+        self.launcher_file_search_columns.set_value(preset["launcher-file-search-columns"])
 
-        self.exit_position.set_active_id(settings["exit-position"])
-        self.exit_full.set_active(settings["exit-full"])
-        self.exit_alignment.set_active_id(settings["exit-alignment"])
+        self.exit_position.set_active_id(preset["exit-position"])
+        self.exit_full.set_active(preset["exit-full"])
+        self.exit_alignment.set_active_id(preset["exit-alignment"])
 
         self.exit_margin.set_numeric(True)
         adj = Gtk.Adjustment(lower=0, upper=256, step_increment=1, page_increment=10,
                              page_size=1)
         self.exit_margin.configure(adj, 1, 0)
-        self.exit_margin.set_value(settings["exit-margin"])
+        self.exit_margin.set_value(preset["exit-margin"])
 
         self.exit_icon_size.set_numeric(True)
         adj = Gtk.Adjustment(lower=8, upper=256, step_increment=1, page_increment=10,
                              page_size=1)
         self.exit_icon_size.configure(adj, 1, 0)
-        self.exit_icon_size.set_value(settings["exit-icon-size"])
-        self.exit_css.set_text(settings["exit-css"])
-        self.exit_on.set_active(settings["exit-on"])
+        self.exit_icon_size.set_value(preset["exit-icon-size"])
+        self.exit_css.set_text(preset["exit-css"])
+        self.exit_on.set_active(preset["exit-on"])
 
-        self.dock_position.set_active_id(settings["dock-position"])
-        if settings["dock-output"]:
-            self.dock_output.set_active_id(settings["dock-output"])
+        self.dock_position.set_active_id(preset["dock-position"])
+        if preset["dock-output"]:
+            self.dock_output.set_active_id(preset["dock-output"])
 
-        self.dock_full.set_active(settings["dock-full"])
-        self.dock_autohide.set_active(settings["dock-autohide"])
-        self.dock_permanent.set_active(settings["dock-permanent"])
-        self.dock_exclusive.set_active(settings["dock-exclusive"])
-        self.dock_alignment.set_active_id(settings["dock-alignment"])
+        self.dock_full.set_active(preset["dock-full"])
+        self.dock_autohide.set_active(preset["dock-autohide"])
+        self.dock_permanent.set_active(preset["dock-permanent"])
+        self.dock_exclusive.set_active(preset["dock-exclusive"])
+        self.dock_alignment.set_active_id(preset["dock-alignment"])
 
         self.dock_margin.set_numeric(True)
         adj = Gtk.Adjustment(lower=0, upper=256, step_increment=1, page_increment=10,
                              page_size=1)
         self.dock_margin.configure(adj, 1, 0)
-        self.dock_margin.set_value(settings["dock-margin"])
+        self.dock_margin.set_value(preset["dock-margin"])
 
         self.dock_icon_size.set_numeric(True)
         adj = Gtk.Adjustment(lower=0, upper=256, step_increment=1, page_increment=10,
                              page_size=1)
         self.dock_icon_size.configure(adj, 1, 0)
-        self.dock_icon_size.set_value(settings["dock-icon-size"])
+        self.dock_icon_size.set_value(preset["dock-icon-size"])
 
-        if not skip_preset:
-            self.panel_preset.set_active_id(settings["panel-preset"])
+        self.panel_preset.set_active_id(settings["panel-preset"])
         # this must be after the previous line or will get overridden by the `switch_dock` method
-        self.dock_css.set_text(settings["dock-css"])
-        self.dock_on.set_active(settings["dock-on"])
+        self.dock_css.set_text(preset["dock-css"])
+        self.dock_on.set_active(preset["dock-on"])
 
-        self.panel_css.set_text(settings["panel-css"])
+        self.panel_css.set_text(preset["panel-css"])
         self.panel_custom.set_text(settings["panel-custom"])
-
-        self.show_on_startup.set_active(settings["show-on-startup"])
 
     def fill_in_missing_values(self, *args):
         if self.keyboard_layout.get_text() == "":
@@ -334,74 +331,46 @@ class GUI(object):
         settings["file-manager"] = self.file_manager.get_text()
         settings["editor"] = self.editor.get_text()
         settings["browser"] = self.browser.get_text()
-        settings["launcher-columns"] = int(self.launcher_columns.get_value())
-        settings["launcher-icon-size"] = int(self.launcher_icon_size.get_value())
-        settings["launcher-file-search-columns"] = int(self.launcher_file_search_columns.get_value())
-        settings["launcher-search-files"] = self.launcher_search_files.get_active()
-        settings["launcher-categories"] = self.launcher_categories.get_active()
-        settings["launcher-resident"] = self.launcher_resident.get_active()
-        settings["launcher-overlay"] = self.launcher_overlay.get_active()
-        settings["launcher-css"] = self.launcher_css.get_text()
-        settings["launcher-on"] = self.launcher_on.get_active()
-        settings["exit-position"] = self.exit_position.get_active_text()
-        settings["exit-full"] = self.exit_full.get_active()
-        settings["exit-alignment"] = self.exit_alignment.get_active_text()
-        settings["exit-margin"] = int(self.exit_margin.get_value())
-        settings["exit-icon-size"] = int(self.exit_icon_size.get_value())
-        settings["exit-css"] = self.exit_css.get_text()
-        settings["exit-on"] = self.exit_on.get_active()
-        settings["dock-position"] = self.dock_position.get_active_text()
-        if self.dock_output.get_active_text():
-            settings["dock-output"] = self.dock_output.get_active_text()
-        settings["dock-full"] = self.dock_full.get_active()
-        settings["dock-autohide"] = self.dock_autohide.get_active()
-        settings["dock-permanent"] = self.dock_permanent.get_active()
-        settings["dock-exclusive"] = self.dock_exclusive.get_active()
-        settings["dock-alignment"] = self.dock_alignment.get_active_text()
-        settings["dock-margin"] = int(self.dock_margin.get_value())
-        settings["dock-icon-size"] = int(self.dock_icon_size.get_value())
-        settings["dock-css"] = self.dock_css.get_text()
-        settings["dock-on"] = self.dock_on.get_active()
-
         settings["panel-preset"] = self.panel_preset.get_active_text()
         settings["panel-custom"] = self.panel_custom.get_text()
-        settings["panel-css"] = self.panel_css.get_text()
         settings["show-on-startup"] = self.show_on_startup.get_active()
 
-        if settings["panel-preset"] == "custom":
-            global panel_custom_css
-            panel_custom_css = settings["panel-css"]
-            global panel_custom_config
-            panel_custom_config = settings["panel-custom"]
-
-    def load_preset(self):
-        preset_file = os.path.join(data_dir, settings["panel-preset"])
-        if os.path.isfile(preset_file):
-            print("Loading preset from {}".format(preset_file))
-            preset = load_json(preset_file)
-            for key in preset:
-                settings[key] = preset[key]
-            self.fill_in_from_settings()
-        else:
-            print("ERROR: failed loading {}".format(preset_file), file=sys.stderr)
-
-    def save_preset(self):
-        p = {}
-        for key in settings:
-            if key.startswith("launcher-") or key.startswith("exit-") or key.startswith("dock-") or key == "panel-css":
-                p[key] = settings[key]
-        f = os.path.join(data_dir, settings["panel-preset"])
-        print("Saving {}".format(f))
-        save_json(p, f)
+        preset["launcher-columns"] = int(self.launcher_columns.get_value())
+        preset["launcher-icon-size"] = int(self.launcher_icon_size.get_value())
+        preset["launcher-file-search-columns"] = int(self.launcher_file_search_columns.get_value())
+        preset["launcher-search-files"] = self.launcher_search_files.get_active()
+        preset["launcher-categories"] = self.launcher_categories.get_active()
+        preset["launcher-resident"] = self.launcher_resident.get_active()
+        preset["launcher-overlay"] = self.launcher_overlay.get_active()
+        preset["launcher-css"] = self.launcher_css.get_text()
+        preset["launcher-on"] = self.launcher_on.get_active()
+        preset["exit-position"] = self.exit_position.get_active_text()
+        preset["exit-full"] = self.exit_full.get_active()
+        preset["exit-alignment"] = self.exit_alignment.get_active_text()
+        preset["exit-margin"] = int(self.exit_margin.get_value())
+        preset["exit-icon-size"] = int(self.exit_icon_size.get_value())
+        preset["exit-css"] = self.exit_css.get_text()
+        preset["exit-on"] = self.exit_on.get_active()
+        preset["dock-position"] = self.dock_position.get_active_text()
+        if self.dock_output.get_active_text():
+            preset["dock-output"] = self.dock_output.get_active_text()
+        preset["dock-full"] = self.dock_full.get_active()
+        preset["dock-autohide"] = self.dock_autohide.get_active()
+        preset["dock-permanent"] = self.dock_permanent.get_active()
+        preset["dock-exclusive"] = self.dock_exclusive.get_active()
+        preset["dock-alignment"] = self.dock_alignment.get_active_text()
+        preset["dock-margin"] = int(self.dock_margin.get_value())
+        preset["dock-icon-size"] = int(self.dock_icon_size.get_value())
+        preset["dock-css"] = self.dock_css.get_text()
+        preset["dock-on"] = self.dock_on.get_active()
+        preset["panel-css"] = self.panel_css.get_text()
 
     def on_save_btn(self, b):
         # update settings from the form
         self.read_form()
-        if settings["panel-preset"] != "custom":
-            self.save_preset()
-
-        settings["panel-css"] = panel_custom_css
-        settings["panel-custom"] = panel_custom_config
+        """if settings["panel-preset"] != "custom":
+            self.save_preset()"""
+        save_preset()
 
         save_includes()
         f = os.path.join(data_dir, "settings")
@@ -426,63 +395,63 @@ def save_includes():
         variables.append("set $editor {}".format(settings["editor"]))
 
     cmd_launcher = "nwg-drawer"
-    if settings["launcher-resident"]:
+    if preset["launcher-resident"]:
         cmd_launcher += " -r"
-    if settings["launcher-columns"]:
-        cmd_launcher += " -c {}".format(settings["launcher-columns"])
-    if settings["launcher-icon-size"]:
-        cmd_launcher += " -is {}".format(settings["launcher-icon-size"])
-    if settings["launcher-file-search-columns"]:
-        cmd_launcher += " -fscol {}".format(settings["launcher-file-search-columns"])
-    if not settings["launcher-search-files"]:
+    if preset["launcher-columns"]:
+        cmd_launcher += " -c {}".format(preset["launcher-columns"])
+    if preset["launcher-icon-size"]:
+        cmd_launcher += " -is {}".format(preset["launcher-icon-size"])
+    if preset["launcher-file-search-columns"]:
+        cmd_launcher += " -fscol {}".format(preset["launcher-file-search-columns"])
+    if not preset["launcher-search-files"]:
         cmd_launcher += " -nofs"
-    if not settings["launcher-categories"]:
+    if not preset["launcher-categories"]:
         cmd_launcher += " -nocats"
-    if settings["launcher-overlay"]:
+    if preset["launcher-overlay"]:
         cmd_launcher += " -ovl"
 
-    if settings["launcher-on"]:
-        if settings["launcher-resident"]:
+    if preset["launcher-on"]:
+        if preset["launcher-resident"]:
             cmd_launcher_autostart = "exec_always {}".format(cmd_launcher)
             variables.append("set $launcher nwg-drawer")
         else:
             variables.append("set $launcher {}".format(cmd_launcher))
 
     cmd_exit = "nwg-bar"
-    if settings["exit-position"]:
-        cmd_exit += " -p {}".format(settings["exit-position"])
-    if settings["exit-full"]:
+    if preset["exit-position"]:
+        cmd_exit += " -p {}".format(preset["exit-position"])
+    if preset["exit-full"]:
         cmd_exit += " -f"
-    if settings["exit-alignment"]:
-        cmd_exit += " -a {}".format(settings["exit-alignment"])
-    if settings["exit-margin"]:
-        cmd_exit += " -mb {} -ml {} -mr {} -mt {}".format(settings["exit-margin"], settings["exit-margin"],
-                                                          settings["exit-margin"], settings["exit-margin"])
+    if preset["exit-alignment"]:
+        cmd_exit += " -a {}".format(preset["exit-alignment"])
+    if preset["exit-margin"]:
+        cmd_exit += " -mb {} -ml {} -mr {} -mt {}".format(preset["exit-margin"], preset["exit-margin"],
+                                                          preset["exit-margin"], preset["exit-margin"])
     variables.append("set $exit {}".format(cmd_exit))
 
     cmd_dock = "nwg-dock"
-    if settings["dock-autohide"]:
+    if preset["dock-autohide"]:
         cmd_dock += " -d"
-    elif settings["dock-permanent"]:
+    elif preset["dock-permanent"]:
         cmd_dock += " -r"
-    if settings["dock-position"]:
-        cmd_dock += " -p {}".format(settings["dock-position"])
-    if settings["dock-output"]:
-        cmd_dock += " -o {}".format(settings["dock-output"])
-    if settings["dock-full"]:
+    if preset["dock-position"]:
+        cmd_dock += " -p {}".format(preset["dock-position"])
+    if preset["dock-output"]:
+        cmd_dock += " -o {}".format(preset["dock-output"])
+    if preset["dock-full"]:
         cmd_dock += " -f"
-    if settings["dock-alignment"]:
-        cmd_dock += " -a {}".format(settings["dock-alignment"])
-    if settings["dock-margin"]:
-        cmd_dock += " -mb {} -ml {} -mr {} -mt {}".format(settings["dock-margin"], settings["dock-margin"],
-                                                          settings["dock-margin"], settings["dock-margin"])
-    if settings["dock-icon-size"]:
-        cmd_dock += " -i {}".format(settings["dock-icon-size"])
+    if preset["dock-alignment"]:
+        cmd_dock += " -a {}".format(preset["dock-alignment"])
+    if preset["dock-margin"]:
+        cmd_dock += " -mb {} -ml {} -mr {} -mt {}".format(preset["dock-margin"], preset["dock-margin"],
+                                                          preset["dock-margin"], preset["dock-margin"])
+    if preset["dock-icon-size"]:
+        cmd_dock += " -i {}".format(preset["dock-icon-size"])
 
-    if settings["dock-exclusive"]:
+    if preset["dock-exclusive"]:
         cmd_dock += " -x"
 
-    if settings["dock-on"] and not settings["dock-autohide"] and not settings["dock-permanent"]:
+    if preset["dock-on"] and not preset["dock-autohide"] and not preset["dock-permanent"]:
         variables.append("set $dock {}".format(cmd_dock))
 
     save_list_to_text_file(variables, os.path.join(config_home, "sway/variables"))
@@ -512,15 +481,19 @@ def save_includes():
     if cmd_launcher_autostart:
         autostart.append(cmd_launcher_autostart)
 
-    if settings["dock-on"] and (settings["dock-autohide"] or settings["dock-permanent"]):
+    if preset["dock-on"] and (preset["dock-autohide"] or preset["dock-permanent"]):
         autostart.append("exec_always {}".format(cmd_dock))
 
+    cmd_panel = "exec_always nwg-panel"
     if settings["panel-preset"] != "custom":
-        autostart.append("exec_always nwg-panel -c {}".format(settings["panel-preset"]))
+        cmd_panel += " -c {}".format(settings["panel-preset"])
+        # autostart.append("exec_always nwg-panel -c {}".format(settings["panel-preset"]))
     elif settings["panel-custom"]:
-        autostart.append("exec_always nwg-panel -c {}".format(settings["panel-custom"]))
-    else:
-        autostart.append("exec_always nwg-panel")
+        cmd_panel += " -c {}".format(settings["panel-custom"])
+        # autostart.append("exec_always nwg-panel -c {}".format(settings["panel-custom"]))
+    if preset["panel-css"]:
+        cmd_panel += " -s {}".format(preset["panel-css"])
+    autostart.append(cmd_panel)
 
     save_list_to_text_file(autostart, os.path.join(config_home, "sway/autostart"))
 
@@ -536,15 +509,12 @@ def load_settings():
     settings_file = os.path.join(data_dir, "settings")
     global settings
     if os.path.isfile(settings_file):
-        default_settings = settings.copy()
+        settings = load_json(settings_file)
+        pass
+        """default_settings = settings.copy()
         substitutes = 0
         print("Loading settings from {}".format(settings_file))
         settings = load_json(settings_file)
-
-        global panel_custom_css
-        panel_custom_css = settings["panel-css"]
-        global panel_custom_config
-        panel_custom_config = settings["panel-custom"]
 
         for key in default_settings:
             if key not in settings:
@@ -553,10 +523,29 @@ def load_settings():
                 substitutes += 1
 
         if substitutes > 0:
-            print("{} missing values substituted from defaults".format(substitutes))
+            print("{} missing values substituted from defaults".format(substitutes))"""
     else:
         save_json(settings, settings_file)
         print("Created initial settings in {}".format(settings_file))
+
+
+def load_preset():
+    global preset
+    preset_file = os.path.join(data_dir, settings["panel-preset"])
+    if os.path.isfile(preset_file):
+        print("Loading preset from {}".format(preset_file))
+        preset = load_json(preset_file)
+    else:
+        print("ERROR: failed loading {}".format(preset_file), file=sys.stderr)
+
+
+def save_preset():
+    for key in settings:
+        if key.startswith("launcher-") or key.startswith("exit-") or key.startswith("dock-") or key == "panel-css":
+            p[key] = settings[key]
+    f = os.path.join(data_dir, settings["panel-preset"])
+    print("Saving {}".format(f))
+    save_json(preset, f)
 
 
 def main():
@@ -576,8 +565,11 @@ def main():
     init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"))
 
     load_settings()
+    load_preset()
     ui = GUI()
     ui.window.show_all()
+    if settings["panel-preset"] != "custom":
+        ui.panel_custom.hide()
 
     Gtk.main()
 

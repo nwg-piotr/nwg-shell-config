@@ -1,4 +1,5 @@
 {
+  "panel-css": "",
   "launcher-columns": 6,
   "launcher-icon-size": 64,
   "launcher-file-search-columns": 2,
@@ -6,12 +7,14 @@
   "launcher-categories": true,
   "launcher-resident": false,
   "launcher-overlay": false,
+  "launcher-css": "",
   "launcher-on": true,
   "exit-position": "center",
   "exit-full": false,
   "exit-alignment": "middle",
   "exit-margin": 0,
   "exit-icon-size": 48,
+  "exit-css": "",
   "exit-on": true,
   "dock-position": "bottom",
   "dock-output": "",
@@ -22,5 +25,6 @@
   "dock-alignment": "center",
   "dock-margin": 0,
   "dock-icon-size": 48,
+  "dock-css": "",
   "dock-on": false
 }
