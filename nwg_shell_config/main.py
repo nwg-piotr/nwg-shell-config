@@ -136,9 +136,9 @@ class GUI(object):
         self.fill_in_missing_values(self)
 
     def on_preset_changed(self, combo):
-        preset = combo.get_active_text()
-        settings["panel-preset"] = preset
-        self.panel_custom.set_visible(preset == "custom")
+        p = combo.get_active_text()
+        settings["panel-preset"] = p
+        self.panel_custom.set_visible(p == "custom")
         load_preset()
         self.fill_in_from_settings()
         self.fill_in_missing_values()
@@ -149,7 +149,8 @@ class GUI(object):
 
     def set_chromium(self, *args):
         self.browser.set_text(
-            "chromium --disable-gpu-memory-buffer-video-frames --enable-features=UseOzonePlatform --ozone-platform=wayland")
+            "chromium --disable-gpu-memory-buffer-video-frames --enable-features=UseOzonePlatform "
+            "--ozone-platform=wayland")
 
     def set_firefox(self, *args):
         self.browser.set_text("MOZ_ENABLE_WAYLAND=1 firefox")
@@ -348,10 +349,7 @@ class GUI(object):
         preset["panel-css"] = self.panel_css.get_text()
 
     def on_save_btn(self, b):
-        # update settings from the form
         self.read_form()
-        """if settings["panel-preset"] != "custom":
-            self.save_preset()"""
         save_preset()
 
         save_includes()
