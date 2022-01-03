@@ -535,6 +535,7 @@ def main():
     print("Outputs: {}".format(outputs))
     print("Data dir: {}".format(data_dir))
     print("Config home: {}".format(config_home))
+    check_config_dirs(config_home)
 
     init_files(os.path.join(dir_name, "shell"), data_dir)
     init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"))
