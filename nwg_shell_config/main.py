@@ -2,8 +2,6 @@
 
 # Dependencies: python-geopy i3ipc
 
-import locale
-
 import gi
 
 gi.require_version('Gtk', '3.0')
