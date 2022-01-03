@@ -277,9 +277,7 @@ class GUI(object):
 
     def fill_in_missing_values(self, *args):
         if self.keyboard_layout.get_text() == "":
-            lang = locale.getlocale()[0].split("_")[0]
-            if lang:
-                self.keyboard_layout.set_text(lang)
+            self.keyboard_layout.set_text("us")
 
         if self.autotiling_workspaces.get_text() == "":
             self.autotiling_workspaces.set_text(settings["autotiling-workspaces"])
