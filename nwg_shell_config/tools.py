@@ -29,13 +29,21 @@ def get_config_home():
     xdg_config_home = os.getenv('XDG_CONFIG_HOME')
     config_home = xdg_config_home if xdg_config_home else os.path.join(
         os.getenv("HOME"), ".config")
-    config_dir = os.path.join(config_home, "scraper/")
 
-    if not os.path.isdir(config_dir):
-        print("Creating '{}'".format(config_dir))
-        os.makedirs(config_dir, exist_ok=True)
+    return config_home
 
-    return config_dir
+
+def check_config_dirs(config_home):
+    for d in ([os.path.join(config_home, "nwg-panel"),
+               os.path.join(config_home, "nwg-drawer"),
+               os.path.join(config_home, "nwg-dock"),
+               os.path.join(config_home, "nwg-drawer"),
+               os.path.join(config_home, "nwg-wrapper")]):
+        if os.path.isdir(d):
+            print("Found {}".format(d))
+        else:
+            print("Creating {}".format(d))
+            os.makedirs(d, exist_ok=True)
 
 
 def init_files(src_dir, dst_dir):
