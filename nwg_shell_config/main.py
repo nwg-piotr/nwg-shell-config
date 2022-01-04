@@ -2,6 +2,8 @@
 
 # Dependencies: python-geopy i3ipc
 
+import argparse
+
 import gi
 
 gi.require_version('Gtk', '3.0')
@@ -589,6 +591,18 @@ def save_preset():
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-r",
+                        "--restore",
+                        action="store_true",
+                        help="restore default presets and styling")
+    parser.add_argument("-v",
+                        "--version",
+                        action="version",
+                        version="%(prog)s version {}".format(__version__),
+                        help="display version information")
+    args = parser.parse_args()
+
     GLib.set_prgname('nwg-shell-config')
 
     global data_dir
@@ -597,10 +611,19 @@ def main():
     global outputs
     outputs = list_outputs()
 
+    check_config_dirs(config_home)
+
+    if args.restore:
+        if input("Restore default configuration (this CAN NOT be undone)? y/N").upper() == "Y":
+            init_files(os.path.join(dir_name, "shell"), data_dir, overwrite=True)
+            init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"), overwrite=True)
+            init_files(os.path.join(dir_name, "dock"), os.path.join(config_home, "nwg-dock"), overwrite=True)
+            init_files(os.path.join(dir_name, "wrapper"), os.path.join(config_home, "nwg-wrapper"), overwrite=True)
+        sys.exit(0)
+
     print("Outputs: {}".format(outputs))
     print("Data dir: {}".format(data_dir))
     print("Config home: {}".format(config_home))
-    check_config_dirs(config_home)
 
     init_files(os.path.join(dir_name, "shell"), data_dir)
     init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"))
