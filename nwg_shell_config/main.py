@@ -620,6 +620,7 @@ def main():
             init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"), overwrite=True)
             init_files(os.path.join(dir_name, "drawer"), os.path.join(config_home, "nwg-drawer"), overwrite=True)
             init_files(os.path.join(dir_name, "dock"), os.path.join(config_home, "nwg-dock"), overwrite=True)
+            init_files(os.path.join(dir_name, "bar"), os.path.join(config_home, "nwg-bar"), overwrite=True)
             init_files(os.path.join(dir_name, "wrapper"), os.path.join(config_home, "nwg-wrapper"), overwrite=True)
         sys.exit(0)
 
@@ -631,6 +632,7 @@ def main():
     init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"))
     init_files(os.path.join(dir_name, "drawer"), os.path.join(config_home, "nwg-drawer"))
     init_files(os.path.join(dir_name, "dock"), os.path.join(config_home, "nwg-dock"))
+    init_files(os.path.join(dir_name, "bar"), os.path.join(config_home, "nwg-bar"))
     init_files(os.path.join(dir_name, "wrapper"), os.path.join(config_home, "nwg-wrapper"))
 
     load_settings()
