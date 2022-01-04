@@ -9,9 +9,9 @@ window {
 
 #box-inner {
     background-color: rgba (0, 0, 0, 0.4);
-    border-radius: 0px;
+    /*border-radius: 0px;
 	border-style: solid;
 	border-width: 1px;
-	border-color: rgba (204, 204, 204, 0.5);
+	border-color: rgba (204, 204, 204, 0.5);*/
 	padding: 20px
 }
