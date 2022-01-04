@@ -17,7 +17,7 @@
   "exit-css": "preset-3.css",
   "exit-on": true,
   "dock-position": "left",
-  "dock-output": "eDP-1",
+  "dock-output": "",
   "dock-full": true,
   "dock-autohide": false,
   "dock-permanent": true,
