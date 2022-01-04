@@ -519,7 +519,7 @@ def load_settings():
         "panel-preset": "preset-0",
         "panel-custom": "",
         "show-on-startup": True,
-        "show-help": True
+        "show-help": False
     }
     settings_file = os.path.join(data_dir, "settings")
     global settings
