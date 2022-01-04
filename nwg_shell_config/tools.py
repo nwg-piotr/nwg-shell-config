@@ -47,7 +47,7 @@ def init_files(src_dir, dst_dir, overwrite=False):
     src_files = os.listdir(src_dir)
     for file in src_files:
         if os.path.isfile(os.path.join(src_dir, file)):
-            if not os.path.isfile(os.path.join(dst_dir, file) or overwrite):
+            if overwrite or not os.path.isfile(os.path.join(dst_dir, file)):
                 copyfile(os.path.join(src_dir, file),
                          os.path.join(dst_dir, file))
                 print("Copying default file to '{}'".format(

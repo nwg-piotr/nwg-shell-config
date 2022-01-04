@@ -614,7 +614,8 @@ def main():
     check_config_dirs(config_home)
 
     if args.restore:
-        if input("Restore default configuration (this CAN NOT be undone)? y/N").upper() == "Y":
+        if input("Restore default configuration (this CAN NOT be undone)? y/N ").upper() == "Y":
+            print("Restoring default files")
             init_files(os.path.join(dir_name, "shell"), data_dir, overwrite=True)
             init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"), overwrite=True)
             init_files(os.path.join(dir_name, "dock"), os.path.join(config_home, "nwg-dock"), overwrite=True)
