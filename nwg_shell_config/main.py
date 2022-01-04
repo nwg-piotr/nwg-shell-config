@@ -403,6 +403,8 @@ def save_includes():
     if preset["exit-margin"]:
         cmd_exit += " -mb {} -ml {} -mr {} -mt {}".format(preset["exit-margin"], preset["exit-margin"],
                                                           preset["exit-margin"], preset["exit-margin"])
+    if preset["exit-icon-size"]:
+        cmd_exit += " -i {}".format(preset["exit-icon-size"])
     if preset["exit-css"]:
         cmd_exit += " -s {}".format(preset["exit-css"])
 
