@@ -25,6 +25,6 @@
   "dock-alignment": "start",
   "dock-margin": 0,
   "dock-icon-size": 42,
-  "dock-css": "test",
+  "dock-css": "preset-3.css",
   "dock-on": true
 }
