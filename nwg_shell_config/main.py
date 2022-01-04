@@ -618,6 +618,7 @@ def main():
             print("Restoring default files")
             init_files(os.path.join(dir_name, "shell"), data_dir, overwrite=True)
             init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"), overwrite=True)
+            init_files(os.path.join(dir_name, "drawer"), os.path.join(config_home, "nwg-drawer"), overwrite=True)
             init_files(os.path.join(dir_name, "dock"), os.path.join(config_home, "nwg-dock"), overwrite=True)
             init_files(os.path.join(dir_name, "wrapper"), os.path.join(config_home, "nwg-wrapper"), overwrite=True)
         sys.exit(0)
@@ -628,6 +629,7 @@ def main():
 
     init_files(os.path.join(dir_name, "shell"), data_dir)
     init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"))
+    init_files(os.path.join(dir_name, "drawer"), os.path.join(config_home, "nwg-drawer"))
     init_files(os.path.join(dir_name, "dock"), os.path.join(config_home, "nwg-dock"))
     init_files(os.path.join(dir_name, "wrapper"), os.path.join(config_home, "nwg-wrapper"))
 
