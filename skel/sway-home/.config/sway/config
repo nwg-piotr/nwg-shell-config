@@ -294,6 +294,11 @@ default_orientation horizontal
 # make the current focus fullscreen
 bindsym $Mod+Shift+f fullscreen
 
+# show/hide help
+bindsym Mod1+h pkill -f -12 nwg-wrapper
+# move help to front/back
+bindsym Mod1+Shift+H pkill -f -12 nwg-wrapper
+
 ###############      Border & Gaps     ###############
 
 hide_edge_borders both

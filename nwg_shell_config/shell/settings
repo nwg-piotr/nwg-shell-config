@@ -1,5 +1,5 @@
 {
-  "keyboard-layout": "",
+  "keyboard-layout": "us",
   "autotiling-workspaces": "1 2 3 4 5 6 7 8",
   "autotiling-on": true,
   "night-lat": -1,
@@ -8,11 +8,12 @@
   "night-temp-high": 6500,
   "night-gamma": 1.0,
   "night-on": true,
-  "terminal": "foot",
-  "file-manager": "thunar",
-  "editor": "mousepad",
-  "browser": "chromium --disable-gpu-memory-buffer-video-frames --enable-features=UseOzonePlatform --ozone-platform=wayland",
+  "terminal": "",
+  "file-manager": "",
+  "editor": "",
+  "browser": "",
   "panel-preset": "preset-0",
   "panel-custom": "",
-  "show-on-startup": true
+  "show-on-startup": true,
+  "show-help": true
 }

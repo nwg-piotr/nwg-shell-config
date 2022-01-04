@@ -115,6 +115,7 @@ class GUI(object):
         self.panel_css = builder.get_object("panel-css")
 
         self.show_on_startup = builder.get_object("show-on-startup")
+        self.show_help = builder.get_object("show-help")
 
         btn_restore = builder.get_object("btn-restore")
         btn_restore.connect("clicked", self.restore)
@@ -196,6 +197,7 @@ class GUI(object):
         self.editor.set_text(settings["editor"])
         self.browser.set_text(settings["browser"])
         self.show_on_startup.set_active(settings["show-on-startup"])
+        self.show_help.set_active(settings["show-help"])
 
         self.launcher_columns.set_value(preset["launcher-columns"])
         self.launcher_icon_size.set_value(preset["launcher-icon-size"])
@@ -313,6 +315,7 @@ class GUI(object):
         settings["panel-preset"] = self.panel_preset.get_active_text()
         settings["panel-custom"] = self.panel_custom.get_text()
         settings["show-on-startup"] = self.show_on_startup.get_active()
+        settings["show-help"] = self.show_help.get_active()
 
         preset["launcher-columns"] = int(self.launcher_columns.get_value())
         preset["launcher-icon-size"] = int(self.launcher_icon_size.get_value())
@@ -477,6 +480,9 @@ def save_includes():
         cmd_panel += " -s {}".format(preset["panel-css"])
     autostart.append(cmd_panel)
 
+    if settings["show-help"]:
+        autostart.append("exec_always nwg-wrapper -t help-sway.pango -c help-sway.css -p right -mr 50")
+
     if settings["show-on-startup"]:
         autostart.append("exec nwg-shell-config")
 
@@ -486,28 +492,101 @@ def save_includes():
 
 
 def restart():
-    for cmd in ["pkill -f nwg-drawer", "pkill -f nwg-dock", "pkill -f nwg-bar", "pkill -f nwg-panel", "sway reload"]:
+    for cmd in ["pkill -f nwg-drawer",
+                "pkill -f nwg-dock",
+                "pkill -f nwg-bar",
+                "pkill -f nwg-panel",
+                "pkill -f nwg-wrapper",
+                "sway reload"]:
         os.system(cmd)
 
 
 def load_settings():
+    defaults = {
+        "keyboard-layout": "us",
+        "autotiling-workspaces": "1 2 3 4 5 6 7 8",
+        "autotiling-on": True,
+        "night-lat": -1,
+        "night-long": -1,
+        "night-temp-low": 4500,
+        "night-temp-high": 6500,
+        "night-gamma": 1.0,
+        "night-on": True,
+        "terminal": "",
+        "file-manager": "",
+        "editor": "",
+        "browser": "",
+        "panel-preset": "preset-0",
+        "panel-custom": "",
+        "show-on-startup": True,
+        "show-help": True
+    }
     settings_file = os.path.join(data_dir, "settings")
     global settings
     if os.path.isfile(settings_file):
         settings = load_json(settings_file)
+        for key in defaults:
+            missing = 0
+            if key not in settings:
+                settings[key] = defaults[key]
+                print("'{}' key missing from settings, adding '{}'".format(key, defaults[key]))
+                missing += 1
+            if missing > 0:
+                print("Saving {}".format(settings_file))
+                save_json(defaults, settings_file)
     else:
-        save_json(settings, settings_file)
-        print("Created initial settings in {}".format(settings_file))
+        print("ERROR: failed loading settings, creating {}".format(settings_file), file=sys.stderr)
+        save_json(defaults, settings_file)
 
 
 def load_preset():
+    defaults = {
+        "panel-css": "",
+        "launcher-columns": 6,
+        "launcher-icon-size": 64,
+        "launcher-file-search-columns": 2,
+        "launcher-search-files": True,
+        "launcher-categories": True,
+        "launcher-resident": False,
+        "launcher-overlay": False,
+        "launcher-css": "",
+        "launcher-on": True,
+        "exit-position": "center",
+        "exit-full": False,
+        "exit-alignment": "middle",
+        "exit-margin": 0,
+        "exit-icon-size": 48,
+        "exit-css": "",
+        "exit-on": True,
+        "dock-position": "bottom",
+        "dock-output": "",
+        "dock-full": False,
+        "dock-autohide": False,
+        "dock-permanent": False,
+        "dock-exclusive": False,
+        "dock-alignment": "center",
+        "dock-margin": 0,
+        "dock-icon-size": 48,
+        "dock-css": "",
+        "dock-on": False
+    }
     global preset
     preset_file = os.path.join(data_dir, settings["panel-preset"])
     if os.path.isfile(preset_file):
         print("Loading preset from {}".format(preset_file))
         preset = load_json(preset_file)
+        missing = 0
+        for key in defaults:
+            if key not in preset:
+                preset[key] = defaults[key]
+                print("'{}' key missing from preset, adding '{}'".format(key, defaults[key]))
+                missing += 1
+            if missing > 0:
+                print("Saving {}".format(preset_file))
+                save_json(defaults, preset_file)
     else:
-        print("ERROR: failed loading {}".format(preset_file), file=sys.stderr)
+        print("ERROR: failed loading preset, creating {}".format(preset_file), file=sys.stderr)
+        save_json(defaults, preset_file)
 
 
 def save_preset():
@@ -536,6 +615,7 @@ def main():
     init_files(os.path.join(dir_name, "shell"), data_dir)
     init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"))
     init_files(os.path.join(dir_name, "dock"), os.path.join(config_home, "nwg-dock"))
+    init_files(os.path.join(dir_name, "wrapper"), os.path.join(config_home, "nwg-wrapper"))
 
     load_settings()
     load_preset()
