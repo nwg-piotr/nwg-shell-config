@@ -1,7 +1,7 @@
-import os
-import sys
-import subprocess
 import json
+import os
+import subprocess
+import sys
 from shutil import copyfile
 
 from geopy.geocoders import Nominatim
@@ -35,7 +35,6 @@ def get_config_home():
 
 def check_config_dirs(config_home):
     for d in ([os.path.join(config_home, "nwg-panel"),
-               os.path.join(config_home, "nwg-drawer"),
                os.path.join(config_home, "nwg-dock"),
                os.path.join(config_home, "nwg-drawer"),
                os.path.join(config_home, "nwg-wrapper")]):
