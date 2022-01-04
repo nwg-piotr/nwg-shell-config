@@ -1599,21 +1599,8 @@ you may use own panel config file name.</property>
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="spacing">6</property>
+                    <property name="spacing">12</property>
                     <property name="homogeneous">True</property>
-                    <child>
-                      <object class="GtkButton" id="btn-restore">
-                        <property name="label" translatable="yes">Restore</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="receives-default">True</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
                     <child>
                       <object class="GtkButton" id="btn-save">
                         <property name="label">Apply</property>

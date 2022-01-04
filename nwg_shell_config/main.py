@@ -117,9 +117,6 @@ class GUI(object):
         self.show_on_startup = builder.get_object("show-on-startup")
         self.show_help = builder.get_object("show-help")
 
-        btn_restore = builder.get_object("btn-restore")
-        btn_restore.connect("clicked", self.restore)
-
         btn_close = builder.get_object("btn-close")
         btn_close.connect("clicked", Gtk.main_quit)
         btn_close.grab_focus()
@@ -139,10 +136,6 @@ class GUI(object):
         settings["panel-preset"] = p
         self.panel_custom.set_visible(p == "custom")
         load_preset()
-        self.fill_in_from_settings()
-        self.fill_in_missing_values()
-
-    def restore(self, b):
         self.fill_in_from_settings()
         self.fill_in_missing_values()
 
