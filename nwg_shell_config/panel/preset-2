@@ -5,6 +5,7 @@
     "layer": "top",
     "position": "bottom",
     "height": 36,
+    "width": "auto",
     "margin-top": 0,
     "margin-bottom": 0,
     "padding-horizontal": 4,
@@ -21,9 +22,7 @@
     "modules-right": [
       "executor-cpuavg",
       "executor-cpubar",
-      "executor-weather",
       "scratchpad",
-      "executor-github",
       "executor-arch",
       "clock"
     ],
@@ -43,7 +42,8 @@
         "4",
         "5",
         "6",
-        "7"
+        "7",
+        "8"
       ],
       "image-size": 24,
       "task-padding": 0,
@@ -75,7 +75,7 @@
         },
         {
           "name": "Outputs",
-          "icon": "network.cycles.wdisplays",
+          "icon": "display",
           "cmd": "wdisplays && sway-save-outputs"
         },
         {
@@ -118,46 +118,24 @@
       "leave-closes": true,
       "css-name": "controls-window",
       "net-interface": "wlan0",
-      "Exit": "Exittt",
       "system-shutdown-symbolic": "system-shutdown",
       "output-switcher": true,
       "window-width": 320,
       "window-margin": 0,
       "root-css-name": "controls-overview"
     },
-    "playerctl": {
-      "interval": 1,
-      "buttons": true,
-      "buttons-position": "left",
-      "chars": 50,
-      "css-name": "button-grid",
-      "icon-size": 16,
-      "button-css-name": "button-custom",
-      "label-css-name": "panel-bottom"
-    },
+    "playerctl": {},
     "clock": {
       "format": "%H:%M:%S",
       "interval": 1,
-      "on-right-click": "",
-      "tooltip-text": "",
-      "on-left-click": "/home/piotr/PycharmProjects/swayinfo/calendar.py",
-      "on-middle-click": "",
-      "on-scroll-up": "",
-      "on-scroll-down": "",
-      "css-name": "clock",
-      "root-css-name": "root-clock"
-    },
-    "executor-weather": {
-      "script": "curl https://wttr.in/sokolow_podlaski?format=1",
-      "interval": 1800,
-      "css-name": "weather",
       "on-right-click": "",
       "tooltip-text": "",
       "on-left-click": "",
       "on-middle-click": "",
       "on-scroll-up": "",
       "on-scroll-down": "",
-      "icon-size": 16
+      "css-name": "clock",
+      "root-css-name": "root-clock"
     },
     "executor-arch": {
       "script": "/home/piotr/.config/nwg-panel/executors/arch_updates.py",
@@ -171,41 +149,7 @@
       "on-scroll-down": "",
       "css-name": ""
     },
-    "executor-github": {
-      "script": "/home/piotr/.config/nwg-panel/executors/github.sh",
-      "interval": 60,
-      "icon-size": 16,
-      "on-left-click": "firefox https://github.com/notifications; swaymsg reload",
-      "tooltip-text": "",
-      "on-middle-click": "",
-      "on-right-click": "",
-      "on-scroll-up": "",
-      "on-scroll-down": "",
-      "css-name": "",
-      "icon-placement": "left"
-    },
-    "width": "auto",
-    "button-config": {
-      "command": "nwg-panel-config",
-      "icon": "nwg-panel",
-      "label": "",
-      "label-position": "right",
-      "css-name": "button-custom",
-      "icon-size": 16
-    },
-    "sway-workspaces": {
-      "numbers": [
-        "3",
-        "4"
-      ],
-      "show-name": true,
-      "name-length": 30,
-      "show-icon": true,
-      "image-size": 16,
-      "mark-autotiling": true,
-      "mark-content": true,
-      "show-layout": true
-    },
+    "sway-workspaces": {},
     "scratchpad": {
       "css-name": "",
       "icon-size": 20
@@ -227,7 +171,7 @@
       "margin-right": 8,
       "margin-top": 8,
       "padding": 2,
-      "terminal": "alacritty",
+      "terminal": "foot",
       "width": 0
     },
     "executor-cpubar": {

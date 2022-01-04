@@ -40,20 +40,17 @@ button {
     color: #eeeeee
 }
 
-#prelight {
-    background-color: #666;
-}
-
 /* Controls window in sample config uses this name */
 #controls-window {
-    border-radius: 0px;
-    background-color: rgba (32, 50, 90, 0.95);
+    border-radius: 5px;
+    background-color: rgba (23, 53, 63, 0.95);
     color: #eeeeee
 }
 
 /* Executors usually behave better in monospace fonts */
 #executor-label {
-    font-family: monospace
+    font-family: monospace;
+    font-size: 16px
 }
 
 /* and so does the Clock */
