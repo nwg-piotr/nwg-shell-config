@@ -2,7 +2,7 @@
   {
     "name": "top",
     "output": "",
-    "layer": "top",
+    "layer": "bottom",
     "position": "top",
     "height": 30,
     "homogeneous": true,
