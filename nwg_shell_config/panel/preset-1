@@ -27,28 +27,7 @@
       "scratchpad",
       "executor-arch"
     ],
-    "sway-taskbar": {
-      "workspace-buttons": false,
-      "show-app-icon": true,
-      "show-layout": true,
-      "show-app-name": true,
-      "name-max-len": 24,
-      "workspaces-spacing": 0,
-      "task-spacing": 0,
-      "all-outputs": false,
-      "workspace-menu": [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8"
-      ],
-      "image-size": 16,
-      "task-padding": 0
-    },
+    "sway-taskbar": {},
     "controls-settings": {
       "alignment": "right",
       "components": [
@@ -60,7 +39,7 @@
       ],
       "commands": {
         "battery": "",
-        "net": "",
+        "net": "nm-connection-editor",
         "bluetooth": "blueman-manager"
       },
       "custom-items": [
@@ -72,11 +51,11 @@
         {
           "name": "Look & Feel",
           "icon": "preferences-desktop-theme",
-          "cmd": "lxappearance; import-gsettings gtk-theme:gtk-theme-name icon-theme:gtk-icon-theme-name cursor-theme:gtk-cursor-theme-name"
+          "cmd": "lxappearance; import-gsettings"
         },
         {
           "name": "Outputs",
-          "icon": "display",
+          "icon": "wdisplays",
           "cmd": "wdisplays && sway-save-outputs"
         },
         {
