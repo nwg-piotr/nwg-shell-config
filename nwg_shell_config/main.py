@@ -181,7 +181,7 @@ class GUI(object):
         self.night_temp_high.set_value(settings["night-temp-high"])
 
         self.night_gamma.set_value(settings["night-gamma"])
-        adj = Gtk.Adjustment(lower=0.1, upper=1.1, step_increment=0.1, page_increment=1,
+        adj = Gtk.Adjustment(lower=0.1, upper=10.1, step_increment=0.1, page_increment=1,
                              page_size=0.1)
         self.night_gamma.configure(adj, 0.1, 1)
         self.night_gamma.set_value(settings["night-gamma"])
@@ -301,7 +301,7 @@ class GUI(object):
         settings["night-long"] = self.night_long.get_value()
         settings["night-temp-low"] = int(self.night_temp_low.get_value())
         settings["night-temp-high"] = int(self.night_temp_high.get_value())
-        settings["night-gamma"] = self.night_gamma.get_value()
+        settings["night-gamma"] = round(self.night_gamma.get_value(), 2)
         settings["night-on"] = self.night_on.get_active()
         settings["terminal"] = self.terminal.get_text()
         settings["file-manager"] = self.file_manager.get_text()
@@ -445,7 +445,7 @@ def save_includes():
     # ~/.config/sway/autostart
     autostart = []
     if settings["night-on"]:
-        cmd_night = "exec wlsunset"
+        cmd_night = "exec_always wlsunset"
         if settings["night-lat"]:
             cmd_night += " -l {}".format(settings["night-lat"])
         if settings["night-long"]:
@@ -496,6 +496,7 @@ def restart():
                 "pkill -f nwg-bar",
                 "pkill -f nwg-panel",
                 "pkill -f nwg-wrapper",
+                "pkill -f wlsunset",
                 "sway reload"]:
         os.system(cmd)
 
