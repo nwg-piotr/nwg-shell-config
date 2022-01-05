@@ -385,6 +385,8 @@ def save_includes():
         cmd_launcher += " -ovl"
     if preset["launcher-css"]:
         cmd_launcher += " -s {}".format(preset["launcher-css"])
+    if settings["terminal"]:
+        cmd_launcher += " -term {}".format(settings["terminal"])
 
     if preset["launcher-on"]:
         if preset["launcher-resident"]:
