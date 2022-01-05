@@ -7,7 +7,7 @@
   "launcher-categories": true,
   "launcher-resident": false,
   "launcher-overlay": false,
-  "launcher-css": "",
+  "launcher-css": "preset-2.css",
   "launcher-on": true,
   "exit-position": "center",
   "exit-full": false,
