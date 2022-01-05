@@ -25,6 +25,6 @@
   "dock-alignment": "center",
   "dock-margin": 0,
   "dock-icon-size": 48,
-  "dock-css": "",
+  "dock-css": "preset-1.css",
   "dock-on": true
 }
