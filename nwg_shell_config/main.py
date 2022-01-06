@@ -480,7 +480,7 @@ def save_includes():
     autostart.append(cmd_panel)
 
     if settings["show-help"]:
-        autostart.append("exec_always nwg-wrapper -t help-sway.pango -c help-sway.css -p right -mr 50")
+        autostart.append("exec nwg-wrapper -t help-sway.pango -c help-sway.css -p right -mr 50")
 
     if settings["show-on-startup"]:
         autostart.append("exec nwg-shell-config")
@@ -495,7 +495,6 @@ def restart():
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
                 "pkill -f nwg-panel",
-                "pkill -f nwg-wrapper",
                 "sway reload"]:
         os.system(cmd)
 
