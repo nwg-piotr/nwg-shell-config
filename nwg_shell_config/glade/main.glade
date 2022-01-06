@@ -1538,7 +1538,19 @@ you may use own panel config file name.</property>
                               </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <object class="GtkImage">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="tooltip-text" translatable="yes">You need to restart the sway session
+for changes to take effect.</property>
+                                <property name="halign">start</property>
+                                <property name="valign">center</property>
+                                <property name="stock">gtk-about</property>
+                              </object>
+                              <packing>
+                                <property name="left-attach">6</property>
+                                <property name="top-attach">2</property>
+                              </packing>
                             </child>
                             <child>
                               <placeholder/>
