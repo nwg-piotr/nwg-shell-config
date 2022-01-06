@@ -36,14 +36,17 @@ button {
 
 /* Bottom panel in sample config uses this name */
 #panel-bottom {
-    background-color: #213540;
+    background-color: #030303;
     color: #eeeeee
 }
 
 /* Controls window in sample config uses this name */
 #controls-window {
-    border-radius: 0px;
     background-color: rgba (37, 37, 37, 0.95);
+    border-radius: 0px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba (0, 0, 0, 1.0);
     color: #eeeeee
 }
 
