@@ -31,11 +31,7 @@ include ~/.config/sway/variables
 
 ############### Apply GTK settings ##################
 
-set $gnome-schema org.gnome.desktop.interface
-exec_always ~/.local/bin/import-gsettings \
-    gtk-theme:gtk-theme-name \
-    icon-theme:gtk-icon-theme-name \
-    cursor-theme:gtk-cursor-theme-name
+exec_always import-gsettings
 
 ###############     Autostart      ##################
 
@@ -86,6 +82,7 @@ exec swayidle -w \
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
 
+# enable touchpad speed and features
 input "type:touchpad" {
 	tap enabled
 	dwt enabled
@@ -95,9 +92,11 @@ input "type:touchpad" {
 	accel_profile flat
 }
 
-# keyboard layout
+# keyboard layout and repeat settings
 input "type:keyboard" {
     xkb_layout $lang
+	repeat_delay 300
+	repeat_rate 40
 }
 
 # numlock on/off
@@ -130,7 +129,7 @@ bindsym $Mod+x exec $exit
 bindsym $Mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 
 # screenshot
-bindsym Print exec ~/.local/bin/screenshot fullscreen
+bindsym Print exec screenshot fullscreen
 bindsym Control+Print exec swappy -g "0,0 1920x1080"
 bindsym Shift+Control+Print exec grim -g "$(slurp)" - | swappy -f -
 
@@ -295,13 +294,11 @@ default_orientation horizontal
 bindsym $Mod+Shift+f fullscreen
 
 # show/hide help
-bindsym Mod1+h pkill -f -12 nwg-wrapper
+bindsym Mod1+h exec pkill -f -12 nwg-wrapper
 # move help to front/back
-bindsym Mod1+Shift+H pkill -f -12 nwg-wrapper
+bindsym Mod1+Shift+h exec pkill -f -10 nwg-wrapper
 
 ###############      Border & Gaps     ###############
-
-hide_edge_borders both
 
 # changing border style
 bindsym $Mod+n border normal
