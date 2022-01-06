@@ -561,7 +561,7 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="valign">start</property>
-                                <property name="width-chars">9</property>
+                                <property name="width-chars">10</property>
                                 <property name="placeholder-text" translatable="yes">css name</property>
                               </object>
                               <packing>
@@ -606,8 +606,8 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="valign">center</property>
-                                <property name="width-chars">9</property>
-                                <property name="placeholder-text" translatable="yes">css name</property>
+                                <property name="width-chars">10</property>
+                                <property name="placeholder-text" translatable="yes">panel css name</property>
                               </object>
                               <packing>
                                 <property name="left-attach">6</property>
@@ -836,7 +836,7 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="valign">start</property>
-                                <property name="width-chars">9</property>
+                                <property name="width-chars">10</property>
                                 <property name="placeholder-text" translatable="yes">css name</property>
                               </object>
                               <packing>
@@ -1147,7 +1147,7 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="valign">start</property>
-                                <property name="width-chars">9</property>
+                                <property name="width-chars">10</property>
                                 <property name="placeholder-text" translatable="yes">css name</property>
                               </object>
                               <packing>
