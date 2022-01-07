@@ -55,7 +55,7 @@
         },
         {
           "name": "Outputs",
-          "icon": "wdisplays",
+          "icon": "display",
           "cmd": "wdisplays && sway-save-outputs"
         },
         {

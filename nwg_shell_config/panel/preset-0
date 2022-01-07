@@ -54,7 +54,7 @@
         },
         {
           "name": "Outputs",
-          "icon": "network.cycles.wdisplays",
+          "icon": "display",
           "cmd": "wdisplays && sway-save-outputs"
         },
         {
