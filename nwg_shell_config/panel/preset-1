@@ -25,7 +25,7 @@
       "executor-cpuav",
       "executor-cpubar",
       "scratchpad",
-      "executor-arch"
+      "executor-updates"
     ],
     "sway-taskbar": {},
     "controls-settings": {
@@ -115,17 +115,19 @@
       "on-scroll-down": "",
       "css-name": "clock"
     },
-    "executor-arch": {
-      "script": "/home/piotr/.config/nwg-panel/executors/arch_updates.py",
+    "executor-updates": {
+      "script": "sway-check-updates",
       "interval": 900,
       "icon-size": 16,
-      "on-left-click": "baph au.sh; swaymsg reload",
+      "on-left-click": "foot sway-update",
       "tooltip-text": "",
       "on-middle-click": "",
       "on-right-click": "",
       "on-scroll-up": "",
       "on-scroll-down": "",
-      "css-name": ""
+      "css-name": "",
+      "root-css-name": "",
+      "icon-placement": "left"
     },
     "width": "auto",
     "button-config": {

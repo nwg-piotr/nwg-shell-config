@@ -2,7 +2,7 @@ import json
 import os
 import subprocess
 import sys
-from shutil import copyfile
+from shutil import copy2
 
 from geopy.geocoders import Nominatim
 
@@ -48,8 +48,7 @@ def init_files(src_dir, dst_dir, overwrite=False):
     for file in src_files:
         if os.path.isfile(os.path.join(src_dir, file)):
             if overwrite or not os.path.isfile(os.path.join(dst_dir, file)):
-                copyfile(os.path.join(src_dir, file),
-                         os.path.join(dst_dir, file))
+                copy2(os.path.join(src_dir, file), os.path.join(dst_dir, file))
                 print("Copying default file to '{}'".format(
                     os.path.join(dst_dir, file)))
 
