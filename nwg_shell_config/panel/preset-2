@@ -2,7 +2,7 @@
   {
     "name": "bottom",
     "output": "",
-    "layer": "top",
+    "layer": "bottom",
     "position": "bottom",
     "height": 36,
     "width": "auto",
