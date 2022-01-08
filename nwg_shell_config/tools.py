@@ -101,9 +101,6 @@ def get_lat_lon():
             lon = round(location.longitude, 5)
         except geopy.exc.GeocoderUnavailable:
             print("Geocoder unavailable. Do you have internet connection?")
-            # Big Ben in London :)
-            lat = 57.5007
-            lon = -0.1246
 
     return tz, lat, lon
 
