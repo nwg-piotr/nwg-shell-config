@@ -100,7 +100,7 @@ def get_lat_lon():
             lat = round(location.latitude, 5)
             lon = round(location.longitude, 5)
         except geopy.exc.GeocoderUnavailable:
-            print("Geocoder unavailable. Do you have internet connection?")
+            print("Geocoder unavailable. Do you have internet connection?", file=sys.stderr)
 
     return tz, lat, lon
 
