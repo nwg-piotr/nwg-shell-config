@@ -33,6 +33,17 @@ def get_config_home():
     return config_home
 
 
+def get_temp_dir():
+    if os.getenv("TMPDIR"):
+        return os.getenv("TMPDIR")
+    elif os.getenv("TEMP"):
+        return os.getenv("TEMP")
+    elif os.getenv("TMP"):
+        return os.getenv("TMP")
+
+    return "/tmp"
+
+
 def check_config_dirs(config_home):
     for d in ([os.path.join(config_home, "nwg-panel"),
                os.path.join(config_home, "nwg-dock"),
@@ -123,6 +134,25 @@ def load_json(path):
 def save_json(src_dict, path):
     with open(path, 'w') as f:
         json.dump(src_dict, f, indent=2)
+
+
+def load_text_file(path):
+    try:
+        with open(path, 'r') as file:
+            data = file.read()
+            return data
+    except Exception as e:
+        print(e)
+        return None
+
+
+def save_string(string, file):
+    try:
+        file = open(file, "wt")
+        file.write(string)
+        file.close()
+    except:
+        print("Error writing file '{}'".format(file))
 
 
 def save_list_to_text_file(data, file_path):

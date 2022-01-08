@@ -3,6 +3,7 @@
 # Dependencies: python-geopy i3ipc
 
 import argparse
+import signal
 
 import gi
 
@@ -480,7 +481,7 @@ def save_includes():
     autostart.append(cmd_panel)
 
     if settings["show-help"]:
-        autostart.append("exec nwg-wrapper -t help-sway.pango -c help-sway.css -p right -mr 50")
+        autostart.append("exec_always nwg-wrapper -t help-sway.pango -c help-sway.css -p right -mr 50 -si")
 
     if settings["show-on-startup"]:
         autostart.append("exec nwg-shell-config")
@@ -497,6 +498,16 @@ def restart():
                 "pkill -f nwg-panel",
                 "sway reload"]:
         os.system(cmd)
+
+    # kill running help window if any
+    pid_file = os.path.join(get_temp_dir(), "nwg-wrapper.pid")
+    if os.path.isfile(pid_file):
+        try:
+            pid = int(load_text_file(pid_file))
+            os.kill(pid, signal.SIGINT)
+            print("Running help instance killed, PID {}".format(pid))
+        except:
+            pass
 
 
 def load_settings():
