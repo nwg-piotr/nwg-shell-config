@@ -48,6 +48,7 @@ def get_temp_dir():
 def check_config_dirs(config_home):
     for d in ([os.path.join(config_home, "nwg-panel"),
                os.path.join(config_home, "nwg-dock"),
+               os.path.join(config_home, "nwg-bar"),
                os.path.join(config_home, "nwg-drawer"),
                os.path.join(config_home, "nwg-wrapper")]):
         if not os.path.isdir(d):
@@ -94,8 +95,8 @@ def get_lat_lon():
         for line in lines:
             if line.startswith("Timezone="):
                 tz = line.split("=")[1]
-        geolocator = Nominatim(user_agent="my_request")
         try:
+            geolocator = Nominatim(user_agent="my_request")
             location = geolocator.geocode(tz)
             lat = round(location.latitude, 5)
             lon = round(location.longitude, 5)
