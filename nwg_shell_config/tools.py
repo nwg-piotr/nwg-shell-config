@@ -4,6 +4,7 @@ import subprocess
 import sys
 from shutil import copy2
 
+import geopy.exc
 from geopy.geocoders import Nominatim
 
 
@@ -94,9 +95,15 @@ def get_lat_lon():
             if line.startswith("Timezone="):
                 tz = line.split("=")[1]
         geolocator = Nominatim(user_agent="my_request")
-        location = geolocator.geocode(tz)
-        lat = round(location.latitude, 5)
-        lon = round(location.longitude, 5)
+        try:
+            location = geolocator.geocode(tz)
+            lat = round(location.latitude, 5)
+            lon = round(location.longitude, 5)
+        except geopy.exc.GeocoderUnavailable:
+            print("Geocoder unavailable. Do you have internet connection?")
+            # Big Ben in London :)
+            lat = 57.50074
+            lon = -0.12463
 
     return tz, lat, lon
 

@@ -278,7 +278,8 @@ class GUI(object):
         if self.autotiling_workspaces.get_text() == "":
             self.autotiling_workspaces.set_text(settings["autotiling-workspaces"])
 
-        if self.night_lat.get_value() == -1.0 and self.night_long.get_value() == -1:
+        if (self.night_lat.get_value() == -1.0 and self.night_long.get_value()) == -1.0 \
+                or (self.night_lat.get_value() == 0 and self.night_long.get_value() == 0):
             self.night_lat.set_value(self.lat)
             self.night_long.set_value(self.long)
 
