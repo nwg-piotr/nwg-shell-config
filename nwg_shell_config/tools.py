@@ -4,7 +4,6 @@ import subprocess
 import sys
 from shutil import copy2
 
-import geopy.exc
 from geopy.geocoders import Nominatim
 
 
