@@ -97,7 +97,6 @@
       "leave-closes": true,
       "css-name": "controls-window",
       "net-interface": "wlo1",
-      "Exit": "Exittt",
       "system-shutdown-symbolic": "system-shutdown",
       "output-switcher": true,
       "window-width": 320,
@@ -119,7 +118,7 @@
       "interval": 1,
       "on-right-click": "",
       "tooltip-text": "",
-      "on-left-click": "/home/piotr/PycharmProjects/swayinfo/calendar.py",
+      "on-left-click": "",
       "on-middle-click": "",
       "on-scroll-up": "",
       "on-scroll-down": "",
@@ -174,8 +173,7 @@
       "executor-cpubar",
       "executor-temp",
       "executor-memory",
-      "executor-drives",
-      "executor-uptime"
+      "executor-drives"
     ],
     "sway-taskbar": {
       "workspace-buttons": false,
@@ -216,7 +214,7 @@
       "script": "gopsuinfo -i a",
       "interval": 2,
       "tooltip-text": "CPU average load",
-      "on-left-click": "alacritty -e htop",
+      "on-left-click": "foot -e htop",
       "on-middle-click": "",
       "on-right-click": "",
       "on-scroll-up": "",
@@ -254,19 +252,6 @@
     "executor-drives": {
       "script": "gopsuinfo -i n",
       "interval": 15,
-      "tooltip-text": "",
-      "on-left-click": "",
-      "on-middle-click": "",
-      "on-right-click": "",
-      "on-scroll-up": "",
-      "on-scroll-down": "",
-      "css-name": "",
-      "icon-size": 16,
-      "icon-placement": "left"
-    },
-    "executor-uptime": {
-      "script": "gopsuinfo -i u",
-      "interval": 60,
       "tooltip-text": "",
       "on-left-click": "",
       "on-middle-click": "",
