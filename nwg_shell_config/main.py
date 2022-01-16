@@ -494,7 +494,8 @@ def save_includes():
 
 
 def restart():
-    for cmd in ["pkill -f nwg-drawer",
+    for cmd in ["pkill -f autotiling",
+                "pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
                 "pkill -f nwg-panel",
