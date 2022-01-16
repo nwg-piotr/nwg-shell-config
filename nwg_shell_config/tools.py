@@ -189,7 +189,7 @@ def get_editor():
 
 def get_browser_command():
     commands = {
-        "chromium": "chromium --disable-gpu-memory-buffer-video-frames --enable-features=UseOzonePlatform --ozone-platform=wayland",
+        "chromium": "chromium --enable-features=UseOzonePlatform --ozone-platform=wayland",
         "firefox": "MOZ_ENABLE_WAYLAND=1 firefox",
         "epiphany": "epiphany",
         "surf": "surf"}

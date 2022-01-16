@@ -145,8 +145,7 @@ class GUI(object):
 
     def set_chromium(self, *args):
         self.browser.set_text(
-            "chromium --disable-gpu-memory-buffer-video-frames --enable-features=UseOzonePlatform "
-            "--ozone-platform=wayland")
+            "chromium --enable-features=UseOzonePlatform --ozone-platform=wayland")
 
     def set_firefox(self, *args):
         self.browser.set_text("MOZ_ENABLE_WAYLAND=1 firefox")
