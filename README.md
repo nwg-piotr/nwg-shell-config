@@ -26,3 +26,19 @@ The latter is only turned on by default in `preset-1` and `preset-3`.
 
 <div align="center">preset-3<br /><img src="https://scrot.cloud/images/2022/01/16/preset-3.png" width="480"/></div>
 
+To familiarize yourself with key bindings, you may want to mark the "Show help" check box in the config utility. 
+This will display a conky-like on-screen help.
+
+The Controls module of the panel comes with some preconfigured goodies to fine tune what your system looks and 
+behaves like. Some of them rely on the software you need to have installed. 
+
+<div align="center">preset-3<br /><img src="https://scrot.cloud/images/2022/01/17/controls.png"/></div>
+
+- **Wallpapers**: you need [Azote](https://github.com/nwg-piotr/azote), which is a part of the nwg-shell project;
+- **Look & Feel**: you need the [lxappearance](https://wiki.lxde.org/en/LXAppearance) package, and the 
+[import-gsettings](https://github.com/swaywm/sway/wiki/GTK-3-settings-on-Wayland#setting-values-in-gsettings) script;
+- **Outputs** management relies on [wdisplays](https://github.com/artizirk/wdisplays) and 
+this script](https://github.com/nwg-piotr/sway-save-outputs).
+
+All of above is installed by default together with the sway session of [ArchLabs Linux](https://archlabslinux.com), 
+which the nwg-shell-config utility was designed for.
