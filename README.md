@@ -30,9 +30,9 @@ To familiarize yourself with key bindings, you may want to mark the "Show help" 
 This will display a conky-like on-screen help.
 
 The Controls module of the panel comes with some preconfigured goodies to fine tune what your system looks and 
-behaves like. Some of them rely on the software you need to have installed. 
+behaves like. Some of the menu items rely on the other software you need to have installed. 
 
-<div align="center">preset-3<br /><img src="https://scrot.cloud/images/2022/01/17/controls.png"/></div>
+<div align="center">nwg-panel Controls module<br /><img src="https://scrot.cloud/images/2022/01/17/controls.png"/></div>
 
 - **Wallpapers**: you need [Azote](https://github.com/nwg-piotr/azote), which is a part of the nwg-shell project;
 - **Look & Feel**: you need the [lxappearance](https://wiki.lxde.org/en/LXAppearance) package, and the 
@@ -41,4 +41,6 @@ behaves like. Some of them rely on the software you need to have installed.
 this script](https://github.com/nwg-piotr/sway-save-outputs).
 
 All of above is installed by default together with the sway session of [ArchLabs Linux](https://archlabslinux.com), 
-which the nwg-shell-config utility was designed for.
+which the nwg-shell-config utility was designed for. Anyway, if you'd like to give it a try on another system,
+take a look at the [skel/sway-home/.config](https://github.com/nwg-piotr/nwg-shell-config/tree/master/skel/sway-home/.config)
+directory. It contains the sway config, together with the rest of necessary configs and style sheets.
