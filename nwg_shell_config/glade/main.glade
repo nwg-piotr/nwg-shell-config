@@ -1391,19 +1391,6 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkImage">
-                                <property name="visible">True</property>
-                                <property name="can-focus">False</property>
-                                <property name="tooltip-text" translatable="yes">When undefined, the `locale.getlocale` value will be used.</property>
-                                <property name="halign">start</property>
-                                <property name="stock">gtk-about</property>
-                              </object>
-                              <packing>
-                                <property name="left-attach">6</property>
-                                <property name="top-attach">1</property>
-                              </packing>
-                            </child>
-                            <child>
                               <object class="GtkEntry" id="keyboard-layout">
                                 <property name="visible">True</property>
                                 <property name="can-focus">True</property>
@@ -1551,6 +1538,9 @@ for changes to take effect.</property>
                                 <property name="left-attach">6</property>
                                 <property name="top-attach">2</property>
                               </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
                             </child>
                             <child>
                               <placeholder/>
