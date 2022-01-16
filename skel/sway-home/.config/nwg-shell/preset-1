@@ -17,7 +17,7 @@
   "exit-css": "preset-1.css",
   "exit-on": true,
   "dock-position": "bottom",
-  "dock-output": "",
+  "dock-output": "Any",
   "dock-full": false,
   "dock-autohide": true,
   "dock-permanent": false,
