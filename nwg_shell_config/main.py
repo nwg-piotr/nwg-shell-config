@@ -97,10 +97,11 @@ class GUI(object):
         self.dock_position = builder.get_object("dock-position")
 
         self.dock_output = builder.get_object("dock-output")
+        self.dock_output.append("Any", "Any")
         for output in outputs:
             self.dock_output.append(output, output)
         if not preset["dock-output"]:
-            self.dock_output.set_active_id(outputs[0])
+            self.dock_output.set_active_id("Any")
 
         self.dock_full = builder.get_object("dock-full")
         self.dock_autohide = builder.get_object("dock-autohide")
@@ -421,7 +422,7 @@ def save_includes():
         cmd_dock += " -r"
     if preset["dock-position"]:
         cmd_dock += " -p {}".format(preset["dock-position"])
-    if preset["dock-output"]:
+    if preset["dock-output"] and preset["dock-output"] != "Any":
         cmd_dock += " -o {}".format(preset["dock-output"])
     if preset["dock-full"]:
         cmd_dock += " -f"
