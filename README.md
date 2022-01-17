@@ -1,8 +1,6 @@
-# nwg-shell-config
+# nwg-shell config utility
 
-This program is a GUI to configure the components of [nwg-shell](https://github.com/nwg-piotr/nwg-shell) for
-[sway](https://github.com/swaywm/sway) Wayland compositor. It also preconfigures commands for several external
-programs, which I arbitrarily found the best to build a coherent, GTK3-based user experience on sway.
+The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection of components for building a GTK-based user interface for [sway](https://github.com/swaywm/sway) Wayland compositor. It consists of a panel, launcher, dock, traditional menu, wallpaper manager, as well as some helper scripts. Until now, it has functioned as a do-it-yourself kit, with items to choose from. This program is a GUI to configure all the components in one place. It also integrates several external programs, which I arbitrarily found the best to build a coherent user experience.
 
 ![nwg-shell-settings.png](https://scrot.cloud/images/2022/01/16/nwg-shell-settings.png)
 
