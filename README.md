@@ -42,3 +42,47 @@ All of above is installed by default together with the sway session of [ArchLabs
 which the nwg-shell-config utility was developed for. Anyway, if you'd like to give it a try on another system,
 take a look at the [skel/sway-home/.config](https://github.com/nwg-piotr/nwg-shell-config/tree/master/skel/sway-home/.config)
 directory. It contains the sway config, together with the rest of necessary configs and style sheets.
+
+## Notes
+
+### Includes
+
+All the settings managed by nwg-shell-config are included into the `~/.config/sway/config` file like this:
+
+```text
+# The file we include below is created and will be overwritten by nwg-shell-config GUI!
+#
+include ~/.config/sway/variables
+include ~/.config/sway/outputs
+include ~/.config/sway/autostart
+#
+```
+
+Leave these lines as they are. You also should not edit these files manually: the program will overwrite your changes.
+
+Basic key bindings use variables, which are also provided by the config utility:
+
+```text
+# launchers
+bindsym Control+space   exec $launcher
+bindsym Mod1+F1         exec $launcher
+
+# core
+bindsym $Mod+t          exec $term
+bindsym $Mod+Return     exec $term
+bindsym Control+Shift+t exec $term
+bindsym $Mod+w          exec $browser
+bindsym $Mod+f          exec $filemanager
+bindsym $Mod+e          exec $editor
+bindsym $Mod+d          exec $dock
+```
+
+Feel free to add whichever other binding you need, but do not change the variable values other way than with config GUI.
+
+### Styling
+
+To change the appearance of nwg-shell components, you need to edit their css style sheets. They are all located in appropriate `~./config/nwg-*` directories, named `preset-*.css`. You may either edit these files, or add own under another names, and set these names in the config GUI.
+
+### nwg-panel & nwg-menu
+
+have their own config GUI. Find the "Panel settings" entry in the Controls menu.
