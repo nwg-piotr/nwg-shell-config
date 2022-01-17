@@ -85,4 +85,4 @@ To change the appearance of nwg-shell components, you need to edit their css sty
 
 ### nwg-panel & nwg-menu
 
-have their own config GUI. Find the "Panel settings" entry in the Controls menu.
+have their own config GUI. Find the "Panel settings" entry in the Controls menu. More info there's in the [panel Wiki](https://github.com/nwg-piotr/nwg-panel/wiki).
