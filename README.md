@@ -8,7 +8,7 @@ At the top of the window you define common settings, including some custom solut
 [autotiling](https://github.com/nwg-piotr/autotiling) (a part of the project) and gamma control, for which 
 [wlsunset](https://sr.ht/~kennylevinsen/wlsunset) is responsible. Below you select / define the desktop style,
 with 4 predefined styles to choose from, and the "Custom" preset, which you can define on your own. Each of the
-presets 0 - 3 may also be redefined according to your taste.
+presets 0 - 3 may also be adjusted to your taste.
 
 Every preset is bound to its own [nwg-panel](https://github.com/nwg-piotr/nwg-panel) config file and css style sheet.
 Along with it come settings for the launcher ([nwg-drawer](https://github.com/nwg-piotr/nwg-drawer)), exit menu
