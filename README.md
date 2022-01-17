@@ -12,7 +12,7 @@ At the top of the window you define common settings, including some custom solut
 with 4 predefined styles to choose from, and the "Custom" preset, which you can define on your own. Each of the
 presets 0 - 3 may also be redefined according to your taste.
 
-Each preset is bound to its own [nwg-panel](https://github.com/nwg-piotr/nwg-panel) config file and css style sheet.
+Every preset is bound to its own [nwg-panel](https://github.com/nwg-piotr/nwg-panel) config file and css style sheet.
 Along with it come settings for the launcher ([nwg-drawer](https://github.com/nwg-piotr/nwg-drawer)), exit menu
 ([nwg-bar](https://github.com/nwg-piotr/nwg-bar)), and the dock ([nwg-dock](https://github.com/nwg-piotr/nwg-dock)).
 The latter is only turned on by default in `preset-1` and `preset-3`.
@@ -38,7 +38,7 @@ behaves like. Some of the menu items rely on the other software you need to have
 - **Look & Feel**: you need the [lxappearance](https://wiki.lxde.org/en/LXAppearance) package, and the 
 [import-gsettings](https://github.com/swaywm/sway/wiki/GTK-3-settings-on-Wayland#setting-values-in-gsettings) script;
 - **Outputs** management relies on [wdisplays](https://github.com/artizirk/wdisplays) and 
-this script](https://github.com/nwg-piotr/sway-save-outputs).
+[this script](https://github.com/nwg-piotr/sway-save-outputs).
 
 All of above is installed by default together with the sway session of [ArchLabs Linux](https://archlabslinux.com), 
 which the nwg-shell-config utility was designed for. Anyway, if you'd like to give it a try on another system,
