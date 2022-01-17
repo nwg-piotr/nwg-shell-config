@@ -27,7 +27,7 @@ The latter is only turned on by default in `preset-1` and `preset-3`.
 <div align="center">preset-3<br /><img src="https://scrot.cloud/images/2022/01/16/preset-3.png" width="480"/></div>
 
 To familiarize yourself with key bindings, you may want to mark the "Show help" check box in the config utility. 
-This will display a conky-like on-screen help.
+This will display a conky-like on-screen help, supported by [nwg-wrapper](https://github.com/nwg-piotr/nwg-wrapper).
 
 The Controls module of the panel comes with some preconfigured goodies to fine tune what your system looks and 
 behaves like. Some of the menu items rely on the other software you need to have installed. 
