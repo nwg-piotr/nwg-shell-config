@@ -41,6 +41,6 @@ behaves like. Some of the menu items rely on the other software you need to have
 [this script](https://github.com/nwg-piotr/sway-save-outputs).
 
 All of above is installed by default together with the sway session of [ArchLabs Linux](https://archlabslinux.com), 
-which the nwg-shell-config utility was designed for. Anyway, if you'd like to give it a try on another system,
+which the nwg-shell-config utility was developed for. Anyway, if you'd like to give it a try on another system,
 take a look at the [skel/sway-home/.config](https://github.com/nwg-piotr/nwg-shell-config/tree/master/skel/sway-home/.config)
 directory. It contains the sway config, together with the rest of necessary configs and style sheets.
