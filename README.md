@@ -83,6 +83,8 @@ Feel free to add whichever other binding you need, but do not change the variabl
 
 To change the appearance of nwg-shell components, you need to edit their css style sheets. They are all located in appropriate `~./config/nwg-*` directories, named `preset-*.css`. You may either edit these files, or add own under another names, and set these names in the config GUI.
 
+If you happen to break any of the `preset0-*.*` files, just delete it, and run the config utility. The file will be restored from the default one.
+
 ### nwg-panel & nwg-menu
 
 have their own config GUI. Find the "Panel settings" entry in the Controls menu. More info there's in the [panel Wiki](https://github.com/nwg-piotr/nwg-panel/wiki).
