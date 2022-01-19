@@ -499,7 +499,7 @@ def restart():
                 "pkill -f nwg-bar",
                 "pkill -f nwg-panel",
                 "swaymsg reload"]:
-        os.system(cmd)
+        subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
     # kill running help window if any
     pid_file = os.path.join(get_temp_dir(), "nwg-wrapper.pid")
