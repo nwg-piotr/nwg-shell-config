@@ -498,7 +498,7 @@ def restart():
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
                 "pkill -f nwg-panel",
-                "sway reload"]:
+                "swaymsg reload"]:
         os.system(cmd)
 
     # kill running help window if any
