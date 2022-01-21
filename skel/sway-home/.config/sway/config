@@ -130,8 +130,9 @@ bindsym $Mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. 
 
 # screenshot
 bindsym Print exec screenshot fullscreen
-bindsym Control+Print exec swappy -g "0,0 1920x1080"
+bindsym Control+Print exec screenshot display
 bindsym Shift+Control+Print exec grim -g "$(slurp)" - | swappy -f -
+bindsym $Mod+Shift+Control+Print exec screenshot focused
 
 # audio
 bindsym XF86AudioPlay exec playerctl play-pause
