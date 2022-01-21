@@ -105,7 +105,7 @@ Copyright (c) 2015-2018 gotk3 contributors
 - [go-sway](https://github.com/joshuarubin/go-sway) Copyright (c) 2019 Joshua Rubin
 - [go-singleinstance](github.com/allan-simon/go-singleinstance) Copyright (c) 2015 Allan Simon
 - [python-i3ipc](https://github.com/altdesktop/i3ipc-python) Copyright (c) 2015, Tony Crisci
-- [psutil](https://github.com/giampaolo/psutil) Copyright (c) 2009, Jay Loden, Dave Daeschler, Giampaolo Rodola
+- [python-psutil](https://github.com/giampaolo/psutil) Copyright (c) 2009, Jay Loden, Dave Daeschler, Giampaolo Rodola
 - [python-geopy](https://github.com/geopy/geopy) by Kostya Esmukov
 - [brightnessctl](https://github.com/Hummer12007/brightnessctl) Copyright (c) 2016 Mykyta Holuakha
 - [playerctl](https://github.com/altdesktop/playerctl) by Tony Crisci
