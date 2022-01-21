@@ -91,7 +91,7 @@ have their own config GUI. Find the "Panel settings" entry in the Controls menu.
 
 If you happen to break any of the `preset0-*` files, just delete it, and run the config utility. The file will be restored from the default one. You may also run `nwg-shell-config -r` to restore all default configs and style sheets.
 
-### Credits
+## Credits
 
 This collection of software relies on some great third-party programs and libraries:
 
