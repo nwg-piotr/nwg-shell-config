@@ -15,7 +15,6 @@ Move focus                     Mod+arrow
 Move container           Mod+Shift+arrow
 Previous workspace          Mod+Alt+left
 Next workspace             Mod+Alt+rigth
-
 Toggle split                     Mod+Tab
 Toggle layout                    Alt+Tab
 Toggle floating          Mod+Shift+Space
@@ -23,11 +22,12 @@ Fullscreen                   Mod+Shift+F
 Resize container               Alt+arrow
 Change inner gaps         Mod+plus/minus
 Change outer gaps   Mod+Shift+plus/minus
-
 Move to scratchpad           Mod+Shift+Z
 Show scratchpad                    Mod+Z
 
+Screenshot display           Ctrl+PrtScr
 Screenshot region      Shift+Ctrl+PrtScr
+Screenshot window  Mod+Shift+Ctrl+PrtScr
 
 Show/hide help                     Alt+h
 Move help to front/back      Alt+Shift+H</span>
