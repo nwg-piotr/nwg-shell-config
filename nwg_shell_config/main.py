@@ -360,7 +360,7 @@ def save_includes():
     # ~/.config/sway/variables
     variables = []
     if settings["keyboard-layout"]:
-        variables.append("set $lang {}".format(settings["keyboard-layout"]))
+        variables.append("set $lang '{}'".format(settings["keyboard-layout"]))
     if settings["terminal"]:
         variables.append("set $term {}".format(settings["terminal"]))
     if settings["browser"]:
