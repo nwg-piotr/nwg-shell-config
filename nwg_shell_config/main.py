@@ -3,6 +3,7 @@
 # Dependencies: python-geopy i3ipc
 
 import argparse
+import os
 import signal
 
 import gi
@@ -496,8 +497,9 @@ def save_includes():
         cmd_panel += " -s {}".format(preset["panel-css"])
     autostart.append(cmd_panel)
 
+    c = os.path.join(config_home, "swaync/config.css")
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
-    autostart.append("exec swaync -s {}.css".format(name))
+    autostart.append("exec swaync -c {} -s {}.css".format(c, name))
 
     if settings["show-help"]:
         autostart.append("exec_always nwg-wrapper -t help-sway.pango -c help-sway.css -p right -mr 50 -si")
