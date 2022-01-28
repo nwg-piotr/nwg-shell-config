@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import os
 
 from nwg_shell_config.tools import *
 from nwg_shell_config.__about__ import __version__
