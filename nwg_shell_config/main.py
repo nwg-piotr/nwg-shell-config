@@ -476,6 +476,10 @@ def save_includes():
             cmd_night += " -g {}".format(settings["night-gamma"])
         autostart.append(cmd_night)
 
+    name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
+    p = os.path.join(config_home, "swaync")
+    autostart.append("exec swaync -s {}/{}.css".format(p, name))
+
     if settings["autotiling-on"]:
         cmd_autoiling = "exec_always autotiling"
         if settings["autotiling-workspaces"]:
@@ -497,9 +501,7 @@ def save_includes():
         cmd_panel += " -s {}".format(preset["panel-css"])
     autostart.append(cmd_panel)
 
-    name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
-    p = os.path.join(config_home, "swaync")
-    autostart.append("exec swaync -s {}/{}.css".format(p, name))
+    autostart.append("exec_always nwg-shell-check-updates")
 
     if settings["show-help"]:
         autostart.append("exec_always nwg-wrapper -t help-sway.pango -c help-sway.css -p right -mr 50 -si")
@@ -509,10 +511,10 @@ def save_includes():
 
     save_list_to_text_file(autostart, os.path.join(config_home, "sway/autostart"))
 
-    restart()
+    reload()
 
 
-def restart():
+def reload():
     for cmd in ["pkill -f autotiling",
                 "pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
