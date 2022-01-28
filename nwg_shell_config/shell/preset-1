@@ -27,6 +27,6 @@
   "dock-icon-size": 48,
   "dock-css": "preset-1.css",
   "dock-on": true,
-  "swaync-positionX": "right",
+  "swaync-positionX": "center",
   "swaync-positionY": "top"
 }
