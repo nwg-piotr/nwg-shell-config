@@ -49,7 +49,8 @@ def check_config_dirs(config_home):
                os.path.join(config_home, "nwg-dock"),
                os.path.join(config_home, "nwg-bar"),
                os.path.join(config_home, "nwg-drawer"),
-               os.path.join(config_home, "nwg-wrapper")]):
+               os.path.join(config_home, "nwg-wrapper"),
+               os.path.join(config_home, "swaync")]):
         if not os.path.isdir(d):
             print("Creating {}".format(d))
             os.makedirs(d, exist_ok=True)

@@ -118,6 +118,9 @@ class GUI(object):
         self.panel_custom = builder.get_object("panel-custom")
         self.panel_css = builder.get_object("panel-css")
 
+        self.swaync_positionX = builder.get_object("swaync-positionX")
+        self.swaync_positionY = builder.get_object("swaync-positionY")
+
         self.show_on_startup = builder.get_object("show-on-startup")
         self.show_help = builder.get_object("show-help")
 
@@ -138,7 +141,12 @@ class GUI(object):
     def on_preset_changed(self, combo):
         p = combo.get_active_text()
         settings["panel-preset"] = p
+        self.panel_css.set_sensitive(p == "custom")
         self.panel_custom.set_visible(p == "custom")
+        self.launcher_css.set_sensitive(p == "custom")
+        self.exit_css.set_sensitive(p == "custom")
+        self.dock_css.set_sensitive(p == "custom")
+
         load_preset()
         self.fill_in_from_settings()
         self.fill_in_missing_values()
@@ -271,6 +279,9 @@ class GUI(object):
         self.panel_css.set_text(preset["panel-css"])
         self.panel_custom.set_text(settings["panel-custom"])
 
+        self.swaync_positionX.set_active_id(preset["swaync-positionX"])
+        self.swaync_positionY.set_active_id(preset["swaync-positionY"])
+
     def fill_in_missing_values(self, *args):
         if self.keyboard_layout.get_text() == "":
             self.keyboard_layout.set_text("us")
@@ -344,9 +355,13 @@ class GUI(object):
         preset["dock-on"] = self.dock_on.get_active()
         preset["panel-css"] = self.panel_css.get_text()
 
+        preset["swaync-positionX"] = self.swaync_positionX.get_active_id()
+        preset["swaync-positionY"] = self.swaync_positionY.get_active_id()
+
     def on_save_btn(self, b):
         self.read_form()
         save_preset()
+        update_swaync_config(preset["swaync-positionX"], preset["swaync-positionY"])
 
         save_includes()
         f = os.path.join(data_dir, "settings")
@@ -498,7 +513,8 @@ def restart():
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
                 "pkill -f nwg-panel",
-                "swaymsg reload"]:
+                "swaymsg reload",
+                "swaync-client --reload-config"]:
         subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
     # kill running help window if any
@@ -535,6 +551,7 @@ def load_settings():
     settings_file = os.path.join(data_dir, "settings")
     global settings
     if os.path.isfile(settings_file):
+        print("Loading settings")
         settings = load_json(settings_file)
         for key in defaults:
             missing = 0
@@ -579,7 +596,9 @@ def load_preset():
         "dock-margin": 0,
         "dock-icon-size": 48,
         "dock-css": "",
-        "dock-on": False
+        "dock-on": False,
+        "swaync-positionX": "right",
+        "swaync-positionY": "top"
     }
     global preset
     preset_file = os.path.join(data_dir, settings["panel-preset"])
@@ -604,6 +623,19 @@ def save_preset():
     f = os.path.join(data_dir, settings["panel-preset"])
     print("Saving {}".format(f))
     save_json(preset, f)
+
+
+def update_swaync_config(pos_x, pos_y):
+    settings_file = os.path.join(config_home, "swaync/config.json")
+    if os.path.isfile(settings_file):
+        print("Loading swaync settings from {}".format(settings_file))
+        swaync_settings = load_json(settings_file)
+        swaync_settings["positionX"] = pos_x
+        swaync_settings["positionY"] = pos_y
+    else:
+        swaync_settings = {"positionX": pos_x, "positionY": pos_y}
+    print("Saving swaync settings to {}".format(settings_file))
+    save_json(swaync_settings, settings_file)
 
 
 def main():
@@ -638,6 +670,7 @@ def main():
             init_files(os.path.join(dir_name, "dock"), os.path.join(config_home, "nwg-dock"), overwrite=True)
             init_files(os.path.join(dir_name, "bar"), os.path.join(config_home, "nwg-bar"), overwrite=True)
             init_files(os.path.join(dir_name, "wrapper"), os.path.join(config_home, "nwg-wrapper"), overwrite=True)
+            init_files(os.path.join(dir_name, "swaync"), os.path.join(config_home, "swaync"), overwrite=True)
         sys.exit(0)
 
     print("Outputs: {}".format(outputs))
@@ -650,13 +683,24 @@ def main():
     init_files(os.path.join(dir_name, "dock"), os.path.join(config_home, "nwg-dock"))
     init_files(os.path.join(dir_name, "bar"), os.path.join(config_home, "nwg-bar"))
     init_files(os.path.join(dir_name, "wrapper"), os.path.join(config_home, "nwg-wrapper"))
+    init_files(os.path.join(dir_name, "swaync"), os.path.join(config_home, "swaync"))
 
     load_settings()
     load_preset()
     ui = GUI()
     ui.window.show_all()
     if settings["panel-preset"] != "custom":
-        ui.panel_custom.hide()
+        ui.panel_custom.set_visible(False)
+        ui.panel_css.set_sensitive(False)
+        ui.launcher_css.set_sensitive(False)
+        ui.exit_css.set_sensitive(False)
+        ui.dock_css.set_sensitive(False)
+    else:
+        ui.panel_custom.set_sensitive(True)
+        ui.panel_css.set_sensitive(True)
+        ui.launcher_css.set_sensitive(True)
+        ui.exit_css.set_sensitive(True)
+        ui.dock_css.set_sensitive(True)
 
     Gtk.main()
 
