@@ -696,9 +696,9 @@ def main():
 
     load_settings()
 
-    """if __version__ != "unknown" and settings["last-upgrade-check"] < ver2int(__version__):
+    if __version__ != "unknown" and settings["last-upgrade-check"] < ver2int(__version__):
         print("Checking if upgrade required (v{})".format(__version__))
-        upgrade(__version__, settings)"""
+        upgrade(__version__, settings)
 
     load_preset()
     ui = GUI()
