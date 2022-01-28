@@ -198,3 +198,40 @@ def get_browser_command():
         if is_command(b):
             return commands[b]
     return ""
+
+
+def ver2int(ver):
+    try:
+        nums = ver.split(".")
+        if len(nums) != 3:
+            return None
+        return int(nums[0]) * 100 + int(nums[1]) * 10 + int(nums[2])
+    except:
+        return None
+
+
+def upgrade(version, settings):
+    ver_num = ver2int(version)
+    if ver_num and ver_num == 16:
+        # v0.1.7 replaces `mako`, hardcoded in sway config, with `swaync -s <preset-x.css>`, included dynamically
+        file = os.path.join(get_config_home(), "sway/config")
+        lines = load_text_file(file).splitlines()
+        changed = False
+        for i in range(len(lines)):
+            if lines[i].startswith("exec mako") or lines[i].startswith("exec_always mako"):
+                lines[i] = "# Disabled by nwg-shell-config ({}): {}".format(version, lines[i])
+                changed = True
+        if changed:
+            print("Upgrading sway config file to version {}".format(version))
+            save_list_to_text_file(lines, os.path.join(get_config_home(), "sway/config"))
+            notify_send("sway restart required",
+                        "Your sway config file has just been modified.\\nPlease exit sway and run it again.",
+                        urgency="critical")
+
+    settings["last-upgrade-check"] = ver_num
+    save_json(settings, os.path.join(get_data_dir(), "settings"))
+
+
+def notify_send(head, msg, urgency="normal"):
+    subprocess.call('notify-send --icon=/usr/share/pixmaps/nwg-shell.svg --urgency={} "{}" "{}"'.format(urgency, head, msg),
+                    shell=True)

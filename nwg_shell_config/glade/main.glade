@@ -22,22 +22,39 @@
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="halign">center</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-start">12</property>
+                        <property name="label" translatable="yes">Common settings ↓</property>
+                        <attributes>
+                          <attribute name="style" value="oblique"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
                     <child>
                       <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="spacing">10</property>
                         <child>
-                          <object class="GtkImage">
+                          <object class="GtkLabel" id="version">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="icon-name">nwg-shell</property>
-                            <property name="icon_size">3</property>
+                            <property name="halign">end</property>
+                            <property name="margin-end">12</property>
+                            <property name="label" translatable="yes">version {}</property>
                           </object>
                           <packing>
-                            <property name="expand">True</property>
-                            <property name="fill">False</property>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="pack-type">end</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
@@ -45,6 +62,7 @@
                           <object class="GtkLabel">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
+                            <property name="halign">end</property>
                             <property name="label" translatable="yes">nwg-shell settings</property>
                             <attributes>
                               <attribute name="weight" value="bold"/>
@@ -53,18 +71,22 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
+                            <property name="pack-type">end</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="version">
+                          <object class="GtkImage">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="label" translatable="yes">version {}</property>
+                            <property name="halign">end</property>
+                            <property name="icon-name">nwg-shell</property>
+                            <property name="icon_size">3</property>
                           </object>
                           <packing>
-                            <property name="expand">False</property>
+                            <property name="expand">True</property>
                             <property name="fill">True</property>
+                            <property name="pack-type">end</property>
                             <property name="position">2</property>
                           </packing>
                         </child>
@@ -72,7 +94,7 @@
                       <packing>
                         <property name="expand">True</property>
                         <property name="fill">True</property>
-                        <property name="position">0</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                   </object>
@@ -574,7 +596,7 @@
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
                                 <property name="halign">end</property>
-                                <property name="label" translatable="yes">Desktop style:</property>
+                                <property name="label" translatable="yes">Style:</property>
                                 <attributes>
                                   <attribute name="weight" value="bold"/>
                                 </attributes>
@@ -1457,17 +1479,6 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkSeparator">
-                                <property name="visible">True</property>
-                                <property name="can-focus">False</property>
-                              </object>
-                              <packing>
-                                <property name="left-attach">0</property>
-                                <property name="top-attach">5</property>
-                                <property name="width">7</property>
-                              </packing>
-                            </child>
-                            <child>
                               <object class="GtkImage">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
@@ -1627,6 +1638,33 @@ restart the sway session.</property>
                               <packing>
                                 <property name="left-attach">4</property>
                                 <property name="top-attach">6</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="halign">start</property>
+                                <property name="label" translatable="yes">Desktop style ↓</property>
+                                <attributes>
+                                  <attribute name="style" value="oblique"/>
+                                </attributes>
+                              </object>
+                              <packing>
+                                <property name="left-attach">0</property>
+                                <property name="top-attach">5</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSeparator">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="valign">center</property>
+                              </object>
+                              <packing>
+                                <property name="left-attach">1</property>
+                                <property name="top-attach">5</property>
+                                <property name="width">6</property>
                               </packing>
                             </child>
                             <child>

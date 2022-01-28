@@ -551,7 +551,8 @@ def load_settings():
         "panel-preset": "preset-0",
         "panel-custom": "",
         "show-on-startup": True,
-        "show-help": False
+        "show-help": False,
+        "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")
     global settings
@@ -678,6 +679,7 @@ def main():
             init_files(os.path.join(dir_name, "swaync"), os.path.join(config_home, "swaync"), overwrite=True)
         sys.exit(0)
 
+    print("Version: {} ({})".format(ver2int(__version__), __version__))
     print("Outputs: {}".format(outputs))
     print("Data dir: {}".format(data_dir))
     print("Config home: {}".format(config_home))
@@ -691,6 +693,11 @@ def main():
     init_files(os.path.join(dir_name, "swaync"), os.path.join(config_home, "swaync"))
 
     load_settings()
+
+    if __version__ != "unknown" and settings["last-upgrade-check"] < ver2int(__version__):
+        print("Checking if upgrade required (v{})".format(__version__))
+        upgrade(__version__, settings)
+
     load_preset()
     ui = GUI()
     ui.window.show_all()
