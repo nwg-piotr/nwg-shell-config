@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 
 from nwg_shell_config.tools import *
 from nwg_shell_config.__about__ import __version__
@@ -46,8 +47,21 @@ def load_settings():
         save_json(defaults, settings_file)
 
 
+def check_autostart():
+    lines = load_text_file(os.path.join(get_config_home(), "sway/autostart")).splitlines()
+    success = False
+    for line in lines:
+        if line == "exec_always nwg-shell-check-updates":
+            success = True
+            break
+    if not success:
+        lines.append("exec_always nwg-shell-check-updates")
+        save_list_to_text_file(lines, os.path.join(get_config_home(), "sway/autostart"))
+
+
 def main():
     print("nwg-shell-version: {} ({})".format(ver2int(__version__), __version__))
+    check_autostart()
     load_settings()
     if __version__ != "unknown" and settings["last-upgrade-check"] < ver2int(__version__):
         print("Checking if upgrade required (v{})".format(__version__))
