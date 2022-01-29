@@ -212,8 +212,8 @@ def ver2int(ver):
 
 def upgrade(version, settings):
     ver_num = ver2int(version)
-    if ver_num and ver_num == 21:
-        # v0.2.1 replaces `mako`, hardcoded in sway config, with `swaync -s <preset-x.css>`, included dynamically
+    # v0.2.2 replaces `mako`, hardcoded in sway config, with `swaync -s <preset-x.css>`, included from `autostart`
+    if ver_num and ver_num == 22:
         file = os.path.join(get_config_home(), "sway/config")
         lines = load_text_file(file).splitlines()
         changed = False
@@ -228,10 +228,23 @@ def upgrade(version, settings):
                         "Your sway config file has just been modified.\\nPlease exit sway and run it again.",
                         urgency="critical")
 
+        # Add 'nwg-shell-check-updates' to autostart
+        lines = load_text_file(os.path.join(get_config_home(), "sway/autostart")).splitlines()
+        success = False
+        for line in lines:
+            if line == "exec_always nwg-shell-check-updates":
+                success = True
+                break
+        if not success:
+            print("autostart: appending 'exec_always nwg-shell-check-updates'")
+            lines.append("exec_always nwg-shell-check-updates")
+            save_list_to_text_file(lines, os.path.join(get_config_home(), "sway/autostart"))
+
     settings["last-upgrade-check"] = ver_num
     save_json(settings, os.path.join(get_data_dir(), "settings"))
 
 
 def notify_send(head, msg, urgency="normal"):
-    subprocess.call('notify-send --icon=/usr/share/pixmaps/nwg-shell.svg --urgency={} "{}" "{}"'.format(urgency, head, msg),
-                    shell=True)
+    subprocess.call(
+        'notify-send --icon=/usr/share/pixmaps/nwg-shell.svg --urgency={} "{}" "{}"'.format(urgency, head, msg),
+        shell=True)

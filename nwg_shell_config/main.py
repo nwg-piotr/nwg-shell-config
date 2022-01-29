@@ -702,6 +702,7 @@ def main():
 
     load_settings()
 
+    # This won't be necessary after v0.2.2, that adds 'nwg-shell-check-updates` to autostart
     if __version__ != "unknown" and settings["last-upgrade-check"] < ver2int(__version__):
         print("Checking if upgrade required (v{})".format(__version__))
         upgrade(__version__, settings)
