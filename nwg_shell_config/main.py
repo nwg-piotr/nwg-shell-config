@@ -3,7 +3,6 @@
 # Dependencies: python-geopy i3ipc
 
 import argparse
-import os
 import signal
 
 import gi
