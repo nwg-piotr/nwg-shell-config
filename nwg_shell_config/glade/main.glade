@@ -1602,9 +1602,8 @@ file name and css style sheets.</property>
                                   <object class="GtkImage">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="tooltip-text" translatable="yes">You can only change tle placement on the fly.
-To change notifications' styling, you need to 
-restart the sway session.</property>
+                                    <property name="tooltip-text" translatable="yes">Pressing the 'Apply' button will restart the 
+notification daemon and clear notifications.</property>
                                     <property name="halign">start</property>
                                     <property name="valign">center</property>
                                     <property name="stock">gtk-about</property>
