@@ -2,8 +2,9 @@
 Web browser                        Mod+w
 Text editor                        Mod+e
 File manager                       Mod+f
-Application launcher   Alt+F1|Ctrl+Space
 Dock show/hide                     Mod+d
+Notification center                Mod+c
+Application launcher   Alt+F1|Ctrl+Space
 
 Kill task                          Alt+q
 Exit menu                          Mod+x
