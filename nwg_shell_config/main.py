@@ -515,12 +515,19 @@ def save_includes():
 
 
 def reload():
+    name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
+    p = os.path.join(config_home, "swaync")
+    swaync_daemon = "swaync -s {}/{}.css &".format(p, name)
+    print("swaync_daemon", swaync_daemon)
+
     for cmd in ["pkill -f autotiling",
                 "pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
                 "pkill -f nwg-panel",
                 "swaymsg reload",
+                "pkill -f swaync",
+                swaync_daemon,
                 "swaync-client --reload-config"]:
         subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
