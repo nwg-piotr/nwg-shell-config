@@ -3,7 +3,7 @@
  */
 
 @define-color border-color rgb(7, 7, 7);
-@define-color bg rgb(58, 58, 58);
+@define-color bg #31373A;
 @define-color bg-hover rgb(68, 68, 68);
 @define-color bg-focus rgba(255, 255, 255, 0.07);
 @define-color bg-selected rgb(0, 128, 255);
@@ -17,7 +17,7 @@
 }
 
 .notification {
-  border-radius: 3px;
+  border-radius: 10px;
   margin: 6px 6px;
   box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.3);
   padding: 0;
@@ -26,7 +26,7 @@
 .notification-content {
   background: transparent;
   padding: 6px;
-  border-radius: 3px;
+  border-radius: 10px;
 }
 
 .close-button {
@@ -57,7 +57,7 @@
 }
 
 .notification-default-action {
-  border-radius: 3px;
+  border-radius: 10px;
 }
 
 /* When alternative actions are visible */
@@ -87,7 +87,7 @@
 .body-image {
   margin-top: 6px;
   background-color: white;
-  border-radius: 3px;
+  border-radius: 10px;
 }
 
 .summary {
@@ -118,14 +118,14 @@
   background: @bg;
   border: 1px solid @border-color;
   box-shadow: none;
-  border-radius: 3px;
+  border-radius: 10px;
 }
 .control-center-clear-all:hover {
   background: @bg-hover;
 }
 
 .control-center-dnd {
-  border-radius: 3px;
+  border-radius: 10px;
   background: @bg;
   border: 1px solid @border-color;
   box-shadow: none;
@@ -139,7 +139,7 @@
 }
 
 .control-center {
-  background-color: rgba (20, 20, 20, 0.95);
+  background-color: #282828;
 }
 .control-center-list {
   background: transparent;
