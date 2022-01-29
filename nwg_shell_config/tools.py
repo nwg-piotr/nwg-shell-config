@@ -212,8 +212,8 @@ def ver2int(ver):
 
 def upgrade(version, settings):
     ver_num = ver2int(version)
-    if ver_num and ver_num == 17:
-        # v0.1.7 replaces `mako`, hardcoded in sway config, with `swaync -s <preset-x.css>`, included dynamically
+    if ver_num and ver_num == 21:
+        # v0.2.1 replaces `mako`, hardcoded in sway config, with `swaync -s <preset-x.css>`, included dynamically
         file = os.path.join(get_config_home(), "sway/config")
         lines = load_text_file(file).splitlines()
         changed = False

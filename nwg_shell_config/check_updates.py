@@ -54,6 +54,7 @@ def check_autostart():
             success = True
             break
     if not success:
+        print("autostart: appending 'exec_always nwg-shell-check-updates'")
         lines.append("exec_always nwg-shell-check-updates")
         save_list_to_text_file(lines, os.path.join(get_config_home(), "sway/autostart"))
 
