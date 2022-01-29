@@ -39,7 +39,6 @@ exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec hash dbus-update-activation-environment 2>/dev/null && \
     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec mako --icons 1 --markup 1 --actions 1 --padding 10 --background-color "#81a1c1" --default-timeout 10000
 exec ~/.azotebg
 
 # The files we include below are created and will be overwritten by nwg-shell-config GUI!
@@ -121,6 +120,7 @@ bindsym $Mod+w          exec $browser
 bindsym $Mod+f          exec $filemanager
 bindsym $Mod+e          exec $editor
 bindsym $Mod+d          exec $dock
+bindsym $Mod+c          exec swaync-client -t
 
 # Exit menu
 bindsym $Mod+x exec $exit
