@@ -1,7 +1,7 @@
 {
   "positionX": "right",
   "positionY": "top",
-  "timeout": 5,
+  "timeout": 10,
   "timeout-low": 5,
   "timeout-critical": 0,
   "notification-window-width": 400,
