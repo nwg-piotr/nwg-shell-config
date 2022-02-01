@@ -27,16 +27,20 @@ The latter is only turned on by default in `preset-1` and `preset-3`.
 To familiarize yourself with key bindings, you may want to mark the "Show help" check box in the config utility. 
 This will display a conky-like help widget, supported by [nwg-wrapper](https://github.com/nwg-piotr/nwg-wrapper).
 
-The Controls module of the panel comes with some preconfigured goodies to fine tune what your system looks and 
+The **Controls module** of the panel comes with some preconfigured goodies to fine tune what your system looks and 
 behaves like. Some of the menu items rely on the other software you need to have installed. 
 
-<div align="center">nwg-panel Controls module<br /><img src="https://scrot.cloud/images/2022/01/17/controls.png"/></div>
+<div align="center">nwg-panel Controls module<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-shell-config/controls.png"/></div>
 
 - **Wallpapers**: you need [Azote](https://github.com/nwg-piotr/azote), which is a part of the nwg-shell project;
 - **Look & Feel**: you need the [lxappearance](https://wiki.lxde.org/en/LXAppearance) package, and the 
 [import-gsettings](https://github.com/swaywm/sway/wiki/GTK-3-settings-on-Wayland#setting-values-in-gsettings) script;
 - **Outputs** management relies on [wdisplays](https://github.com/artizirk/wdisplays) and 
 [this script](https://github.com/nwg-piotr/sway-save-outputs).
+
+**Notification Center** is supported by Eric Reider's [SwayNotificationCenter](https://github.com/ErikReider/SwayNotificationCenter).
+
+<div align="center">Notification Center<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-shell-config/swaync.png" width="480"/></div>
 
 All of above is installed by default together with the sway session of [ArchLabs Linux](https://archlabslinux.com), 
 which the nwg-shell-config utility was developed for. Anyway, if you'd like to give it a try on another system,
@@ -98,6 +102,7 @@ This collection of software relies on some great third-party programs and librar
 - LXAppearance by [lxde](http://www.lxde.org) team
 - [wdisplays](https://github.com/artizirk/wdisplays) by Michael Aquilina / Arti Zirk
 - [wlsunset](https://sr.ht/~kennylevinsen/wlsunset) by Kenny Levinsen
+- [SwayNotificationCenter](https://github.com/ErikReider/SwayNotificationCenter) by Eric Reider
 - [gtk-layer-shell](https://github.com/wmww/gtk-layer-shell) Copyright (c) 2014 Dennis Blommesteijn, Copyright (c) 2020 William Wold
 - [gotk3](https://github.com/gotk3/gotk3) Copyright (c) 2013-2014 Conformal Systems LLC,
 Copyright (c) 2015-2018 gotk3 contributors
