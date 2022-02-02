@@ -1370,59 +1370,6 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkEntry" id="keyboard-layout">
-                                <property name="visible">True</property>
-                                <property name="can-focus">True</property>
-                                <property name="valign">center</property>
-                                <property name="max-length">20</property>
-                                <property name="width-chars">3</property>
-                              </object>
-                              <packing>
-                                <property name="left-attach">5</property>
-                                <property name="top-attach">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel">
-                                <property name="visible">True</property>
-                                <property name="can-focus">False</property>
-                                <property name="halign">end</property>
-                                <property name="label" translatable="yes">Keyboard:</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
-                              </object>
-                              <packing>
-                                <property name="left-attach">4</property>
-                                <property name="top-attach">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkImage">
-                                <property name="visible">True</property>
-                                <property name="can-focus">False</property>
-                                <property name="tooltip-text" translatable="yes">Space-separated workspace numbers. Leave blank for all.</property>
-                                <property name="halign">start</property>
-                                <property name="stock">gtk-about</property>
-                              </object>
-                              <packing>
-                                <property name="left-attach">3</property>
-                                <property name="top-attach">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkEntry" id="autotiling-workspaces">
-                                <property name="visible">True</property>
-                                <property name="can-focus">True</property>
-                                <property name="halign">start</property>
-                                <property name="valign">center</property>
-                              </object>
-                              <packing>
-                                <property name="left-attach">2</property>
-                                <property name="top-attach">1</property>
-                              </packing>
-                            </child>
-                            <child>
                               <object class="GtkLabel">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
@@ -1667,7 +1614,97 @@ notification daemon and clear notifications.</property>
                               </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <child>
+                                  <object class="GtkEntry" id="autotiling-workspaces">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">center</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkImage">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="tooltip-text" translatable="yes">Space-separated workspace numbers. Leave blank for all.</property>
+                                    <property name="halign">start</property>
+                                    <property name="stock">gtk-about</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="padding">6</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left-attach">2</property>
+                                <property name="top-attach">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="halign">end</property>
+                                <property name="label" translatable="yes">Keyboard:</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
+                              </object>
+                              <packing>
+                                <property name="left-attach">3</property>
+                                <property name="top-attach">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="keyboard-layout">
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="valign">center</property>
+                                <property name="max-length">20</property>
+                                <property name="width-chars">3</property>
+                              </object>
+                              <packing>
+                                <property name="left-attach">4</property>
+                                <property name="top-attach">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="appindicator">
+                                <property name="label" translatable="yes">Appindicator</property>
+                                <property name="visible">True</property>
+                                <property name="can-focus">True</property>
+                                <property name="receives-default">False</property>
+                                <property name="draw-indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="left-attach">5</property>
+                                <property name="top-attach">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkImage">
+                                <property name="visible">True</property>
+                                <property name="can-focus">False</property>
+                                <property name="tooltip-text" translatable="yes">autostart 'nm-applet --indicator'</property>
+                                <property name="halign">start</property>
+                                <property name="valign">center</property>
+                                <property name="stock">gtk-about</property>
+                              </object>
+                              <packing>
+                                <property name="left-attach">6</property>
+                                <property name="top-attach">1</property>
+                              </packing>
                             </child>
                             <child>
                               <placeholder/>

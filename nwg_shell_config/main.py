@@ -53,6 +53,8 @@ class GUI(object):
 
         self.keyboard_layout = builder.get_object("keyboard-layout")
 
+        self.appindicator = builder.get_object("appindicator")
+
         self.autotiling_workspaces = builder.get_object("autotiling-workspaces")
         self.autotiling_workspaces.connect("changed", validate_workspaces)
         self.autotiling_on = builder.get_object("autotiling-on")
@@ -162,6 +164,8 @@ class GUI(object):
         self.keyboard_layout.set_text(settings["keyboard-layout"])
         self.autotiling_workspaces.set_text(settings["autotiling-workspaces"])
         self.autotiling_on.set_active(settings["autotiling-on"])
+
+        self.appindicator.set_active(settings["appindicator"])
 
         self.night_lat.set_numeric(True)
         adj = Gtk.Adjustment(lower=-90.0, upper=90.1, step_increment=0.1, page_increment=10.0,
@@ -310,6 +314,7 @@ class GUI(object):
         settings["keyboard-layout"] = self.keyboard_layout.get_text()
         settings["autotiling-workspaces"] = self.autotiling_workspaces.get_text()
         settings["autotiling-on"] = self.autotiling_on.get_active()
+        settings["appindicator"] = self.appindicator.get_active()
         settings["night-lat"] = self.night_lat.get_value()
         settings["night-long"] = self.night_long.get_value()
         settings["night-temp-low"] = int(self.night_temp_low.get_value())
@@ -479,6 +484,9 @@ def save_includes():
     p = os.path.join(config_home, "swaync")
     autostart.append("exec swaync -s {}/{}.css".format(p, name))
 
+    if settings["appindicator"]:
+        autostart.append("exec nm-applet --indicator")
+
     if settings["autotiling-on"]:
         cmd_autoiling = "exec_always autotiling"
         if settings["autotiling-workspaces"]:
@@ -546,6 +554,7 @@ def load_settings():
         "keyboard-layout": "us",
         "autotiling-workspaces": "1 2 3 4 5 6 7 8",
         "autotiling-on": True,
+        "appindicator": True,
         "night-lat": -1,
         "night-long": -1,
         "night-temp-low": 4500,
