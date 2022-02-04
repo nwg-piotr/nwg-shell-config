@@ -2,7 +2,7 @@
 
 The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection of components for building a GTK-based user interface for [sway](https://github.com/swaywm/sway) Wayland compositor. It consists of a panel, launcher, dock, traditional menu, wallpaper manager, as well as some helper scripts. Until now, it has functioned as a do-it-yourself kit, with items to choose from. This program is a GUI to configure all the components in one place. It also integrates several external programs, which we arbitrarily found the best to build a coherent user experience.
 
-![nwg-shell-settings.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-shell/nwg-shell-config.png)
+![nwg-shell-settings.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell/nwg-shell-config.png)
 
 At the top of the window you define common settings, including some custom solutions, like 
 [autotiling](https://github.com/nwg-piotr/autotiling) (a part of the project) and gamma control, for which 
@@ -16,13 +16,13 @@ Along with it come settings for the launcher ([nwg-drawer](https://github.com/nw
 The latter is only turned on by default in `preset-1` and `preset-3`.
 
 
-<div align="center">preset-0<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-shell-config/preset-0.png" width="480"/></div>
+<div align="center">preset-0<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell-config/preset-0.png" width="480"/></div>
 
-<div align="center">preset-1<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-shell-config/preset-1.png" width="480"/></div>
+<div align="center">preset-1<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell-config/preset-1.png" width="480"/></div>
 
-<div align="center">preset-2<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-shell-config/preset-2.png" width="480"/></div>
+<div align="center">preset-2<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell-config/preset-2.png" width="480"/></div>
 
-<div align="center">preset-3<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-shell-config/preset-3.png" width="480"/></div>
+<div align="center">preset-3<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell-config/preset-3.png" width="480"/></div>
 
 To familiarize yourself with key bindings, you may want to mark the "Show help" check box in the config utility. 
 This will display a conky-like help widget, supported by [nwg-wrapper](https://github.com/nwg-piotr/nwg-wrapper).
@@ -30,7 +30,7 @@ This will display a conky-like help widget, supported by [nwg-wrapper](https://g
 The **Controls module** of the panel comes with some preconfigured goodies to fine tune what your system looks and 
 behaves like. Some of the menu items rely on the other software you need to have installed. 
 
-<div align="center">nwg-panel Controls module<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-shell-config/controls.png"/></div>
+<div align="center">nwg-panel Controls module<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell-config/controls.png"/></div>
 
 - **Wallpapers**: you need [Azote](https://github.com/nwg-piotr/azote), which is a part of the nwg-shell project;
 - **Look & Feel**: you need the [lxappearance](https://wiki.lxde.org/en/LXAppearance) package, and the 
@@ -40,7 +40,7 @@ behaves like. Some of the menu items rely on the other software you need to have
 
 **Notification Center** is supported by Eric Reider's [SwayNotificationCenter](https://github.com/ErikReider/SwayNotificationCenter).
 
-<div align="center">Notification Center<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-shell-config/swaync.png" width="480"/></div>
+<div align="center">Notification Center<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell-config/swaync.png" width="480"/></div>
 
 All of above is installed by default together with the sway session of [ArchLabs Linux](https://archlabslinux.com), 
 which the nwg-shell-config utility was developed for. Anyway, if you'd like to give it a try on another system,
