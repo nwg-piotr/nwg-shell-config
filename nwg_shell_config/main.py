@@ -511,7 +511,7 @@ def save_includes():
     autostart.append("exec_always nwg-shell-check-updates")
 
     if settings["show-help"]:
-        autostart.append("exec_always nwg-wrapper -t help-sway.pango -c help-sway.css -p right -mr 50 -si")
+        autostart.append("exec_always nwg-wrapper -t help-sway.pango -c help-sway.css -p right -mr 50 -si -sq 14")
 
     if settings["show-on-startup"]:
         autostart.append("exec nwg-shell-config")
@@ -539,14 +539,8 @@ def reload():
         subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
     # kill running help window if any
-    pid_file = os.path.join(get_temp_dir(), "nwg-wrapper.pid")
-    if os.path.isfile(pid_file):
-        try:
-            pid = int(load_text_file(pid_file))
-            os.kill(pid, signal.SIGINT)
-            print("Running help instance killed, PID {}".format(pid))
-        except:
-            pass
+    if not settings["show-help"]:
+        subprocess.call("pkill -14 nwg-wrapper", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
 
 def load_settings():
