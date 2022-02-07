@@ -23,16 +23,15 @@
     ],
     "modules-right": [
       "scratchpad",
-      "executor-updates"
+      "executor-updates",
+      "tray"
     ],
     "controls-settings": {
       "alignment": "right",
       "components": [
         "brightness",
         "battery",
-        "volume",
-        "net",
-        "bluetooth"
+        "volume"
       ],
       "commands": {
         "battery": "",
@@ -99,7 +98,8 @@
       "output-switcher": true,
       "window-width": 320,
       "window-margin": 0,
-      "root-css-name": "controls-overview"
+      "root-css-name": "controls-overview",
+      "backlight-device": ""
     },
     "clock": {
       "format": "%a, %d. %b  %H:%M:%S",
@@ -150,6 +150,29 @@
       "icon-size": 20
     },
     "menu-start": "off",
-    "menu-start-settings": {}
+    "menu-start-settings": {},
+    "playerctl": {},
+    "sway-taskbar": {},
+    "dwl-tags": {},
+    "tray": {
+      "icon-size": 16,
+      "root-css-name": "tray",
+      "inner-css-name": "inner-tray",
+      "smooth-scrolling-threshold": 0
+    },
+    "swaync": {
+      "tooltip-text": "Notifications",
+      "on-left-click": "swaync-client -t",
+      "on-middle-click": "",
+      "on-right-click": "",
+      "on-scroll-up": "",
+      "on-scroll-down": "",
+      "root-css-name": "root-executor",
+      "css-name": "executor",
+      "icon-placement": "left",
+      "icon-size": 16,
+      "interval": 1,
+      "always-show-icon": true
+    }
   }
 ]
