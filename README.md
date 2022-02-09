@@ -103,6 +103,7 @@ This collection of software relies on some great third-party programs and librar
 - [wdisplays](https://github.com/artizirk/wdisplays) by Michael Aquilina / Arti Zirk
 - [wlsunset](https://sr.ht/~kennylevinsen/wlsunset) by Kenny Levinsen
 - [SwayNotificationCenter](https://github.com/ErikReider/SwayNotificationCenter) by Eric Reider
+- [swappy](https://github.com/jtheoof/swappy) Copyright (c) 2020 Jeremy Attali
 - [gtk-layer-shell](https://github.com/wmww/gtk-layer-shell) Copyright (c) 2014 Dennis Blommesteijn, Copyright (c) 2020 William Wold
 - [gotk3](https://github.com/gotk3/gotk3) Copyright (c) 2013-2014 Conformal Systems LLC,
 Copyright (c) 2015-2018 gotk3 contributors
