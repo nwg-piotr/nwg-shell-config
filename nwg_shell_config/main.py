@@ -135,7 +135,7 @@ class GUI(object):
 
         self.tz, self.lat, self.long = get_lat_lon()
 
-        self.version.set_text("version {}".format(__version__))
+        self.version.set_text("v{}".format(__version__))
 
         self.fill_in_from_settings(self)
         self.fill_in_missing_values(self)
@@ -531,7 +531,6 @@ def reload():
                 "pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
-                "pkill -f nwg-panel",
                 "swaymsg reload",
                 "pkill -f swaync",
                 swaync_daemon,
@@ -657,16 +656,12 @@ def update_swaync_config(pos_x, pos_y):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-r",
-                        "--restore",
-                        action="store_true",
-                        help="restore default presets and styling")
     parser.add_argument("-v",
                         "--version",
                         action="version",
                         version="%(prog)s version {}".format(__version__),
                         help="display version information")
-    args = parser.parse_args()
+    parser.parse_args()
 
     GLib.set_prgname('nwg-shell-config')
 
@@ -676,39 +671,13 @@ def main():
     global outputs
     outputs = list_outputs()
 
-    check_config_dirs(config_home)
-
-    if args.restore:
-        if input("Restore default configuration (this CAN NOT be undone)? y/N ").upper() == "Y":
-            print("Restoring default files")
-            init_files(os.path.join(dir_name, "shell"), data_dir, overwrite=True)
-            init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"), overwrite=True)
-            init_files(os.path.join(dir_name, "drawer"), os.path.join(config_home, "nwg-drawer"), overwrite=True)
-            init_files(os.path.join(dir_name, "dock"), os.path.join(config_home, "nwg-dock"), overwrite=True)
-            init_files(os.path.join(dir_name, "bar"), os.path.join(config_home, "nwg-bar"), overwrite=True)
-            init_files(os.path.join(dir_name, "wrapper"), os.path.join(config_home, "nwg-wrapper"), overwrite=True)
-            init_files(os.path.join(dir_name, "swaync"), os.path.join(config_home, "swaync"), overwrite=True)
-        sys.exit(0)
-
-    print("Version: {} ({})".format(ver2int(__version__), __version__))
     print("Outputs: {}".format(outputs))
     print("Data dir: {}".format(data_dir))
     print("Config home: {}".format(config_home))
 
     init_files(os.path.join(dir_name, "shell"), data_dir)
-    init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"))
-    init_files(os.path.join(dir_name, "drawer"), os.path.join(config_home, "nwg-drawer"))
-    init_files(os.path.join(dir_name, "dock"), os.path.join(config_home, "nwg-dock"))
-    init_files(os.path.join(dir_name, "bar"), os.path.join(config_home, "nwg-bar"))
-    init_files(os.path.join(dir_name, "wrapper"), os.path.join(config_home, "nwg-wrapper"))
-    init_files(os.path.join(dir_name, "swaync"), os.path.join(config_home, "swaync"))
 
     load_settings()
-
-    # This won't be necessary after v0.2.2, that adds 'nwg-shell-check-updates` to autostart
-    if __version__ != "unknown" and settings["last-upgrade-check"] < ver2int(__version__):
-        print("Checking if upgrade required (v{})".format(__version__))
-        upgrade(__version__, settings)
 
     load_preset()
     ui = GUI()

@@ -14,7 +14,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     package_data={
-        "": ["glade/*", "panel/*", "executors/*", "drawer/*", "dock/*", "bar/*", "wrapper/*", "shell/*", "swaync/*"]
+        "": ["glade/*", "shell/*"]
     },
     url='https://github.com/nwg-piotr/nwg-shell-config',
     license='MIT',
@@ -24,8 +24,7 @@ setup(
     install_requires=[],
     entry_points={
         'gui_scripts': [
-            'nwg-shell-config = nwg_shell_config.main:main',
-            'nwg-shell-check-updates = nwg_shell_config.check_updates:main'
+            'nwg-shell-config = nwg_shell_config.main:main'
         ]
     }
 )
