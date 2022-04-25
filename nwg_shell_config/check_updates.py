@@ -47,13 +47,13 @@ def load_settings():
 
 
 def main():
-    print("nwg-shell-version: {} ({})".format(ver2int(__version__), __version__))
+    print("nwg-shell-installer: {} ({})".format(ver2int(__version__), __version__))
     load_settings()
     if __version__ != "unknown" and settings["last-upgrade-check"] < ver2int(__version__):
-        print("Checking if upgrade required (v{})".format(__version__))
         upgrade(__version__, settings)
-    else:
-        print("No upgrade required")
+
+    if is_command("nwg-shell"):
+        subprocess.Popen('exec {}'.format("nwg-shell -n"), shell=True)
 
 
 if __name__ == '__main__':
