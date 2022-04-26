@@ -525,13 +525,13 @@ def reload():
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
     p = os.path.join(config_home, "swaync")
     swaync_daemon = "swaync -s {}/{}.css &".format(p, name)
-    print("swaync_daemon", swaync_daemon)
 
     for cmd in ["pkill -f autotiling",
                 "pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
                 "swaymsg reload",
+                "pkill -f mako",
                 "pkill -f swaync",
                 swaync_daemon,
                 "swaync-client --reload-config"]:
