@@ -531,10 +531,10 @@ def reload():
                 "pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
-                "swaymsg reload",
                 "pkill -f swaync",
                 swaync_daemon,
-                "swaync-client --reload-config"]:
+                "swaync-client --reload-config",
+                "swaymsg reload"]:
         subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
     # kill running help window if any
