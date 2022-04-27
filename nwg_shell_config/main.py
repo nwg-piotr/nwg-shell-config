@@ -482,7 +482,7 @@ def save_includes():
 
     # If mako is installed, reloading sway might've already started it.
     # This would prevent swaync daemon from starting. Let's try killing mako just in case.
-    autostart.append("exec always pkill -f mako")
+    autostart.append("exec_always pkill -f mako")
 
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
     p = os.path.join(config_home, "swaync")
