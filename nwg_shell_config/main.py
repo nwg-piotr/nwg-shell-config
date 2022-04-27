@@ -526,9 +526,6 @@ def reload():
     p = os.path.join(config_home, "swaync")
     swaync_daemon = "swaync -s {}/{}.css &".format(p, name)
 
-    # mako is a fucking zombie. If installed, it'll mess up swaync sooner or later.
-    subprocess.Popen("pkill -f mako", shell=True)
-
     for cmd in ["pkill -f autotiling",
                 "pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
