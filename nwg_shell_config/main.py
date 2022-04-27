@@ -480,6 +480,10 @@ def save_includes():
             cmd_night += " -g {}".format(settings["night-gamma"])
         autostart.append(cmd_night)
 
+    # If mako is installed, reloading sway might've already started it.
+    # This would prevent swaync daemon from starting. Let's try killing mako just in case.
+    autostart.append("exec always pkill -f mako")
+
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
     p = os.path.join(config_home, "swaync")
     autostart.append("exec swaync -s {}/{}.css".format(p, name))
@@ -530,11 +534,11 @@ def reload():
                 "pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
-                "swaymsg reload",
-                "pkill -f mako",
                 "pkill -f swaync",
+                "pkill -f mako",  # which should not be installed BTW, but just in case
                 swaync_daemon,
-                "swaync-client --reload-config"]:
+                "swaync-client --reload-config",
+                "swaymsg reload"]:
         subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
     # kill running help window if any
