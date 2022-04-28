@@ -4,6 +4,29 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
+def side_menu():
+    list_box = Gtk.ListBox()
+    row = SideMenuRow("Item 1")
+    list_box.append(row)
+
+    row = SideMenuRow("Item 2")
+    list_box.append(row)
+
+    row = SideMenuRow("Item 3")
+    list_box.append(row)
+
+    list_box.show_all()
+
+
+class SideMenuRow(Gtk.ListBoxRow):
+    def __init__(self, label):
+        super().__init__()
+        self.eb = Gtk.EventBox()
+        self.add(self.eb)
+        lbl = Gtk.Label.new(label)
+        self.eb.add(lbl)
+
+
 def screen_tab():
     frame = Gtk.Frame()
     frame.set_size_request(500, 0)
