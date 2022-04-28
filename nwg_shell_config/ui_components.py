@@ -7,7 +7,7 @@ from gi.repository import Gtk
 def side_menu():
     list_box = Gtk.ListBox()
     list_box.set_property("margin", 6)
-    list_box.set_property("vexpand", True)
+
     row = SideMenuRow("Screen configuration")
     list_box.add(row)
 
