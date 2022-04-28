@@ -6,9 +6,11 @@ from gi.repository import Gtk
 
 def screen_tab():
     frame = Gtk.Frame()
+    frame.set_size_request(500, 0)
     frame.set_label(" Screen configuration ")
     frame.set_label_align(0.5, 0.5)
-    frame.set_property("margin-top", 6)
+    frame.set_property("margin", 12)
+    frame.set_property("hexpand", True)
     grid = Gtk.Grid()
     frame.add(grid)
     grid.set_property("margin", 12)

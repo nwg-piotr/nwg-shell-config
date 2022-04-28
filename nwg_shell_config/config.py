@@ -73,7 +73,7 @@ class GUI(object):
         global btn_apply
         btn_apply = builder.get_object("btn-apply")
 
-    def set_up_screen_tab(self, menu_item):
+    def set_up_screen_tab(self):
         global content
         content.destroy()
         self.side_menu_bar.deactivate()
@@ -634,6 +634,8 @@ def main():
                 }
                 """
     provider.load_from_data(css)
+
+    ui.set_up_screen_tab()
 
     ui.window.show_all()
     """if settings["panel-preset"] != "custom":
