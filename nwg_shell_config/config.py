@@ -53,10 +53,13 @@ class GUI(object):
         self.window.connect("key-release-event", handle_keyboard)
 
         self.grid = builder.get_object("grid")
-        self.side_menu_bar = builder.get_object("side-menu-bar")
+        # self.side_menu_bar = builder.get_object("side-menu-bar")
+        self.menu = side_menu()
 
-        side_menu_screen = builder.get_object("side-menu-screen")
-        side_menu_screen.connect("activate", self.set_up_screen_tab)
+        self.grid.attach(self.menu, 0, 0, 1, 1)
+
+        # side_menu_screen = builder.get_object("side-menu-screen")
+        # side_menu_screen.connect("activate", self.set_up_screen_tab)
 
         self.version = builder.get_object("version-label")
         self.version.set_text("v{}".format(__version__))
@@ -76,7 +79,7 @@ class GUI(object):
     def set_up_screen_tab(self):
         global content
         content.destroy()
-        self.side_menu_bar.deactivate()
+        # self.side_menu_bar.deactivate()
         content = screen_tab()
         self.grid.attach(content, 1, 0, 1, 1)
 
@@ -630,6 +633,7 @@ def main():
     )
     css = b"""
                 button#app-btn {
+                    background: none;
                     border: none
                 }
                 """

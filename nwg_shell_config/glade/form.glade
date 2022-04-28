@@ -16,85 +16,6 @@
         <property name="row-spacing">6</property>
         <property name="column-spacing">6</property>
         <child>
-          <object class="GtkMenuBar" id="side-menu-bar">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="margin-start">5</property>
-            <property name="margin-top">6</property>
-            <property name="pack-direction">ttb</property>
-            <child>
-              <object class="GtkMenuItem" id="side-menu-common">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Common settings</property>
-                <property name="use-underline">True</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="side-menu-screen">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Screen configuration</property>
-                <property name="use-underline">True</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="side-menu-input">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Input configuration</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="side-menu-applications">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Default applications</property>
-                <property name="use-underline">True</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="side-menu-preset-0">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Preset 0</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="side-menu-preset-1">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Preset  1</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="side-menu-preset-2">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Preset 2</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="side-menu-preset-3">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Preset 3</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="side-menu-preset-custom">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Custom preset</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="left-attach">0</property>
-            <property name="top-attach">0</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
@@ -223,6 +144,9 @@
             <property name="top-attach">1</property>
             <property name="width">2</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <placeholder/>

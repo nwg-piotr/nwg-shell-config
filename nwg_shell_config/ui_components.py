@@ -6,16 +6,41 @@ from gi.repository import Gtk
 
 def side_menu():
     list_box = Gtk.ListBox()
-    row = SideMenuRow("Item 1")
-    list_box.append(row)
+    list_box.set_property("margin", 6)
+    list_box.set_property("vexpand", True)
+    row = SideMenuRow("Screen configuration")
+    list_box.add(row)
 
-    row = SideMenuRow("Item 2")
-    list_box.append(row)
+    row = SideMenuRow("Keyboard")
+    list_box.add(row)
 
-    row = SideMenuRow("Item 3")
-    list_box.append(row)
+    row = SideMenuRow("Pointer device")
+    list_box.add(row)
+
+    row = SideMenuRow("Touchpad")
+    list_box.add(row)
+
+    row = SideMenuRow("Default applications")
+    list_box.add(row)
+
+    row = SideMenuRow("Common settings")
+    list_box.add(row)
+
+    row = SideMenuRow("Preset 0")
+    list_box.add(row)
+
+    row = SideMenuRow("Preset 1")
+    list_box.add(row)
+
+    row = SideMenuRow("Preset 2")
+    list_box.add(row)
+
+    row = SideMenuRow("Custom preset")
+    list_box.add(row)
 
     list_box.show_all()
+
+    return list_box
 
 
 class SideMenuRow(Gtk.ListBoxRow):
@@ -24,12 +49,15 @@ class SideMenuRow(Gtk.ListBoxRow):
         self.eb = Gtk.EventBox()
         self.add(self.eb)
         lbl = Gtk.Label.new(label)
+        lbl.set_property("halign", Gtk.Align.START)
+        lbl.set_property("margin-start", 6)
+        lbl.set_property("margin-end", 6)
         self.eb.add(lbl)
 
 
 def screen_tab():
     frame = Gtk.Frame()
-    frame.set_size_request(500, 0)
+    # frame.set_size_request(640, 480)
     frame.set_label(" Screen configuration ")
     frame.set_label_align(0.5, 0.5)
     frame.set_property("margin", 12)
