@@ -1851,7 +1851,7 @@ notification daemon and clear notifications.</property>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
+                <property name="fill">False</property>
                 <property name="padding">10</property>
                 <property name="position">1</property>
               </packing>
