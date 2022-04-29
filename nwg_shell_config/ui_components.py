@@ -143,6 +143,16 @@ def screen_tab(settings):
     btn.connect("clicked", launch, "nwg-look")
     box.pack_start(btn, False, True, 0)
 
+    btn = Gtk.Button()
+    btn.set_property("name", "app-btn")
+    btn.set_always_show_image(True)
+    btn.set_image_position(Gtk.PositionType.TOP)
+    img = Gtk.Image.new_from_icon_name("nwg-panel", Gtk.IconSize.DIALOG)
+    btn.set_image(img)
+    btn.set_label("Panel settings")
+    btn.connect("clicked", launch, "nwg-panel-config")
+    box.pack_start(btn, False, True, 0)
+
     lbl = Gtk.Label()
     lbl.set_markup("<b>Autotiling</b>")
     lbl.set_property("margin-top", 6)
