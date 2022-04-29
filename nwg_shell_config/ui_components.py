@@ -107,7 +107,7 @@ def screen_tab(settings):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
-    box = Gtk.Box(Gtk.Orientation.HORIZONTAL, 36)
+    box = Gtk.Box(Gtk.Orientation.HORIZONTAL, 6)
     box.set_homogeneous(True)
     box.set_property("margin-left", 12)
     box.set_property("margin-bottom", 12)
@@ -204,7 +204,7 @@ def screen_tab(settings):
     grid.attach(lbl, 2, 4, 1, 1)
 
     sb_temp_low = Gtk.SpinButton.new_with_range(1000, 10000, 100)
-    sb_temp_low.set_tooltip_text("Night light color temperature\n'wlsunset - t'")
+    sb_temp_low.set_tooltip_text("Night light color temperature\n'wlsunset -t'")
     sb_temp_low.set_value(settings["night-temp-low"])
     grid.attach(sb_temp_low, 3, 4, 1, 1)
 
@@ -224,7 +224,7 @@ def screen_tab(settings):
     grid.attach(lbl, 2, 5, 1, 1)
 
     sb_temp_high = Gtk.SpinButton.new_with_range(1000, 10000, 100)
-    sb_temp_high.set_tooltip_text("Day light color temperature\n'wlsunset - T'")
+    sb_temp_high.set_tooltip_text("Day light color temperature\n'wlsunset -T'")
     sb_temp_high.set_value(settings["night-temp-high"])
     grid.attach(sb_temp_high, 3, 5, 1, 1)
 
@@ -235,7 +235,7 @@ def screen_tab(settings):
     sb_gamma = Gtk.SpinButton.new_with_range(0.1, 10.0, 0.1)
     sb_gamma.set_value(settings["night-gamma"])
     sb_gamma.connect("value-changed", set_from_spinbutton, settings, "night-gamma", 1)
-    sb_gamma.set_tooltip_text("'wlsunset - g'")
+    sb_gamma.set_tooltip_text("'wlsunset -g'")
     grid.attach(sb_gamma, 1, 6, 1, 1)
 
     lbl = Gtk.Label()

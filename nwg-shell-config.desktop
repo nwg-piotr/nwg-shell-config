@@ -11,6 +11,6 @@ Comment=Tool to configure nwg-shell
 Comment[pl]=Narzędzie do konfiguracji powłoki nwg-shell
 
 Exec=nwg-shell-config
-Icon=nwg-shell
+Icon=nwg-shell-config
 Terminal=false
 Categories=Settings;DesktopSettings;

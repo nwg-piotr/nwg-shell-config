@@ -32,7 +32,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="margin-start">6</property>
-                    <property name="icon-name">nwg-shell</property>
+                    <property name="icon-name">nwg-shell-config</property>
                     <property name="icon_size">3</property>
                   </object>
                   <packing>
