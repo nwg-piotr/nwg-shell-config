@@ -27,6 +27,7 @@ preset = {}
 
 content = Gtk.Frame()
 btn_apply = Gtk.Button()
+grid = Gtk.Grid()
 
 
 def validate_workspaces(gtk_entry):
@@ -44,6 +45,75 @@ def handle_keyboard(window, event):
         window.close()
 
 
+def side_menu():
+    list_box = Gtk.ListBox()
+    list_box.set_property("margin-top", 6)
+
+    row = Gtk.ListBoxRow()
+    row.set_selectable(False)
+    lbl = Gtk.Label()
+    lbl.set_property("halign", Gtk.Align.START)
+    lbl.set_markup("<b>Common</b>")
+    row.add(lbl)
+    list_box.add(row)
+
+    row = SideMenuRow("Screen settings")
+    row.eb.connect("button-press-event", set_up_screen_tab)
+    list_box.add(row)
+
+    row = SideMenuRow("Keyboard")
+    list_box.add(row)
+
+    row = SideMenuRow("Pointer device")
+    list_box.add(row)
+
+    row = SideMenuRow("Touchpad")
+    list_box.add(row)
+
+    row = SideMenuRow("Default applications")
+    row.eb.connect("button-press-event", set_up_applications_tab)
+    list_box.add(row)
+
+    row = Gtk.ListBoxRow()
+    row.set_selectable(False)
+    lbl = Gtk.Label()
+    lbl.set_property("halign", Gtk.Align.START)
+    lbl.set_property("margin-top", 6)
+    lbl.set_markup("<b>Desktop styles</b>")
+    row.add(lbl)
+    list_box.add(row)
+
+    row = SideMenuRow("Preset 0")
+    list_box.add(row)
+
+    row = SideMenuRow("Preset 1")
+    list_box.add(row)
+
+    row = SideMenuRow("Preset 2")
+    list_box.add(row)
+
+    row = SideMenuRow("Custom preset")
+    list_box.add(row)
+
+    list_box.show_all()
+
+    return list_box
+
+
+def set_up_screen_tab(*args):
+    global content
+    content.destroy()
+    content = screen_tab(settings)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_applications_tab(*args):
+    global content
+    content.destroy()
+    content = applications_tab(settings)
+    grid.attach(content, 1, 0, 1, 1)
+
+
 class GUI(object):
     def __init__(self):
         builder = Gtk.Builder()
@@ -53,13 +123,17 @@ class GUI(object):
         self.window.connect('destroy', Gtk.main_quit)
         self.window.connect("key-release-event", handle_keyboard)
 
-        self.grid = builder.get_object("grid")
+        global grid
+        grid = builder.get_object("grid")
 
         self.menu = side_menu()
-        self.grid.attach(self.menu, 0, 0, 1, 1)
+        grid.attach(self.menu, 0, 0, 1, 1)
 
         self.version = builder.get_object("version-label")
         self.version.set_text("v{}".format(__version__))
+
+        github = builder.get_object("github")
+        github.set_markup('<a href="https://github.com/nwg-piotr/nwg-shell-config">GitHub</a>')
 
         """
         self.fill_in_from_settings(self)
@@ -72,13 +146,6 @@ class GUI(object):
 
         global btn_apply
         btn_apply = builder.get_object("btn-apply")
-
-    def set_up_screen_tab(self):
-        global content
-        content.destroy()
-        # self.side_menu_bar.deactivate()
-        content = screen_tab(settings)
-        self.grid.attach(content, 1, 0, 1, 1)
 
     def on_preset_changed(self, combo):
         p = combo.get_active_text()
@@ -632,7 +699,7 @@ def main():
             """
     provider.load_from_data(css)
 
-    ui.set_up_screen_tab()
+    set_up_screen_tab()
 
     ui.window.show_all()
     """if settings["panel-preset"] != "custom":
