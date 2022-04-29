@@ -285,7 +285,7 @@ def applications_tab(settings):
 
     combo = Gtk.ComboBoxText()
     combo.set_property("halign", Gtk.Align.START)
-    combo.set_tooltip_text("Select from installed browsers.")
+    combo.set_tooltip_text("Select from predefined commands.")
     grid.attach(combo, 1, 4, 1, 1)
     pairs_dict = {}
     for pair in pairs:
