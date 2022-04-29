@@ -54,13 +54,9 @@ class GUI(object):
         self.window.connect("key-release-event", handle_keyboard)
 
         self.grid = builder.get_object("grid")
-        # self.side_menu_bar = builder.get_object("side-menu-bar")
+
         self.menu = side_menu()
-
         self.grid.attach(self.menu, 0, 0, 1, 1)
-
-        # side_menu_screen = builder.get_object("side-menu-screen")
-        # side_menu_screen.connect("activate", self.set_up_screen_tab)
 
         self.version = builder.get_object("version-label")
         self.version.set_text("v{}".format(__version__))
@@ -81,7 +77,7 @@ class GUI(object):
         global content
         content.destroy()
         # self.side_menu_bar.deactivate()
-        content = screen_tab()
+        content = screen_tab(settings)
         self.grid.attach(content, 1, 0, 1, 1)
 
     def on_preset_changed(self, combo):
@@ -629,15 +625,11 @@ def main():
     screen = Gdk.Screen.get_default()
     provider = Gtk.CssProvider()
     style_context = Gtk.StyleContext()
-    style_context.add_provider_for_screen(
-        screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-    )
+    style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
     css = b"""
-                button#app-btn {
-                    background: none;
-                    border: none
-                }
-                """
+            button#app-btn { padding: 6px; border: none }
+            * { outline: none }
+            """
     provider.load_from_data(css)
 
     ui.set_up_screen_tab()
