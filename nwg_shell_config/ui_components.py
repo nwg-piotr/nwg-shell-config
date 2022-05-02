@@ -16,6 +16,11 @@ def set_from_spinbutton(cb, settings, key, ndigits):
     settings[key] = round(cb.get_value(), ndigits)
 
 
+def set_int_from_spinbutton(cb, settings, key):
+    settings[key] = int(cb.get_value())
+    print(">>>", int(cb.get_value()))
+
+
 def update_lat_lon(btn, sb_lat, sb_lon):
     tz, lat, lon = get_lat_lon()
     sb_lat.set_value(lat)
@@ -378,7 +383,7 @@ def drawer_tab(preset, preset_name):
 
     sb_columns = Gtk.SpinButton.new_with_range(1, 9, 1)
     sb_columns.set_value(preset["launcher-columns"])
-    sb_columns.connect("value-changed", set_from_spinbutton, preset, "launcher-columns", 1)
+    sb_columns.connect("value-changed", set_int_from_spinbutton, preset, "launcher-columns")
     sb_columns.set_tooltip_text("number of columns to show icons in")
     grid.attach(sb_columns, 1, 1, 1, 1)
 
@@ -388,7 +393,7 @@ def drawer_tab(preset, preset_name):
 
     sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
     sb_icon_size.set_value(preset["launcher-icon-size"])
-    sb_icon_size.connect("value-changed", set_from_spinbutton, preset, "launcher-icon-size", 1)
+    sb_icon_size.connect("value-changed", set_int_from_spinbutton, preset, "launcher-icon-size")
     sb_icon_size.set_tooltip_text("application icon size")
     grid.attach(sb_icon_size, 1, 2, 1, 1)
 
@@ -398,7 +403,7 @@ def drawer_tab(preset, preset_name):
 
     sb_fs_columns = Gtk.SpinButton.new_with_range(1, 9, 1)
     sb_fs_columns.set_value(preset["launcher-file-search-columns"])
-    sb_fs_columns.connect("value-changed", set_from_spinbutton, preset, "launcher-file-search-columns", 1)
+    sb_fs_columns.connect("value-changed", set_int_from_spinbutton, preset, "launcher-file-search-columns")
     sb_fs_columns.set_tooltip_text("number of columns to show file search result in")
     grid.attach(sb_fs_columns, 1, 3, 1, 1)
 
