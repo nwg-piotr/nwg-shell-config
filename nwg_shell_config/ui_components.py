@@ -604,7 +604,7 @@ def notification_tab(preset, preset_name):
 
 def panel_styling_tab(settings, preset, preset_name):
     frame = Gtk.Frame()
-    frame.set_label("  {}: Panel & styles  ".format(preset_name))
+    frame.set_label("  {}: Panel & css styles  ".format(preset_name))
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
