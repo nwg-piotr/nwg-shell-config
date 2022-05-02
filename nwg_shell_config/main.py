@@ -308,7 +308,7 @@ class GUI(object):
             self.editor.set_text(get_editor())
 
         if self.browser.get_text() == "":
-            self.browser.set_text(get_browser_command())
+            self.browser.set_text(get_browsers())
 
     def read_form(self):
         settings["keyboard-layout"] = self.keyboard_layout.get_text()

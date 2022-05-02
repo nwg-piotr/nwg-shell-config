@@ -299,15 +299,7 @@ def applications_tab(settings):
     entry_browser = Gtk.Entry()
     entry_browser.set_tooltip_text("Command to run web browser")
     entry_browser.set_property("hexpand", True)
-    pairs = [("chromium", "chromium --enable-features=UseOzonePlatform --ozone-platform=wayland"),
-                 ("firefox", "MOZ_ENABLE_WAYLAND=1 firefox"),
-                 ("google-chrome-stable",
-                  "google-chrome-stable --enable-features=UseOzonePlatform --ozone-platform=wayland")]
-    detected = ""
-    for pair in pairs:
-        if is_command(pair[0]):
-            detected = pair[0]
-            break
+
     entry_browser.set_text(settings["browser"])
     entry_browser.connect("changed", set_from_entry, settings, "browser")
     grid.attach(entry_browser, 1, 3, 2, 1)
@@ -317,16 +309,33 @@ def applications_tab(settings):
     combo.set_tooltip_text("Select from predefined commands.")
     grid.attach(combo, 1, 4, 1, 1)
     pairs_dict = {}
-    for pair in pairs:
-        pairs_dict[pair[0]] = pair[1]
-        combo.append(pair[0], pair[0])
-        if pair[0] in settings["browser"]:
-            combo.set_active_id(pair[0])
-    combo.connect("changed", set_browser_from_combo, entry_browser, pairs_dict)
+    browsers = get_browsers()
+    for key in browsers:
+        combo.append(key, key)
+        if key in settings["browser"]:
+            combo.set_active_id(key)
+    combo.connect("changed", set_browser_from_combo, entry_browser, browsers)
 
     frame.show_all()
 
     return frame
+
+
+def get_browsers():
+    result = {}
+    browsers = {
+        "chromium": "chromium --enable-features=UseOzonePlatform --ozone-platform=wayland",
+        "google-chrome-stable": "google-chrome-stable --enable-features=UseOzonePlatform --ozone-platform=wayland",
+        "firefox": "MOZ_ENABLE_WAYLAND=1 firefox",
+        "qutebrowser": "qutebrowser",
+        "epiphany": "epiphany",
+        "surf": "surf"
+    }
+    for key in browsers:
+        if is_command(key):
+            result[key] = browsers[key]
+
+    return result
 
 
 def drawer_tab(preset, preset_name):
