@@ -324,8 +324,15 @@ class GUI(object):
 
     def on_apply_btn(self, b):
         save_presets()
-        for preset in [preset_0, preset_1, preset_2, preset_3, preset_custom]:
-            update_swaync_config(preset["swaync-positionX"], preset["swaync-positionY"])
+        presets = {
+            "preset-0": preset_0,
+            "preset-1": preset_1,
+            "preset-2": preset_2,
+            "preset-3": preset_3,
+            "custom": preset_custom
+        }
+        preset = presets[settings["panel-preset"]]
+        update_swaync_config(preset["swaync-positionX"], preset["swaync-positionY"])
 
         save_includes()
         f = os.path.join(data_dir, "settings")
