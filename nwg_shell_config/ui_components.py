@@ -200,6 +200,10 @@ def screen_tab(settings):
     sb_lon.set_digits(4)
     grid.attach(sb_lon, 3, 5, 1, 1)
 
+    if (sb_lat.get_value() == -1.0 and sb_lon.get_value()) == -1.0 \
+            or (sb_lat.get_value() == 0.0 and sb_lon.get_value() == 0.0):
+        update_lat_lon(None, sb_lat, sb_lon)
+
     lbl = Gtk.Label.new("Temp high:")
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 5, 1, 1)
@@ -214,9 +218,9 @@ def screen_tab(settings):
     grid.attach(lbl, 0, 6, 1, 1)
 
     btn = Gtk.Button.new_with_label("Detect Lat/Long")
-    btn.set_tooltip_text("If you were online during the first run, the Lat/Long values\n"
-                         "should already reflect your timezone settings.\n"
-                         "Press the button if something went wrong AND you're online now.")
+    btn.set_tooltip_text("If you were online during the first run, the Lat/Long"
+                         "\nvalues should reflect your timezone settings.\n"
+                         "Push the button if something went wrong\nAND if you're online now.")
     btn.connect("clicked", update_lat_lon, sb_lat, sb_lon)
     grid.attach(btn, 3, 6, 1, 1)
 
