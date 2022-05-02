@@ -287,19 +287,9 @@ class GUI(object):
 
         global btn_apply
         btn_apply = builder.get_object("btn-apply")
+        btn_apply.connect("clicked", self.on_apply_btn)
 
-    def on_preset_changed(self, combo):
-        p = combo.get_active_text()
-        settings["panel-preset"] = p
-        self.panel_css.set_sensitive(p == "custom")
-        self.panel_custom.set_visible(p == "custom")
-        self.launcher_css.set_sensitive(p == "custom")
-        self.exit_css.set_sensitive(p == "custom")
-        self.dock_css.set_sensitive(p == "custom")
-
-        load_preset()
-        self.fill_in_from_settings()
-        self.fill_in_missing_values()
+        self.tz, self.lat, self.long = get_lat_lon()
 
     def set_chromium(self, *args):
         self.browser.set_text(
@@ -307,132 +297,6 @@ class GUI(object):
 
     def set_firefox(self, *args):
         self.browser.set_text("MOZ_ENABLE_WAYLAND=1 firefox")
-
-    def fill_in_from_settings(self, *args, skip_preset=False):
-        self.keyboard_layout.set_text(settings["keyboard-layout"])
-        self.autotiling_workspaces.set_text(settings["autotiling-workspaces"])
-        self.autotiling_on.set_active(settings["autotiling-on"])
-
-        self.appindicator.set_active(settings["appindicator"])
-
-        self.night_lat.set_numeric(True)
-        adj = Gtk.Adjustment(lower=-90.0, upper=90.1, step_increment=0.1, page_increment=10.0,
-                             page_size=0.1)
-        self.night_lat.configure(adj, 0.1, 4)
-        self.night_lat.set_value(settings["night-lat"])
-        self.night_lat_info.set_tooltip_text("When undefined, the value for '{}' will be used.".format(self.tz))
-
-        self.night_long.set_value(settings["night-long"])
-        adj = Gtk.Adjustment(lower=-180.0, upper=180.1, step_increment=0.1, page_increment=10.0,
-                             page_size=0.1)
-        self.night_long.configure(adj, 0.1, 4)
-        self.night_long.set_value(settings["night-long"])
-        self.night_long_info.set_tooltip_text("When undefined, the value for '{}' will be used.".format(self.tz))
-
-        self.night_temp_low.set_value(settings["night-temp-low"])
-        adj = Gtk.Adjustment(lower=1000, upper=10001, step_increment=1, page_increment=10.0,
-                             page_size=0.1)
-        self.night_temp_low.configure(adj, 1, 0)
-        self.night_temp_low.set_value(settings["night-temp-low"])
-
-        self.night_temp_high.set_value(settings["night-temp-high"])
-        adj = Gtk.Adjustment(lower=1000, upper=10001, step_increment=1, page_increment=10.0,
-                             page_size=1)
-        self.night_temp_high.configure(adj, 1, 0)
-        self.night_temp_high.set_value(settings["night-temp-high"])
-
-        self.night_gamma.set_value(settings["night-gamma"])
-        adj = Gtk.Adjustment(lower=0.1, upper=10.1, step_increment=0.1, page_increment=1,
-                             page_size=0.1)
-        self.night_gamma.configure(adj, 0.1, 1)
-        self.night_gamma.set_value(settings["night-gamma"])
-
-        self.night_on.set_active(settings["night-on"])
-        self.terminal.set_text(settings["terminal"])
-        self.file_manager.set_text(settings["file-manager"])
-        self.editor.set_text(settings["editor"])
-        self.browser.set_text(settings["browser"])
-        self.show_on_startup.set_active(settings["show-on-startup"])
-        self.show_help.set_active(settings["show-help"])
-
-        self.launcher_columns.set_value(preset["launcher-columns"])
-        self.launcher_icon_size.set_value(preset["launcher-icon-size"])
-        self.launcher_file_search_columns.set_value(preset["launcher-file-search-columns"])
-        self.launcher_search_files.set_active(preset["launcher-search-files"])
-        self.launcher_categories.set_active(preset["launcher-categories"])
-        self.launcher_resident.set_active(preset["launcher-resident"])
-        self.launcher_overlay.set_active(preset["launcher-overlay"])
-        self.launcher_css.set_text(preset["launcher-css"])
-        self.launcher_on.set_active(preset["launcher-on"])
-
-        self.launcher_columns.set_numeric(True)
-        adj = Gtk.Adjustment(lower=1, upper=10, step_increment=1, page_increment=1,
-                             page_size=1)
-        self.launcher_columns.configure(adj, 1, 0)
-        self.launcher_columns.set_value(preset["launcher-columns"])
-
-        self.launcher_icon_size.set_numeric(True)
-        adj = Gtk.Adjustment(lower=8, upper=256, step_increment=1, page_increment=1,
-                             page_size=1)
-        self.launcher_icon_size.configure(adj, 1, 0)
-        self.launcher_icon_size.set_value(preset["launcher-icon-size"])
-
-        self.launcher_file_search_columns.set_numeric(True)
-        adj = Gtk.Adjustment(lower=1, upper=12, step_increment=1, page_increment=1,
-                             page_size=1)
-        self.launcher_file_search_columns.configure(adj, 1, 0)
-        self.launcher_file_search_columns.set_value(preset["launcher-file-search-columns"])
-
-        self.exit_position.set_active_id(preset["exit-position"])
-        self.exit_full.set_active(preset["exit-full"])
-        self.exit_alignment.set_active_id(preset["exit-alignment"])
-
-        self.exit_margin.set_numeric(True)
-        adj = Gtk.Adjustment(lower=0, upper=256, step_increment=1, page_increment=10,
-                             page_size=1)
-        self.exit_margin.configure(adj, 1, 0)
-        self.exit_margin.set_value(preset["exit-margin"])
-
-        self.exit_icon_size.set_numeric(True)
-        adj = Gtk.Adjustment(lower=8, upper=256, step_increment=1, page_increment=10,
-                             page_size=1)
-        self.exit_icon_size.configure(adj, 1, 0)
-        self.exit_icon_size.set_value(preset["exit-icon-size"])
-        self.exit_css.set_text(preset["exit-css"])
-        self.exit_on.set_active(preset["exit-on"])
-
-        self.dock_position.set_active_id(preset["dock-position"])
-        if preset["dock-output"]:
-            self.dock_output.set_active_id(preset["dock-output"])
-
-        self.dock_full.set_active(preset["dock-full"])
-        self.dock_autohide.set_active(preset["dock-autohide"])
-        self.dock_permanent.set_active(preset["dock-permanent"])
-        self.dock_exclusive.set_active(preset["dock-exclusive"])
-        self.dock_alignment.set_active_id(preset["dock-alignment"])
-
-        self.dock_margin.set_numeric(True)
-        adj = Gtk.Adjustment(lower=0, upper=256, step_increment=1, page_increment=10,
-                             page_size=1)
-        self.dock_margin.configure(adj, 1, 0)
-        self.dock_margin.set_value(preset["dock-margin"])
-
-        self.dock_icon_size.set_numeric(True)
-        adj = Gtk.Adjustment(lower=0, upper=256, step_increment=1, page_increment=10,
-                             page_size=1)
-        self.dock_icon_size.configure(adj, 1, 0)
-        self.dock_icon_size.set_value(preset["dock-icon-size"])
-
-        self.panel_preset.set_active_id(settings["panel-preset"])
-        # this must be after the previous line or will get overridden by the `switch_dock` method
-        self.dock_css.set_text(preset["dock-css"])
-        self.dock_on.set_active(preset["dock-on"])
-
-        self.panel_css.set_text(preset["panel-css"])
-        self.panel_custom.set_text(settings["panel-custom"])
-
-        self.swaync_positionX.set_active_id(preset["swaync-positionX"])
-        self.swaync_positionY.set_active_id(preset["swaync-positionY"])
 
     def fill_in_missing_values(self, *args):
         if self.keyboard_layout.get_text() == "":
@@ -458,65 +322,12 @@ class GUI(object):
         if self.browser.get_text() == "":
             self.browser.set_text(get_browser_command())
 
-    def read_form(self):
-        settings["keyboard-layout"] = self.keyboard_layout.get_text()
-        settings["autotiling-workspaces"] = self.autotiling_workspaces.get_text()
-        settings["autotiling-on"] = self.autotiling_on.get_active()
-        settings["appindicator"] = self.appindicator.get_active()
-        settings["night-lat"] = self.night_lat.get_value()
-        settings["night-long"] = self.night_long.get_value()
-        settings["night-temp-low"] = int(self.night_temp_low.get_value())
-        settings["night-temp-high"] = int(self.night_temp_high.get_value())
-        settings["night-gamma"] = round(self.night_gamma.get_value(), 2)
-        settings["night-on"] = self.night_on.get_active()
-        settings["terminal"] = self.terminal.get_text()
-        settings["file-manager"] = self.file_manager.get_text()
-        settings["editor"] = self.editor.get_text()
-        settings["browser"] = self.browser.get_text()
-        settings["panel-preset"] = self.panel_preset.get_active_text()
-        settings["panel-custom"] = self.panel_custom.get_text()
-        settings["show-on-startup"] = self.show_on_startup.get_active()
-        settings["show-help"] = self.show_help.get_active()
+    def on_apply_btn(self, b):
+        save_presets()
+        for preset in [preset_0, preset_1, preset_2, preset_3, preset_custom]:
+            update_swaync_config(preset["swaync-positionX"], preset["swaync-positionY"])
 
-        preset["launcher-columns"] = int(self.launcher_columns.get_value())
-        preset["launcher-icon-size"] = int(self.launcher_icon_size.get_value())
-        preset["launcher-file-search-columns"] = int(self.launcher_file_search_columns.get_value())
-        preset["launcher-search-files"] = self.launcher_search_files.get_active()
-        preset["launcher-categories"] = self.launcher_categories.get_active()
-        preset["launcher-resident"] = self.launcher_resident.get_active()
-        preset["launcher-overlay"] = self.launcher_overlay.get_active()
-        preset["launcher-css"] = self.launcher_css.get_text()
-        preset["launcher-on"] = self.launcher_on.get_active()
-        preset["exit-position"] = self.exit_position.get_active_text()
-        preset["exit-full"] = self.exit_full.get_active()
-        preset["exit-alignment"] = self.exit_alignment.get_active_text()
-        preset["exit-margin"] = int(self.exit_margin.get_value())
-        preset["exit-icon-size"] = int(self.exit_icon_size.get_value())
-        preset["exit-css"] = self.exit_css.get_text()
-        preset["exit-on"] = self.exit_on.get_active()
-        preset["dock-position"] = self.dock_position.get_active_text()
-        if self.dock_output.get_active_text():
-            preset["dock-output"] = self.dock_output.get_active_text()
-        preset["dock-full"] = self.dock_full.get_active()
-        preset["dock-autohide"] = self.dock_autohide.get_active()
-        preset["dock-permanent"] = self.dock_permanent.get_active()
-        preset["dock-exclusive"] = self.dock_exclusive.get_active()
-        preset["dock-alignment"] = self.dock_alignment.get_active_text()
-        preset["dock-margin"] = int(self.dock_margin.get_value())
-        preset["dock-icon-size"] = int(self.dock_icon_size.get_value())
-        preset["dock-css"] = self.dock_css.get_text()
-        preset["dock-on"] = self.dock_on.get_active()
-        preset["panel-css"] = self.panel_css.get_text()
-
-        preset["swaync-positionX"] = self.swaync_positionX.get_active_id()
-        preset["swaync-positionY"] = self.swaync_positionY.get_active_id()
-
-    def on_save_btn(self, b):
-        self.read_form()
-        save_preset()
-        update_swaync_config(preset["swaync-positionX"], preset["swaync-positionY"])
-
-        save_includes()
+        # save_includes()
         f = os.path.join(data_dir, "settings")
         print("Saving {}".format(f))
         save_json(settings, f)
@@ -799,10 +610,28 @@ def load_preset(file_name):
         return {}
 
 
-def save_preset():
-    f = os.path.join(data_dir, settings["panel-preset"])
+def save_presets():
+    global preset_0, preset_1, preset_2, preset_3, preset_custom
+
+    f = os.path.join(data_dir, "preset-0")
     print("Saving {}".format(f))
-    save_json(preset, f)
+    save_json(preset_0, f)
+
+    f = os.path.join(data_dir, "preset-1")
+    print("Saving {}".format(f))
+    save_json(preset_1, f)
+
+    f = os.path.join(data_dir, "preset-2")
+    print("Saving {}".format(f))
+    save_json(preset_2, f)
+
+    f = os.path.join(data_dir, "preset-3")
+    print("Saving {}".format(f))
+    save_json(preset_3, f)
+
+    f = os.path.join(data_dir, "custom")
+    print("Saving {}".format(f))
+    save_json(preset_custom, f)
 
 
 def update_swaync_config(pos_x, pos_y):
