@@ -327,7 +327,7 @@ class GUI(object):
         for preset in [preset_0, preset_1, preset_2, preset_3, preset_custom]:
             update_swaync_config(preset["swaync-positionX"], preset["swaync-positionY"])
 
-        # save_includes()
+        save_includes()
         f = os.path.join(data_dir, "settings")
         print("Saving {}".format(f))
         save_json(settings, f)
@@ -348,6 +348,17 @@ def save_includes():
         variables.append("set $filemanager {}".format(settings["file-manager"]))
     if settings["editor"]:
         variables.append("set $editor {}".format(settings["editor"]))
+
+    if settings["panel-preset"] == "preset-0":
+        preset = preset_0
+    elif settings["panel-preset"] == "preset-1":
+        preset = preset_1
+    elif settings["panel-preset"] == "preset-2":
+        preset = preset_2
+    elif settings["panel-preset"] == "preset-3":
+        preset = preset_3
+    else:
+        preset = preset_custom
 
     cmd_launcher = "nwg-drawer"
     if preset["launcher-resident"]:

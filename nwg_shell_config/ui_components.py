@@ -221,6 +221,19 @@ def screen_tab(settings):
     cb_help_on.connect("toggled", set_from_checkbutton, settings, "show-help")
     grid.attach(cb_help_on, 1, 7, 1, 1)
 
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>Preset in use</b>")
+    lbl.set_property("halign", Gtk.Align.END)
+    lbl.set_property("margin-top", 12)
+    grid.attach(lbl, 0, 8, 1, 1)
+
+    combo = Gtk.ComboBoxText()
+    combo.set_property("halign", Gtk.Align.START)
+    grid.attach(combo, 1, 8, 1, 2)
+    for p in ["preset-0", "preset-1", "preset-2", "preset-3", "custom"]:
+        combo.append(p, p)
+    combo.set_active_id(settings["panel-preset"])
+    combo.connect("changed", set_dict_key_from_combo, settings, "panel-preset")
     frame.show_all()
 
     return frame
