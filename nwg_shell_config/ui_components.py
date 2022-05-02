@@ -320,8 +320,8 @@ def applications_tab(settings):
     for pair in pairs:
         pairs_dict[pair[0]] = pair[1]
         combo.append(pair[0], pair[0])
-        if detected:
-            combo.set_active_id(detected)
+        if pair[0] in settings["browser"]:
+            combo.set_active_id(pair[0])
     combo.connect("changed", set_browser_from_combo, entry_browser, pairs_dict)
 
     frame.show_all()
