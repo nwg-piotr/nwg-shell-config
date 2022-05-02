@@ -18,7 +18,6 @@ def set_from_spinbutton(cb, settings, key, ndigits):
 
 def set_int_from_spinbutton(cb, settings, key):
     settings[key] = int(cb.get_value())
-    print(">>>", int(cb.get_value()))
 
 
 def update_lat_lon(btn, sb_lat, sb_lon):
@@ -192,6 +191,7 @@ def screen_tab(settings):
     sb_temp_low = Gtk.SpinButton.new_with_range(1000, 10000, 100)
     sb_temp_low.set_tooltip_text("Night light color temperature\n'wlsunset -t'")
     sb_temp_low.set_value(settings["night-temp-low"])
+    sb_temp_low.connect("value-changed", set_int_from_spinbutton, settings, "night-temp-low")
     grid.attach(sb_temp_low, 1, 4, 1, 1)
 
     lbl = Gtk.Label.new("Longitude:")
@@ -216,6 +216,7 @@ def screen_tab(settings):
     sb_temp_high = Gtk.SpinButton.new_with_range(1000, 10000, 100)
     sb_temp_high.set_tooltip_text("Day light color temperature\n'wlsunset -T'")
     sb_temp_high.set_value(settings["night-temp-high"])
+    sb_temp_high.connect("value-changed", set_int_from_spinbutton, settings, "night-temp-high")
     grid.attach(sb_temp_high, 1, 5, 1, 1)
 
     lbl = Gtk.Label.new("Gamma:")
