@@ -36,6 +36,10 @@ def set_browser_from_combo(combo, entry, browsers_dict):
     entry.set_text(browsers_dict[combo.get_active_id()])
 
 
+def set_dict_key_from_combo(combo, settings, key):
+    settings[key] = combo.get_active_id()
+
+
 def launch(widget, cmd):
     print("Executing '{}'".format(cmd))
     subprocess.Popen('exec {}'.format(cmd), shell=True)
@@ -48,14 +52,26 @@ class SideMenuRow(Gtk.ListBoxRow):
         self.add(self.eb)
         lbl = Gtk.Label.new(label)
         lbl.set_property("halign", Gtk.Align.START)
-        lbl.set_property("margin-start", 6)
-        lbl.set_property("margin-end", 6)
+        lbl.set_property("margin-start", 9)
+        lbl.set_property("margin-end", 9)
+        self.eb.add(lbl)
+
+
+class SubMenuRow(Gtk.ListBoxRow):
+    def __init__(self, label):
+        super().__init__()
+        self.eb = Gtk.EventBox()
+        self.add(self.eb)
+        lbl = Gtk.Label.new(label)
+        lbl.set_property("halign", Gtk.Align.START)
+        lbl.set_property("margin-start", 18)
+        lbl.set_property("margin-end", 9)
         self.eb.add(lbl)
 
 
 def screen_tab(settings):
     frame = Gtk.Frame()
-    frame.set_label("  Screen settings  ")
+    frame.set_label("  Common: Screen settings  ")
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
@@ -212,7 +228,7 @@ def screen_tab(settings):
 
 def applications_tab(settings):
     frame = Gtk.Frame()
-    frame.set_label("  Default applications  ")
+    frame.set_label("  Common: Default applications  ")
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
@@ -277,9 +293,9 @@ def applications_tab(settings):
     detected = ""
     for pair in pairs:
         if is_command(pair[0]):
-            entry_browser.set_text(pair[1])
             detected = pair[0]
             break
+    entry_browser.set_text(settings["browser"])
     entry_browser.connect("changed", set_from_entry, settings, "browser")
     grid.attach(entry_browser, 1, 3, 2, 1)
 
@@ -294,6 +310,365 @@ def applications_tab(settings):
         if detected:
             combo.set_active_id(detected)
     combo.connect("changed", set_browser_from_combo, entry_browser, pairs_dict)
+
+    frame.show_all()
+
+    return frame
+
+
+def drawer_tab(preset, preset_name):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: Application drawer  ".format(preset_name))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_drawer_on = Gtk.CheckButton.new_with_label("Drawer on")
+    cb_drawer_on.set_active(preset["launcher-on"])
+    cb_drawer_on.connect("toggled", set_from_checkbutton, preset, "launcher-on")
+    grid.attach(cb_drawer_on, 0, 0, 1, 1)
+
+    lbl = Gtk.Label.new("Columns:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    sb_columns = Gtk.SpinButton.new_with_range(1, 9, 1)
+    sb_columns.set_value(preset["launcher-columns"])
+    sb_columns.connect("value-changed", set_from_spinbutton, preset, "launcher-columns", 1)
+    sb_columns.set_tooltip_text("number of columns to show icons in")
+    grid.attach(sb_columns, 1, 1, 1, 1)
+
+    lbl = Gtk.Label.new("Icon size:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
+    sb_icon_size.set_value(preset["launcher-icon-size"])
+    sb_icon_size.connect("value-changed", set_from_spinbutton, preset, "launcher-icon-size", 1)
+    sb_icon_size.set_tooltip_text("application icon size")
+    grid.attach(sb_icon_size, 1, 2, 1, 1)
+
+    lbl = Gtk.Label.new("File search columns:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    sb_fs_columns = Gtk.SpinButton.new_with_range(1, 9, 1)
+    sb_fs_columns.set_value(preset["launcher-file-search-columns"])
+    sb_fs_columns.connect("value-changed", set_from_spinbutton, preset, "launcher-file-search-columns", 1)
+    sb_fs_columns.set_tooltip_text("number of columns to show file search result in")
+    grid.attach(sb_fs_columns, 1, 3, 1, 1)
+
+    cb_search_files = Gtk.CheckButton.new_with_label("search files")
+    cb_search_files.set_active(preset["launcher-search-files"])
+    cb_search_files.connect("toggled", set_from_checkbutton, preset, "launcher-search-files")
+    grid.attach(cb_search_files, 2, 3, 1, 1)
+
+    cb_categories = Gtk.CheckButton.new_with_label("Show category menu")
+    cb_categories.set_tooltip_text("show categories menu (icons) on top")
+    cb_categories.set_active(preset["launcher-categories"])
+    cb_categories.connect("toggled", set_from_checkbutton, preset, "launcher-categories")
+    grid.attach(cb_categories, 0, 4, 1, 1)
+
+    cb_resident = Gtk.CheckButton.new_with_label("Keep resident")
+    cb_resident.set_tooltip_text("keep drawer running in the background")
+    cb_resident.set_active(preset["launcher-resident"])
+    cb_resident.connect("toggled", set_from_checkbutton, preset, "launcher-resident")
+    grid.attach(cb_resident, 0, 5, 1, 1)
+
+    cb_overlay = Gtk.CheckButton.new_with_label("Open on overlay")
+    cb_overlay.set_tooltip_text("open drawer on the overlay layer")
+    cb_overlay.set_active(preset["launcher-overlay"])
+    cb_overlay.connect("toggled", set_from_checkbutton, preset, "launcher-overlay")
+    grid.attach(cb_overlay, 0, 6, 1, 1)
+
+    frame.show_all()
+
+    return frame
+
+
+def dock_tab(preset, preset_name, outputs):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: Dock  ".format(preset_name))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_dock_on = Gtk.CheckButton.new_with_label("Dock on")
+    cb_dock_on.set_active(preset["dock-on"])
+    cb_dock_on.connect("toggled", set_from_checkbutton, preset, "dock-on")
+    grid.attach(cb_dock_on, 0, 0, 1, 1)
+
+    lbl = Gtk.Label.new("Position:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    combo_position = Gtk.ComboBoxText()
+    combo_position.set_property("halign", Gtk.Align.START)
+    grid.attach(combo_position, 1, 1, 1, 1)
+    for item in ["bottom", "top", "left"]:
+        combo_position.append(item, item)
+    combo_position.set_active_id(preset["dock-position"])
+    combo_position.connect("changed", set_dict_key_from_combo, preset, "dock-position")
+
+    lbl = Gtk.Label.new("Alignment:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    combo_alignment = Gtk.ComboBoxText()
+    combo_alignment.set_property("halign", Gtk.Align.START)
+    grid.attach(combo_alignment, 1, 2, 1, 1)
+    for item in ["center", "start", "end"]:
+        combo_alignment.append(item, item)
+    combo_alignment.set_active_id(preset["dock-alignment"])
+    combo_alignment.connect("changed", set_dict_key_from_combo, preset, "dock-alignment")
+
+    lbl = Gtk.Label.new("Icon size:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
+    sb_icon_size.set_value(preset["dock-icon-size"])
+    sb_icon_size.connect("value-changed", set_from_spinbutton, preset, "dock-icon-size", 1)
+    sb_icon_size.set_tooltip_text("application icon size")
+    grid.attach(sb_icon_size, 1, 3, 1, 1)
+
+    lbl = Gtk.Label.new("Margin:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    sb_margin = Gtk.SpinButton.new_with_range(0, 256, 1)
+    sb_margin.set_value(preset["dock-margin"])
+    sb_margin.connect("value-changed", set_from_spinbutton, preset, "dock-margin", 1)
+    grid.attach(sb_margin, 1, 4, 1, 1)
+
+    lbl = Gtk.Label.new("Output:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 5, 1, 1)
+
+    combo_outputs = Gtk.ComboBoxText()
+    combo_outputs.set_property("halign", Gtk.Align.START)
+    grid.attach(combo_outputs, 1, 5, 1, 1)
+    combo_outputs.append("Any", "Any")
+    for item in outputs:
+        combo_outputs.append(item, item)
+    combo_outputs.set_active_id(preset["dock-output"])
+    combo_outputs.connect("changed", set_dict_key_from_combo, preset, "dock-output")
+
+    cb_permanent = Gtk.CheckButton.new_with_label("Permanent")
+    cb_permanent.set_active(preset["dock-permanent"])
+    cb_permanent.connect("toggled", set_from_checkbutton, preset, "dock-permanent")
+    sb_icon_size.set_tooltip_text("leave the dock resident, but w/o hotspot")
+    grid.attach(cb_permanent, 0, 6, 1, 1)
+
+    cb_full = Gtk.CheckButton.new_with_label("Full width/height")
+    cb_full.set_active(preset["dock-full"])
+    cb_full.connect("toggled", set_from_checkbutton, preset, "dock-full")
+    cb_full.set_tooltip_text("take full screen width/height")
+    grid.attach(cb_full, 0, 7, 1, 1)
+
+    cb_autohide = Gtk.CheckButton.new_with_label("Auto-show/hide")
+    cb_autohide.set_active(preset["dock-autohide"])
+    cb_autohide.connect("toggled", set_from_checkbutton, preset, "dock-autohide")
+    cb_autohide.set_tooltip_text("Auto-hide dock, show on hotspot pointed")
+    grid.attach(cb_autohide, 0, 8, 1, 1)
+
+    cb_exclusive = Gtk.CheckButton.new_with_label("Auto-show/hide")
+    cb_exclusive.set_active(preset["dock-exclusive"])
+    cb_exclusive.connect("toggled", set_from_checkbutton, preset, "dock-exclusive")
+    cb_exclusive.set_tooltip_text("Move other windows away from dock")
+    grid.attach(cb_exclusive, 0, 9, 1, 1)
+
+    frame.show_all()
+
+    return frame
+
+
+def bar_tab(preset, preset_name):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: Exit menu  ".format(preset_name))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_bar_on = Gtk.CheckButton.new_with_label("Exit menu on")
+    cb_bar_on.set_active(preset["exit-on"])
+    cb_bar_on.connect("toggled", set_from_checkbutton, preset, "exit-on")
+    grid.attach(cb_bar_on, 0, 0, 1, 1)
+
+    lbl = Gtk.Label.new("Position:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    combo_position = Gtk.ComboBoxText()
+    combo_position.set_property("halign", Gtk.Align.START)
+    grid.attach(combo_position, 1, 1, 1, 1)
+    for item in ["center", "top", "bottom", "left", "right"]:
+        combo_position.append(item, item)
+    combo_position.set_active_id(preset["exit-position"])
+    combo_position.connect("changed", set_dict_key_from_combo, preset, "exit-position")
+
+    lbl = Gtk.Label.new("Alignment:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    combo_alignment = Gtk.ComboBoxText()
+    combo_alignment.set_property("halign", Gtk.Align.START)
+    grid.attach(combo_alignment, 1, 2, 1, 1)
+    for item in ["middle", "start", "end"]:
+        combo_alignment.append(item, item)
+    combo_alignment.set_active_id(preset["exit-alignment"])
+    combo_alignment.connect("changed", set_dict_key_from_combo, preset, "exit-alignment")
+    combo_alignment.set_tooltip_text("Alignment in full width/height")
+
+    lbl = Gtk.Label.new("Icon size:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
+    sb_icon_size.set_value(preset["exit-icon-size"])
+    sb_icon_size.connect("value-changed", set_from_spinbutton, preset, "exit-icon-size", 1)
+    sb_icon_size.set_tooltip_text("item icon size")
+    grid.attach(sb_icon_size, 1, 3, 1, 1)
+
+    lbl = Gtk.Label.new("Margin:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    sb_margin = Gtk.SpinButton.new_with_range(0, 256, 1)
+    sb_margin.set_value(preset["exit-margin"])
+    sb_margin.connect("value-changed", set_from_spinbutton, preset, "exit-margin", 1)
+    grid.attach(sb_margin, 1, 4, 1, 1)
+
+    cb_full = Gtk.CheckButton.new_with_label("Full width/height")
+    cb_full.set_active(preset["exit-full"])
+    cb_full.connect("toggled", set_from_checkbutton, preset, "exit-full")
+    cb_full.set_tooltip_text("take full screen width/height")
+    grid.attach(cb_full, 0, 5, 1, 1)
+
+    frame.show_all()
+
+    return frame
+
+
+def notification_tab(preset, preset_name):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: Notification placement  ".format(preset_name))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    lbl = Gtk.Label.new("Horizontal alignment:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    combo_position_x = Gtk.ComboBoxText()
+    combo_position_x.set_property("halign", Gtk.Align.START)
+    grid.attach(combo_position_x, 1, 1, 1, 1)
+    for item in ["left", "right", "center"]:
+        combo_position_x.append(item, item)
+    combo_position_x.set_active_id(preset["swaync-positionX"])
+    combo_position_x.connect("changed", set_dict_key_from_combo, preset, "swaync-positionX")
+
+    lbl = Gtk.Label.new("Vertical alignment:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    combo_position_x = Gtk.ComboBoxText()
+    combo_position_x.set_property("halign", Gtk.Align.START)
+    grid.attach(combo_position_x, 1, 2, 1, 1)
+    for item in ["top", "bottom"]:
+        combo_position_x.append(item, item)
+    combo_position_x.set_active_id(preset["swaync-positionY"])
+    combo_position_x.connect("changed", set_dict_key_from_combo, preset, "swaync-positionY")
+
+    frame.show_all()
+
+    return frame
+
+
+def panel_styling_tab(settings, preset, preset_name):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: Panel & styling  ".format(preset_name))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    lbl = Gtk.Label.new("Panel config name:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 0, 1, 1)
+
+    entry_panel = Gtk.Entry()
+    entry_panel.set_placeholder_text("config")
+    entry_panel.set_tooltip_text("Panel config file name")
+    entry_panel.set_property("halign", Gtk.Align.START)
+    entry_panel.set_text(settings["panel-custom"])
+    entry_panel.connect("changed", set_from_entry, settings, "panel-custom")
+    grid.attach(entry_panel, 1, 0, 1, 1)
+
+    lbl = Gtk.Label.new("Panel css name:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    entry_panel_css = Gtk.Entry()
+    entry_panel_css.set_placeholder_text("style.css")
+    entry_panel_css.set_tooltip_text("Panel css file name")
+    entry_panel_css.set_property("halign", Gtk.Align.START)
+    entry_panel_css.set_text(preset["panel-css"])
+    entry_panel_css.connect("changed", set_from_entry, preset, "panel-css")
+    grid.attach(entry_panel_css, 1, 1, 1, 1)
+
+    lbl = Gtk.Label.new("Drawer css name:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    entry_panel_css = Gtk.Entry()
+    entry_panel_css.set_placeholder_text("drawer.css")
+    entry_panel_css.set_property("halign", Gtk.Align.START)
+    entry_panel_css.set_text(preset["launcher-css"])
+    entry_panel_css.connect("changed", set_from_entry, preset, "launcher-css")
+    grid.attach(entry_panel_css, 1, 2, 1, 1)
+
+    lbl = Gtk.Label.new("Dock css name:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    entry_panel_css = Gtk.Entry()
+    entry_panel_css.set_placeholder_text("style.css")
+    entry_panel_css.set_property("halign", Gtk.Align.START)
+    entry_panel_css.set_text(preset["dock-css"])
+    entry_panel_css.connect("changed", set_from_entry, preset, "dock-css")
+    grid.attach(entry_panel_css, 1, 3, 1, 1)
+
+    lbl = Gtk.Label.new("Exit menu css name:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    entry_panel_css = Gtk.Entry()
+    entry_panel_css.set_placeholder_text("style.css")
+    entry_panel_css.set_property("halign", Gtk.Align.START)
+    entry_panel_css.set_text(preset["exit-css"])
+    entry_panel_css.connect("changed", set_from_entry, preset, "exit-css")
+    grid.attach(entry_panel_css, 1, 4, 1, 1)
 
     frame.show_all()
 

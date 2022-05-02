@@ -23,9 +23,16 @@ config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else 
 
 outputs = []
 settings = {}
-preset = {}
+# preset = {}
+preset_0 = {}
+preset_1 = {}
+preset_2 = {}
+preset_3 = {}
+preset_custom = {}
 
 content = Gtk.Frame()
+submenus = []
+current_submenu = None
 btn_apply = Gtk.Button()
 grid = Gtk.Grid()
 
@@ -54,6 +61,8 @@ def side_menu():
     lbl = Gtk.Label()
     lbl.set_property("halign", Gtk.Align.START)
     lbl.set_markup("<b>Common</b>")
+    lbl.set_property("margin-top", 3)
+    lbl.set_property("margin-start", 3)
     row.add(lbl)
     list_box.add(row)
 
@@ -62,15 +71,18 @@ def side_menu():
     list_box.add(row)
 
     row = SideMenuRow("Keyboard")
+    row.eb.connect("button-press-event", hide_submenus)
     list_box.add(row)
 
     row = SideMenuRow("Pointer device")
+    row.eb.connect("button-press-event", hide_submenus)
     list_box.add(row)
 
     row = SideMenuRow("Touchpad")
+    row.eb.connect("button-press-event", hide_submenus)
     list_box.add(row)
 
-    row = SideMenuRow("Default applications")
+    row = SideMenuRow("Default apps")
     row.eb.connect("button-press-event", set_up_applications_tab)
     list_box.add(row)
 
@@ -80,27 +92,115 @@ def side_menu():
     lbl.set_property("halign", Gtk.Align.START)
     lbl.set_property("margin-top", 6)
     lbl.set_markup("<b>Desktop styles</b>")
+    lbl.set_property("margin-start", 3)
     row.add(lbl)
     list_box.add(row)
 
     row = SideMenuRow("Preset 0")
     list_box.add(row)
 
+    submenu_0 = preset_menu(0)
+    list_box.add(submenu_0)
+    row.eb.connect("button-press-event", toggle_submenu, submenu_0)
+
     row = SideMenuRow("Preset 1")
     list_box.add(row)
+
+    submenu_1 = preset_menu(1)
+    list_box.add(submenu_1)
+    row.eb.connect("button-press-event", toggle_submenu, submenu_1)
 
     row = SideMenuRow("Preset 2")
     list_box.add(row)
 
+    submenu_2 = preset_menu(2)
+    list_box.add(submenu_2)
+    row.eb.connect("button-press-event", toggle_submenu, submenu_2)
+
+    row = SideMenuRow("Preset 3")
+    list_box.add(row)
+
+    submenu_3 = preset_menu(3)
+    list_box.add(submenu_3)
+    row.eb.connect("button-press-event", toggle_submenu, submenu_3)
+
     row = SideMenuRow("Custom preset")
     list_box.add(row)
 
-    list_box.show_all()
+    submenu_c = preset_menu("c")
+    list_box.add(submenu_c)
+    row.eb.connect("button-press-event", toggle_submenu, submenu_c)
 
+    list_box.set_selection_mode(Gtk.SelectionMode.NONE)
     return list_box
 
 
+def preset_menu(preset_id):
+    if preset_id == 0:
+        preset = preset_0
+        preset_name = "Preset 0"
+    elif preset_id == 1:
+        preset = preset_1
+        preset_name = "Preset 1"
+    elif preset_id == 2:
+        preset = preset_2
+        preset_name = "Preset 2"
+    elif preset_id == 3:
+        preset = preset_3
+        preset_name = "Preset 3"
+    else:
+        preset = preset_custom
+        preset_name = "Custom preset"
+
+    list_box = Gtk.ListBox()
+
+    row = SubMenuRow("App drawer")
+    row.eb.connect("button-press-event", set_up_drawer_tab, preset, preset_name)
+    list_box.add(row)
+
+    row = SubMenuRow("Dock")
+    row.eb.connect("button-press-event", set_up_dock_tab, preset, preset_name)
+    list_box.add(row)
+
+    row = SubMenuRow("Exit menu")
+    row.eb.connect("button-press-event", set_up_bar_tab, preset, preset_name)
+    list_box.add(row)
+
+    row = SubMenuRow("Notifications")
+    row.eb.connect("button-press-event", set_up_notification_tab, preset, preset_name)
+    list_box.add(row)
+
+    if preset_id == "c":
+        row = SubMenuRow("Panel & styling")
+        row.eb.connect("button-press-event", set_up_panel_styling_tab, preset, preset_name)
+        list_box.add(row)
+
+    global submenus
+    submenus.append(list_box)
+
+    list_box.set_selection_mode(Gtk.SelectionMode.NONE)
+    return list_box
+
+
+def hide_submenus(*args):
+    for item in submenus:
+        if item != current_submenu:
+            item.hide()
+
+
+def toggle_submenu(event_box, event_button, listbox):
+    global current_submenu
+    current_submenu = listbox
+    hide_submenus()
+    if not listbox.is_visible():
+        listbox.show_all()
+        listbox.unselect_all()
+    else:
+        listbox.hide()
+
+
 def set_up_screen_tab(*args):
+    hide_submenus()
     global content
     content.destroy()
     content = screen_tab(settings)
@@ -108,9 +208,52 @@ def set_up_screen_tab(*args):
 
 
 def set_up_applications_tab(*args):
+    hide_submenus()
     global content
     content.destroy()
     content = applications_tab(settings)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_drawer_tab(event_box, event_button, preset, preset_name):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = drawer_tab(preset, preset_name)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_dock_tab(event_box, event_button, preset, preset_name):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = dock_tab(preset, preset_name, outputs)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_bar_tab(event_box, event_button, preset, preset_name):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = bar_tab(preset, preset_name)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_notification_tab(event_box, event_button, preset, preset_name):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = notification_tab(preset, preset_name)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_panel_styling_tab(event_box, event_button, preset, preset_name):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = panel_styling_tab(settings, preset, preset_name)
+    for key in preset:
+        print(key, preset[key])
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -590,7 +733,20 @@ def load_settings():
         save_json(defaults, settings_file)
 
 
-def load_preset():
+def load_presets():
+    global preset_0
+    preset_0 = load_preset("preset-0")
+    global preset_1
+    preset_1 = load_preset("preset-1")
+    global preset_2
+    preset_2 = load_preset("preset-2")
+    global preset_3
+    preset_3 = load_preset("preset-3")
+    global preset_custom
+    preset_custom = load_preset("custom")
+
+
+def load_preset(file_name):
     defaults = {
         "panel-css": "",
         "launcher-columns": 6,
@@ -623,8 +779,7 @@ def load_preset():
         "swaync-positionX": "right",
         "swaync-positionY": "top"
     }
-    global preset
-    preset_file = os.path.join(data_dir, settings["panel-preset"])
+    preset_file = os.path.join(data_dir, file_name)
     if os.path.isfile(preset_file):
         print("Loading preset from {}".format(preset_file))
         preset = load_json(preset_file)
@@ -637,9 +792,13 @@ def load_preset():
             if missing > 0:
                 print("Saving {}".format(preset_file))
                 save_json(defaults, preset_file)
+
+        return preset
     else:
         print("ERROR: failed loading preset, creating {}".format(preset_file), file=sys.stderr)
         save_json(defaults, preset_file)
+
+        return {}
 
 
 def save_preset():
@@ -686,7 +845,9 @@ def main():
 
     load_settings()
 
-    load_preset()
+    # load_preset()
+    load_presets()
+
     ui = GUI()
 
     screen = Gdk.Screen.get_default()
@@ -702,6 +863,7 @@ def main():
     set_up_screen_tab()
 
     ui.window.show_all()
+    hide_submenus()
     """if settings["panel-preset"] != "custom":
         ui.panel_custom.set_visible(False)
         ui.panel_css.set_sensitive(False)
