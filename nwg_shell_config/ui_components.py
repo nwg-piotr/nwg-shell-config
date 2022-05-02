@@ -5,7 +5,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-from nwg_shell_config.tools import is_command
+from nwg_shell_config.tools import is_command, get_lat_lon
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -14,6 +14,14 @@ def set_from_checkbutton(cb, settings, key):
 
 def set_from_spinbutton(cb, settings, key, ndigits):
     settings[key] = round(cb.get_value(), ndigits)
+
+
+def update_lat_lon(btn, sb_lat, sb_lon):
+    tz, lat, lon = get_lat_lon()
+    sb_lat.set_value(lat)
+    sb_lat.set_tooltip_text(tz)
+    sb_lon.set_value(lon)
+    sb_lon.set_tooltip_text(tz)
 
 
 def set_from_workspaces(entry, settings):
@@ -163,47 +171,54 @@ def screen_tab(settings):
 
     lbl = Gtk.Label.new("Latitude:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 4, 1, 1)
+    grid.attach(lbl, 2, 4, 1, 1)
 
     sb_lat = Gtk.SpinButton.new_with_range(-90.0, 90.0, 0.1)
     sb_lat.set_tooltip_text("Your location latitude\n'wlsunset -l'")
     sb_lat.set_digits(4)
     sb_lat.set_value(settings["night-lat"])
     sb_lat.connect("value-changed", set_from_spinbutton, settings, "night-lat", 4)
-    grid.attach(sb_lat, 1, 4, 1, 1)
+    grid.attach(sb_lat, 3, 4, 1, 1)
 
     lbl = Gtk.Label.new("Temp low:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 4, 1, 1)
+    grid.attach(lbl, 0, 4, 1, 1)
 
     sb_temp_low = Gtk.SpinButton.new_with_range(1000, 10000, 100)
     sb_temp_low.set_tooltip_text("Night light color temperature\n'wlsunset -t'")
     sb_temp_low.set_value(settings["night-temp-low"])
-    grid.attach(sb_temp_low, 3, 4, 1, 1)
+    grid.attach(sb_temp_low, 1, 4, 1, 1)
 
     lbl = Gtk.Label.new("Longitude:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 5, 1, 1)
+    grid.attach(lbl, 2, 5, 1, 1)
 
     sb_lon = Gtk.SpinButton.new_with_range(-180, 180, 0.1)
     sb_lon.set_tooltip_text("Your location longitude\n'wlsunset -L'")
     sb_lon.set_value(settings["night-long"])
     sb_lon.connect("value-changed", set_from_spinbutton, settings, "night-long", 4)
     sb_lon.set_digits(4)
-    grid.attach(sb_lon, 1, 5, 1, 1)
+    grid.attach(sb_lon, 3, 5, 1, 1)
 
     lbl = Gtk.Label.new("Temp high:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 5, 1, 1)
+    grid.attach(lbl, 0, 5, 1, 1)
 
     sb_temp_high = Gtk.SpinButton.new_with_range(1000, 10000, 100)
     sb_temp_high.set_tooltip_text("Day light color temperature\n'wlsunset -T'")
     sb_temp_high.set_value(settings["night-temp-high"])
-    grid.attach(sb_temp_high, 3, 5, 1, 1)
+    grid.attach(sb_temp_high, 1, 5, 1, 1)
 
     lbl = Gtk.Label.new("Gamma:")
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 6, 1, 1)
+
+    btn = Gtk.Button.new_with_label("Detect Lat/Long")
+    btn.set_tooltip_text("If you were online during the first run, the Lat/Long values\n"
+                         "should already reflect your timezone settings.\n"
+                         "Press the button if something went wrong AND you're online now.")
+    btn.connect("clicked", update_lat_lon, sb_lat, sb_lon)
+    grid.attach(btn, 3, 6, 1, 1)
 
     sb_gamma = Gtk.SpinButton.new_with_range(0.1, 10.0, 0.1)
     sb_gamma.set_value(settings["night-gamma"])
