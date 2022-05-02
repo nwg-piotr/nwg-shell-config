@@ -252,8 +252,6 @@ def set_up_panel_styling_tab(event_box, event_button, preset, preset_name):
     global content
     content.destroy()
     content = panel_styling_tab(settings, preset, preset_name)
-    for key in preset:
-        print(key, preset[key])
     grid.attach(content, 1, 0, 1, 1)
 
 
