@@ -24,7 +24,7 @@ setup(
     install_requires=[],
     entry_points={
         'gui_scripts': [
-            'nwg-shell-config = nwg_shell_config.main:main'
+            'nwg-shell-config = nwg_shell_config.config:main'
         ]
     }
 )
