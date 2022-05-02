@@ -171,7 +171,7 @@ def preset_menu(preset_id):
     list_box.add(row)
 
     if preset_id == "c":
-        row = SubMenuRow("Panel & styling")
+        row = SubMenuRow("Panel & styles")
         row.eb.connect("button-press-event", set_up_panel_styling_tab, preset, preset_name)
         list_box.add(row)
 
