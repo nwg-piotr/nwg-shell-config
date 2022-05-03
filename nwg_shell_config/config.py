@@ -289,6 +289,10 @@ class GUI(object):
         self.fill_in_missing_values(self)
         """
 
+        cb_show = builder.get_object("show-on-startup")
+        cb_show.set_active(settings["show-on-startup"])
+        cb_show.connect("toggled", set_from_checkbutton, settings, "show-on-startup")
+
         btn_close = builder.get_object("btn-close")
         btn_close.connect("clicked", Gtk.main_quit)
         btn_close.grab_focus()
