@@ -71,7 +71,7 @@ def side_menu():
     list_box.add(row)
 
     row = SideMenuRow("Keyboard")
-    row.eb.connect("button-press-event", hide_submenus)
+    row.eb.connect("button-press-event", set_up_keyboard_tab)
     list_box.add(row)
 
     row = SideMenuRow("Pointer device")
@@ -82,7 +82,7 @@ def side_menu():
     row.eb.connect("button-press-event", hide_submenus)
     list_box.add(row)
 
-    row = SideMenuRow("Default apps")
+    row = SideMenuRow("Applications")
     row.eb.connect("button-press-event", set_up_applications_tab)
     list_box.add(row)
 
@@ -207,11 +207,19 @@ def set_up_screen_tab(*args):
     grid.attach(content, 1, 0, 1, 1)
 
 
-def set_up_applications_tab(*args):
+def set_up_applications_tab(*args, warn=False):
     hide_submenus()
     global content
     content.destroy()
-    content = applications_tab(settings)
+    content = applications_tab(settings, warn)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_keyboard_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = keyboard_tab(settings)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -290,13 +298,6 @@ class GUI(object):
         btn_apply.connect("clicked", self.on_apply_btn)
 
         self.tz, self.lat, self.long = get_lat_lon()
-
-    def set_chromium(self, *args):
-        self.browser.set_text(
-            "chromium --enable-features=UseOzonePlatform --ozone-platform=wayland")
-
-    def set_firefox(self, *args):
-        self.browser.set_text("MOZ_ENABLE_WAYLAND=1 firefox")
 
     def fill_in_missing_values(self, *args):
         if self.keyboard_layout.get_text() == "":
@@ -522,7 +523,7 @@ def reload():
 def load_settings():
     defaults = {
         "keyboard-layout": "us",
-        "autotiling-workspaces": "1 2 3 4 5 6 7 8",
+        "autotiling-workspaces": "",
         "autotiling-on": True,
         "appindicator": True,
         "night-lat": -1,
@@ -539,6 +540,12 @@ def load_settings():
         "panel-custom": "",
         "show-on-startup": True,
         "show-help": False,
+        "keyboard-xkb-layout": "us",
+        "keyboard-xkb-variant": "",
+        "keyboard-repeat-delay": 300,
+        "keyboard-repeat-rate": 40,
+        "keyboard-xkb-capslock": "disabled",
+        "keyboard-xkb-numlock": "disabled",
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")
@@ -554,7 +561,7 @@ def load_settings():
                 missing += 1
             if missing > 0:
                 print("Saving {}".format(settings_file))
-                save_json(defaults, settings_file)
+                save_json(settings, settings_file)
     else:
         print("ERROR: failed loading settings, creating {}".format(settings_file), file=sys.stderr)
         save_json(defaults, settings_file)
@@ -705,7 +712,10 @@ def main():
             """
     provider.load_from_data(css)
 
-    set_up_screen_tab()
+    if not settings["terminal"] or not settings["file-manager"] or not settings["editor"] or not settings["browser"]:
+        set_up_applications_tab(warn=True)
+    else:
+        set_up_screen_tab()
 
     ui.window.show_all()
     hide_submenus()

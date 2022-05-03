@@ -264,9 +264,9 @@ def screen_tab(settings):
     return frame
 
 
-def applications_tab(settings):
+def applications_tab(settings, warn):
     frame = Gtk.Frame()
-    frame.set_label("  Common: Default applications  ")
+    frame.set_label("  Common: Applications  ")
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
@@ -282,11 +282,16 @@ def applications_tab(settings):
     entry_terminal = Gtk.Entry()
     entry_terminal.set_tooltip_text("Command to run terminal emulator")
     entry_terminal.set_property("halign", Gtk.Align.START)
-    for cmd in ["foot", "alacritty", "kitty", "gnome-terminal", "sakura", "wterm"]:
-        if is_command(cmd):
-            entry_terminal.set_text(cmd)
-            break
     entry_terminal.connect("changed", set_from_entry, settings, "terminal")
+    if not settings["terminal"]:
+        for cmd in ["foot", "alacritty", "kitty", "gnome-terminal", "sakura", "wterm"]:
+            if is_command(cmd):
+                entry_terminal.set_text(cmd)
+                break
+    else:
+        entry_terminal.set_text(settings["terminal"])
+    set_from_entry(entry_terminal, settings, "terminal")
+
     grid.attach(entry_terminal, 1, 0, 1, 1)
 
     lbl = Gtk.Label.new("File manager:")
@@ -296,11 +301,16 @@ def applications_tab(settings):
     entry_fm = Gtk.Entry()
     entry_fm.set_tooltip_text("Command to run file manager")
     entry_fm.set_property("halign", Gtk.Align.START)
-    for cmd in ["thunar", "pcmanfm", "nautilus", "caja"]:
-        if is_command(cmd):
-            entry_fm.set_text(cmd)
-            break
+
     entry_fm.connect("changed", set_from_entry, settings, "file-manager")
+    if not settings["file-manager"]:
+        for cmd in ["thunar", "pcmanfm", "nautilus", "caja"]:
+            if is_command(cmd):
+                entry_fm.set_text(cmd)
+                break
+    else:
+        entry_fm.set_text(settings["file-manager"])
+
     grid.attach(entry_fm, 1, 1, 1, 1)
 
     lbl = Gtk.Label.new("Text editor:")
@@ -310,11 +320,16 @@ def applications_tab(settings):
     entry_te = Gtk.Entry()
     entry_te.set_tooltip_text("Command to run text editor")
     entry_te.set_property("halign", Gtk.Align.START)
-    for cmd in ["mousepad", "geany", "atom", "emacs", "gedit"]:
-        if is_command(cmd):
-            entry_te.set_text(cmd)
-            break
+
     entry_te.connect("changed", set_from_entry, settings, "editor")
+    if not settings["editor"]:
+        for cmd in ["mousepad", "geany", "atom", "emacs", "gedit"]:
+            if is_command(cmd):
+                entry_te.set_text(cmd)
+                break
+    else:
+        entry_te.set_text(settings["editor"])
+
     grid.attach(entry_te, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("Web browser:")
@@ -326,6 +341,7 @@ def applications_tab(settings):
     entry_browser.set_property("hexpand", True)
 
     entry_browser.set_text(settings["browser"])
+    set_from_entry(entry_browser, settings, "browser")
     entry_browser.connect("changed", set_from_entry, settings, "browser")
     grid.attach(entry_browser, 1, 3, 2, 1)
 
@@ -339,6 +355,20 @@ def applications_tab(settings):
         if key in settings["browser"]:
             combo.set_active_id(key)
     combo.connect("changed", set_browser_from_combo, entry_browser, browsers)
+    for key in ["chromium", "google-chrome-stable", "firefox", "qutebrowser", "epiphany", "surf"]:
+        if key in browsers:
+            combo.set_active_id(key)
+            break
+
+    if warn:
+        lbl = Gtk.Label.new("If you see this warning on startup, some of the fields above\n"
+                            "have not yet been saved. Adjust these settings to your needs,\n"
+                            "and press the 'Apply' button, for your key bindings to work.")
+        lbl.set_property("halign", Gtk.Align.CENTER)
+        lbl.set_justify(Gtk.Justification.CENTER)
+        lbl.set_property("margin-top", 18)
+        lbl.set_line_wrap(True)
+        grid.attach(lbl, 0, 5, 3, 2)
 
     frame.show_all()
 
@@ -360,6 +390,22 @@ def get_browsers():
             result[key] = browsers[key]
 
     return result
+
+
+def keyboard_tab(settings):
+    frame = Gtk.Frame()
+    frame.set_label("  Common: Keyboard  ")
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    frame.show_all()
+
+    return frame
 
 
 def drawer_tab(preset, preset_name):
