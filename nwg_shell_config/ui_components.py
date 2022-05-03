@@ -403,6 +403,73 @@ def keyboard_tab(settings):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
+    lbl = Gtk.Label.new("Layout:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 0, 1, 1)
+
+    entry_layout = Gtk.Entry()
+    entry_layout.set_tooltip_text("Layout of the keyboard like 'us' or 'de'.\nMultiple layouts can be specified\n"
+                                  "by separating them with commas.")
+    entry_layout.set_text(settings["keyboard-xkb-layout"])
+    entry_layout.connect("changed", set_from_entry, settings, "keyboard-xkb-layout")
+    grid.attach(entry_layout, 1, 0, 1, 1)
+
+    lbl = Gtk.Label.new("Variant:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    entry_variant = Gtk.Entry()
+    entry_variant.set_tooltip_text("Variant of the keyboard like 'dvorak' or 'colemak'.")
+    entry_variant.set_text(settings["keyboard-xkb-variant"])
+    entry_variant.connect("changed", set_from_entry, settings, "keyboard-xkb-variant")
+    grid.attach(entry_variant, 1, 1, 1, 1)
+
+    lbl = Gtk.Label.new("Repeat delay:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    sb_repeat_delay = Gtk.SpinButton.new_with_range(1, 6000, 1)
+    sb_repeat_delay.set_value(settings["keyboard-repeat-delay"])
+    sb_repeat_delay.connect("value-changed", set_int_from_spinbutton, settings, "keyboard-repeat-delay")
+    sb_repeat_delay.set_tooltip_text("Amount of time a key must be held before it starts repeating.")
+    grid.attach(sb_repeat_delay, 1, 2, 1, 1)
+
+    lbl = Gtk.Label.new("Repeat rate:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    sb_repeat_rate = Gtk.SpinButton.new_with_range(1, 4000, 1)
+    sb_repeat_rate.set_value(settings["keyboard-repeat-rate"])
+    sb_repeat_rate.connect("value-changed", set_int_from_spinbutton, settings, "keyboard-repeat-rate")
+    sb_repeat_rate.set_tooltip_text("Frequency of key repeats once the repeat_delay has passed.")
+    grid.attach(sb_repeat_rate, 1, 3, 1, 1)
+
+    lbl = Gtk.Label.new("CapsLock:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    combo_caps = Gtk.ComboBoxText()
+    combo_caps.set_property("halign", Gtk.Align.START)
+    combo_caps.set_tooltip_text("Initially enables or disables CapsLock on startup.")
+    for item in ["disabled", "enabled"]:
+        combo_caps.append(item, item)
+    combo_caps.set_active_id(settings["keyboard-xkb-capslock"])
+    combo_caps.connect("changed", set_dict_key_from_combo, settings, "keyboard-xkb-capslock")
+    grid.attach(combo_caps, 1, 4, 1, 1)
+
+    lbl = Gtk.Label.new("NumLock:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 5, 1, 1)
+
+    combo_num = Gtk.ComboBoxText()
+    combo_num.set_property("halign", Gtk.Align.START)
+    combo_num.set_tooltip_text("Initially enables or disables NumLock on startup.")
+    for item in ["disabled", "enabled"]:
+        combo_num.append(item, item)
+    combo_num.set_active_id(settings["keyboard-xkb-numlock"])
+    combo_num.connect("changed", set_dict_key_from_combo, settings, "keyboard-xkb-numlock")
+    grid.attach(combo_num, 1, 5, 1, 1)
+
     frame.show_all()
 
     return frame
