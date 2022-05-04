@@ -675,7 +675,7 @@ def dock_tab(preset, preset_name, outputs):
     sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
     sb_icon_size.set_value(preset["dock-icon-size"])
     sb_icon_size.connect("value-changed", set_from_spinbutton, preset, "dock-icon-size", 1)
-    sb_icon_size.set_tooltip_text("application icon size")
+    sb_icon_size.set_tooltip_text("Application icon size.")
     grid.attach(sb_icon_size, 1, 3, 1, 1)
 
     lbl = Gtk.Label.new("Margin:")
@@ -703,7 +703,7 @@ def dock_tab(preset, preset_name, outputs):
     cb_permanent = Gtk.CheckButton.new_with_label("Permanent")
     cb_permanent.set_active(preset["dock-permanent"])
     cb_permanent.connect("toggled", set_from_checkbutton, preset, "dock-permanent")
-    sb_icon_size.set_tooltip_text("leave the dock resident, but w/o hotspot")
+    cb_permanent.set_tooltip_text("Leave the dock resident, but w/o the hotspot.")
     grid.attach(cb_permanent, 0, 6, 1, 1)
 
     cb_full = Gtk.CheckButton.new_with_label("Full width/height")
@@ -715,13 +715,13 @@ def dock_tab(preset, preset_name, outputs):
     cb_autohide = Gtk.CheckButton.new_with_label("Auto-show/hide")
     cb_autohide.set_active(preset["dock-autohide"])
     cb_autohide.connect("toggled", set_from_checkbutton, preset, "dock-autohide")
-    cb_autohide.set_tooltip_text("Auto-hide dock, show on hotspot pointed")
+    cb_autohide.set_tooltip_text("Auto-hide dock, show on hotspot pointed.")
     grid.attach(cb_autohide, 0, 8, 1, 1)
 
-    cb_exclusive = Gtk.CheckButton.new_with_label("Auto-show/hide")
+    cb_exclusive = Gtk.CheckButton.new_with_label("Exclusive zone")
     cb_exclusive.set_active(preset["dock-exclusive"])
     cb_exclusive.connect("toggled", set_from_checkbutton, preset, "dock-exclusive")
-    cb_exclusive.set_tooltip_text("Move other windows away from dock")
+    cb_exclusive.set_tooltip_text("Move other windows away.")
     grid.attach(cb_exclusive, 0, 9, 1, 1)
 
     frame.show_all()
