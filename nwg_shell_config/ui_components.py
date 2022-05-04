@@ -168,7 +168,7 @@ def screen_tab(settings):
     grid.attach(lbl, 2, 4, 1, 1)
 
     sb_lat = Gtk.SpinButton.new_with_range(-90.0, 90.0, 0.1)
-    sb_lat.set_tooltip_text("Your location latitude\n'wlsunset -l'")
+    sb_lat.set_tooltip_text("Your location latitude.\n'wlsunset -l'")
     sb_lat.set_digits(4)
     sb_lat.set_value(settings["night-lat"])
     sb_lat.connect("value-changed", set_from_spinbutton, settings, "night-lat", 4)
@@ -179,7 +179,7 @@ def screen_tab(settings):
     grid.attach(lbl, 0, 4, 1, 1)
 
     sb_temp_low = Gtk.SpinButton.new_with_range(1000, 10000, 100)
-    sb_temp_low.set_tooltip_text("Night light color temperature\n'wlsunset -t'")
+    sb_temp_low.set_tooltip_text("Night light color temperature.\n'wlsunset -t'")
     sb_temp_low.set_value(settings["night-temp-low"])
     sb_temp_low.connect("value-changed", set_int_from_spinbutton, settings, "night-temp-low")
     grid.attach(sb_temp_low, 1, 4, 1, 1)
@@ -189,7 +189,7 @@ def screen_tab(settings):
     grid.attach(lbl, 2, 5, 1, 1)
 
     sb_lon = Gtk.SpinButton.new_with_range(-180, 180, 0.1)
-    sb_lon.set_tooltip_text("Your location longitude\n'wlsunset -L'")
+    sb_lon.set_tooltip_text("Your location longitude.\n'wlsunset -L'")
     sb_lon.set_value(settings["night-long"])
     sb_lon.connect("value-changed", set_from_spinbutton, settings, "night-long", 4)
     sb_lon.set_digits(4)
@@ -204,7 +204,7 @@ def screen_tab(settings):
     grid.attach(lbl, 0, 5, 1, 1)
 
     sb_temp_high = Gtk.SpinButton.new_with_range(1000, 10000, 100)
-    sb_temp_high.set_tooltip_text("Day light color temperature\n'wlsunset -T'")
+    sb_temp_high.set_tooltip_text("Day light color temperature.\n'wlsunset -T'")
     sb_temp_high.set_value(settings["night-temp-high"])
     sb_temp_high.connect("value-changed", set_int_from_spinbutton, settings, "night-temp-high")
     grid.attach(sb_temp_high, 1, 5, 1, 1)
@@ -223,7 +223,7 @@ def screen_tab(settings):
     sb_gamma = Gtk.SpinButton.new_with_range(0.1, 10.0, 0.1)
     sb_gamma.set_value(settings["night-gamma"])
     sb_gamma.connect("value-changed", set_from_spinbutton, settings, "night-gamma", 1)
-    sb_gamma.set_tooltip_text("Monitor gamma\n'wlsunset -g'")
+    sb_gamma.set_tooltip_text("Monitor gamma.\n'wlsunset -g'")
     grid.attach(sb_gamma, 1, 6, 1, 1)
 
     lbl = Gtk.Label()
@@ -272,7 +272,7 @@ def applications_tab(settings, warn):
     grid.attach(lbl, 0, 0, 1, 1)
 
     entry_terminal = Gtk.Entry()
-    entry_terminal.set_tooltip_text("Command to run terminal emulator")
+    entry_terminal.set_tooltip_text("Command to run terminal emulator.")
     entry_terminal.set_property("halign", Gtk.Align.START)
     entry_terminal.connect("changed", set_from_entry, settings, "terminal")
     if not settings["terminal"]:
@@ -291,7 +291,7 @@ def applications_tab(settings, warn):
     grid.attach(lbl, 0, 1, 1, 1)
 
     entry_fm = Gtk.Entry()
-    entry_fm.set_tooltip_text("Command to run file manager")
+    entry_fm.set_tooltip_text("Command to run file manager.")
     entry_fm.set_property("halign", Gtk.Align.START)
 
     entry_fm.connect("changed", set_from_entry, settings, "file-manager")
@@ -310,7 +310,7 @@ def applications_tab(settings, warn):
     grid.attach(lbl, 0, 2, 1, 1)
 
     entry_te = Gtk.Entry()
-    entry_te.set_tooltip_text("Command to run text editor")
+    entry_te.set_tooltip_text("Command to run text editor.")
     entry_te.set_property("halign", Gtk.Align.START)
 
     entry_te.connect("changed", set_from_entry, settings, "editor")
@@ -329,7 +329,7 @@ def applications_tab(settings, warn):
     grid.attach(lbl, 0, 3, 1, 1)
 
     entry_browser = Gtk.Entry()
-    entry_browser.set_tooltip_text("Command to run web browser")
+    entry_browser.set_tooltip_text("Command to run web browser.")
     entry_browser.set_property("hexpand", True)
 
     entry_browser.set_text(settings["browser"])
@@ -577,7 +577,7 @@ def drawer_tab(preset, preset_name):
     sb_columns = Gtk.SpinButton.new_with_range(1, 9, 1)
     sb_columns.set_value(preset["launcher-columns"])
     sb_columns.connect("value-changed", set_int_from_spinbutton, preset, "launcher-columns")
-    sb_columns.set_tooltip_text("number of columns to show icons in")
+    sb_columns.set_tooltip_text("Number of columns to show icons in.")
     grid.attach(sb_columns, 1, 1, 1, 1)
 
     lbl = Gtk.Label.new("Icon size:")
@@ -587,7 +587,7 @@ def drawer_tab(preset, preset_name):
     sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
     sb_icon_size.set_value(preset["launcher-icon-size"])
     sb_icon_size.connect("value-changed", set_int_from_spinbutton, preset, "launcher-icon-size")
-    sb_icon_size.set_tooltip_text("application icon size")
+    sb_icon_size.set_tooltip_text("Application icon size.")
     grid.attach(sb_icon_size, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("File search columns:")
@@ -597,7 +597,7 @@ def drawer_tab(preset, preset_name):
     sb_fs_columns = Gtk.SpinButton.new_with_range(1, 9, 1)
     sb_fs_columns.set_value(preset["launcher-file-search-columns"])
     sb_fs_columns.connect("value-changed", set_int_from_spinbutton, preset, "launcher-file-search-columns")
-    sb_fs_columns.set_tooltip_text("number of columns to show file search result in")
+    sb_fs_columns.set_tooltip_text("Number of columns to show file search result in.")
     grid.attach(sb_fs_columns, 1, 3, 1, 1)
 
     cb_search_files = Gtk.CheckButton.new_with_label("search files")
@@ -606,19 +606,19 @@ def drawer_tab(preset, preset_name):
     grid.attach(cb_search_files, 2, 3, 1, 1)
 
     cb_categories = Gtk.CheckButton.new_with_label("Show category menu")
-    cb_categories.set_tooltip_text("show categories menu (icons) on top")
+    cb_categories.set_tooltip_text("Show categories menu (icons) on top.")
     cb_categories.set_active(preset["launcher-categories"])
     cb_categories.connect("toggled", set_from_checkbutton, preset, "launcher-categories")
     grid.attach(cb_categories, 0, 4, 1, 1)
 
     cb_resident = Gtk.CheckButton.new_with_label("Keep resident")
-    cb_resident.set_tooltip_text("keep drawer running in the background")
+    cb_resident.set_tooltip_text("Keep drawer running in the background.")
     cb_resident.set_active(preset["launcher-resident"])
     cb_resident.connect("toggled", set_from_checkbutton, preset, "launcher-resident")
     grid.attach(cb_resident, 0, 5, 1, 1)
 
     cb_overlay = Gtk.CheckButton.new_with_label("Open on overlay")
-    cb_overlay.set_tooltip_text("open drawer on the overlay layer")
+    cb_overlay.set_tooltip_text("Open drawer on the overlay layer.")
     cb_overlay.set_active(preset["launcher-overlay"])
     cb_overlay.connect("toggled", set_from_checkbutton, preset, "launcher-overlay")
     grid.attach(cb_overlay, 0, 6, 1, 1)
@@ -709,7 +709,7 @@ def dock_tab(preset, preset_name, outputs):
     cb_full = Gtk.CheckButton.new_with_label("Full width/height")
     cb_full.set_active(preset["dock-full"])
     cb_full.connect("toggled", set_from_checkbutton, preset, "dock-full")
-    cb_full.set_tooltip_text("take full screen width/height")
+    cb_full.set_tooltip_text("Take full screen width/height.")
     grid.attach(cb_full, 0, 7, 1, 1)
 
     cb_autohide = Gtk.CheckButton.new_with_label("Auto-show/hide")
@@ -768,7 +768,7 @@ def bar_tab(preset, preset_name):
         combo_alignment.append(item, item)
     combo_alignment.set_active_id(preset["exit-alignment"])
     combo_alignment.connect("changed", set_dict_key_from_combo, preset, "exit-alignment")
-    combo_alignment.set_tooltip_text("Alignment in full width/height")
+    combo_alignment.set_tooltip_text("Alignment in full width/height.")
 
     lbl = Gtk.Label.new("Icon size:")
     lbl.set_property("halign", Gtk.Align.END)
@@ -777,7 +777,7 @@ def bar_tab(preset, preset_name):
     sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
     sb_icon_size.set_value(preset["exit-icon-size"])
     sb_icon_size.connect("value-changed", set_from_spinbutton, preset, "exit-icon-size", 1)
-    sb_icon_size.set_tooltip_text("item icon size")
+    sb_icon_size.set_tooltip_text("Item icon size.")
     grid.attach(sb_icon_size, 1, 3, 1, 1)
 
     lbl = Gtk.Label.new("Margin:")
@@ -792,7 +792,7 @@ def bar_tab(preset, preset_name):
     cb_full = Gtk.CheckButton.new_with_label("Full width/height")
     cb_full.set_active(preset["exit-full"])
     cb_full.connect("toggled", set_from_checkbutton, preset, "exit-full")
-    cb_full.set_tooltip_text("take full screen width/height")
+    cb_full.set_tooltip_text("Take full screen width/height.")
     grid.attach(cb_full, 0, 5, 1, 1)
 
     frame.show_all()
@@ -857,7 +857,7 @@ def panel_styling_tab(settings, preset, preset_name):
 
     entry_panel = Gtk.Entry()
     entry_panel.set_placeholder_text("config")
-    entry_panel.set_tooltip_text("Panel config file name")
+    entry_panel.set_tooltip_text("Panel config file name.")
     entry_panel.set_property("halign", Gtk.Align.START)
     entry_panel.set_text(settings["panel-custom"])
     entry_panel.connect("changed", set_from_entry, settings, "panel-custom")
@@ -869,7 +869,7 @@ def panel_styling_tab(settings, preset, preset_name):
 
     entry_panel_css = Gtk.Entry()
     entry_panel_css.set_placeholder_text("style.css")
-    entry_panel_css.set_tooltip_text("Panel css file name")
+    entry_panel_css.set_tooltip_text("Panel css file name.")
     entry_panel_css.set_property("halign", Gtk.Align.START)
     entry_panel_css.set_text(preset["panel-css"])
     entry_panel_css.connect("changed", set_from_entry, preset, "panel-css")
