@@ -346,11 +346,18 @@ def applications_tab(settings, warn):
         combo.append(key, key)
         if key in settings["browser"]:
             combo.set_active_id(key)
+
+    if entry_browser.get_text():
+        for key in ["chromium", "google-chrome-stable", "firefox", "qutebrowser", "epiphany", "surf"]:
+            if entry_browser.get_text() == key:
+                combo.set_active_id(key)
+    """else:
+        for key in ["chromium", "google-chrome-stable", "firefox", "qutebrowser", "epiphany", "surf"]:
+            if key in browsers:
+                combo.set_active_id(key)
+                break"""
+
     combo.connect("changed", set_browser_from_combo, entry_browser, browsers)
-    for key in ["chromium", "google-chrome-stable", "firefox", "qutebrowser", "epiphany", "surf"]:
-        if key in browsers:
-            combo.set_active_id(key)
-            break
 
     if warn:
         lbl = Gtk.Label.new("If you see this warning on startup, some of the fields above\n"
