@@ -136,6 +136,7 @@ def screen_tab(settings):
     cb_autotiling_on = Gtk.CheckButton.new_with_label("on")
     cb_autotiling_on.set_active(settings["autotiling-on"])
     cb_autotiling_on.connect("toggled", set_from_checkbutton, settings, "autotiling-on")
+    cb_autotiling_on.set_tooltip_text("Automates changing the horizontal/vertical\nwindow split orientation.")
     grid.attach(cb_autotiling_on, 1, 1, 1, 1)
 
     lbl = Gtk.Label.new("Workspaces:")
@@ -145,7 +146,7 @@ def screen_tab(settings):
     entry = Gtk.Entry()
     entry.set_placeholder_text("1 2 3 4 5 6 7 8")
     entry.set_text(settings["autotiling-workspaces"])
-    entry.set_tooltip_text("Sets '-w' | '--workspaces' argument for the 'autotiling' command.\nSee 'autotiling -h`.")
+    entry.set_tooltip_text("Defines which workspaces to use 'autotiling' on.\nSee 'autotiling -h`.")
     entry.connect("changed", set_from_workspaces, settings)
     grid.attach(entry, 1, 2, 1, 1)
 
@@ -159,6 +160,7 @@ def screen_tab(settings):
     cb_night_light_on = Gtk.CheckButton.new_with_label("on")
     cb_night_light_on.set_active(settings["night-on"])
     cb_night_light_on.connect("toggled", set_from_checkbutton, settings, "night-on")
+    cb_night_light_on.set_tooltip_text("Determines if to use `wlsunset'.")
     grid.attach(cb_night_light_on, 1, 3, 1, 1)
 
     lbl = Gtk.Label.new("Latitude:")
@@ -211,9 +213,9 @@ def screen_tab(settings):
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 6, 1, 1)
 
-    btn = Gtk.Button.new_with_label("Detect Lat/Long")
+    btn = Gtk.Button.new_with_label("Calculate Lat/Long")
     btn.set_tooltip_text("If you were online during the first run, the Lat/Long"
-                         "\nvalues should reflect your timezone settings.\n"
+                         "\nvalues should already reflect your timezone settings.\n"
                          "Push the button if something went wrong\nAND if you're online now.")
     btn.connect("clicked", update_lat_lon, sb_lat, sb_lon)
     grid.attach(btn, 3, 6, 1, 1)
@@ -221,7 +223,7 @@ def screen_tab(settings):
     sb_gamma = Gtk.SpinButton.new_with_range(0.1, 10.0, 0.1)
     sb_gamma.set_value(settings["night-gamma"])
     sb_gamma.connect("value-changed", set_from_spinbutton, settings, "night-gamma", 1)
-    sb_gamma.set_tooltip_text("'wlsunset -g'")
+    sb_gamma.set_tooltip_text("Monitor gamma\n'wlsunset -g'")
     grid.attach(sb_gamma, 1, 6, 1, 1)
 
     lbl = Gtk.Label()
@@ -232,6 +234,7 @@ def screen_tab(settings):
     cb_help_on = Gtk.CheckButton.new_with_label("on")
     cb_help_on.set_active(settings["show-help"])
     cb_help_on.connect("toggled", set_from_checkbutton, settings, "show-help")
+    cb_help_on.set_tooltip_text("Determines if to display the 'conky-like' help widget.")
     grid.attach(cb_help_on, 1, 7, 1, 1)
 
     lbl = Gtk.Label()
