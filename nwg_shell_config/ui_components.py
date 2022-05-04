@@ -238,7 +238,7 @@ def screen_tab(settings):
     grid.attach(cb_help_on, 1, 7, 1, 1)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Desktop style</b>")
+    lbl.set_markup("<b>Style</b>")
     lbl.set_property("halign", Gtk.Align.END)
     lbl.set_property("margin-top", 12)
     grid.attach(lbl, 0, 8, 1, 1)
