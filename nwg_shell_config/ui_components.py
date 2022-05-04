@@ -247,7 +247,7 @@ def screen_tab(settings):
     grid.attach(cb_help_on, 1, 7, 1, 1)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Preset in use</b>")
+    lbl.set_markup("<b>Desktop style</b>")
     lbl.set_property("halign", Gtk.Align.END)
     lbl.set_property("margin-top", 12)
     grid.attach(lbl, 0, 8, 1, 1)
@@ -403,50 +403,56 @@ def keyboard_tab(settings):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
+    cb_keyboard_use_settings = Gtk.CheckButton.new_with_label("Use these settings")
+    cb_keyboard_use_settings.set_property("halign", Gtk.Align.START)
+    cb_keyboard_use_settings.set_property("margin-bottom", 6)
+    cb_keyboard_use_settings.set_tooltip_text("Determines if to export the 'keyboard' config include.")
+    grid.attach(cb_keyboard_use_settings, 0, 0, 2, 1)
+
     lbl = Gtk.Label.new("Layout:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 0, 1, 1)
+    grid.attach(lbl, 0, 1, 1, 1)
 
     entry_layout = Gtk.Entry()
     entry_layout.set_tooltip_text("Layout of the keyboard like 'us' or 'de'.\nMultiple layouts can be specified\n"
                                   "by separating them with commas.")
     entry_layout.set_text(settings["keyboard-xkb-layout"])
     entry_layout.connect("changed", set_from_entry, settings, "keyboard-xkb-layout")
-    grid.attach(entry_layout, 1, 0, 1, 1)
+    grid.attach(entry_layout, 1, 1, 1, 1)
 
     lbl = Gtk.Label.new("Variant:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 1, 1, 1)
+    grid.attach(lbl, 0, 2, 1, 1)
 
     entry_variant = Gtk.Entry()
     entry_variant.set_tooltip_text("Variant of the keyboard like 'dvorak' or 'colemak'.")
     entry_variant.set_text(settings["keyboard-xkb-variant"])
     entry_variant.connect("changed", set_from_entry, settings, "keyboard-xkb-variant")
-    grid.attach(entry_variant, 1, 1, 1, 1)
+    grid.attach(entry_variant, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("Repeat delay:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 2, 1, 1)
+    grid.attach(lbl, 0, 3, 1, 1)
 
     sb_repeat_delay = Gtk.SpinButton.new_with_range(1, 6000, 1)
     sb_repeat_delay.set_value(settings["keyboard-repeat-delay"])
     sb_repeat_delay.connect("value-changed", set_int_from_spinbutton, settings, "keyboard-repeat-delay")
     sb_repeat_delay.set_tooltip_text("Amount of time a key must be held before it starts repeating.")
-    grid.attach(sb_repeat_delay, 1, 2, 1, 1)
+    grid.attach(sb_repeat_delay, 1, 3, 1, 1)
 
     lbl = Gtk.Label.new("Repeat rate:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 3, 1, 1)
+    grid.attach(lbl, 0, 4, 1, 1)
 
     sb_repeat_rate = Gtk.SpinButton.new_with_range(1, 4000, 1)
     sb_repeat_rate.set_value(settings["keyboard-repeat-rate"])
     sb_repeat_rate.connect("value-changed", set_int_from_spinbutton, settings, "keyboard-repeat-rate")
     sb_repeat_rate.set_tooltip_text("Frequency of key repeats once the repeat_delay has passed.")
-    grid.attach(sb_repeat_rate, 1, 3, 1, 1)
+    grid.attach(sb_repeat_rate, 1, 4, 1, 1)
 
     lbl = Gtk.Label.new("CapsLock:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 4, 1, 1)
+    grid.attach(lbl, 0, 5, 1, 1)
 
     combo_caps = Gtk.ComboBoxText()
     combo_caps.set_property("halign", Gtk.Align.START)
@@ -455,11 +461,11 @@ def keyboard_tab(settings):
         combo_caps.append(item, item)
     combo_caps.set_active_id(settings["keyboard-xkb-capslock"])
     combo_caps.connect("changed", set_dict_key_from_combo, settings, "keyboard-xkb-capslock")
-    grid.attach(combo_caps, 1, 4, 1, 1)
+    grid.attach(combo_caps, 1, 5, 1, 1)
 
     lbl = Gtk.Label.new("NumLock:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 5, 1, 1)
+    grid.attach(lbl, 0, 6, 1, 1)
 
     combo_num = Gtk.ComboBoxText()
     combo_num.set_property("halign", Gtk.Align.START)
@@ -468,7 +474,88 @@ def keyboard_tab(settings):
         combo_num.append(item, item)
     combo_num.set_active_id(settings["keyboard-xkb-numlock"])
     combo_num.connect("changed", set_dict_key_from_combo, settings, "keyboard-xkb-numlock")
-    grid.attach(combo_num, 1, 5, 1, 1)
+    grid.attach(combo_num, 1, 6, 1, 1)
+
+    frame.show_all()
+
+    return frame
+
+
+def pointer_tab(settings):
+    frame = Gtk.Frame()
+    frame.set_label("  Common: Pointer device  ")
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_pointer_use_settings = Gtk.CheckButton.new_with_label("Use these settings")
+    cb_pointer_use_settings.set_property("halign", Gtk.Align.START)
+    cb_pointer_use_settings.set_property("margin-bottom", 6)
+    cb_pointer_use_settings.set_tooltip_text("Determines if to export the 'pointer' config include.")
+    grid.attach(cb_pointer_use_settings, 0, 0, 2, 1)
+
+    lbl = Gtk.Label.new("Acceleration profile:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    combo_aprofile = Gtk.ComboBoxText()
+    combo_aprofile.set_property("halign", Gtk.Align.START)
+    combo_aprofile.set_tooltip_text("Sets the pointer acceleration profile.")
+    for item in ["flat", "adaptive"]:
+        combo_aprofile.append(item, item)
+    combo_aprofile.set_active_id(settings["pointer-accel-profile"])
+    combo_aprofile.connect("changed", set_dict_key_from_combo, settings, "pointer-accel-profile")
+    grid.attach(combo_aprofile, 1, 1, 1, 1)
+
+    lbl = Gtk.Label.new("Acceleration:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    sb_acceleration = Gtk.SpinButton.new_with_range(-1, 1, 0.1)
+    sb_acceleration.set_value(settings["pointer-pointer-accel"])
+    sb_acceleration.connect("value-changed", set_from_spinbutton, settings, "pointer-pointer-accel", 1)
+    sb_acceleration.set_tooltip_text("Changes the pointer acceleration.")
+    grid.attach(sb_acceleration, 1, 2, 1, 1)
+
+    lbl = Gtk.Label.new("Natural scroll:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    combo_nscroll = Gtk.ComboBoxText()
+    combo_nscroll.set_property("halign", Gtk.Align.START)
+    combo_nscroll.set_tooltip_text("Enables or disables natural (inverted) scrolling.")
+    for item in ["disabled", "enabled"]:
+        combo_nscroll.append(item, item)
+    combo_nscroll.set_active_id(settings["pointer-natural-scroll"])
+    combo_nscroll.connect("changed", set_dict_key_from_combo, settings, "pointer-natural-scroll")
+    grid.attach(combo_nscroll, 1, 3, 1, 1)
+
+    lbl = Gtk.Label.new("Scroll factor:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    sb_sfactor = Gtk.SpinButton.new_with_range(0.1, 10, 0.1)
+    sb_sfactor.set_value(settings["pointer-scroll-factor"])
+    sb_sfactor.connect("value-changed", set_from_spinbutton, settings, "pointer-scroll-factor", 1)
+    sb_sfactor.set_tooltip_text("Scroll speed will be scaled by the given value.")
+    grid.attach(sb_sfactor, 1, 4, 1, 1)
+
+    lbl = Gtk.Label.new("Left handed:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 5, 1, 1)
+
+    combo_left_handed = Gtk.ComboBoxText()
+    combo_left_handed.set_property("halign", Gtk.Align.START)
+    combo_left_handed.set_tooltip_text("Enables or disables left handed mode.")
+    for item in ["disabled", "enabled"]:
+        combo_left_handed.append(item, item)
+    combo_left_handed.set_active_id(settings["pointer-left-handed"])
+    combo_left_handed.connect("changed", set_dict_key_from_combo, settings, "pointer-left-handed")
+    grid.attach(combo_left_handed, 1, 5, 1, 1)
 
     frame.show_all()
 

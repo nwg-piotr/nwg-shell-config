@@ -75,7 +75,7 @@ def side_menu():
     list_box.add(row)
 
     row = SideMenuRow("Pointer device")
-    row.eb.connect("button-press-event", hide_submenus)
+    row.eb.connect("button-press-event", set_up_pointer_tab)
     list_box.add(row)
 
     row = SideMenuRow("Touchpad")
@@ -220,6 +220,14 @@ def set_up_keyboard_tab(*args):
     global content
     content.destroy()
     content = keyboard_tab(settings)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_pointer_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = pointer_tab(settings)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -544,12 +552,19 @@ def load_settings():
         "panel-custom": "",
         "show-on-startup": True,
         "show-help": False,
+        "keyboard-use-settings": True,
         "keyboard-xkb-layout": "us",
         "keyboard-xkb-variant": "",
         "keyboard-repeat-delay": 300,
         "keyboard-repeat-rate": 40,
         "keyboard-xkb-capslock": "disabled",
         "keyboard-xkb-numlock": "disabled",
+        "pointer-use-settings": True,
+        "pointer-accel-profile": "flat",
+        "pointer-pointer-accel": 0.0,
+        "pointer-natural-scroll": "disabled",
+        "pointer-scroll-factor": 1.0,
+        "pointer-left-handed": "disabled",
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")
@@ -557,15 +572,15 @@ def load_settings():
     if os.path.isfile(settings_file):
         print("Loading settings")
         settings = load_json(settings_file)
+        missing = 0
         for key in defaults:
-            missing = 0
             if key not in settings:
                 settings[key] = defaults[key]
                 print("'{}' key missing from settings, adding '{}'".format(key, defaults[key]))
                 missing += 1
-            if missing > 0:
-                print("Saving {}".format(settings_file))
-                save_json(settings, settings_file)
+        if missing > 0:
+            print("Saving {}".format(settings_file))
+            save_json(settings, settings_file)
     else:
         print("ERROR: failed loading settings, creating {}".format(settings_file), file=sys.stderr)
         save_json(defaults, settings_file)
