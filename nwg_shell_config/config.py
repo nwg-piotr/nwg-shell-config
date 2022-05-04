@@ -154,24 +154,24 @@ def preset_menu(preset_id):
 
     list_box = Gtk.ListBox()
 
-    row = SubMenuRow("App drawer")
+    row = SideMenuRow("App drawer", margin_start=18)
     row.eb.connect("button-press-event", set_up_drawer_tab, preset, preset_name)
     list_box.add(row)
 
-    row = SubMenuRow("Dock")
+    row = SideMenuRow("Dock", margin_start=18)
     row.eb.connect("button-press-event", set_up_dock_tab, preset, preset_name)
     list_box.add(row)
 
-    row = SubMenuRow("Exit menu")
+    row = SideMenuRow("Exit menu", margin_start=18)
     row.eb.connect("button-press-event", set_up_bar_tab, preset, preset_name)
     list_box.add(row)
 
-    row = SubMenuRow("Notifications")
+    row = SideMenuRow("Notifications", margin_start=18)
     row.eb.connect("button-press-event", set_up_notification_tab, preset, preset_name)
     list_box.add(row)
 
     if preset_id == "c":
-        row = SubMenuRow("Panel & css")
+        row = SideMenuRow("Panel & css", margin_start=18)
         row.eb.connect("button-press-event", set_up_panel_styling_tab, preset, preset_name)
         list_box.add(row)
 

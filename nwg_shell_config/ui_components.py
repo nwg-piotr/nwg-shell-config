@@ -58,25 +58,13 @@ def launch(widget, cmd):
 
 
 class SideMenuRow(Gtk.ListBoxRow):
-    def __init__(self, label):
+    def __init__(self, label, margin_start=9):
         super().__init__()
         self.eb = Gtk.EventBox()
         self.add(self.eb)
         lbl = Gtk.Label.new(label)
         lbl.set_property("halign", Gtk.Align.START)
-        lbl.set_property("margin-start", 9)
-        lbl.set_property("margin-end", 9)
-        self.eb.add(lbl)
-
-
-class SubMenuRow(Gtk.ListBoxRow):
-    def __init__(self, label):
-        super().__init__()
-        self.eb = Gtk.EventBox()
-        self.add(self.eb)
-        lbl = Gtk.Label.new(label)
-        lbl.set_property("halign", Gtk.Align.START)
-        lbl.set_property("margin-start", 18)
+        lbl.set_property("margin-start", margin_start)
         lbl.set_property("margin-end", 9)
         self.eb.add(lbl)
 
