@@ -146,7 +146,7 @@ def screen_tab(settings):
     entry = Gtk.Entry()
     entry.set_placeholder_text("1 2 3 4 5 6 7 8")
     entry.set_text(settings["autotiling-workspaces"])
-    entry.set_tooltip_text("Defines which workspaces to use 'autotiling' on.\nSee 'autotiling -h`.")
+    entry.set_tooltip_text("Defines which workspaces to use autotiling on.\nSee 'autotiling -h`.")
     entry.connect("changed", set_from_workspaces, settings)
     grid.attach(entry, 1, 2, 1, 1)
 
@@ -250,6 +250,7 @@ def screen_tab(settings):
         combo.append(p, p)
     combo.set_active_id(settings["panel-preset"])
     combo.connect("changed", set_dict_key_from_combo, settings, "panel-preset")
+    combo.set_tooltip_text("Switches current desktop preset.")
     frame.show_all()
 
     return frame
