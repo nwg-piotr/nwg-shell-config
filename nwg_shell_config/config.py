@@ -533,17 +533,35 @@ def save_includes():
 
     # Export pointer device settings
     if settings["pointer-use-settings"]:
-        lines = ['input "type:pointer" {']
-        lines.append('  accel_profile {}'.format(settings["pointer-accel-profile"]))
-        lines.append('  pointer_accel {}'.format(settings["pointer-pointer-accel"]))
-        lines.append('  natural_scroll {}'.format(settings["pointer-natural-scroll"]))
-        lines.append('  scroll_factor {}'.format(settings["pointer-scroll-factor"]))
-        lines.append('  left_handed {}'.format(settings["pointer-left-handed"]))
+        lines = ['input "type:pointer" {', '  accel_profile {}'.format(settings["pointer-accel-profile"]),
+                 '  pointer_accel {}'.format(settings["pointer-pointer-accel"]),
+                 '  natural_scroll {}'.format(settings["pointer-natural-scroll"]),
+                 '  scroll_factor {}'.format(settings["pointer-scroll-factor"]),
+                 '  left_handed {}'.format(settings["pointer-left-handed"])]
         if settings["pointer-custom-name"] and settings["pointer-custom-value"]:
             lines.append('  {} {}'.format(settings["keyboard-custom-name"], settings["keyboard-custom-value"]))
         lines.append('}')
 
         save_list_to_text_file(lines, os.path.join(config_home, "sway/pointer"))
+
+    # Export touchpad settings
+    if settings["touchpad-use-settings"]:
+        lines = ['input "type:touchpad" {', '  accel_profile {}'.format(settings["touchpad-accel-profile"]),
+                 '  pointer_accel {}'.format(settings["touchpad-pointer-accel"]),
+                 '  natural_scroll {}'.format(settings["touchpad-natural-scroll"]),
+                 '  scroll_factor {}'.format(settings["touchpad-scroll-factor"]),
+                 '  scroll_method {}'.format(settings["touchpad-scroll-method"]),
+                 '  left_handed {}'.format(settings["touchpad-left-handed"]),
+                 '  tap {}'.format(settings["touchpad-tap"]),
+                 '  tap_button_map {}'.format(settings["touchpad-tap-button-map"]),
+                 '  drag {}'.format(settings["touchpad-drag"]), '  drag_lock {}'.format(settings["touchpad-drag-lock"]),
+                 '  dwt {}'.format(settings["touchpad-dwt"]),
+                 '  middle_emulation {}'.format(settings["touchpad-middle-emulation"])]
+        if settings["touchpad-custom-name"] and settings["touchpad-custom-value"]:
+            lines.append('  {} {}'.format(settings["touchpad-custom-name"], settings["touchpad-custom-value"]))
+        lines.append('}')
+
+        save_list_to_text_file(lines, os.path.join(config_home, "sway/touchpad"))
 
     reload()
 
