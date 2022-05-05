@@ -28,7 +28,7 @@ To familiarize yourself with key bindings, you may want to mark the "Show help" 
 This will display a conky-like help widget, supported by [nwg-wrapper](https://github.com/nwg-piotr/nwg-wrapper).
 
 The **Controls module** of the panel comes with some preconfigured goodies to fine tune what your system looks and 
-behaves like. Some of the menu items rely on the other software you need to have installed. 
+behaves like. Some menu items rely on the other software you need to have installed. 
 
 <div align="center">nwg-panel Controls module<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell-config/controls.png"/></div>
 

@@ -1,10 +1,8 @@
 import subprocess
-
 import gi
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-
 from nwg_shell_config.tools import is_command, get_lat_lon
 
 
@@ -80,7 +78,7 @@ def screen_tab(settings):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
-    box = Gtk.Box(Gtk.Orientation.HORIZONTAL, 6)
+    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
     box.set_homogeneous(True)
     box.set_property("margin-left", 12)
     box.set_property("margin-bottom", 12)
@@ -271,7 +269,7 @@ def applications_tab(settings, warn):
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 0, 1, 1)
 
-    entry_terminal = Gtk.Entry()
+    entry_terminal = Gtk.Entry.new()
     entry_terminal.set_tooltip_text("Command to run terminal emulator.")
     entry_terminal.set_property("halign", Gtk.Align.START)
     entry_terminal.connect("changed", set_from_entry, settings, "terminal")
@@ -328,7 +326,7 @@ def applications_tab(settings, warn):
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 3, 1, 1)
 
-    entry_browser = Gtk.Entry()
+    entry_browser = Gtk.Entry.new()
     entry_browser.set_tooltip_text("Command to run web browser.")
     entry_browser.set_property("hexpand", True)
 
@@ -351,11 +349,6 @@ def applications_tab(settings, warn):
         for key in ["chromium", "google-chrome-stable", "firefox", "qutebrowser", "epiphany", "surf"]:
             if entry_browser.get_text() == key:
                 combo.set_active_id(key)
-    """else:
-        for key in ["chromium", "google-chrome-stable", "firefox", "qutebrowser", "epiphany", "surf"]:
-            if key in browsers:
-                combo.set_active_id(key)
-                break"""
 
     combo.connect("changed", set_browser_from_combo, entry_browser, browsers)
 
