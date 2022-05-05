@@ -534,7 +534,7 @@ def pointer_tab(settings):
     sb_acceleration = Gtk.SpinButton.new_with_range(-1, 1, 0.1)
     sb_acceleration.set_value(settings["pointer-pointer-accel"])
     sb_acceleration.connect("value-changed", set_from_spinbutton, settings, "pointer-pointer-accel", 1)
-    sb_acceleration.set_tooltip_text("Changes the pointer acceleration.")
+    sb_acceleration.set_tooltip_text("Changes the pointer acceleration. [<-1|1>]")
     grid.attach(sb_acceleration, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("Natural scroll:")
@@ -637,7 +637,7 @@ def touchpad_tab(settings):
     sb_acceleration = Gtk.SpinButton.new_with_range(-1, 1, 0.1)
     sb_acceleration.set_value(settings["touchpad-pointer-accel"])
     sb_acceleration.connect("value-changed", set_from_spinbutton, settings, "touchpad-pointer-accel", 1)
-    sb_acceleration.set_tooltip_text("Changes the pointer acceleration.")
+    sb_acceleration.set_tooltip_text("Changes the pointer acceleration. [<-1|1>]")
     grid.attach(sb_acceleration, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("Natural scroll:")
