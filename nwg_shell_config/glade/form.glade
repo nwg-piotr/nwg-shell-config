@@ -87,6 +87,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
+                    <property name="tooltip-text" translatable="yes">Uncheck to avoid seeing this window on sway startup.</property>
                     <property name="margin-start">6</property>
                     <property name="draw-indicator">True</property>
                   </object>
@@ -115,6 +116,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
+                    <property name="tooltip-text" translatable="yes">Apply changes, export includes, reload sway.</property>
                     <property name="margin-right">6</property>
                     <property name="margin-end">6</property>
                     <property name="margin-bottom">6</property>
@@ -132,6 +134,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
+                    <property name="tooltip-text" translatable="yes">Close the window w/o applying changes.</property>
                     <property name="margin-bottom">6</property>
                   </object>
                   <packing>

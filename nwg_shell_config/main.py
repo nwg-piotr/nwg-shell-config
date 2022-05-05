@@ -631,7 +631,7 @@ def load_settings():
         "touchpad-scroll-method": "two_finger",
         "touchpad-left-handed": "disabled",
         "touchpad-tap": "enabled",
-        "touchpad-tap-button-map": "lmr",
+        "touchpad-tap-button-map": "lrm",
         "touchpad-drag": "enabled",
         "touchpad-drag-lock": "disabled",
         "touchpad-dwt": "enabled",
