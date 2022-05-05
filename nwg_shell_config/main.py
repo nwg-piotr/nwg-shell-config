@@ -524,6 +524,8 @@ def save_includes():
         lines.append('}')
 
         save_list_to_text_file(lines, os.path.join(config_home, "sway/keyboard"))
+    else:
+        save_list_to_text_file([""], os.path.join(config_home, "sway/keyboard"))
 
     # Export pointer device settings
     if settings["pointer-use-settings"]:
@@ -537,6 +539,8 @@ def save_includes():
         lines.append('}')
 
         save_list_to_text_file(lines, os.path.join(config_home, "sway/pointer"))
+    else:
+        save_list_to_text_file([""], os.path.join(config_home, "sway/pointer"))
 
     # Export touchpad settings
     if settings["touchpad-use-settings"]:
@@ -556,6 +560,8 @@ def save_includes():
         lines.append('}')
 
         save_list_to_text_file(lines, os.path.join(config_home, "sway/touchpad"))
+    else:
+        save_list_to_text_file([""], os.path.join(config_home, "sway/touchpad"))
 
     reload()
 
