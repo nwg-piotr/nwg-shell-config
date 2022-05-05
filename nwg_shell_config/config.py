@@ -366,8 +366,6 @@ def save_includes():
 
     # ~/.config/sway/variables
     variables = []
-    if settings["keyboard-layout"]:
-        variables.append("set $lang '{}'".format(settings["keyboard-layout"]))
     if settings["terminal"]:
         variables.append("set $term {}".format(settings["terminal"]))
     if settings["browser"]:
@@ -516,6 +514,37 @@ def save_includes():
 
     save_list_to_text_file(autostart, os.path.join(config_home, "sway/autostart"))
 
+    # Export keyboard settings
+    if settings["keyboard-use-settings"]:
+        lines = ['input "type:keyboard" {']
+        if settings["keyboard-xkb-layout"]:
+            lines.append('  xkb_layout {}'.format(settings["keyboard-xkb-layout"]))
+        if settings["keyboard-xkb-variant"]:
+            lines.append('  xkb_variant {}'.format(settings["keyboard-xkb-variant"]))
+        lines.append('  repeat_delay {}'.format(settings["keyboard-repeat-delay"]))
+        lines.append('  repeat_rate {}'.format(settings["keyboard-repeat-rate"]))
+        lines.append('  xkb_capslock {}'.format(settings["keyboard-xkb-capslock"]))
+        lines.append('  xkb_numlock {}'.format(settings["keyboard-xkb-numlock"]))
+        if settings["keyboard-custom-name"] and settings["keyboard-custom-value"]:
+            lines.append('  {} {}'.format(settings["keyboard-custom-name"], settings["keyboard-custom-value"]))
+        lines.append('}')
+
+        save_list_to_text_file(lines, os.path.join(config_home, "sway/keyboard"))
+
+    # Export pointer device settings
+    if settings["pointer-use-settings"]:
+        lines = ['input "type:pointer" {']
+        lines.append('  accel_profile {}'.format(settings["pointer-accel-profile"]))
+        lines.append('  pointer_accel {}'.format(settings["pointer-pointer-accel"]))
+        lines.append('  natural_scroll {}'.format(settings["pointer-natural-scroll"]))
+        lines.append('  scroll_factor {}'.format(settings["pointer-scroll-factor"]))
+        lines.append('  left_handed {}'.format(settings["pointer-left-handed"]))
+        if settings["pointer-custom-name"] and settings["pointer-custom-value"]:
+            lines.append('  {} {}'.format(settings["keyboard-custom-name"], settings["keyboard-custom-value"]))
+        lines.append('}')
+
+        save_list_to_text_file(lines, os.path.join(config_home, "sway/pointer"))
+
     reload()
 
 
@@ -528,7 +557,6 @@ def reload():
                 "pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
-                "pkill -f swaync",
                 "pkill -f swaync",
                 swaync_daemon,
                 "swaync-client --reload-config",
@@ -567,12 +595,16 @@ def load_settings():
         "keyboard-repeat-rate": 40,
         "keyboard-xkb-capslock": "disabled",
         "keyboard-xkb-numlock": "disabled",
+        "keyboard-custom-name": "",
+        "keyboard-custom-value": "",
         "pointer-use-settings": True,
         "pointer-accel-profile": "flat",
         "pointer-pointer-accel": 0.0,
         "pointer-natural-scroll": "disabled",
         "pointer-scroll-factor": 1.0,
         "pointer-left-handed": "disabled",
+        "pointer-custom-name": "",
+        "pointer-custom-value": "",
         "touchpad-use-settings": True,
         "touchpad-accel-profile": "flat",
         "touchpad-pointer-accel": 0.0,
@@ -586,6 +618,8 @@ def load_settings():
         "touchpad-drag-lock": "disabled",
         "touchpad-dwt": "enabled",
         "touchpad-middle-emulation": "enabled",
+        "touchpad-custom-name": "",
+        "touchpad-custom-value": "",
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")

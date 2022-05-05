@@ -406,6 +406,8 @@ def keyboard_tab(settings):
     cb_keyboard_use_settings.set_property("halign", Gtk.Align.START)
     cb_keyboard_use_settings.set_property("margin-bottom", 6)
     cb_keyboard_use_settings.set_tooltip_text("Determines if to export the 'keyboard' config include.")
+    cb_keyboard_use_settings.set_active(settings["keyboard-use-settings"])
+    cb_keyboard_use_settings.connect("toggled", set_from_checkbutton, settings, "keyboard-use-settings")
     grid.attach(cb_keyboard_use_settings, 0, 0, 2, 1)
 
     lbl = Gtk.Label.new("Layout:")
@@ -475,6 +477,26 @@ def keyboard_tab(settings):
     combo_num.connect("changed", set_dict_key_from_combo, settings, "keyboard-xkb-numlock")
     grid.attach(combo_num, 1, 6, 1, 1)
 
+    lbl = Gtk.Label.new("Custom field:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 7, 1, 1)
+
+    entry_cname = Gtk.Entry()
+    entry_cname.set_tooltip_text("User defined field that you need, but it's missing\nfrom the the form above. "
+                                 "Enter field name here.\nThink twice before you use it.")
+    entry_cname.set_placeholder_text("name")
+    entry_cname.set_text(settings["keyboard-custom-name"])
+    entry_cname.connect("changed", set_from_entry, settings, "keyboard-custom-name")
+    grid.attach(entry_cname, 1, 7, 1, 1)
+
+    entry_cname = Gtk.Entry()
+    entry_cname.set_tooltip_text("User defined field that you need, but it's missing\nfrom the the form above. "
+                                 "Enter field value here.\nThink twice before you use it.")
+    entry_cname.set_placeholder_text("value")
+    entry_cname.set_text(settings["keyboard-custom-value"])
+    entry_cname.connect("changed", set_from_entry, settings, "keyboard-custom-value")
+    grid.attach(entry_cname, 2, 7, 1, 1)
+
     frame.show_all()
 
     return frame
@@ -495,6 +517,8 @@ def pointer_tab(settings):
     cb_pointer_use_settings.set_property("halign", Gtk.Align.START)
     cb_pointer_use_settings.set_property("margin-bottom", 6)
     cb_pointer_use_settings.set_tooltip_text("Determines if to export the 'pointer' config include.")
+    cb_pointer_use_settings.set_active(settings["pointer-use-settings"])
+    cb_pointer_use_settings.connect("toggled", set_from_checkbutton, settings, "pointer-use-settings")
     grid.attach(cb_pointer_use_settings, 0, 0, 2, 1)
 
     lbl = Gtk.Label.new("Acceleration profile:")
@@ -556,6 +580,26 @@ def pointer_tab(settings):
     combo_left_handed.connect("changed", set_dict_key_from_combo, settings, "pointer-left-handed")
     grid.attach(combo_left_handed, 1, 5, 1, 1)
 
+    lbl = Gtk.Label.new("Custom field:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 6, 1, 1)
+
+    entry_cname = Gtk.Entry()
+    entry_cname.set_tooltip_text("User defined field that you need, but it's missing\nfrom the the form above. "
+                                 "Enter field name here.\nThink twice before you use it.")
+    entry_cname.set_placeholder_text("name")
+    entry_cname.set_text(settings["pointer-custom-name"])
+    entry_cname.connect("changed", set_from_entry, settings, "pointer-custom-name")
+    grid.attach(entry_cname, 1, 6, 1, 1)
+
+    entry_cname = Gtk.Entry()
+    entry_cname.set_tooltip_text("User defined field that you need, but it's missing\nfrom the the form above. "
+                                 "Enter field value here.\nThink twice before you use it.")
+    entry_cname.set_placeholder_text("value")
+    entry_cname.set_text(settings["pointer-custom-value"])
+    entry_cname.connect("changed", set_from_entry, settings, "pointer-custom-value")
+    grid.attach(entry_cname, 2, 6, 1, 1)
+
     frame.show_all()
 
     return frame
@@ -572,11 +616,13 @@ def touchpad_tab(settings):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
-    cb_pointer_use_settings = Gtk.CheckButton.new_with_label("Use these settings")
-    cb_pointer_use_settings.set_property("halign", Gtk.Align.START)
-    cb_pointer_use_settings.set_property("margin-bottom", 6)
-    cb_pointer_use_settings.set_tooltip_text("Determines if to export the 'touchpad' config include.")
-    grid.attach(cb_pointer_use_settings, 0, 0, 2, 1)
+    cb_touchpad_use_settings = Gtk.CheckButton.new_with_label("Use these settings")
+    cb_touchpad_use_settings.set_property("halign", Gtk.Align.START)
+    cb_touchpad_use_settings.set_property("margin-bottom", 6)
+    cb_touchpad_use_settings.set_tooltip_text("Determines if to export the 'touchpad' config include.")
+    cb_touchpad_use_settings.set_active(settings["touchpad-use-settings"])
+    cb_touchpad_use_settings.connect("toggled", set_from_checkbutton, settings, "touchpad-use-settings")
+    grid.attach(cb_touchpad_use_settings, 0, 0, 2, 1)
 
     lbl = Gtk.Label.new("Accel. profile:")
     lbl.set_property("halign", Gtk.Align.END)
@@ -730,6 +776,26 @@ def touchpad_tab(settings):
     combo_dwt.set_active_id(settings["touchpad-dwt"])
     combo_dwt.connect("changed", set_dict_key_from_combo, settings, "touchpad-dwt")
     grid.attach(combo_dwt, 3, 6, 1, 1)
+
+    lbl = Gtk.Label.new("Custom field:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 7, 1, 1)
+
+    entry_cname = Gtk.Entry()
+    entry_cname.set_tooltip_text("User defined field that you need, but it's missing\nfrom the the form above. "
+                                 "Enter field name here.\nThink twice before you use it.")
+    entry_cname.set_placeholder_text("name")
+    entry_cname.set_text(settings["touchpad-custom-name"])
+    entry_cname.connect("changed", set_from_entry, settings, "touchpad-custom-name")
+    grid.attach(entry_cname, 1, 7, 1, 1)
+
+    entry_cname = Gtk.Entry()
+    entry_cname.set_tooltip_text("User defined field that you need, but it's missing\nfrom the the form above. "
+                                 "Enter field value here.\nThink twice before you use it.")
+    entry_cname.set_placeholder_text("value")
+    entry_cname.set_text(settings["touchpad-custom-value"])
+    entry_cname.connect("changed", set_from_entry, settings, "touchpad-custom-value")
+    grid.attach(entry_cname, 2, 7, 2, 1)
 
     frame.show_all()
 
