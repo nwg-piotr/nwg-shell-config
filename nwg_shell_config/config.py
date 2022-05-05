@@ -79,7 +79,7 @@ def side_menu():
     list_box.add(row)
 
     row = SideMenuRow("Touchpad")
-    row.eb.connect("button-press-event", hide_submenus)
+    row.eb.connect("button-press-event", set_up_touchpad_tab)
     list_box.add(row)
 
     row = SideMenuRow("Applications")
@@ -228,6 +228,14 @@ def set_up_pointer_tab(*args):
     global content
     content.destroy()
     content = pointer_tab(settings)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_touchpad_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = touchpad_tab(settings)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -565,6 +573,19 @@ def load_settings():
         "pointer-natural-scroll": "disabled",
         "pointer-scroll-factor": 1.0,
         "pointer-left-handed": "disabled",
+        "touchpad-use-settings": True,
+        "touchpad-accel-profile": "flat",
+        "touchpad-pointer-accel": 0.0,
+        "touchpad-natural-scroll": "disabled",
+        "touchpad-scroll-factor": 1.0,
+        "touchpad-scroll-method": "two_finger",
+        "touchpad-left-handed": "disabled",
+        "touchpad-tap": "enabled",
+        "touchpad-tap-button-map": "lmr",
+        "touchpad-drag": "enabled",
+        "touchpad-drag-lock": "disabled",
+        "touchpad-dwt": "enabled",
+        "touchpad-middle-emulation": "enabled",
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")

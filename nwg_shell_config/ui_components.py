@@ -561,6 +561,181 @@ def pointer_tab(settings):
     return frame
 
 
+def touchpad_tab(settings):
+    frame = Gtk.Frame()
+    frame.set_label("  Common: Touchpad  ")
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_pointer_use_settings = Gtk.CheckButton.new_with_label("Use these settings")
+    cb_pointer_use_settings.set_property("halign", Gtk.Align.START)
+    cb_pointer_use_settings.set_property("margin-bottom", 6)
+    cb_pointer_use_settings.set_tooltip_text("Determines if to export the 'touchpad' config include.")
+    grid.attach(cb_pointer_use_settings, 0, 0, 2, 1)
+
+    lbl = Gtk.Label.new("Accel. profile:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    combo_aprofile = Gtk.ComboBoxText()
+    combo_aprofile.set_property("halign", Gtk.Align.START)
+    combo_aprofile.set_tooltip_text("Sets the pointer acceleration profile.")
+    for item in ["flat", "adaptive"]:
+        combo_aprofile.append(item, item)
+    combo_aprofile.set_active_id(settings["touchpad-accel-profile"])
+    combo_aprofile.connect("changed", set_dict_key_from_combo, settings, "touchpad-accel-profile")
+    grid.attach(combo_aprofile, 1, 1, 1, 1)
+
+    lbl = Gtk.Label.new("Acceleration:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    sb_acceleration = Gtk.SpinButton.new_with_range(-1, 1, 0.1)
+    sb_acceleration.set_value(settings["touchpad-pointer-accel"])
+    sb_acceleration.connect("value-changed", set_from_spinbutton, settings, "touchpad-pointer-accel", 1)
+    sb_acceleration.set_tooltip_text("Changes the pointer acceleration.")
+    grid.attach(sb_acceleration, 1, 2, 1, 1)
+
+    lbl = Gtk.Label.new("Natural scroll:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    combo_nscroll = Gtk.ComboBoxText()
+    combo_nscroll.set_property("halign", Gtk.Align.START)
+    combo_nscroll.set_tooltip_text("Enables or disables natural (inverted) scrolling.")
+    for item in ["disabled", "enabled"]:
+        combo_nscroll.append(item, item)
+    combo_nscroll.set_active_id(settings["touchpad-natural-scroll"])
+    combo_nscroll.connect("changed", set_dict_key_from_combo, settings, "touchpad-natural-scroll")
+    grid.attach(combo_nscroll, 1, 3, 1, 1)
+
+    lbl = Gtk.Label.new("Scroll factor:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    sb_sfactor = Gtk.SpinButton.new_with_range(0.1, 10, 0.1)
+    sb_sfactor.set_value(settings["touchpad-scroll-factor"])
+    sb_sfactor.connect("value-changed", set_from_spinbutton, settings, "touchpad-scroll-factor", 1)
+    sb_sfactor.set_tooltip_text("Scroll speed will be scaled by the given value.")
+    grid.attach(sb_sfactor, 1, 4, 1, 1)
+
+    lbl = Gtk.Label.new("Scroll method:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 5, 1, 1)
+
+    combo_scroll_method = Gtk.ComboBoxText()
+    combo_scroll_method.set_property("halign", Gtk.Align.START)
+    combo_scroll_method.set_tooltip_text("Changes the scroll method.")
+    for item in [("two_finger", "Two finger"), ("edge", "Edge"), ("on_button_down", "On button down"),
+                 ("none", "None")]:
+        combo_scroll_method.append(item[0], item[1])
+    combo_scroll_method.set_active_id(settings["touchpad-scroll-method"])
+    combo_scroll_method.connect("changed", set_dict_key_from_combo, settings, "touchpad-scroll-method")
+    grid.attach(combo_scroll_method, 1, 5, 1, 1)
+
+    lbl = Gtk.Label.new("Left handed:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 6, 1, 1)
+
+    combo_left_handed = Gtk.ComboBoxText()
+    combo_left_handed.set_property("halign", Gtk.Align.START)
+    combo_left_handed.set_tooltip_text("Enables or disables left handed mode.")
+    for item in ["disabled", "enabled"]:
+        combo_left_handed.append(item, item)
+    combo_left_handed.set_active_id(settings["touchpad-left-handed"])
+    combo_left_handed.connect("changed", set_dict_key_from_combo, settings, "touchpad-left-handed")
+    grid.attach(combo_left_handed, 1, 6, 1, 1)
+
+    lbl = Gtk.Label.new("Tap:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 1, 1, 1)
+
+    combo_tap = Gtk.ComboBoxText()
+    combo_tap.set_property("halign", Gtk.Align.START)
+    combo_tap.set_tooltip_text("Enables or disables tap.")
+    for item in ["enabled", "disabled"]:
+        combo_tap.append(item, item)
+    combo_tap.set_active_id(settings["touchpad-tap"])
+    combo_tap.connect("changed", set_dict_key_from_combo, settings, "touchpad-tap")
+    grid.attach(combo_tap, 3, 1, 1, 1)
+
+    lbl = Gtk.Label.new("Tap button map:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 2, 1, 1)
+
+    combo_tap_btn_map = Gtk.ComboBoxText()
+    combo_tap_btn_map.set_property("halign", Gtk.Align.START)
+    combo_tap_btn_map.set_tooltip_text("'lrm' treats 1 finger as left click, 2 fingers as right click, "
+                                       "and 3 fingers as middle click.\n'lmr' treats 1 finger as left click, "
+                                       "2 fingers as middle click, and 3 fingers as right click.")
+    for item in ["lrm", "lmr"]:
+        combo_tap_btn_map.append(item, item)
+    combo_tap_btn_map.set_active_id(settings["touchpad-tap-button-map"])
+    combo_tap_btn_map.connect("changed", set_dict_key_from_combo, settings, "touchpad-tap-button-map")
+    grid.attach(combo_tap_btn_map, 3, 2, 1, 1)
+
+    lbl = Gtk.Label.new("Middle emulation:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 3, 1, 1)
+
+    combo_memulation = Gtk.ComboBoxText()
+    combo_memulation.set_property("halign", Gtk.Align.START)
+    combo_memulation.set_tooltip_text("Enables or disables middle click emulation.")
+    for item in ["enabled", "disable"]:
+        combo_memulation.append(item, item)
+    combo_memulation.set_active_id(settings["touchpad-middle-emulation"])
+    combo_memulation.connect("changed", set_dict_key_from_combo, settings, "touchpad-middle-emulation")
+    grid.attach(combo_memulation, 3, 3, 1, 1)
+
+    lbl = Gtk.Label.new("Drag:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 4, 1, 1)
+
+    combo_drag = Gtk.ComboBoxText()
+    combo_drag.set_property("halign", Gtk.Align.START)
+    combo_drag.set_tooltip_text("Enables or disables tap-and-drag.")
+    for item in ["enabled", "disabled"]:
+        combo_drag.append(item, item)
+    combo_drag.set_active_id(settings["touchpad-drag"])
+    combo_drag.connect("changed", set_dict_key_from_combo, settings, "touchpad-drag")
+    grid.attach(combo_drag, 3, 4, 1, 1)
+
+    lbl = Gtk.Label.new("Drag lock:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 5, 1, 1)
+
+    combo_drag_lock = Gtk.ComboBoxText()
+    combo_drag_lock.set_property("halign", Gtk.Align.START)
+    combo_drag_lock.set_tooltip_text("Enables or disables drag lock.")
+    for item in ["disabled", "enabled"]:
+        combo_drag_lock.append(item, item)
+    combo_drag_lock.set_active_id(settings["touchpad-drag-lock"])
+    combo_drag_lock.connect("changed", set_dict_key_from_combo, settings, "touchpad-drag-lock")
+    grid.attach(combo_drag_lock, 3, 5, 1, 1)
+
+    lbl = Gtk.Label.new("DWT:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 6, 1, 1)
+
+    combo_dwt = Gtk.ComboBoxText()
+    combo_dwt.set_property("halign", Gtk.Align.START)
+    combo_dwt.set_tooltip_text("Enables or disables disable-while-typing.")
+    for item in ["enabled", "disable"]:
+        combo_dwt.append(item, item)
+    combo_dwt.set_active_id(settings["touchpad-dwt"])
+    combo_dwt.connect("changed", set_dict_key_from_combo, settings, "touchpad-dwt")
+    grid.attach(combo_dwt, 3, 6, 1, 1)
+
+    frame.show_all()
+
+    return frame
+
+
 def drawer_tab(preset, preset_name):
     frame = Gtk.Frame()
     frame.set_label("  {}: Application drawer  ".format(preset_name))
