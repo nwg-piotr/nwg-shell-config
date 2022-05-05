@@ -330,30 +330,6 @@ class GUI(object):
 
         self.tz, self.lat, self.long = get_lat_lon()
 
-    def fill_in_missing_values(self, *args):
-        if self.keyboard_layout.get_text() == "":
-            self.keyboard_layout.set_text("us")
-
-        if self.autotiling_workspaces.get_text() == "":
-            self.autotiling_workspaces.set_text(settings["autotiling-workspaces"])
-
-        if (self.night_lat.get_value() == -1.0 and self.night_long.get_value()) == -1.0 \
-                or (self.night_lat.get_value() == 0 and self.night_long.get_value() == 0):
-            self.night_lat.set_value(self.lat)
-            self.night_long.set_value(self.long)
-
-        if self.terminal.get_text() == "":
-            self.terminal.set_text(get_terminal())
-
-        if self.file_manager.get_text() == "":
-            self.file_manager.set_text(get_file_manager())
-
-        if self.editor.get_text() == "":
-            self.editor.set_text(get_editor())
-
-        if self.browser.get_text() == "":
-            self.browser.set_text(get_browsers())
-
 
 def save_includes():
     cmd_launcher_autostart = ""

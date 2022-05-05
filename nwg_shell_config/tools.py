@@ -25,25 +25,6 @@ def get_data_dir():
     return data_dir
 
 
-def get_config_home():
-    xdg_config_home = os.getenv('XDG_CONFIG_HOME')
-    config_home = xdg_config_home if xdg_config_home else os.path.join(
-        os.getenv("HOME"), ".config")
-
-    return config_home
-
-
-def get_temp_dir():
-    if os.getenv("TMPDIR"):
-        return os.getenv("TMPDIR")
-    elif os.getenv("TEMP"):
-        return os.getenv("TEMP")
-    elif os.getenv("TMP"):
-        return os.getenv("TMP")
-
-    return "/tmp"
-
-
 def init_files(src_dir, dst_dir, overwrite=False):
     src_files = os.listdir(src_dir)
     for file in src_files:
@@ -55,9 +36,6 @@ def init_files(src_dir, dst_dir, overwrite=False):
 
 
 def list_outputs():
-    """
-    for now support for sway only
-    """
     outputs = []
     try:
         from i3ipc import Connection
@@ -154,36 +132,4 @@ def save_list_to_text_file(data, file_path):
         text_file.write(line + "\n")
     text_file.close()
 
-
-def get_terminal():
-    for t in ["foot", "alacritty", "kitty", "gnome-terminal", "sakura", "wterm"]:
-        if is_command(t):
-            return t
-    return "foot"
-
-
-def get_file_manager():
-    for f in ["thunar", "pcmanfm", "nautilus", "caja"]:
-        if is_command(f):
-            return f
-    return ""
-
-
-def get_editor():
-    for e in ["mousepad", "geany", "atom", "emacs"]:
-        if is_command(e):
-            return e
-    return ""
-
-
-def get_browser_command():
-    commands = {
-        "chromium": "chromium --enable-features=UseOzonePlatform --ozone-platform=wayland",
-        "firefox": "MOZ_ENABLE_WAYLAND=1 firefox",
-        "epiphany": "epiphany",
-        "surf": "surf"}
-    for b in ["chromium", "firefox", "epiphany", "qutebrowser", "surf"]:
-        if is_command(b):
-            return commands[b]
-    return ""
 
