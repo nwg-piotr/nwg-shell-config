@@ -765,7 +765,6 @@ def main():
 
     load_settings()
 
-    # load_preset()
     load_presets()
 
     ui = GUI()
@@ -787,18 +786,6 @@ def main():
 
     ui.window.show_all()
     hide_submenus()
-    """if settings["panel-preset"] != "custom":
-        ui.panel_custom.set_visible(False)
-        ui.panel_css.set_sensitive(False)
-        ui.launcher_css.set_sensitive(False)
-        ui.exit_css.set_sensitive(False)
-        ui.dock_css.set_sensitive(False)
-    else:
-        ui.panel_custom.set_sensitive(True)
-        ui.panel_css.set_sensitive(True)
-        ui.launcher_css.set_sensitive(True)
-        ui.exit_css.set_sensitive(True)
-        ui.dock_css.set_sensitive(True)"""
 
     Gtk.main()
 
