@@ -2,7 +2,7 @@
 
 The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection of components for building a GTK-based user interface for [sway](https://github.com/swaywm/sway) Wayland compositor. It consists of a panel, launcher, dock, traditional menu, wallpaper manager, as well as some helper scripts. Until now, it has functioned as a do-it-yourself kit, with items to choose from. This program is a GUI to configure all the components in one place. It also integrates several external programs, which we arbitrarily found the best to build a coherent user experience.
 
-![nwg-shell-settings.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell/nwg-shell-config.png)
+![nwg-shell-settings.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell/nwg-shell-config-02.png)
 
 At the top of the window you define common settings, including some custom solutions, like 
 [autotiling](https://github.com/nwg-piotr/autotiling) (a part of the project) and gamma control, for which 
@@ -54,12 +54,15 @@ directory. It contains the sway config, together with the rest of necessary conf
 All the settings managed by nwg-shell-config are included into the `~/.config/sway/config` file like this:
 
 ```text
-# The file we include below is created and will be overwritten by nwg-shell-config GUI!
+# The files we include below will be created / overwritten by nwg-shell tools
 #
-include ~/.config/sway/variables
-include ~/.config/sway/outputs
-include ~/.config/sway/autostart
-#
+include variables
+include outputs
+include autostart
+include workspaces
+include keyboard
+include pointer
+include touchpad
 ```
 
 Leave these lines as they are. You also should not edit these files manually: the program will overwrite your changes.
@@ -94,29 +97,3 @@ have their own config GUI. Find the "Panel settings" entry in the Controls menu.
 ### Restoring defaults
 
 If you happen to break any of the `preset0-*` files, just delete it, and run the config utility. The file will be restored from the default one. You may also run `nwg-shell-config -r` to restore all default configs and style sheets.
-
-## Credits
-
-This collection of software relies on some great third-party programs and libraries:
-
-- LXAppearance by [lxde](http://www.lxde.org) team
-- [wdisplays](https://github.com/artizirk/wdisplays) by Michael Aquilina / Arti Zirk
-- [wlsunset](https://sr.ht/~kennylevinsen/wlsunset) by Kenny Levinsen
-- [SwayNotificationCenter](https://github.com/ErikReider/SwayNotificationCenter) by Eric Reider
-- [swappy](https://github.com/jtheoof/swappy) Copyright (c) 2020 Jeremy Attali
-- [gtk-layer-shell](https://github.com/wmww/gtk-layer-shell) Copyright (c) 2014 Dennis Blommesteijn, Copyright (c) 2020 William Wold
-- [gotk3](https://github.com/gotk3/gotk3) Copyright (c) 2013-2014 Conformal Systems LLC,
-Copyright (c) 2015-2018 gotk3 contributors
-- [gotk3-layershell](https://github.com/dlasky/gotk3-layershell) by [@dlasky](https://github.com/dlasky/gotk3-layershell/commits?author=dlasky) - many thanks for writing this software, and for patience with my requests!
-- [go-sway](https://github.com/joshuarubin/go-sway) Copyright (c) 2019 Joshua Rubin
-- [go-singleinstance](github.com/allan-simon/go-singleinstance) Copyright (c) 2015 Allan Simon
-- [python-i3ipc](https://github.com/altdesktop/i3ipc-python) Copyright (c) 2015, Tony Crisci
-- [python-psutil](https://github.com/giampaolo/psutil) Copyright (c) 2009, Jay Loden, Dave Daeschler, Giampaolo Rodola
-- [python-geopy](https://github.com/geopy/geopy) by Kostya Esmukov
-- [brightnessctl](https://github.com/Hummer12007/brightnessctl) Copyright (c) 2016 Mykyta Holuakha
-- [playerctl](https://github.com/altdesktop/playerctl) by Tony Crisci
-- [PulseAudio](https://www.freedesktop.org/wiki/Software/PulseAudio), 
-[bluez-utils](http://www.bluez.org), [python-netifaces](https://archlinux.org/packages/community/x86_64/python-netifaces),
- and probably more, which I forgot to mention here. Please forgive me, if so.
-
-[sway](https://github.com/swaywm/sway) is an i3-compatible Wayland compositor Copyright (c) 2016-2017 Drew DeVault
