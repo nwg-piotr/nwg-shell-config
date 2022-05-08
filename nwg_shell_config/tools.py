@@ -25,37 +25,6 @@ def get_data_dir():
     return data_dir
 
 
-def get_config_home():
-    xdg_config_home = os.getenv('XDG_CONFIG_HOME')
-    config_home = xdg_config_home if xdg_config_home else os.path.join(
-        os.getenv("HOME"), ".config")
-
-    return config_home
-
-
-def get_temp_dir():
-    if os.getenv("TMPDIR"):
-        return os.getenv("TMPDIR")
-    elif os.getenv("TEMP"):
-        return os.getenv("TEMP")
-    elif os.getenv("TMP"):
-        return os.getenv("TMP")
-
-    return "/tmp"
-
-
-def check_config_dirs(config_home):
-    for d in ([os.path.join(config_home, "nwg-panel"),
-               os.path.join(config_home, "nwg-dock"),
-               os.path.join(config_home, "nwg-bar"),
-               os.path.join(config_home, "nwg-drawer"),
-               os.path.join(config_home, "nwg-wrapper"),
-               os.path.join(config_home, "swaync")]):
-        if not os.path.isdir(d):
-            print("Creating {}".format(d))
-            os.makedirs(d, exist_ok=True)
-
-
 def init_files(src_dir, dst_dir, overwrite=False):
     src_files = os.listdir(src_dir)
     for file in src_files:
@@ -67,9 +36,6 @@ def init_files(src_dir, dst_dir, overwrite=False):
 
 
 def list_outputs():
-    """
-    for now support for sway only
-    """
     outputs = []
     try:
         from i3ipc import Connection
@@ -167,84 +133,3 @@ def save_list_to_text_file(data, file_path):
     text_file.close()
 
 
-def get_terminal():
-    for t in ["foot", "alacritty", "kitty", "gnome-terminal", "sakura", "wterm"]:
-        if is_command(t):
-            return t
-    return "foot"
-
-
-def get_file_manager():
-    for f in ["thunar", "pcmanfm", "nautilus", "caja"]:
-        if is_command(f):
-            return f
-    return ""
-
-
-def get_editor():
-    for e in ["mousepad", "geany", "atom", "emacs"]:
-        if is_command(e):
-            return e
-    return ""
-
-
-def get_browser_command():
-    commands = {
-        "chromium": "chromium --enable-features=UseOzonePlatform --ozone-platform=wayland",
-        "firefox": "MOZ_ENABLE_WAYLAND=1 firefox",
-        "epiphany": "epiphany",
-        "surf": "surf"}
-    for b in ["chromium", "firefox", "epiphany", "qutebrowser", "surf"]:
-        if is_command(b):
-            return commands[b]
-    return ""
-
-
-def ver2int(ver):
-    try:
-        nums = ver.split(".")
-        if len(nums) != 3:
-            return None
-        return int(nums[0]) * 100 + int(nums[1]) * 10 + int(nums[2])
-    except:
-        return None
-
-
-def upgrade(version, settings):
-    ver_num = ver2int(version)
-    # v0.2.2 replaces `mako`, hardcoded in sway config, with `swaync -s <preset-x.css>`, included from `autostart`
-    if ver_num and ver_num == 22:
-        file = os.path.join(get_config_home(), "sway/config")
-        lines = load_text_file(file).splitlines()
-        changed = False
-        for i in range(len(lines)):
-            if lines[i].startswith("exec mako") or lines[i].startswith("exec_always mako"):
-                lines[i] = "# Disabled by nwg-shell-config ({}): {}".format(version, lines[i])
-                changed = True
-        if changed:
-            print("Upgrading sway config file to version {}".format(version))
-            save_list_to_text_file(lines, os.path.join(get_config_home(), "sway/config"))
-            notify_send("sway restart required",
-                        "Your sway config file has just been modified.\\nPlease exit sway and run it again.",
-                        urgency="critical")
-
-        # Add 'nwg-shell-check-updates' to autostart
-        lines = load_text_file(os.path.join(get_config_home(), "sway/autostart")).splitlines()
-        success = False
-        for line in lines:
-            if line == "exec_always nwg-shell-check-updates":
-                success = True
-                break
-        if not success:
-            print("autostart: appending 'exec_always nwg-shell-check-updates'")
-            lines.append("exec_always nwg-shell-check-updates")
-            save_list_to_text_file(lines, os.path.join(get_config_home(), "sway/autostart"))
-
-    settings["last-upgrade-check"] = ver_num
-    save_json(settings, os.path.join(get_data_dir(), "settings"))
-
-
-def notify_send(head, msg, urgency="normal"):
-    subprocess.call(
-        'notify-send --icon=/usr/share/pixmaps/nwg-shell.svg --urgency={} "{}" "{}"'.format(urgency, head, msg),
-        shell=True)

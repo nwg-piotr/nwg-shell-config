@@ -5,7 +5,7 @@
   "launcher-file-search-columns": 2,
   "launcher-search-files": true,
   "launcher-categories": true,
-  "launcher-resident": false,
+  "launcher-resident": true,
   "launcher-overlay": false,
   "launcher-css": "preset-1.css",
   "launcher-on": true,

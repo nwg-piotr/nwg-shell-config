@@ -3,16 +3,15 @@
 # Dependencies: python-geopy i3ipc
 
 import argparse
-import signal
-
-import gi
-
-gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk, GLib
 
 from nwg_shell_config.tools import *
-
+from nwg_shell_config.ui_components import *
 from nwg_shell_config.__about__ import __version__
+import gi
+gi.require_version('Gdk', '3.0')
+from gi.repository import Gdk, GLib
+
+gi.require_version('Gtk', '3.0')
 
 dir_name = os.path.dirname(__file__)
 
@@ -22,7 +21,18 @@ config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else 
 
 outputs = []
 settings = {}
-preset = {}
+# preset = {}
+preset_0 = {}
+preset_1 = {}
+preset_2 = {}
+preset_3 = {}
+preset_custom = {}
+
+content = Gtk.Frame()
+submenus = []
+current_submenu = None
+btn_apply = Gtk.Button()
+grid = Gtk.Grid()
 
 
 def validate_workspaces(gtk_entry):
@@ -40,338 +50,285 @@ def handle_keyboard(window, event):
         window.close()
 
 
+def side_menu():
+    list_box = Gtk.ListBox()
+    list_box.set_property("margin-top", 6)
+
+    row = Gtk.ListBoxRow()
+    row.set_selectable(False)
+    lbl = Gtk.Label()
+    lbl.set_property("halign", Gtk.Align.START)
+    lbl.set_markup("<b>Common</b>")
+    lbl.set_property("margin-top", 3)
+    lbl.set_property("margin-start", 3)
+    row.add(lbl)
+    list_box.add(row)
+
+    row = SideMenuRow("Screen settings")
+    row.eb.connect("button-press-event", set_up_screen_tab)
+    list_box.add(row)
+
+    row = SideMenuRow("Keyboard")
+    row.eb.connect("button-press-event", set_up_keyboard_tab)
+    list_box.add(row)
+
+    row = SideMenuRow("Pointer device")
+    row.eb.connect("button-press-event", set_up_pointer_tab)
+    list_box.add(row)
+
+    row = SideMenuRow("Touchpad")
+    row.eb.connect("button-press-event", set_up_touchpad_tab)
+    list_box.add(row)
+
+    row = SideMenuRow("Applications")
+    row.eb.connect("button-press-event", set_up_applications_tab)
+    list_box.add(row)
+
+    row = Gtk.ListBoxRow()
+    row.set_selectable(False)
+    lbl = Gtk.Label()
+    lbl.set_property("halign", Gtk.Align.START)
+    lbl.set_property("margin-top", 6)
+    lbl.set_markup("<b>Desktop styles</b>")
+    lbl.set_property("margin-start", 3)
+    row.add(lbl)
+    list_box.add(row)
+
+    row = SideMenuRow("Preset 0")
+    list_box.add(row)
+
+    submenu_0 = preset_menu(0)
+    list_box.add(submenu_0)
+    row.eb.connect("button-press-event", toggle_submenu, submenu_0)
+
+    row = SideMenuRow("Preset 1")
+    list_box.add(row)
+
+    submenu_1 = preset_menu(1)
+    list_box.add(submenu_1)
+    row.eb.connect("button-press-event", toggle_submenu, submenu_1)
+
+    row = SideMenuRow("Preset 2")
+    list_box.add(row)
+
+    submenu_2 = preset_menu(2)
+    list_box.add(submenu_2)
+    row.eb.connect("button-press-event", toggle_submenu, submenu_2)
+
+    row = SideMenuRow("Preset 3")
+    list_box.add(row)
+
+    submenu_3 = preset_menu(3)
+    list_box.add(submenu_3)
+    row.eb.connect("button-press-event", toggle_submenu, submenu_3)
+
+    row = SideMenuRow("Custom preset")
+    list_box.add(row)
+
+    submenu_c = preset_menu("c")
+    list_box.add(submenu_c)
+    row.eb.connect("button-press-event", toggle_submenu, submenu_c)
+
+    list_box.set_selection_mode(Gtk.SelectionMode.NONE)
+    return list_box
+
+
+def preset_menu(preset_id):
+    if preset_id == 0:
+        preset = preset_0
+        preset_name = "Preset 0"
+    elif preset_id == 1:
+        preset = preset_1
+        preset_name = "Preset 1"
+    elif preset_id == 2:
+        preset = preset_2
+        preset_name = "Preset 2"
+    elif preset_id == 3:
+        preset = preset_3
+        preset_name = "Preset 3"
+    else:
+        preset = preset_custom
+        preset_name = "Custom preset"
+
+    list_box = Gtk.ListBox()
+
+    row = SideMenuRow("App drawer", margin_start=18)
+    row.eb.connect("button-press-event", set_up_drawer_tab, preset, preset_name)
+    list_box.add(row)
+
+    row = SideMenuRow("Dock", margin_start=18)
+    row.eb.connect("button-press-event", set_up_dock_tab, preset, preset_name)
+    list_box.add(row)
+
+    row = SideMenuRow("Exit menu", margin_start=18)
+    row.eb.connect("button-press-event", set_up_bar_tab, preset, preset_name)
+    list_box.add(row)
+
+    row = SideMenuRow("Notifications", margin_start=18)
+    row.eb.connect("button-press-event", set_up_notification_tab, preset, preset_name)
+    list_box.add(row)
+
+    if preset_id == "c":
+        row = SideMenuRow("Panel & css", margin_start=18)
+        row.eb.connect("button-press-event", set_up_panel_styling_tab, preset, preset_name)
+        list_box.add(row)
+
+    global submenus
+    submenus.append(list_box)
+
+    list_box.set_selection_mode(Gtk.SelectionMode.NONE)
+    return list_box
+
+
+def hide_submenus():
+    for item in submenus:
+        if item != current_submenu:
+            item.hide()
+
+
+def toggle_submenu(event_box, event_button, listbox):
+    global current_submenu
+    current_submenu = listbox
+    hide_submenus()
+    if not listbox.is_visible():
+        listbox.show_all()
+        listbox.unselect_all()
+    else:
+        listbox.hide()
+
+
+def set_up_screen_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = screen_tab(settings)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_applications_tab(*args, warn=False):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = applications_tab(settings, warn)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_keyboard_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = keyboard_tab(settings)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_pointer_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = pointer_tab(settings)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_touchpad_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = touchpad_tab(settings)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_drawer_tab(event_box, event_button, preset, preset_name):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = drawer_tab(preset, preset_name)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_dock_tab(event_box, event_button, preset, preset_name):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = dock_tab(preset, preset_name, outputs)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_bar_tab(event_box, event_button, preset, preset_name):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = bar_tab(preset, preset_name)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_notification_tab(event_box, event_button, preset, preset_name):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = notification_tab(preset, preset_name)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_panel_styling_tab(event_box, event_button, preset, preset_name):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = panel_styling_tab(settings, preset, preset_name)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def on_apply_btn(b):
+    save_presets()
+    presets = {
+        "preset-0": preset_0,
+        "preset-1": preset_1,
+        "preset-2": preset_2,
+        "preset-3": preset_3,
+        "custom": preset_custom
+    }
+    preset = presets[settings["panel-preset"]]
+    update_swaync_config(preset["swaync-positionX"], preset["swaync-positionY"])
+
+    save_includes()
+    f = os.path.join(data_dir, "settings")
+    print("Saving {}".format(f))
+    save_json(settings, f)
+
+
 class GUI(object):
     def __init__(self):
         builder = Gtk.Builder()
-        builder.add_from_file(os.path.join(dir_name, "glade/main.glade"))
+        builder.add_from_file(os.path.join(dir_name, "glade/form.glade"))
 
-        self.window = builder.get_object("main-window")
+        self.window = builder.get_object("window")
         self.window.connect('destroy', Gtk.main_quit)
         self.window.connect("key-release-event", handle_keyboard)
 
-        self.version = builder.get_object("version")
+        global grid
+        grid = builder.get_object("grid")
 
-        self.keyboard_layout = builder.get_object("keyboard-layout")
+        self.menu = side_menu()
+        grid.attach(self.menu, 0, 0, 1, 1)
 
-        self.appindicator = builder.get_object("appindicator")
+        self.version = builder.get_object("version-label")
+        self.version.set_text("v{}".format(__version__))
 
-        self.autotiling_workspaces = builder.get_object("autotiling-workspaces")
-        self.autotiling_workspaces.connect("changed", validate_workspaces)
-        self.autotiling_on = builder.get_object("autotiling-on")
+        github = builder.get_object("github")
+        github.set_markup('<a href="https://github.com/nwg-piotr/nwg-shell-config">GitHub</a>')
 
-        self.night_lat = builder.get_object("night-lat")
-        self.night_lat_info = builder.get_object("night-lat-info")
-        self.night_long = builder.get_object("night-long")
-        self.night_long_info = builder.get_object("night-long-info")
-        self.night_temp_low = builder.get_object("night-temp-low")
-        self.night_temp_high = builder.get_object("night-temp-high")
-        self.night_gamma = builder.get_object("night-gamma")
-        self.night_on = builder.get_object("night-on")
-
-        self.terminal = builder.get_object("terminal")
-        self.file_manager = builder.get_object("file-manager")
-        self.editor = builder.get_object("editor")
-
-        self.browser = builder.get_object("browser")
-        self.browser_chromium = builder.get_object("browser-chromium")
-        self.browser_chromium.connect("clicked", self.set_chromium)
-        self.browser_firefox = builder.get_object("browser-firefox")
-        self.browser_firefox.connect("clicked", self.set_firefox)
-
-        self.launcher_columns = builder.get_object("launcher-columns")
-        self.launcher_icon_size = builder.get_object("launcher-icon-size")
-        self.launcher_file_search_columns = builder.get_object("launcher-file-search-columns")
-        self.launcher_search_files = builder.get_object("launcher-search-files")
-        self.launcher_categories = builder.get_object("launcher-categories")
-        self.launcher_resident = builder.get_object("launcher-resident")
-        self.launcher_overlay = builder.get_object("launcher-overlay")
-        self.launcher_css = builder.get_object("launcher-css")
-        self.launcher_on = builder.get_object("launcher-on")
-
-        self.exit_position = builder.get_object("exit-position")
-        self.exit_full = builder.get_object("exit-full")
-        self.exit_alignment = builder.get_object("exit-alignment")
-        self.exit_margin = builder.get_object("exit-margin")
-        self.exit_icon_size = builder.get_object("exit-icon-size")
-        self.exit_css = builder.get_object("exit-css")
-        self.exit_on = builder.get_object("exit-on")
-
-        self.dock_position = builder.get_object("dock-position")
-
-        self.dock_output = builder.get_object("dock-output")
-        self.dock_output.append("Any", "Any")
-        for output in outputs:
-            self.dock_output.append(output, output)
-        if not preset["dock-output"]:
-            self.dock_output.set_active_id("Any")
-
-        self.dock_full = builder.get_object("dock-full")
-        self.dock_autohide = builder.get_object("dock-autohide")
-        self.dock_alignment = builder.get_object("dock-alignment")
-        self.dock_permanent = builder.get_object("dock-permanent")
-        self.dock_exclusive = builder.get_object("dock-exclusive")
-        self.dock_margin = builder.get_object("dock-margin")
-        self.dock_icon_size = builder.get_object("dock-icon-size")
-        self.dock_css = builder.get_object("dock-css")
-        self.dock_on = builder.get_object("dock-on")
-
-        self.panel_preset = builder.get_object("panel-preset")
-        self.panel_preset.connect("changed", self.on_preset_changed)
-        self.panel_custom = builder.get_object("panel-custom")
-        self.panel_css = builder.get_object("panel-css")
-
-        self.swaync_positionX = builder.get_object("swaync-positionX")
-        self.swaync_positionY = builder.get_object("swaync-positionY")
-
-        self.show_on_startup = builder.get_object("show-on-startup")
-        self.show_help = builder.get_object("show-help")
+        cb_show = builder.get_object("show-on-startup")
+        cb_show.set_active(settings["show-on-startup"])
+        cb_show.connect("toggled", set_from_checkbutton, settings, "show-on-startup")
 
         btn_close = builder.get_object("btn-close")
         btn_close.connect("clicked", Gtk.main_quit)
         btn_close.grab_focus()
 
-        btn_save = builder.get_object("btn-save")
-        btn_save.connect("clicked", self.on_save_btn)
+        global btn_apply
+        btn_apply = builder.get_object("btn-apply")
+        btn_apply.connect("clicked", on_apply_btn)
 
         self.tz, self.lat, self.long = get_lat_lon()
-
-        self.version.set_text("version {}".format(__version__))
-
-        self.fill_in_from_settings(self)
-        self.fill_in_missing_values(self)
-
-    def on_preset_changed(self, combo):
-        p = combo.get_active_text()
-        settings["panel-preset"] = p
-        self.panel_css.set_sensitive(p == "custom")
-        self.panel_custom.set_visible(p == "custom")
-        self.launcher_css.set_sensitive(p == "custom")
-        self.exit_css.set_sensitive(p == "custom")
-        self.dock_css.set_sensitive(p == "custom")
-
-        load_preset()
-        self.fill_in_from_settings()
-        self.fill_in_missing_values()
-
-    def set_chromium(self, *args):
-        self.browser.set_text(
-            "chromium --enable-features=UseOzonePlatform --ozone-platform=wayland")
-
-    def set_firefox(self, *args):
-        self.browser.set_text("MOZ_ENABLE_WAYLAND=1 firefox")
-
-    def fill_in_from_settings(self, *args, skip_preset=False):
-        self.keyboard_layout.set_text(settings["keyboard-layout"])
-        self.autotiling_workspaces.set_text(settings["autotiling-workspaces"])
-        self.autotiling_on.set_active(settings["autotiling-on"])
-
-        self.appindicator.set_active(settings["appindicator"])
-
-        self.night_lat.set_numeric(True)
-        adj = Gtk.Adjustment(lower=-90.0, upper=90.1, step_increment=0.1, page_increment=10.0,
-                             page_size=0.1)
-        self.night_lat.configure(adj, 0.1, 4)
-        self.night_lat.set_value(settings["night-lat"])
-        self.night_lat_info.set_tooltip_text("When undefined, the value for '{}' will be used.".format(self.tz))
-
-        self.night_long.set_value(settings["night-long"])
-        adj = Gtk.Adjustment(lower=-180.0, upper=180.1, step_increment=0.1, page_increment=10.0,
-                             page_size=0.1)
-        self.night_long.configure(adj, 0.1, 4)
-        self.night_long.set_value(settings["night-long"])
-        self.night_long_info.set_tooltip_text("When undefined, the value for '{}' will be used.".format(self.tz))
-
-        self.night_temp_low.set_value(settings["night-temp-low"])
-        adj = Gtk.Adjustment(lower=1000, upper=10001, step_increment=1, page_increment=10.0,
-                             page_size=0.1)
-        self.night_temp_low.configure(adj, 1, 0)
-        self.night_temp_low.set_value(settings["night-temp-low"])
-
-        self.night_temp_high.set_value(settings["night-temp-high"])
-        adj = Gtk.Adjustment(lower=1000, upper=10001, step_increment=1, page_increment=10.0,
-                             page_size=1)
-        self.night_temp_high.configure(adj, 1, 0)
-        self.night_temp_high.set_value(settings["night-temp-high"])
-
-        self.night_gamma.set_value(settings["night-gamma"])
-        adj = Gtk.Adjustment(lower=0.1, upper=10.1, step_increment=0.1, page_increment=1,
-                             page_size=0.1)
-        self.night_gamma.configure(adj, 0.1, 1)
-        self.night_gamma.set_value(settings["night-gamma"])
-
-        self.night_on.set_active(settings["night-on"])
-        self.terminal.set_text(settings["terminal"])
-        self.file_manager.set_text(settings["file-manager"])
-        self.editor.set_text(settings["editor"])
-        self.browser.set_text(settings["browser"])
-        self.show_on_startup.set_active(settings["show-on-startup"])
-        self.show_help.set_active(settings["show-help"])
-
-        self.launcher_columns.set_value(preset["launcher-columns"])
-        self.launcher_icon_size.set_value(preset["launcher-icon-size"])
-        self.launcher_file_search_columns.set_value(preset["launcher-file-search-columns"])
-        self.launcher_search_files.set_active(preset["launcher-search-files"])
-        self.launcher_categories.set_active(preset["launcher-categories"])
-        self.launcher_resident.set_active(preset["launcher-resident"])
-        self.launcher_overlay.set_active(preset["launcher-overlay"])
-        self.launcher_css.set_text(preset["launcher-css"])
-        self.launcher_on.set_active(preset["launcher-on"])
-
-        self.launcher_columns.set_numeric(True)
-        adj = Gtk.Adjustment(lower=1, upper=10, step_increment=1, page_increment=1,
-                             page_size=1)
-        self.launcher_columns.configure(adj, 1, 0)
-        self.launcher_columns.set_value(preset["launcher-columns"])
-
-        self.launcher_icon_size.set_numeric(True)
-        adj = Gtk.Adjustment(lower=8, upper=256, step_increment=1, page_increment=1,
-                             page_size=1)
-        self.launcher_icon_size.configure(adj, 1, 0)
-        self.launcher_icon_size.set_value(preset["launcher-icon-size"])
-
-        self.launcher_file_search_columns.set_numeric(True)
-        adj = Gtk.Adjustment(lower=1, upper=12, step_increment=1, page_increment=1,
-                             page_size=1)
-        self.launcher_file_search_columns.configure(adj, 1, 0)
-        self.launcher_file_search_columns.set_value(preset["launcher-file-search-columns"])
-
-        self.exit_position.set_active_id(preset["exit-position"])
-        self.exit_full.set_active(preset["exit-full"])
-        self.exit_alignment.set_active_id(preset["exit-alignment"])
-
-        self.exit_margin.set_numeric(True)
-        adj = Gtk.Adjustment(lower=0, upper=256, step_increment=1, page_increment=10,
-                             page_size=1)
-        self.exit_margin.configure(adj, 1, 0)
-        self.exit_margin.set_value(preset["exit-margin"])
-
-        self.exit_icon_size.set_numeric(True)
-        adj = Gtk.Adjustment(lower=8, upper=256, step_increment=1, page_increment=10,
-                             page_size=1)
-        self.exit_icon_size.configure(adj, 1, 0)
-        self.exit_icon_size.set_value(preset["exit-icon-size"])
-        self.exit_css.set_text(preset["exit-css"])
-        self.exit_on.set_active(preset["exit-on"])
-
-        self.dock_position.set_active_id(preset["dock-position"])
-        if preset["dock-output"]:
-            self.dock_output.set_active_id(preset["dock-output"])
-
-        self.dock_full.set_active(preset["dock-full"])
-        self.dock_autohide.set_active(preset["dock-autohide"])
-        self.dock_permanent.set_active(preset["dock-permanent"])
-        self.dock_exclusive.set_active(preset["dock-exclusive"])
-        self.dock_alignment.set_active_id(preset["dock-alignment"])
-
-        self.dock_margin.set_numeric(True)
-        adj = Gtk.Adjustment(lower=0, upper=256, step_increment=1, page_increment=10,
-                             page_size=1)
-        self.dock_margin.configure(adj, 1, 0)
-        self.dock_margin.set_value(preset["dock-margin"])
-
-        self.dock_icon_size.set_numeric(True)
-        adj = Gtk.Adjustment(lower=0, upper=256, step_increment=1, page_increment=10,
-                             page_size=1)
-        self.dock_icon_size.configure(adj, 1, 0)
-        self.dock_icon_size.set_value(preset["dock-icon-size"])
-
-        self.panel_preset.set_active_id(settings["panel-preset"])
-        # this must be after the previous line or will get overridden by the `switch_dock` method
-        self.dock_css.set_text(preset["dock-css"])
-        self.dock_on.set_active(preset["dock-on"])
-
-        self.panel_css.set_text(preset["panel-css"])
-        self.panel_custom.set_text(settings["panel-custom"])
-
-        self.swaync_positionX.set_active_id(preset["swaync-positionX"])
-        self.swaync_positionY.set_active_id(preset["swaync-positionY"])
-
-    def fill_in_missing_values(self, *args):
-        if self.keyboard_layout.get_text() == "":
-            self.keyboard_layout.set_text("us")
-
-        if self.autotiling_workspaces.get_text() == "":
-            self.autotiling_workspaces.set_text(settings["autotiling-workspaces"])
-
-        if (self.night_lat.get_value() == -1.0 and self.night_long.get_value()) == -1.0 \
-                or (self.night_lat.get_value() == 0 and self.night_long.get_value() == 0):
-            self.night_lat.set_value(self.lat)
-            self.night_long.set_value(self.long)
-
-        if self.terminal.get_text() == "":
-            self.terminal.set_text(get_terminal())
-
-        if self.file_manager.get_text() == "":
-            self.file_manager.set_text(get_file_manager())
-
-        if self.editor.get_text() == "":
-            self.editor.set_text(get_editor())
-
-        if self.browser.get_text() == "":
-            self.browser.set_text(get_browser_command())
-
-    def read_form(self):
-        settings["keyboard-layout"] = self.keyboard_layout.get_text()
-        settings["autotiling-workspaces"] = self.autotiling_workspaces.get_text()
-        settings["autotiling-on"] = self.autotiling_on.get_active()
-        settings["appindicator"] = self.appindicator.get_active()
-        settings["night-lat"] = self.night_lat.get_value()
-        settings["night-long"] = self.night_long.get_value()
-        settings["night-temp-low"] = int(self.night_temp_low.get_value())
-        settings["night-temp-high"] = int(self.night_temp_high.get_value())
-        settings["night-gamma"] = round(self.night_gamma.get_value(), 2)
-        settings["night-on"] = self.night_on.get_active()
-        settings["terminal"] = self.terminal.get_text()
-        settings["file-manager"] = self.file_manager.get_text()
-        settings["editor"] = self.editor.get_text()
-        settings["browser"] = self.browser.get_text()
-        settings["panel-preset"] = self.panel_preset.get_active_text()
-        settings["panel-custom"] = self.panel_custom.get_text()
-        settings["show-on-startup"] = self.show_on_startup.get_active()
-        settings["show-help"] = self.show_help.get_active()
-
-        preset["launcher-columns"] = int(self.launcher_columns.get_value())
-        preset["launcher-icon-size"] = int(self.launcher_icon_size.get_value())
-        preset["launcher-file-search-columns"] = int(self.launcher_file_search_columns.get_value())
-        preset["launcher-search-files"] = self.launcher_search_files.get_active()
-        preset["launcher-categories"] = self.launcher_categories.get_active()
-        preset["launcher-resident"] = self.launcher_resident.get_active()
-        preset["launcher-overlay"] = self.launcher_overlay.get_active()
-        preset["launcher-css"] = self.launcher_css.get_text()
-        preset["launcher-on"] = self.launcher_on.get_active()
-        preset["exit-position"] = self.exit_position.get_active_text()
-        preset["exit-full"] = self.exit_full.get_active()
-        preset["exit-alignment"] = self.exit_alignment.get_active_text()
-        preset["exit-margin"] = int(self.exit_margin.get_value())
-        preset["exit-icon-size"] = int(self.exit_icon_size.get_value())
-        preset["exit-css"] = self.exit_css.get_text()
-        preset["exit-on"] = self.exit_on.get_active()
-        preset["dock-position"] = self.dock_position.get_active_text()
-        if self.dock_output.get_active_text():
-            preset["dock-output"] = self.dock_output.get_active_text()
-        preset["dock-full"] = self.dock_full.get_active()
-        preset["dock-autohide"] = self.dock_autohide.get_active()
-        preset["dock-permanent"] = self.dock_permanent.get_active()
-        preset["dock-exclusive"] = self.dock_exclusive.get_active()
-        preset["dock-alignment"] = self.dock_alignment.get_active_text()
-        preset["dock-margin"] = int(self.dock_margin.get_value())
-        preset["dock-icon-size"] = int(self.dock_icon_size.get_value())
-        preset["dock-css"] = self.dock_css.get_text()
-        preset["dock-on"] = self.dock_on.get_active()
-        preset["panel-css"] = self.panel_css.get_text()
-
-        preset["swaync-positionX"] = self.swaync_positionX.get_active_id()
-        preset["swaync-positionY"] = self.swaync_positionY.get_active_id()
-
-    def on_save_btn(self, b):
-        self.read_form()
-        save_preset()
-        update_swaync_config(preset["swaync-positionX"], preset["swaync-positionY"])
-
-        save_includes()
-        f = os.path.join(data_dir, "settings")
-        print("Saving {}".format(f))
-        save_json(settings, f)
 
 
 def save_includes():
@@ -379,8 +336,6 @@ def save_includes():
 
     # ~/.config/sway/variables
     variables = []
-    if settings["keyboard-layout"]:
-        variables.append("set $lang '{}'".format(settings["keyboard-layout"]))
     if settings["terminal"]:
         variables.append("set $term {}".format(settings["terminal"]))
     if settings["browser"]:
@@ -389,6 +344,17 @@ def save_includes():
         variables.append("set $filemanager {}".format(settings["file-manager"]))
     if settings["editor"]:
         variables.append("set $editor {}".format(settings["editor"]))
+
+    if settings["panel-preset"] == "preset-0":
+        preset = preset_0
+    elif settings["panel-preset"] == "preset-1":
+        preset = preset_1
+    elif settings["panel-preset"] == "preset-2":
+        preset = preset_2
+    elif settings["panel-preset"] == "preset-3":
+        preset = preset_3
+    else:
+        preset = preset_custom
 
     cmd_launcher = "nwg-drawer"
     if preset["launcher-resident"]:
@@ -518,6 +484,61 @@ def save_includes():
 
     save_list_to_text_file(autostart, os.path.join(config_home, "sway/autostart"))
 
+    # Export keyboard settings
+    if settings["keyboard-use-settings"]:
+        lines = ['input "type:keyboard" {']
+        if settings["keyboard-xkb-layout"]:
+            lines.append('  xkb_layout {}'.format(settings["keyboard-xkb-layout"]))
+        if settings["keyboard-xkb-variant"]:
+            lines.append('  xkb_variant {}'.format(settings["keyboard-xkb-variant"]))
+        lines.append('  repeat_delay {}'.format(settings["keyboard-repeat-delay"]))
+        lines.append('  repeat_rate {}'.format(settings["keyboard-repeat-rate"]))
+        lines.append('  xkb_capslock {}'.format(settings["keyboard-xkb-capslock"]))
+        lines.append('  xkb_numlock {}'.format(settings["keyboard-xkb-numlock"]))
+        if settings["keyboard-custom-name"] and settings["keyboard-custom-value"]:
+            lines.append('  {} {}'.format(settings["keyboard-custom-name"], settings["keyboard-custom-value"]))
+        lines.append('}')
+
+        save_list_to_text_file(lines, os.path.join(config_home, "sway/keyboard"))
+    else:
+        save_list_to_text_file([""], os.path.join(config_home, "sway/keyboard"))
+
+    # Export pointer device settings
+    if settings["pointer-use-settings"]:
+        lines = ['input "type:pointer" {', '  accel_profile {}'.format(settings["pointer-accel-profile"]),
+                 '  pointer_accel {}'.format(settings["pointer-pointer-accel"]),
+                 '  natural_scroll {}'.format(settings["pointer-natural-scroll"]),
+                 '  scroll_factor {}'.format(settings["pointer-scroll-factor"]),
+                 '  left_handed {}'.format(settings["pointer-left-handed"])]
+        if settings["pointer-custom-name"] and settings["pointer-custom-value"]:
+            lines.append('  {} {}'.format(settings["keyboard-custom-name"], settings["keyboard-custom-value"]))
+        lines.append('}')
+
+        save_list_to_text_file(lines, os.path.join(config_home, "sway/pointer"))
+    else:
+        save_list_to_text_file([""], os.path.join(config_home, "sway/pointer"))
+
+    # Export touchpad settings
+    if settings["touchpad-use-settings"]:
+        lines = ['input "type:touchpad" {', '  accel_profile {}'.format(settings["touchpad-accel-profile"]),
+                 '  pointer_accel {}'.format(settings["touchpad-pointer-accel"]),
+                 '  natural_scroll {}'.format(settings["touchpad-natural-scroll"]),
+                 '  scroll_factor {}'.format(settings["touchpad-scroll-factor"]),
+                 '  scroll_method {}'.format(settings["touchpad-scroll-method"]),
+                 '  left_handed {}'.format(settings["touchpad-left-handed"]),
+                 '  tap {}'.format(settings["touchpad-tap"]),
+                 '  tap_button_map {}'.format(settings["touchpad-tap-button-map"]),
+                 '  drag {}'.format(settings["touchpad-drag"]), '  drag_lock {}'.format(settings["touchpad-drag-lock"]),
+                 '  dwt {}'.format(settings["touchpad-dwt"]),
+                 '  middle_emulation {}'.format(settings["touchpad-middle-emulation"])]
+        if settings["touchpad-custom-name"] and settings["touchpad-custom-value"]:
+            lines.append('  {} {}'.format(settings["touchpad-custom-name"], settings["touchpad-custom-value"]))
+        lines.append('}')
+
+        save_list_to_text_file(lines, os.path.join(config_home, "sway/touchpad"))
+    else:
+        save_list_to_text_file([""], os.path.join(config_home, "sway/touchpad"))
+
     reload()
 
 
@@ -525,17 +546,15 @@ def reload():
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
     p = os.path.join(config_home, "swaync")
     swaync_daemon = "swaync -s {}/{}.css &".format(p, name)
-    print("swaync_daemon", swaync_daemon)
 
     for cmd in ["pkill -f autotiling",
                 "pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
-                "pkill -f nwg-panel",
-                "swaymsg reload",
                 "pkill -f swaync",
                 swaync_daemon,
-                "swaync-client --reload-config"]:
+                "swaync-client --reload-config",
+                "swaymsg reload"]:
         subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
     # kill running help window if any
@@ -546,7 +565,7 @@ def reload():
 def load_settings():
     defaults = {
         "keyboard-layout": "us",
-        "autotiling-workspaces": "1 2 3 4 5 6 7 8",
+        "autotiling-workspaces": "",
         "autotiling-on": True,
         "appindicator": True,
         "night-lat": -1,
@@ -563,6 +582,38 @@ def load_settings():
         "panel-custom": "",
         "show-on-startup": True,
         "show-help": False,
+        "keyboard-use-settings": True,
+        "keyboard-xkb-layout": "us",
+        "keyboard-xkb-variant": "",
+        "keyboard-repeat-delay": 300,
+        "keyboard-repeat-rate": 40,
+        "keyboard-xkb-capslock": "disabled",
+        "keyboard-xkb-numlock": "disabled",
+        "keyboard-custom-name": "",
+        "keyboard-custom-value": "",
+        "pointer-use-settings": True,
+        "pointer-accel-profile": "flat",
+        "pointer-pointer-accel": 0.0,
+        "pointer-natural-scroll": "disabled",
+        "pointer-scroll-factor": 1.0,
+        "pointer-left-handed": "disabled",
+        "pointer-custom-name": "",
+        "pointer-custom-value": "",
+        "touchpad-use-settings": True,
+        "touchpad-accel-profile": "flat",
+        "touchpad-pointer-accel": 0.0,
+        "touchpad-natural-scroll": "disabled",
+        "touchpad-scroll-factor": 1.0,
+        "touchpad-scroll-method": "two_finger",
+        "touchpad-left-handed": "disabled",
+        "touchpad-tap": "enabled",
+        "touchpad-tap-button-map": "lrm",
+        "touchpad-drag": "enabled",
+        "touchpad-drag-lock": "disabled",
+        "touchpad-dwt": "enabled",
+        "touchpad-middle-emulation": "enabled",
+        "touchpad-custom-name": "",
+        "touchpad-custom-value": "",
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")
@@ -570,21 +621,34 @@ def load_settings():
     if os.path.isfile(settings_file):
         print("Loading settings")
         settings = load_json(settings_file)
+        missing = 0
         for key in defaults:
-            missing = 0
             if key not in settings:
                 settings[key] = defaults[key]
                 print("'{}' key missing from settings, adding '{}'".format(key, defaults[key]))
                 missing += 1
-            if missing > 0:
-                print("Saving {}".format(settings_file))
-                save_json(defaults, settings_file)
+        if missing > 0:
+            print("Saving {}".format(settings_file))
+            save_json(settings, settings_file)
     else:
         print("ERROR: failed loading settings, creating {}".format(settings_file), file=sys.stderr)
         save_json(defaults, settings_file)
 
 
-def load_preset():
+def load_presets():
+    global preset_0
+    preset_0 = load_preset("preset-0")
+    global preset_1
+    preset_1 = load_preset("preset-1")
+    global preset_2
+    preset_2 = load_preset("preset-2")
+    global preset_3
+    preset_3 = load_preset("preset-3")
+    global preset_custom
+    preset_custom = load_preset("custom")
+
+
+def load_preset(file_name):
     defaults = {
         "panel-css": "",
         "launcher-columns": 6,
@@ -617,8 +681,7 @@ def load_preset():
         "swaync-positionX": "right",
         "swaync-positionY": "top"
     }
-    global preset
-    preset_file = os.path.join(data_dir, settings["panel-preset"])
+    preset_file = os.path.join(data_dir, file_name)
     if os.path.isfile(preset_file):
         print("Loading preset from {}".format(preset_file))
         preset = load_json(preset_file)
@@ -631,15 +694,37 @@ def load_preset():
             if missing > 0:
                 print("Saving {}".format(preset_file))
                 save_json(defaults, preset_file)
+
+        return preset
     else:
         print("ERROR: failed loading preset, creating {}".format(preset_file), file=sys.stderr)
         save_json(defaults, preset_file)
 
+        return {}
 
-def save_preset():
-    f = os.path.join(data_dir, settings["panel-preset"])
+
+def save_presets():
+    global preset_0, preset_1, preset_2, preset_3, preset_custom
+
+    f = os.path.join(data_dir, "preset-0")
     print("Saving {}".format(f))
-    save_json(preset, f)
+    save_json(preset_0, f)
+
+    f = os.path.join(data_dir, "preset-1")
+    print("Saving {}".format(f))
+    save_json(preset_1, f)
+
+    f = os.path.join(data_dir, "preset-2")
+    print("Saving {}".format(f))
+    save_json(preset_2, f)
+
+    f = os.path.join(data_dir, "preset-3")
+    print("Saving {}".format(f))
+    save_json(preset_3, f)
+
+    f = os.path.join(data_dir, "custom")
+    print("Saving {}".format(f))
+    save_json(preset_custom, f)
 
 
 def update_swaync_config(pos_x, pos_y):
@@ -657,16 +742,12 @@ def update_swaync_config(pos_x, pos_y):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-r",
-                        "--restore",
-                        action="store_true",
-                        help="restore default presets and styling")
     parser.add_argument("-v",
                         "--version",
                         action="version",
                         version="%(prog)s version {}".format(__version__),
                         help="display version information")
-    args = parser.parse_args()
+    parser.parse_args()
 
     GLib.set_prgname('nwg-shell-config')
 
@@ -676,55 +757,35 @@ def main():
     global outputs
     outputs = list_outputs()
 
-    check_config_dirs(config_home)
-
-    if args.restore:
-        if input("Restore default configuration (this CAN NOT be undone)? y/N ").upper() == "Y":
-            print("Restoring default files")
-            init_files(os.path.join(dir_name, "shell"), data_dir, overwrite=True)
-            init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"), overwrite=True)
-            init_files(os.path.join(dir_name, "drawer"), os.path.join(config_home, "nwg-drawer"), overwrite=True)
-            init_files(os.path.join(dir_name, "dock"), os.path.join(config_home, "nwg-dock"), overwrite=True)
-            init_files(os.path.join(dir_name, "bar"), os.path.join(config_home, "nwg-bar"), overwrite=True)
-            init_files(os.path.join(dir_name, "wrapper"), os.path.join(config_home, "nwg-wrapper"), overwrite=True)
-            init_files(os.path.join(dir_name, "swaync"), os.path.join(config_home, "swaync"), overwrite=True)
-        sys.exit(0)
-
-    print("Version: {} ({})".format(ver2int(__version__), __version__))
     print("Outputs: {}".format(outputs))
     print("Data dir: {}".format(data_dir))
     print("Config home: {}".format(config_home))
 
     init_files(os.path.join(dir_name, "shell"), data_dir)
-    init_files(os.path.join(dir_name, "panel"), os.path.join(config_home, "nwg-panel"))
-    init_files(os.path.join(dir_name, "drawer"), os.path.join(config_home, "nwg-drawer"))
-    init_files(os.path.join(dir_name, "dock"), os.path.join(config_home, "nwg-dock"))
-    init_files(os.path.join(dir_name, "bar"), os.path.join(config_home, "nwg-bar"))
-    init_files(os.path.join(dir_name, "wrapper"), os.path.join(config_home, "nwg-wrapper"))
-    init_files(os.path.join(dir_name, "swaync"), os.path.join(config_home, "swaync"))
 
     load_settings()
 
-    # This won't be necessary after v0.2.2, that adds 'nwg-shell-check-updates` to autostart
-    if __version__ != "unknown" and settings["last-upgrade-check"] < ver2int(__version__):
-        print("Checking if upgrade required (v{})".format(__version__))
-        upgrade(__version__, settings)
+    load_presets()
 
-    load_preset()
     ui = GUI()
-    ui.window.show_all()
-    if settings["panel-preset"] != "custom":
-        ui.panel_custom.set_visible(False)
-        ui.panel_css.set_sensitive(False)
-        ui.launcher_css.set_sensitive(False)
-        ui.exit_css.set_sensitive(False)
-        ui.dock_css.set_sensitive(False)
+
+    screen = Gdk.Screen.get_default()
+    provider = Gtk.CssProvider()
+    style_context = Gtk.StyleContext()
+    style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+    css = b"""
+            button#app-btn { padding: 6px; border: none }
+            * { outline: none }
+            """
+    provider.load_from_data(css)
+
+    if not settings["terminal"] or not settings["file-manager"] or not settings["editor"] or not settings["browser"]:
+        set_up_applications_tab(warn=True)
     else:
-        ui.panel_custom.set_sensitive(True)
-        ui.panel_css.set_sensitive(True)
-        ui.launcher_css.set_sensitive(True)
-        ui.exit_css.set_sensitive(True)
-        ui.dock_css.set_sensitive(True)
+        set_up_screen_tab()
+
+    ui.window.show_all()
+    hide_submenus()
 
     Gtk.main()
 
