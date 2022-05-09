@@ -10,6 +10,8 @@ At the top of the window you define common settings, including some custom solut
 with 4 predefined styles to choose from, and the "Custom" preset, which you can define on your own. Each of the
 presets 0 - 3 may also be adjusted to your taste.
 
+## Desktop styles
+
 Every preset is bound to its own [nwg-panel](https://github.com/nwg-piotr/nwg-panel) config file and css style sheet.
 Along with it come settings for the launcher ([nwg-drawer](https://github.com/nwg-piotr/nwg-drawer)), exit menu
 ([nwg-bar](https://github.com/nwg-piotr/nwg-bar)), and the dock ([nwg-dock](https://github.com/nwg-piotr/nwg-dock)).
