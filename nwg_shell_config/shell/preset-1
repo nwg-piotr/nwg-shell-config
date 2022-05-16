@@ -29,6 +29,6 @@
   "dock-on": true,
   "swaync-positionX": "center",
   "swaync-positionY": "top",
-  "swaync-control-center-width": 400,
-  "swaync-notification-window-width": 400
+  "swaync-control-center-width": 500,
+  "swaync-notification-window-width": 500
 }

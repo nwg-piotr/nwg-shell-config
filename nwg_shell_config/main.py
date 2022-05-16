@@ -290,7 +290,7 @@ def on_apply_btn(b):
     update_swaync_config(preset["swaync-positionX"],
                          preset["swaync-positionY"],
                          preset["swaync-control-center-width"],
-                         preset["swaync-swaync-notification-window-width"])
+                         preset["swaync-notification-window-width"])
 
     save_includes()
     f = os.path.join(data_dir, "settings")
@@ -683,8 +683,8 @@ def load_preset(file_name):
         "dock-on": False,
         "swaync-positionX": "right",
         "swaync-positionY": "top",
-        "swaync-control-center-width": 400,
-        "swaync-notification-window-width": 400
+        "swaync-control-center-width": 500,
+        "swaync-notification-window-width": 500
     }
     preset_file = os.path.join(data_dir, file_name)
     if os.path.isfile(preset_file):
