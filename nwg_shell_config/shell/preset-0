@@ -28,5 +28,7 @@
   "dock-css": "preset-0.css",
   "dock-on": false,
   "swaync-positionX": "right",
-  "swaync-positionY": "top"
+  "swaync-positionY": "top",
+  "swaync-control-center-width": 400,
+  "swaync-notification-window-width": 400
 }

@@ -287,7 +287,10 @@ def on_apply_btn(b):
         "custom": preset_custom
     }
     preset = presets[settings["panel-preset"]]
-    update_swaync_config(preset["swaync-positionX"], preset["swaync-positionY"])
+    update_swaync_config(preset["swaync-positionX"],
+                         preset["swaync-positionY"],
+                         preset["swaync-control-center-width"],
+                         preset["swaync-swaync-notification-window-width"])
 
     save_includes()
     f = os.path.join(data_dir, "settings")
@@ -679,7 +682,9 @@ def load_preset(file_name):
         "dock-css": "",
         "dock-on": False,
         "swaync-positionX": "right",
-        "swaync-positionY": "top"
+        "swaync-positionY": "top",
+        "swaync-control-center-width": 400,
+        "swaync-notification-window-width": 400
     }
     preset_file = os.path.join(data_dir, file_name)
     if os.path.isfile(preset_file):
@@ -727,15 +732,22 @@ def save_presets():
     save_json(preset_custom, f)
 
 
-def update_swaync_config(pos_x, pos_y):
+def update_swaync_config(pos_x, pos_y, cc_width, window_width):
     settings_file = os.path.join(config_home, "swaync/config.json")
     if os.path.isfile(settings_file):
         print("Loading swaync settings from {}".format(settings_file))
         swaync_settings = load_json(settings_file)
         swaync_settings["positionX"] = pos_x
         swaync_settings["positionY"] = pos_y
+        swaync_settings["control-center-width"] = cc_width
+        swaync_settings["notification-window-width"] = window_width
     else:
-        swaync_settings = {"positionX": pos_x, "positionY": pos_y}
+        swaync_settings = {
+            "positionX": pos_x,
+            "positionY": pos_y,
+            "control-center-width": cc_width,
+            "notification-window-width": window_width
+        }
     print("Saving swaync settings to {}".format(settings_file))
     save_json(swaync_settings, settings_file)
 
