@@ -1043,7 +1043,7 @@ def bar_tab(preset, preset_name):
 
 def notification_tab(preset, preset_name):
     frame = Gtk.Frame()
-    frame.set_label("  {}: Notification placement  ".format(preset_name))
+    frame.set_label("  {}: Notification center  ".format(preset_name))
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
@@ -1075,6 +1075,24 @@ def notification_tab(preset, preset_name):
         combo_position_x.append(item, item)
     combo_position_x.set_active_id(preset["swaync-positionY"])
     combo_position_x.connect("changed", set_dict_key_from_combo, preset, "swaync-positionY")
+
+    lbl = Gtk.Label.new("Control center width:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    sb_cc_width = Gtk.SpinButton.new_with_range(0, 1000, 1)
+    sb_cc_width.set_value(preset["swaync-control-center-width"])
+    sb_cc_width.connect("value-changed", set_int_from_spinbutton, preset, "swaync-control-center-width")
+    grid.attach(sb_cc_width, 1, 3, 1, 1)
+
+    lbl = Gtk.Label.new("Notification window width:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    sb_window_width = Gtk.SpinButton.new_with_range(0, 1000, 1)
+    sb_window_width.set_value(preset["swaync-control-center-width"])
+    sb_window_width.connect("value-changed", set_int_from_spinbutton, preset, "swaync-notification-window-width")
+    grid.attach(sb_window_width, 1, 4, 1, 1)
 
     frame.show_all()
 
