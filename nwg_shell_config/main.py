@@ -21,7 +21,6 @@ config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else 
 
 outputs = []
 settings = {}
-# preset = {}
 preset_0 = {}
 preset_1 = {}
 preset_2 = {}
@@ -374,8 +373,12 @@ def save_includes():
         cmd_launcher += " -nocats"
     if preset["launcher-overlay"]:
         cmd_launcher += " -ovl"
-    if preset["launcher-css"]:
+
+    if "preset-" in settings["panel-preset"]:
+        cmd_launcher += " -s {}.css".format(settings["panel-preset"])
+    elif preset["launcher-css"]:
         cmd_launcher += " -s {}".format(preset["launcher-css"])
+
     if settings["terminal"]:
         cmd_launcher += " -term {}".format(settings["terminal"])
 
@@ -398,7 +401,10 @@ def save_includes():
                                                           preset["exit-margin"], preset["exit-margin"])
     if preset["exit-icon-size"]:
         cmd_exit += " -i {}".format(preset["exit-icon-size"])
-    if preset["exit-css"]:
+
+    if "preset-" in settings["panel-preset"]:
+        cmd_exit += " -s {}.css".format(settings["panel-preset"])
+    elif preset["exit-css"]:
         cmd_exit += " -s {}".format(preset["exit-css"])
 
     variables.append("set $exit {}".format(cmd_exit))
@@ -425,7 +431,9 @@ def save_includes():
     if preset["dock-exclusive"]:
         cmd_dock += " -x"
 
-    if preset["dock-css"]:
+    if "preset-" in settings["panel-preset"]:
+        cmd_dock += " -s {}.css".format(settings["panel-preset"])
+    elif preset["dock-css"]:
         cmd_dock += " -s {}".format(preset["dock-css"])
 
     if preset["dock-on"] and not preset["dock-autohide"] and not preset["dock-permanent"]:
@@ -698,7 +706,7 @@ def load_preset(file_name):
                 missing += 1
             if missing > 0:
                 print("Saving {}".format(preset_file))
-                save_json(defaults, preset_file)
+                save_json(preset, preset_file)
 
         return preset
     else:
@@ -759,7 +767,14 @@ def main():
                         action="version",
                         version="%(prog)s version {}".format(__version__),
                         help="display version information")
+
+    parser.add_argument("-r",
+                        "--restore",
+                        action="store_true",
+                        help="restore default presets")
+
     parser.parse_args()
+    args = parser.parse_args()
 
     GLib.set_prgname('nwg-shell-config')
 
@@ -773,7 +788,12 @@ def main():
     print("Data dir: {}".format(data_dir))
     print("Config home: {}".format(config_home))
 
-    init_files(os.path.join(dir_name, "shell"), data_dir)
+    if args.restore:
+        if input("\nRestore default presets? y/N ").upper() == "Y":
+            init_files(os.path.join(dir_name, "shell"), data_dir, overwrite=True)
+            sys.exit(0)
+    else:
+        init_files(os.path.join(dir_name, "shell"), data_dir)
 
     load_settings()
 

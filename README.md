@@ -90,7 +90,10 @@ Feel free to add whichever other binding you need, but do not change the variabl
 
 ### Styling
 
-To change the appearance of nwg-shell components, you need to edit their css style sheets. They are all located in appropriate `~./config/nwg-*` directories, named `preset-*.css`. You may either edit these files, or add own under another names, and set these names in the config GUI.
+To change the appearance of nwg-shell components, you need to edit their css style sheets. They are all located in 
+appropriate `~./config/nwg-*` directories, named `preset-*.css`. You may edit them to your liking.
+For the Custom preset add own styles under another names, and set these names in the config GUI (Custom preset -> 
+Panel & css).
 
 ### nwg-panel & nwg-menu
 
@@ -98,4 +101,5 @@ have their own config GUI. Find the "Panel settings" entry in the Controls menu.
 
 ### Restoring defaults
 
-If you happen to break any of the `preset0-*` files, just delete it, and run the config utility. The file will be restored from the default one. You may also run `nwg-shell-config -r` to restore all default configs and style sheets.
+If you happen to break any of the `preset0-*` files, just delete it, and run the config utility. 
+The file will be restored from the default one. You may also run `nwg-shell-config -r` to restore all default presets.
