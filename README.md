@@ -35,10 +35,8 @@ behaves like. Some menu items rely on the other software you need to have instal
 <div align="center">nwg-panel Controls module<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell-config/controls.png"/></div>
 
 - **Wallpapers**: you need [Azote](https://github.com/nwg-piotr/azote), which is a part of the nwg-shell project;
-- **Look & Feel**: you need the [lxappearance](https://wiki.lxde.org/en/LXAppearance) package, and the 
-[import-gsettings](https://github.com/swaywm/sway/wiki/GTK-3-settings-on-Wayland#setting-values-in-gsettings) script;
-- **Outputs** management relies on [wdisplays](https://github.com/artizirk/wdisplays) and 
-[this script](https://github.com/nwg-piotr/sway-save-outputs).
+- **GTK settings**: you need the [nwg-look](https://github.com/nwg-piotr/nwg-look) package;
+- **Outputs** management relies on [nwg-displays](https://github.com/nwg-piotr/nwg-displays).
 
 **Notification Center** is supported by Eric Reider's [SwayNotificationCenter](https://github.com/ErikReider/SwayNotificationCenter).
 
