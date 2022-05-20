@@ -1017,7 +1017,7 @@ def bar_tab(preset, preset_name):
 
     sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
     sb_icon_size.set_value(preset["exit-icon-size"])
-    sb_icon_size.connect("value-changed", set_from_spinbutton, preset, "exit-icon-size", 1)
+    sb_icon_size.connect("value-changed", set_int_from_spinbutton, preset, "exit-icon-size")
     sb_icon_size.set_tooltip_text("Item icon size.")
     grid.attach(sb_icon_size, 1, 3, 1, 1)
 
