@@ -915,7 +915,7 @@ def dock_tab(preset, preset_name, outputs):
 
     sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
     sb_icon_size.set_value(preset["dock-icon-size"])
-    sb_icon_size.connect("value-changed", set_from_spinbutton, preset, "dock-icon-size", 1)
+    sb_icon_size.connect("value-changed", set_int_from_spinbutton, preset, "dock-icon-size")
     sb_icon_size.set_tooltip_text("Application icon size.")
     grid.attach(sb_icon_size, 1, 3, 1, 1)
 
@@ -925,7 +925,7 @@ def dock_tab(preset, preset_name, outputs):
 
     sb_margin = Gtk.SpinButton.new_with_range(0, 256, 1)
     sb_margin.set_value(preset["dock-margin"])
-    sb_margin.connect("value-changed", set_from_spinbutton, preset, "dock-margin", 1)
+    sb_margin.connect("value-changed", set_int_from_spinbutton, preset, "dock-margin")
     grid.attach(sb_margin, 1, 4, 1, 1)
 
     lbl = Gtk.Label.new("Output:")
@@ -1027,7 +1027,7 @@ def bar_tab(preset, preset_name):
 
     sb_margin = Gtk.SpinButton.new_with_range(0, 256, 1)
     sb_margin.set_value(preset["exit-margin"])
-    sb_margin.connect("value-changed", set_from_spinbutton, preset, "exit-margin", 1)
+    sb_margin.connect("value-changed", set_int_from_spinbutton, preset, "exit-margin")
     grid.attach(sb_margin, 1, 4, 1, 1)
 
     cb_full = Gtk.CheckButton.new_with_label("Full width/height")
