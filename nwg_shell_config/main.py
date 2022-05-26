@@ -19,6 +19,9 @@ data_dir = ""
 config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
     os.getenv("HOME"), ".config/")
 
+data_home = os.getenv('XDG_DATA_HOME') if os.getenv('XDG_DATA_HOME') else os.path.join(
+    os.getenv("HOME"), ".local/share")
+
 outputs = []
 settings = {}
 preset_0 = {}
@@ -794,6 +797,23 @@ def main():
             sys.exit(0)
     else:
         init_files(os.path.join(dir_name, "shell"), data_dir)
+
+    # initialize missing folders from skel
+    for folder in ["nwg-bar", "nwg-dock", "nwg-drawer", "nwg-panel", "nwg-wrapper", "sway", "swaync"]:
+        src = os.path.join("/etc/skel/.config", folder)
+        dst = os.path.join(config_home, folder)
+        if os.path.exists(src) and not os.path.exists(dst):
+            os.mkdir(dst)
+            print(dst, "missing, initializing")
+            init_files(os.path.join("/etc/skel/.config", folder), config_home)
+
+    for folder in ["nwg-look", "nwg-shell"]:
+        src = os.path.join("/etc/skel/.local/share", folder)
+        dst = os.path.join(data_home, folder)
+        if os.path.exists(src) and not os.path.exists(dst):
+            os.mkdir(dst)
+            print(dst, "missing, initializing")
+            init_files(os.path.join("/etc/skel/.config", folder), data_home)
 
     load_settings()
 
