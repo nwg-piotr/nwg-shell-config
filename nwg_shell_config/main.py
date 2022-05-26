@@ -805,7 +805,7 @@ def main():
         if os.path.exists(src) and not os.path.exists(dst):
             os.mkdir(dst)
             print(dst, "missing, initializing")
-            init_files(os.path.join("/etc/skel/.config", folder), config_home)
+            init_files(src, dst)
 
     for folder in ["nwg-look", "nwg-shell"]:
         src = os.path.join("/etc/skel/.local/share", folder)
@@ -813,7 +813,7 @@ def main():
         if os.path.exists(src) and not os.path.exists(dst):
             os.mkdir(dst)
             print(dst, "missing, initializing")
-            init_files(os.path.join("/etc/skel/.config", folder), data_home)
+            init_files(src, dst)
 
     load_settings()
 
