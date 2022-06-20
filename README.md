@@ -4,13 +4,15 @@ The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection 
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/nwg-shell-config.svg)](https://repology.org/project/nwg-shell-config/versions)
 
-![nwg-shell-settings.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell/nwg-shell-config-02.png)
+![2022-06-20-233635_screenshot](https://user-images.githubusercontent.com/20579136/174680829-84065416-b270-4ffe-bd36-23dd266d3cf8.png)
 
-At the top of the window you define common settings, including some custom solutions, like 
-[autotiling](https://github.com/nwg-piotr/autotiling) (a part of the project) and gamma control, for which 
-[wlsunset](https://sr.ht/~kennylevinsen/wlsunset) is responsible. Below you select / define the desktop style,
-with 4 predefined styles to choose from, and the "Custom" preset, which you can define on your own. Each of the
-presets 0 - 3 may also be adjusted to your taste.
+![2022-06-20-233644_screenshot](https://user-images.githubusercontent.com/20579136/174680835-c6208da4-9875-4e62-b3e3-02cb1bc4cb5d.png)
+
+![2022-06-20-233702_screenshot](https://user-images.githubusercontent.com/20579136/174680842-64c640e2-0eb8-4817-bdf1-209e98670358.png)
+
+![2022-06-20-233707_screenshot](https://user-images.githubusercontent.com/20579136/174680856-fbf7f58e-acb0-45e4-a0a8-0d8d57e6b12c.png)
+
+![2022-06-20-233713_screenshot](https://user-images.githubusercontent.com/20579136/174680866-eb4a6222-c240-4518-b3a2-22e2bef7a315.png)
 
 ## Desktop styles
 
