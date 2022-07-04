@@ -46,6 +46,10 @@ def set_browser_from_combo(combo, entry, browsers_dict):
     entry.set_text(browsers_dict[combo.get_active_id()])
 
 
+def set_lockscreen_from_combo(combo, entry):
+    entry.set_text(combo.get_active_id())
+
+
 def set_dict_key_from_combo(combo, settings, key):
     settings[key] = combo.get_active_id()
 
@@ -789,6 +793,57 @@ def touchpad_tab(settings):
     entry_cname.set_text(settings["touchpad-custom-value"])
     entry_cname.connect("changed", set_from_entry, settings, "touchpad-custom-value")
     grid.attach(entry_cname, 2, 7, 2, 1)
+
+    frame.show_all()
+
+    return frame
+
+
+def lockscreen_tab(settings):
+    frame = Gtk.Frame()
+    frame.set_label("  Common: Idle configuration  ")
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_lockscreen_use_settings = Gtk.CheckButton.new_with_label("Use these settings")
+    cb_lockscreen_use_settings.set_property("halign", Gtk.Align.START)
+    cb_lockscreen_use_settings.set_property("margin-bottom", 6)
+    cb_lockscreen_use_settings.set_tooltip_text("Determines if to export the 'lockscreen' config include.")
+    cb_lockscreen_use_settings.set_active(settings["lockscreen-use-settings"])
+    cb_lockscreen_use_settings.connect("toggled", set_from_checkbutton, settings, "lockscreen-use-settings")
+    grid.attach(cb_lockscreen_use_settings, 0, 0, 2, 1)
+
+    lbl = Gtk.Label.new("")
+    lbl.set_markup("<b>Lock screen command</b>")
+    lbl.set_property("halign", Gtk.Align.START)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    lock_cmd = Gtk.Entry()
+    lock_cmd.set_text(settings["lockscreen-cmd"])
+    grid.attach(lock_cmd, 0, 2, 1, 1)
+    lock_cmd.connect("changed", set_from_entry, settings, "lockscreen-cmd")
+
+    combo_lock_cmd = Gtk.ComboBoxText()
+    for item in [("swaylock", "swaylock -f -c 212121"),
+                 ("swaylock, random image", "nwg-lock -s"),
+                 ("swaylock, random Unsplash image", "nwg-lock -su")]:
+        combo_lock_cmd.append(item[1], item[0])
+    if is_command("gtklock"):
+        for item in [("gtklock", "gtklock"),
+                     ("gtklock, random image", "nwg-lock -g"),
+                     ("gtklock, random Unsplash image", "nwg-lock -gu")]:
+            combo_lock_cmd.append(item[1], item[0])
+    else:
+        combo_lock_cmd.set_tooltip_text("Install 'gtklock' to see more options")
+    combo_lock_cmd.set_active_id(settings["lockscreen-cmd"])
+    combo_lock_cmd.connect("changed", set_lockscreen_from_combo, lock_cmd)
+
+    grid.attach(combo_lock_cmd, 1, 2, 1, 1)
 
     frame.show_all()
 

@@ -86,6 +86,10 @@ def side_menu():
     row.eb.connect("button-press-event", set_up_applications_tab)
     list_box.add(row)
 
+    row = SideMenuRow("Idle & Lock screen")
+    row.eb.connect("button-press-event", set_up_lockscreen_tab)
+    list_box.add(row)
+
     row = Gtk.ListBoxRow()
     row.set_selectable(False)
     lbl = Gtk.Label()
@@ -236,6 +240,14 @@ def set_up_touchpad_tab(*args):
     global content
     content.destroy()
     content = touchpad_tab(settings)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_lockscreen_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = lockscreen_tab(settings)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -628,6 +640,8 @@ def load_settings():
         "touchpad-middle-emulation": "enabled",
         "touchpad-custom-name": "",
         "touchpad-custom-value": "",
+        "lockscreen-use-settings": True,
+        "lockscreen-cmd": "swaylock -f -c 212121",
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")
