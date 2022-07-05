@@ -18,6 +18,20 @@ def set_int_from_spinbutton(cb, settings, key):
     settings[key] = int(cb.get_value())
 
 
+def set_keywords_from_entry(entry, settings):
+    txt = entry.get_text()
+    # Sanitize
+    if " " in txt:
+        txt = txt.replace(" ", "")
+        entry.set_text(txt)
+    if ",," in txt:
+        txt = txt.replace(",,", ",")
+        entry.set_text(txt)
+    txt = txt.strip(",")
+
+    settings["unsplash-keywords"] = txt.split(",")
+
+
 def set_sleep_timeout(sb, lock_timeout_sb, settings, key):
     timeout = sb.get_value()
     lock_timeout = lock_timeout_sb.get_value()
@@ -883,6 +897,7 @@ def lockscreen_tab(settings):
     grid.attach(lbl, 0, 4, 1, 1)
 
     sb_lock_timeout = Gtk.SpinButton.new_with_range(10, 86400, 1)
+    sb_lock_timeout.set_property("halign", Gtk.Align.START)
     sb_lock_timeout.set_value(settings["lockscreen-timeout"])
     sb_lock_timeout.connect("value-changed", set_int_from_spinbutton, settings, "lockscreen-timeout")
     sb_lock_timeout.set_tooltip_text("lock screen timeout in seconds")
@@ -908,6 +923,7 @@ def lockscreen_tab(settings):
     grid.attach(lbl, 0, 7, 1, 1)
 
     sb_sleep_timeout = Gtk.SpinButton.new_with_range(20, 86400, 1)
+    sb_sleep_timeout.set_property("halign", Gtk.Align.START)
     sb_sleep_timeout.set_value(settings["sleep-timeout"])
     sb_sleep_timeout.connect("value-changed", set_sleep_timeout, sb_lock_timeout, settings, "sleep-timeout")
     sb_sleep_timeout.set_tooltip_text("sleep timeout in seconds, must be longer than Lock screen timeout")
@@ -947,7 +963,7 @@ def lockscreen_tab(settings):
         grid.attach(cb, 2, 3 + i, 4, 1)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Unsplash image</b>")
+    lbl.set_markup("<b>Unsplash random image</b>")
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 2, 3 + len(paths), 4, 1)
 
@@ -976,7 +992,9 @@ def lockscreen_tab(settings):
     grid.attach(lbl, 2, 3 + len(paths) + 2, 2, 1)
 
     entry_us_keywords = Gtk.Entry()
+    entry_us_keywords.set_tooltip_text("comma-separated list of keywords")
     entry_us_keywords.set_text(",".join(settings["unsplash-keywords"]))
+    entry_us_keywords.connect("changed", set_keywords_from_entry, settings)
     grid.attach(entry_us_keywords, 2, 3 + len(paths) + 3, 4, 1)
 
     frame.show_all()
