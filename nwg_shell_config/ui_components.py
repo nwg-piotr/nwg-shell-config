@@ -4,7 +4,7 @@ import os
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file
+from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, notify
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -31,6 +31,11 @@ def set_keywords_from_entry(entry, settings):
     txt = txt.strip(",")
 
     settings["unsplash-keywords"] = txt.split(",")
+
+
+def send_notifications(btn, notifications):
+    for n in notifications:
+        notify(n[0], n[1], 10000)
 
 
 def set_sleep_timeout(sb, lock_timeout_sb, settings, key):
@@ -953,7 +958,6 @@ def lockscreen_tab(settings):
     grid.attach(fc_btn, 2, 2, 4, 1)
 
     bcg_window = Gtk.ScrolledWindow.new(None, None)
-    bcg_window.set_tooltip_text("Set here which detected paths to use.")
     bcg_window.set_propagate_natural_width(True)
 
     grid.attach(bcg_window, 2, 3, 4, 2)
@@ -1006,6 +1010,7 @@ def lockscreen_tab(settings):
     entry_us_keywords.connect("changed", set_keywords_from_entry, settings)
     grid.attach(entry_us_keywords, 2, 8, 4, 1)
 
+    # WARNING Look for 'swaidle' in sway config
     config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
         os.getenv("HOME"), ".config/")
     sway_config = os.path.join(config_home, "sway", "config")
@@ -1015,10 +1020,33 @@ def lockscreen_tab(settings):
             if not line.startswith("#") and "swayidle" in line:
                 lbl = Gtk.Label()
                 lbl.set_markup(
-                    '<span foreground="red">You need to remove <b>\'swayidle\'</b> from the sway config file!</span>')
+                    '<span foreground="red">To use these settings, '
+                    'remove <b>\'swayidle\'</b> from the sway config file!</span>')
                 lbl.set_property("margin-top", 10)
                 grid.attach(lbl, 0, 9, 6, 1)
+                cb_lockscreen_use_settings.set_active(False)
+                # Prevent settings from exporting
+                cb_lockscreen_use_settings.set_sensitive(False)
                 break
+
+    # NOTIFICATIONS Look for possible goodies to install
+    notifications = []
+    if not is_command("gtklock"):
+        n = ("Package available", "You may want to install the 'gtkclock' package.")
+        notifications.append(n)
+    if not os.path.exists("usr/share/backgrounds/nwg-shell-wallpapers"):
+        n = ("Package available", "You may want to install the 'nwg-shell-wallpapers' package.")
+        notifications.append(n)
+    release = load_text_file("/etc/os-release")
+    if release and "Archlabs" in release.splitlines()[0] and not os.path.exists("usr/share/backgrounds/archlabs-extra"):
+        n = ("Package available", "You may want to install the 'archlabs-wallpapers-extra' package.")
+        notifications.append(n)
+
+    if notifications:
+        btn = Gtk.Button.new_with_label("Hints!")
+        btn.set_property("halign", Gtk.Align.END)
+        grid.attach(btn, 5, 0, 1, 1)
+        btn.connect("clicked", send_notifications, notifications)
 
     frame.show_all()
 

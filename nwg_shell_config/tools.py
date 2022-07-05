@@ -151,3 +151,8 @@ def list_background_dirs():
         paths.insert(0, main)
 
     return paths
+
+
+def notify(summary, body, timeout=3000):
+    cmd = "notify-send '{}' '{}' -i /usr/share/pixmaps/nwg-shell-config.svg -t {}".format(summary, body, timeout)
+    subprocess.call(cmd, shell=True)
