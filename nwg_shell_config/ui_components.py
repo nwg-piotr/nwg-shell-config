@@ -94,7 +94,6 @@ def on_folder_btn_toggled(btn, settings):
     else:
         if p in settings["background-dirs"]:
             settings["background-dirs"].remove(p)
-    print(settings["background-dirs"])
 
 
 def launch(widget, cmd):
@@ -1010,7 +1009,7 @@ def lockscreen_tab(settings):
     entry_us_keywords.connect("changed", set_keywords_from_entry, settings)
     grid.attach(entry_us_keywords, 2, 8, 4, 1)
 
-    # WARNING Look for 'swaidle' in sway config
+    # WARNING about 'swaidle' in sway config
     config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
         os.getenv("HOME"), ".config/")
     sway_config = os.path.join(config_home, "sway", "config")
@@ -1020,26 +1019,25 @@ def lockscreen_tab(settings):
             if not line.startswith("#") and "swayidle" in line:
                 lbl = Gtk.Label()
                 lbl.set_markup(
-                    '<span foreground="red">To use these settings, '
-                    'remove <b>\'swayidle\'</b> from the sway config file!</span>')
+                    '<span foreground="red"><b>You need to remove \'swayidle\' from your sway config file!</b></span>')
                 lbl.set_property("margin-top", 10)
-                grid.attach(lbl, 0, 9, 6, 1)
+                grid.attach(lbl, 0, 9, 7, 1)
                 cb_lockscreen_use_settings.set_active(False)
                 # Prevent settings from exporting
                 cb_lockscreen_use_settings.set_sensitive(False)
                 break
 
-    # NOTIFICATIONS Look for possible goodies to install
+    # NOTIFICATIONS on goodies possible to install
     notifications = []
     if not is_command("gtklock"):
-        n = ("Package available", "You may want to install the 'gtkclock' package.")
+        n = ("Alternative to swaylock", "You may want to install the 'gtkclock' package.")
         notifications.append(n)
-    if not os.path.exists("usr/share/backgrounds/nwg-shell-wallpapers"):
-        n = ("Package available", "You may want to install the 'nwg-shell-wallpapers' package.")
+    if not os.path.exists("/usr/share/backgrounds/nwg-shell"):
+        n = ("Extra wallpapers", "You may want to install the 'nwg-shell-wallpapers' package.")
         notifications.append(n)
     release = load_text_file("/etc/os-release")
     if release and "Archlabs" in release.splitlines()[0] and not os.path.exists("usr/share/backgrounds/archlabs-extra"):
-        n = ("Package available", "You may want to install the 'archlabs-wallpapers-extra' package.")
+        n = ("Extra wallpapers", "You may want to install the 'archlabs-wallpapers-extra' package.")
         notifications.append(n)
 
     if notifications:
