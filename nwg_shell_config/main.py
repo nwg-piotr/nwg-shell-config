@@ -642,6 +642,14 @@ def load_settings():
         "touchpad-custom-value": "",
         "lockscreen-use-settings": True,
         "lockscreen-cmd": "swaylock -f -c 212121",
+        "lockscreen-timeout": 1200,
+        "sleep-cmd": 'swaymsg "output * dpms off"',
+        "sleep-timeout": 1800,
+        "resume-cmd": 'swaymsg "output * dpms on"',
+        "before-sleep": "swaylock -f -c 212121",
+        "backgrounds-custom-path": "",
+        "background-dirs": [],
+        "background-dirs-once-set": False,
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")

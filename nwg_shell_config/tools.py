@@ -133,3 +133,18 @@ def save_list_to_text_file(data, file_path):
     text_file.close()
 
 
+def list_background_dirs():
+    files_in_main = False
+    paths = []
+    main = "/usr/share/backgrounds"
+    items = os.listdir(main)
+    for item in items:
+        p = os.path.join(main, item)
+        if os.path.isdir(p) and os.listdir(p):
+            paths.append(p)
+        else:
+            files_in_main = True
+    if files_in_main:
+        paths.insert(0, main)
+
+    return paths
