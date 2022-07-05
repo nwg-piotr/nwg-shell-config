@@ -82,12 +82,12 @@ def side_menu():
     row.eb.connect("button-press-event", set_up_touchpad_tab)
     list_box.add(row)
 
-    row = SideMenuRow("Applications")
-    row.eb.connect("button-press-event", set_up_applications_tab)
-    list_box.add(row)
-
     row = SideMenuRow("Idle & Lock screen")
     row.eb.connect("button-press-event", set_up_lockscreen_tab)
+    list_box.add(row)
+
+    row = SideMenuRow("Applications")
+    row.eb.connect("button-press-event", set_up_applications_tab)
     list_box.add(row)
 
     row = Gtk.ListBoxRow()

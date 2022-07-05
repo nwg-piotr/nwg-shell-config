@@ -813,7 +813,7 @@ def touchpad_tab(settings):
 
 def lockscreen_tab(settings):
     frame = Gtk.Frame()
-    frame.set_label("  Common: Idle configuration  ")
+    frame.set_label("  Common: Idle & Lock screen  ")
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
