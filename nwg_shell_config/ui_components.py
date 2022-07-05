@@ -1019,7 +1019,6 @@ def lockscreen_tab(settings):
                 lbl.set_property("margin-top", 10)
                 grid.attach(lbl, 0, 9, 6, 1)
                 break
-                print("'swayidle' found in sway config file")
 
     frame.show_all()
 
