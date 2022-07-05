@@ -1014,7 +1014,8 @@ def lockscreen_tab(settings):
         for line in lines:
             if not line.startswith("#") and "swayidle" in line:
                 lbl = Gtk.Label()
-                lbl.set_markup('<span foreground="red">You need to remove <b>\'swayidle\'</b> from the sway config file!</span>')
+                lbl.set_markup(
+                    '<span foreground="red">You need to remove <b>\'swayidle\'</b> from the sway config file!</span>')
                 lbl.set_property("margin-top", 10)
                 grid.attach(lbl, 0, 9, 6, 1)
                 break
