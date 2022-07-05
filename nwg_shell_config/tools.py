@@ -139,11 +139,14 @@ def list_background_dirs():
     main = "/usr/share/backgrounds"
     items = os.listdir(main)
     for item in items:
-        p = os.path.join(main, item)
-        if os.path.isdir(p) and os.listdir(p):
-            paths.append(p)
-        else:
-            files_in_main = True
+        try:
+            p = os.path.join(main, item)
+            if os.path.isdir(p) and os.listdir(p):
+                paths.append(p)
+            else:
+                files_in_main = True
+        except Exception as e:
+            print(e)
     if files_in_main:
         paths.insert(0, main)
 

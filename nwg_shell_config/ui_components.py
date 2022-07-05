@@ -66,6 +66,17 @@ def on_custom_folder_selected(fcb, settings):
     settings["backgrounds-custom-path"] = fcb.get_filename()
 
 
+def on_folder_btn_toggled(btn, settings):
+    p = btn.get_label()
+    if btn.get_active():
+        if p not in settings["background-dirs"]:
+            settings["background-dirs"].append(p)
+    else:
+        if p in settings["background-dirs"]:
+            settings["background-dirs"].remove(p)
+    print(settings["background-dirs"])
+
+
 def launch(widget, cmd):
     print("Executing '{}'".format(cmd))
     subprocess.Popen('exec {}'.format(cmd), shell=True)
@@ -907,29 +918,66 @@ def lockscreen_tab(settings):
     grid.attach(lbl, 0, 8, 1, 1)
 
     entry_resume_cmd = Gtk.Entry()
-    entry_resume_cmd.set_width_chars(24)
     entry_resume_cmd.set_text(settings["resume-cmd"])
     grid.attach(entry_resume_cmd, 1, 8, 1, 1)
     entry_resume_cmd.connect("changed", set_from_entry, settings, "resume-cmd")
 
     lbl = Gtk.Label.new("")
     lbl.set_markup("<b>Backgrounds</b>")
-    lbl.set_property("margin-top", 6)
     lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 2, 1, 1, 1)
+    grid.attach(lbl, 2, 1, 4, 1)
 
     fc_btn = Gtk.FileChooserButton.new("Select folder", Gtk.FileChooserAction.SELECT_FOLDER)
+    fc_btn.set_tooltip_text("Select your own path here")
     if settings["backgrounds-custom-path"]:
         fc_btn.set_current_folder(settings["backgrounds-custom-path"])
     fc_btn.connect("file-set", on_custom_folder_selected, settings)
-    grid.attach(fc_btn, 2, 2, 1, 1)
+    grid.attach(fc_btn, 2, 2, 4, 1)
 
     paths = list_background_dirs()
-    bcg_check_buttons = []
+    if not settings["background-dirs-once-set"]:
+        settings["background-dirs"] = paths
+        settings["background-dirs-once-set"] = True
+
     for i in range(len(paths)):
-        cb = Gtk.CheckButton.new_with_label(paths[i])
-        bcg_check_buttons.append(cb)
-        grid.attach(cb, 2, 3 + i, 2, 1)
+        p = paths[i]
+        cb = Gtk.CheckButton.new_with_label(p)
+        cb.set_active(p in settings["background-dirs"])
+        cb.connect("toggled", on_folder_btn_toggled, settings)
+        grid.attach(cb, 2, 3 + i, 4, 1)
+
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>Unsplash image</b>")
+    lbl.set_property("halign", Gtk.Align.START)
+    grid.attach(lbl, 2, 3 + len(paths), 4, 1)
+
+    lbl = Gtk.Label.new("W:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 3 + len(paths) + 1, 1, 1)
+
+    sb_us_width = Gtk.SpinButton.new_with_range(640, 7680, 1)
+    sb_us_width.set_value(settings["unsplash-width"])
+    sb_us_width.connect("value-changed", set_int_from_spinbutton, settings, "unsplash-width")
+    sb_us_width.set_tooltip_text("desired wallpaper width")
+    grid.attach(sb_us_width, 3, 3 + len(paths) + 1, 1, 1)
+
+    lbl = Gtk.Label.new("H:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 4, 3 + len(paths) + 1, 1, 1)
+
+    sb_us_width = Gtk.SpinButton.new_with_range(480, 4320, 1)
+    sb_us_width.set_value(settings["unsplash-height"])
+    sb_us_width.connect("value-changed", set_int_from_spinbutton, settings, "unsplash-height")
+    sb_us_width.set_tooltip_text("desired wallpaper height")
+    grid.attach(sb_us_width, 5, 3 + len(paths) + 1, 1, 1)
+
+    lbl = Gtk.Label.new("Keywords:")
+    lbl.set_property("halign", Gtk.Align.START)
+    grid.attach(lbl, 2, 3 + len(paths) + 2, 2, 1)
+
+    entry_us_keywords = Gtk.Entry()
+    entry_us_keywords.set_text(",".join(settings["unsplash-keywords"]))
+    grid.attach(entry_us_keywords, 2, 3 + len(paths) + 3, 4, 1)
 
     frame.show_all()
 

@@ -650,6 +650,9 @@ def load_settings():
         "backgrounds-custom-path": "",
         "background-dirs": [],
         "background-dirs-once-set": False,
+        "unsplash-width": 1920,
+        "unsplash-height": 1080,
+        "unsplash-keywords": ["nature", "water", "landscape"],
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")
