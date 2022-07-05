@@ -875,28 +875,23 @@ def lockscreen_tab(settings):
     grid.attach(entry_lock_cmd, 1, 2, 1, 1)
     entry_lock_cmd.connect("changed", set_from_entry, settings, "lockscreen-cmd")
 
-    lbl = Gtk.Label()
-    lbl.set_markup("<i>predefined:</i>")
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 3, 1, 1)
-
     combo_lock_cmd = Gtk.ComboBoxText()
-    combo_lock_cmd.set_tooltip_text("Select the command above from predefined commands.")
+    combo_lock_cmd.set_tooltip_text("Set the command above from predefined commands.")
     for item in [("swaylock", "swaylock -f -c 212121"),
                  ("swaylock, random image", "nwg-lock -s"),
-                 ("swaylock, random Unsplash", "nwg-lock -su")]:
+                 ("swaylock, random Unsplash image", "nwg-lock -su")]:
         combo_lock_cmd.append(item[1], item[0])
     if is_command("gtklock"):
         for item in [("gtklock", "gtklock"),
                      ("gtklock, random image", "nwg-lock -g"),
-                     ("gtklock, random Unsplash", "nwg-lock -gu")]:
+                     ("gtklock, random Unsplash image", "nwg-lock -gu")]:
             combo_lock_cmd.append(item[1], item[0])
     else:
         combo_lock_cmd.set_tooltip_text("Install 'gtklock' to see more options")
     combo_lock_cmd.set_active_id(settings["lockscreen-cmd"])
     combo_lock_cmd.connect("changed", set_lockscreen_from_combo, entry_lock_cmd)
 
-    grid.attach(combo_lock_cmd, 1, 3, 1, 1)
+    grid.attach(combo_lock_cmd, 0, 3, 2, 1)
 
     lbl = Gtk.Label.new("Timeout:")
     lbl.set_property("halign", Gtk.Align.END)
@@ -920,6 +915,7 @@ def lockscreen_tab(settings):
     grid.attach(lbl, 0, 6, 1, 1)
 
     entry_sleep_cmd = Gtk.Entry()
+    entry_sleep_cmd.set_max_width_chars(22)
     entry_sleep_cmd.set_text(settings["sleep-cmd"])
     grid.attach(entry_sleep_cmd, 1, 6, 1, 1)
     entry_sleep_cmd.connect("changed", set_from_entry, settings, "sleep-cmd")
@@ -949,17 +945,11 @@ def lockscreen_tab(settings):
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 2, 1, 4, 1)
 
-    fc_btn = Gtk.FileChooserButton.new("Select folder", Gtk.FileChooserAction.SELECT_FOLDER)
-    fc_btn.set_tooltip_text("Select your own path here")
-    if settings["backgrounds-custom-path"]:
-        fc_btn.set_current_folder(settings["backgrounds-custom-path"])
-    fc_btn.connect("file-set", on_custom_folder_selected, settings)
-    grid.attach(fc_btn, 2, 2, 4, 1)
-
     bcg_window = Gtk.ScrolledWindow.new(None, None)
+    bcg_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS)
     bcg_window.set_propagate_natural_width(True)
 
-    grid.attach(bcg_window, 2, 3, 4, 2)
+    grid.attach(bcg_window, 2, 2, 4, 2)
     bcg_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
     bcg_window.add(bcg_box)
 
@@ -974,40 +964,50 @@ def lockscreen_tab(settings):
         cb.connect("toggled", on_folder_btn_toggled, settings)
         bcg_box.pack_start(cb, False, False, 0)
 
+    lbl = Gtk.Label.new("Own path:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 4, 1, 1)
+
+    fc_btn = Gtk.FileChooserButton.new("Select folder", Gtk.FileChooserAction.SELECT_FOLDER)
+    fc_btn.set_tooltip_text("Select your own path here")
+    if settings["backgrounds-custom-path"]:
+        fc_btn.set_current_folder(settings["backgrounds-custom-path"])
+    fc_btn.connect("file-set", on_custom_folder_selected, settings)
+    grid.attach(fc_btn, 3, 4, 3, 1)
+
     lbl = Gtk.Label()
     lbl.set_markup("<b>Unsplash random image</b>")
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 2, 5, 4, 1)
 
-    lbl = Gtk.Label.new("W:")
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 6, 1, 1)
-
     sb_us_width = Gtk.SpinButton.new_with_range(640, 7680, 1)
     sb_us_width.set_value(settings["unsplash-width"])
     sb_us_width.connect("value-changed", set_int_from_spinbutton, settings, "unsplash-width")
     sb_us_width.set_tooltip_text("desired wallpaper width")
-    grid.attach(sb_us_width, 3, 6, 1, 1)
+    grid.attach(sb_us_width, 2, 6, 1, 1)
 
-    lbl = Gtk.Label.new("H:")
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 4, 6, 1, 1)
+    lbl = Gtk.Label.new("x")
+    grid.attach(lbl, 3, 6, 1, 1)
 
     sb_us_width = Gtk.SpinButton.new_with_range(480, 4320, 1)
     sb_us_width.set_value(settings["unsplash-height"])
     sb_us_width.connect("value-changed", set_int_from_spinbutton, settings, "unsplash-height")
     sb_us_width.set_tooltip_text("desired wallpaper height")
-    grid.attach(sb_us_width, 5, 6, 1, 1)
+    grid.attach(sb_us_width, 4, 6, 1, 1)
 
+    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
+    grid.attach(box, 2, 8, 3, 1)
     lbl = Gtk.Label.new("Keywords:")
     lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 2, 7, 2, 1)
+    box.pack_start(lbl, False, False, 0)
+    # grid.attach(lbl, 2, 7, 2, 1)
 
     entry_us_keywords = Gtk.Entry()
     entry_us_keywords.set_tooltip_text("comma-separated list of keywords")
     entry_us_keywords.set_text(",".join(settings["unsplash-keywords"]))
     entry_us_keywords.connect("changed", set_keywords_from_entry, settings)
-    grid.attach(entry_us_keywords, 2, 8, 4, 1)
+    box.pack_start(entry_us_keywords, True, True, 0)
+    # grid.attach(entry_us_keywords, 2, 8, 4, 1)
 
     # WARNING about 'swaidle' in sway config
     config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
