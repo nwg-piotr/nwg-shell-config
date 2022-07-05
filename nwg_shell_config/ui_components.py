@@ -1,9 +1,10 @@
 import subprocess
 import gi
+import os
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs
+from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -1004,6 +1005,20 @@ def lockscreen_tab(settings):
     entry_us_keywords.set_text(",".join(settings["unsplash-keywords"]))
     entry_us_keywords.connect("changed", set_keywords_from_entry, settings)
     grid.attach(entry_us_keywords, 2, 8, 4, 1)
+
+    config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
+        os.getenv("HOME"), ".config/")
+    sway_config = os.path.join(config_home, "sway", "config")
+    if os.path.isfile(sway_config):
+        lines = load_text_file(sway_config).splitlines()
+        for line in lines:
+            if not line.startswith("#") and "swayidle" in line:
+                lbl = Gtk.Label()
+                lbl.set_markup('<span foreground="red">You need to remove <b>\'swayidle\'</b> from the sway config file!</span>')
+                lbl.set_property("margin-top", 10)
+                grid.attach(lbl, 0, 9, 6, 1)
+                break
+                print("'swayidle' found in sway config file")
 
     frame.show_all()
 
