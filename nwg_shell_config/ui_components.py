@@ -830,10 +830,10 @@ def lockscreen_tab(settings):
     cb_lockscreen_use_settings.connect("toggled", set_from_checkbutton, settings, "lockscreen-use-settings")
     grid.attach(cb_lockscreen_use_settings, 0, 0, 2, 1)
 
-    lbl = Gtk.Label.new("")
+    lbl = Gtk.Label()
     lbl.set_markup("<b>Lock screen</b>")
     lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 0, 1, 1, 1)
+    grid.attach(lbl, 0, 1, 2, 1)
 
     lbl = Gtk.Label.new("Command:")
     lbl.set_property("halign", Gtk.Align.END)
@@ -845,92 +845,91 @@ def lockscreen_tab(settings):
     grid.attach(entry_lock_cmd, 1, 2, 1, 1)
     entry_lock_cmd.connect("changed", set_from_entry, settings, "lockscreen-cmd")
 
+    lbl = Gtk.Label()
+    lbl.set_markup("<i>predefined:</i>")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
     combo_lock_cmd = Gtk.ComboBoxText()
     for item in [("swaylock", "swaylock -f -c 212121"),
                  ("swaylock, random image", "nwg-lock -s"),
-                 ("swaylock, random Unsplash image", "nwg-lock -su")]:
+                 ("swaylock, random Unsplash", "nwg-lock -su")]:
         combo_lock_cmd.append(item[1], item[0])
     if is_command("gtklock"):
         for item in [("gtklock", "gtklock"),
                      ("gtklock, random image", "nwg-lock -g"),
-                     ("gtklock, random Unsplash image", "nwg-lock -gu")]:
+                     ("gtklock, random Unsplash", "nwg-lock -gu")]:
             combo_lock_cmd.append(item[1], item[0])
     else:
         combo_lock_cmd.set_tooltip_text("Install 'gtklock' to see more options")
     combo_lock_cmd.set_active_id(settings["lockscreen-cmd"])
     combo_lock_cmd.connect("changed", set_lockscreen_from_combo, entry_lock_cmd)
 
-    grid.attach(combo_lock_cmd, 2, 2, 1, 1)
+    grid.attach(combo_lock_cmd, 1, 3, 1, 1)
 
     lbl = Gtk.Label.new("Timeout:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 3, 1, 1)
+    grid.attach(lbl, 0, 4, 1, 1)
 
     sb_lock_timeout = Gtk.SpinButton.new_with_range(10, 86400, 1)
     sb_lock_timeout.set_value(settings["lockscreen-timeout"])
     sb_lock_timeout.connect("value-changed", set_int_from_spinbutton, settings, "lockscreen-timeout")
     sb_lock_timeout.set_tooltip_text("lock screen timeout in seconds")
-    grid.attach(sb_lock_timeout, 1, 3, 1, 1)
+    grid.attach(sb_lock_timeout, 1, 4, 1, 1)
 
     lbl = Gtk.Label.new("")
     lbl.set_markup("<b>Sleep</b>")
     lbl.set_property("halign", Gtk.Align.START)
     lbl.set_property("margin-top", 6)
-    grid.attach(lbl, 0, 4, 1, 1)
+    grid.attach(lbl, 0, 5, 1, 1)
 
     lbl = Gtk.Label.new("Command:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 5, 1, 1)
+    grid.attach(lbl, 0, 6, 1, 1)
 
     entry_sleep_cmd = Gtk.Entry()
-    entry_sleep_cmd.set_width_chars(24)
     entry_sleep_cmd.set_text(settings["sleep-cmd"])
-    grid.attach(entry_sleep_cmd, 1, 5, 1, 1)
+    grid.attach(entry_sleep_cmd, 1, 6, 1, 1)
     entry_sleep_cmd.connect("changed", set_from_entry, settings, "sleep-cmd")
 
     lbl = Gtk.Label.new("Timeout:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 6, 1, 1)
+    grid.attach(lbl, 0, 7, 1, 1)
 
     sb_sleep_timeout = Gtk.SpinButton.new_with_range(20, 86400, 1)
     sb_sleep_timeout.set_value(settings["sleep-timeout"])
     sb_sleep_timeout.connect("value-changed", set_sleep_timeout, sb_lock_timeout, settings, "sleep-timeout")
     sb_sleep_timeout.set_tooltip_text("sleep timeout in seconds, must be longer than Lock screen timeout")
-    grid.attach(sb_sleep_timeout, 1, 6, 1, 1)
+    grid.attach(sb_sleep_timeout, 1, 7, 1, 1)
 
     lbl = Gtk.Label.new("Resume:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 7, 1, 1)
+    grid.attach(lbl, 0, 8, 1, 1)
 
     entry_resume_cmd = Gtk.Entry()
     entry_resume_cmd.set_width_chars(24)
     entry_resume_cmd.set_text(settings["resume-cmd"])
-    grid.attach(entry_resume_cmd, 1, 7, 1, 1)
+    grid.attach(entry_resume_cmd, 1, 8, 1, 1)
     entry_resume_cmd.connect("changed", set_from_entry, settings, "resume-cmd")
 
     lbl = Gtk.Label.new("")
     lbl.set_markup("<b>Backgrounds</b>")
     lbl.set_property("margin-top", 6)
     lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 0, 8, 1, 1)
-
-    lbl = Gtk.Label.new("Custom path:")
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 9, 1, 1)
+    grid.attach(lbl, 2, 1, 1, 1)
 
     fc_btn = Gtk.FileChooserButton.new("Select folder", Gtk.FileChooserAction.SELECT_FOLDER)
     if settings["backgrounds-custom-path"]:
         fc_btn.set_current_folder(settings["backgrounds-custom-path"])
     fc_btn.connect("file-set", on_custom_folder_selected, settings)
-    grid.attach(fc_btn, 1, 9, 1, 1)
+    grid.attach(fc_btn, 2, 2, 1, 1)
 
     paths = list_background_dirs()
     bcg_check_buttons = []
     for i in range(len(paths)):
         cb = Gtk.CheckButton.new_with_label(paths[i])
         bcg_check_buttons.append(cb)
-        grid.attach(cb, 1, 10 + i, 2, 1)
-
+        grid.attach(cb, 2, 3 + i, 2, 1)
 
     frame.show_all()
 
