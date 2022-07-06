@@ -643,7 +643,7 @@ def load_settings():
         "touchpad-custom-value": "",
         "lockscreen-use-settings": True,
         "lockscreen-locker": "swaylock",  # swaylock | gtklock
-        "lockscreen-background": "unsplash",  # unsplash | local
+        "lockscreen-background-source": "unsplash",  # unsplash | local
         "lockscreen-custom-cmd": "",
         "lockscreen-timeout": 1200,
         "sleep-cmd": 'swaymsg "output * dpms off"',
