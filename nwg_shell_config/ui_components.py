@@ -92,6 +92,11 @@ def on_custom_folder_selected(fcb, settings):
     settings["backgrounds-custom-path"] = fcb.get_filename()
 
 
+def clear_folder_selection(btn, fc_btn):
+    f = fc_btn.get_uri()
+    fc_btn.unselect_uri(f)
+
+
 def on_folder_btn_toggled(btn, settings):
     p = btn.get_label()
     if btn.get_active():
@@ -997,16 +1002,23 @@ def lockscreen_tab(settings):
         cb.connect("toggled", on_folder_btn_toggled, settings)
         bcg_box.pack_start(cb, False, False, 0)
 
+    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
+    grid.attach(box, 2, 5, 3, 1)
     lbl = Gtk.Label.new("Own folder:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 5, 1, 1)
+    box.pack_start(lbl, False, False, 0)
 
     fc_btn = Gtk.FileChooserButton.new("Select folder", Gtk.FileChooserAction.SELECT_FOLDER)
     fc_btn.set_tooltip_text("Select your own path here")
     if settings["backgrounds-custom-path"]:
         fc_btn.set_current_folder(settings["backgrounds-custom-path"])
     fc_btn.connect("file-set", on_custom_folder_selected, settings)
-    grid.attach(fc_btn, 3, 5, 2, 1)
+    box.pack_start(fc_btn, False, False, 0)
+
+    clear_btn = Gtk.Button.new_from_icon_name("edit-clear", Gtk.IconSize.MENU)
+    clear_btn.set_tooltip_text("Clear selection")
+    clear_btn.connect("clicked", clear_folder_selection, fc_btn)
+    box.pack_start(clear_btn, False, False, 0)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>Unsplash random image</b>")
