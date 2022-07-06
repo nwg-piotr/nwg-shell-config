@@ -871,20 +871,20 @@ def lockscreen_tab(settings):
 
     entry_lock_cmd = Gtk.Entry()
     entry_lock_cmd.set_text(settings["lockscreen-cmd"])
-    entry_lock_cmd.set_tooltip_text("Enter command or select a predefined one.")
+    entry_lock_cmd.set_tooltip_text("Enter command or select a predefined one below.")
     grid.attach(entry_lock_cmd, 1, 2, 1, 1)
     entry_lock_cmd.connect("changed", set_from_entry, settings, "lockscreen-cmd")
 
     combo_lock_cmd = Gtk.ComboBoxText()
     combo_lock_cmd.set_tooltip_text("Set the command above from predefined commands.")
     for item in [("swaylock", "swaylock -f -c 212121"),
-                 ("swaylock, random image", "nwg-lock -s"),
-                 ("swaylock, random Unsplash image", "nwg-lock -su")]:
+                 ("Random local image -> swaylock", "nwg-lock -s"),
+                 ("Random Unsplash image -> swaylock", "nwg-lock -su")]:
         combo_lock_cmd.append(item[1], item[0])
     if is_command("gtklock"):
         for item in [("gtklock", "gtklock"),
-                     ("gtklock, random image", "nwg-lock -g"),
-                     ("gtklock, random Unsplash image", "nwg-lock -gu")]:
+                     ("Random local image -> gtklock", "nwg-lock -g"),
+                     ("Random Unsplash image -> gtklock", "nwg-lock -gu")]:
             combo_lock_cmd.append(item[1], item[0])
     else:
         combo_lock_cmd.set_tooltip_text("Install 'gtklock' to see more options")
@@ -949,7 +949,7 @@ def lockscreen_tab(settings):
     bcg_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS)
     bcg_window.set_propagate_natural_width(True)
 
-    grid.attach(bcg_window, 2, 2, 4, 2)
+    grid.attach(bcg_window, 2, 2, 4, 3)
     bcg_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
     bcg_window.add(bcg_box)
 
@@ -966,48 +966,46 @@ def lockscreen_tab(settings):
 
     lbl = Gtk.Label.new("Own path:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 4, 1, 1)
+    grid.attach(lbl, 2, 5, 1, 1)
 
     fc_btn = Gtk.FileChooserButton.new("Select folder", Gtk.FileChooserAction.SELECT_FOLDER)
     fc_btn.set_tooltip_text("Select your own path here")
     if settings["backgrounds-custom-path"]:
         fc_btn.set_current_folder(settings["backgrounds-custom-path"])
     fc_btn.connect("file-set", on_custom_folder_selected, settings)
-    grid.attach(fc_btn, 3, 4, 3, 1)
+    grid.attach(fc_btn, 3, 5, 3, 1)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>Unsplash random image</b>")
     lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 2, 5, 4, 1)
+    grid.attach(lbl, 2, 6, 4, 1)
 
     sb_us_width = Gtk.SpinButton.new_with_range(640, 7680, 1)
     sb_us_width.set_value(settings["unsplash-width"])
     sb_us_width.connect("value-changed", set_int_from_spinbutton, settings, "unsplash-width")
     sb_us_width.set_tooltip_text("desired wallpaper width")
-    grid.attach(sb_us_width, 2, 6, 1, 1)
+    grid.attach(sb_us_width, 2, 7, 1, 1)
 
     lbl = Gtk.Label.new("x")
-    grid.attach(lbl, 3, 6, 1, 1)
+    grid.attach(lbl, 3, 7, 1, 1)
 
     sb_us_width = Gtk.SpinButton.new_with_range(480, 4320, 1)
     sb_us_width.set_value(settings["unsplash-height"])
     sb_us_width.connect("value-changed", set_int_from_spinbutton, settings, "unsplash-height")
     sb_us_width.set_tooltip_text("desired wallpaper height")
-    grid.attach(sb_us_width, 4, 6, 1, 1)
+    grid.attach(sb_us_width, 4, 7, 1, 1)
 
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
     grid.attach(box, 2, 8, 3, 1)
     lbl = Gtk.Label.new("Keywords:")
     lbl.set_property("halign", Gtk.Align.START)
     box.pack_start(lbl, False, False, 0)
-    # grid.attach(lbl, 2, 7, 2, 1)
 
     entry_us_keywords = Gtk.Entry()
     entry_us_keywords.set_tooltip_text("comma-separated list of keywords")
     entry_us_keywords.set_text(",".join(settings["unsplash-keywords"]))
     entry_us_keywords.connect("changed", set_keywords_from_entry, settings)
     box.pack_start(entry_us_keywords, True, True, 0)
-    # grid.attach(entry_us_keywords, 2, 8, 4, 1)
 
     # WARNING about 'swaidle' in sway config
     config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
@@ -1019,7 +1017,8 @@ def lockscreen_tab(settings):
             if not line.startswith("#") and "swayidle" in line:
                 lbl = Gtk.Label()
                 lbl.set_markup(
-                    '<span foreground="red"><b>You need to remove \'swayidle\' from your sway config file!</b></span>')
+                    '<span foreground="red"><b>To use these settings,'
+                    ' remove \'swayidle\' from your sway config file!</b></span>')
                 lbl.set_property("margin-top", 10)
                 grid.attach(lbl, 0, 9, 7, 1)
                 cb_lockscreen_use_settings.set_active(False)
