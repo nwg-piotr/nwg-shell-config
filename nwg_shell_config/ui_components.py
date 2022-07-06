@@ -964,7 +964,7 @@ def lockscreen_tab(settings):
         cb.connect("toggled", on_folder_btn_toggled, settings)
         bcg_box.pack_start(cb, False, False, 0)
 
-    lbl = Gtk.Label.new("Own path:")
+    lbl = Gtk.Label.new("Own folder:")
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 2, 5, 1, 1)
 
@@ -973,7 +973,7 @@ def lockscreen_tab(settings):
     if settings["backgrounds-custom-path"]:
         fc_btn.set_current_folder(settings["backgrounds-custom-path"])
     fc_btn.connect("file-set", on_custom_folder_selected, settings)
-    grid.attach(fc_btn, 3, 5, 3, 1)
+    grid.attach(fc_btn, 3, 5, 2, 1)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>Unsplash random image</b>")
