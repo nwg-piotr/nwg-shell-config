@@ -92,9 +92,13 @@ def on_custom_folder_selected(fcb, settings):
     settings["backgrounds-custom-path"] = fcb.get_filename()
 
 
-def clear_folder_selection(btn, fc_btn):
-    f = fc_btn.get_uri()
-    fc_btn.unselect_uri(f)
+def clear_folder_selection(btn, fc_btn, settings):
+    if fc_btn.get_filename():
+        settings["backgrounds-custom-path"] = ""
+        fc_btn.set_current_folder("")
+        fc_btn.unselect_all()
+        fc_btn.hide()
+        fc_btn.show()
 
 
 def on_folder_btn_toggled(btn, settings):
@@ -1017,7 +1021,7 @@ def lockscreen_tab(settings):
 
     clear_btn = Gtk.Button.new_from_icon_name("edit-clear", Gtk.IconSize.MENU)
     clear_btn.set_tooltip_text("Clear selection")
-    clear_btn.connect("clicked", clear_folder_selection, fc_btn)
+    clear_btn.connect("clicked", clear_folder_selection, fc_btn, settings)
     box.pack_start(clear_btn, False, False, 0)
 
     lbl = Gtk.Label()
