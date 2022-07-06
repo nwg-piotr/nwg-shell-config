@@ -870,6 +870,7 @@ def lockscreen_tab(settings):
     grid.attach(lbl, 0, 2, 1, 1)
 
     entry_lock_cmd = Gtk.Entry()
+    entry_lock_cmd.set_width_chars(24)
     entry_lock_cmd.set_text(settings["lockscreen-cmd"])
     entry_lock_cmd.set_tooltip_text("Enter command or select a predefined one below.")
     grid.attach(entry_lock_cmd, 1, 2, 1, 1)
