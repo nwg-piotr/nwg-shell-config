@@ -8,6 +8,7 @@ from nwg_shell_config.tools import *
 from nwg_shell_config.ui_components import *
 from nwg_shell_config.__about__ import __version__
 import gi
+
 gi.require_version('Gdk', '3.0')
 from gi.repository import Gdk, GLib
 
@@ -641,11 +642,14 @@ def load_settings():
         "touchpad-custom-name": "",
         "touchpad-custom-value": "",
         "lockscreen-use-settings": True,
-        "lockscreen-cmd": "nwg-lock -i unsplash -c swaylock",
+        "lockscreen-locker": "swaylock",  # swaylock | gtklock
+        "lockscreen-background": "unsplash",  # unsplash | local
+        "lockscreen-custom-cmd": "",
         "lockscreen-timeout": 1200,
         "sleep-cmd": 'swaymsg "output * dpms off"',
         "sleep-timeout": 1800,
         "resume-cmd": 'swaymsg "output * dpms on"',
+        "before-sleep": "",
         "backgrounds-custom-path": "",
         "background-dirs": [],
         "background-dirs-once-set": False,

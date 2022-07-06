@@ -70,12 +70,18 @@ def set_from_entry(entry, settings, key):
     settings[key] = entry.get_text()
 
 
+def set_custom_cmd_from_entry(entry, settings, key, widgets_to_lock):
+    text = entry.get_text()
+    for widget in widgets_to_lock:
+        if text:
+            widget.set_sensitive(False)
+        else:
+            widget.set_sensitive(True)
+    settings[key] = text
+
+
 def set_browser_from_combo(combo, entry, browsers_dict):
     entry.set_text(browsers_dict[combo.get_active_id()])
-
-
-def set_lockscreen_from_combo(combo, entry):
-    entry.set_text(combo.get_active_id())
 
 
 def set_dict_key_from_combo(combo, settings, key):
@@ -865,81 +871,107 @@ def lockscreen_tab(settings):
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 1, 2, 1)
 
-    lbl = Gtk.Label.new("Command:")
+    lbl = Gtk.Label.new("Locker:")
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 2, 1, 1)
 
-    entry_lock_cmd = Gtk.Entry()
-    entry_lock_cmd.set_width_chars(24)
-    entry_lock_cmd.set_text(settings["lockscreen-cmd"])
-    entry_lock_cmd.set_tooltip_text("Enter command or select a predefined one below.")
-    grid.attach(entry_lock_cmd, 1, 2, 1, 1)
-    entry_lock_cmd.connect("changed", set_from_entry, settings, "lockscreen-cmd")
-
-    combo_lock_cmd = Gtk.ComboBoxText()
-    combo_lock_cmd.set_tooltip_text("Set the command above from predefined commands.")
-    for item in [("swaylock", "swaylock -f -c 212121"),
-                 ("Random local image -> swaylock", "nwg-lock -i local -c swaylock"),
-                 ("Random Unsplash image -> swaylock", "nwg-lock -i unsplash -c swaylock")]:
-        combo_lock_cmd.append(item[1], item[0])
+    combo_locker = Gtk.ComboBoxText()
+    combo_locker.set_tooltip_text("Set the command above from predefined commands.")
+    combo_locker.append("swaylock", "swaylock")
     if is_command("gtklock"):
-        for item in [("gtklock", "gtklock"),
-                     ("Random local image -> gtklock", "nwg-lock -i local -c gtklock"),
-                     ("Random Unsplash image -> gtklock", "nwg-lock -i unsplash -c gtklock")]:
-            combo_lock_cmd.append(item[1], item[0])
+        combo_locker.append("gtklock", "gtklock")
     else:
-        combo_lock_cmd.set_tooltip_text("Install 'gtklock' to see more options")
-    combo_lock_cmd.set_active_id(settings["lockscreen-cmd"])
-    combo_lock_cmd.connect("changed", set_lockscreen_from_combo, entry_lock_cmd)
+        combo_locker.set_tooltip_text("Install 'gtklock' to see more options")
+    combo_locker.set_active_id(settings["lockscreen-locker"])
+    combo_locker.connect("changed", set_dict_key_from_combo, settings, "lockscreen-locker")
+    grid.attach(combo_locker, 1, 2, 1, 1)
 
-    grid.attach(combo_lock_cmd, 0, 3, 2, 1)
+    lbl = Gtk.Label.new("Background:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    combo_background = Gtk.ComboBoxText()
+    combo_background.set_tooltip_text("random wallpaper source")
+    combo_background.append("unsplash", "unsplash.com")
+    combo_background.append("local", "local images")
+    combo_background.set_active_id(settings["lockscreen-background"])
+    combo_background.connect("changed", set_dict_key_from_combo, settings, "lockscreen-locker")
+    grid.attach(combo_background, 1, 3, 1, 1)
+
+    lbl = Gtk.Label.new("Custom:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    entry_lock_cmd = Gtk.Entry()
+    entry_lock_cmd.set_placeholder_text("leave blank to use the above")
+    lbl.set_property("valign", Gtk.Align.CENTER)
+    lbl.set_property("vexpand", False)
+    entry_lock_cmd.set_width_chars(24)
+    entry_lock_cmd.set_text(settings["lockscreen-custom-cmd"])
+    entry_lock_cmd.set_tooltip_text("You may enter an own command here,\nto replace the settings above.")
+    grid.attach(entry_lock_cmd, 1, 4, 1, 1)
+    entry_lock_cmd.connect("changed", set_custom_cmd_from_entry, settings, "lockscreen-custom-cmd",
+                           [combo_locker, combo_background])
 
     lbl = Gtk.Label.new("Timeout:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 4, 1, 1)
+    grid.attach(lbl, 0, 5, 1, 1)
 
     sb_lock_timeout = Gtk.SpinButton.new_with_range(10, 86400, 1)
     sb_lock_timeout.set_property("halign", Gtk.Align.START)
     sb_lock_timeout.set_value(settings["lockscreen-timeout"])
     sb_lock_timeout.connect("value-changed", set_int_from_spinbutton, settings, "lockscreen-timeout")
     sb_lock_timeout.set_tooltip_text("lock screen timeout in seconds")
-    grid.attach(sb_lock_timeout, 1, 4, 1, 1)
+    grid.attach(sb_lock_timeout, 1, 5, 1, 1)
 
-    lbl = Gtk.Label.new("")
-    lbl.set_markup("<b>Sleep</b>")
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>Sleep settings</b>")
     lbl.set_property("halign", Gtk.Align.START)
     lbl.set_property("margin-top", 6)
-    grid.attach(lbl, 0, 5, 1, 1)
+    grid.attach(lbl, 0, 6, 2, 1)
 
     lbl = Gtk.Label.new("Command:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 6, 1, 1)
+    grid.attach(lbl, 0, 7, 1, 1)
 
     entry_sleep_cmd = Gtk.Entry()
     entry_sleep_cmd.set_max_width_chars(22)
     entry_sleep_cmd.set_text(settings["sleep-cmd"])
-    grid.attach(entry_sleep_cmd, 1, 6, 1, 1)
+    grid.attach(entry_sleep_cmd, 1, 7, 1, 1)
     entry_sleep_cmd.connect("changed", set_from_entry, settings, "sleep-cmd")
 
     lbl = Gtk.Label.new("Timeout:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 7, 1, 1)
+    grid.attach(lbl, 0, 8, 1, 1)
 
     sb_sleep_timeout = Gtk.SpinButton.new_with_range(20, 86400, 1)
     sb_sleep_timeout.set_property("halign", Gtk.Align.START)
     sb_sleep_timeout.set_value(settings["sleep-timeout"])
     sb_sleep_timeout.connect("value-changed", set_sleep_timeout, sb_lock_timeout, settings, "sleep-timeout")
     sb_sleep_timeout.set_tooltip_text("sleep timeout in seconds, must be longer than Lock screen timeout")
-    grid.attach(sb_sleep_timeout, 1, 7, 1, 1)
+    grid.attach(sb_sleep_timeout, 1, 8, 1, 1)
 
     lbl = Gtk.Label.new("Resume:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 8, 1, 1)
+    grid.attach(lbl, 0, 9, 1, 1)
 
     entry_resume_cmd = Gtk.Entry()
     entry_resume_cmd.set_text(settings["resume-cmd"])
-    grid.attach(entry_resume_cmd, 1, 8, 1, 1)
+    grid.attach(entry_resume_cmd, 1, 9, 1, 1)
     entry_resume_cmd.connect("changed", set_from_entry, settings, "resume-cmd")
+
+    lbl = Gtk.Label.new("Before sleep:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 10, 1, 1)
+
+    entry_b4_sleep = Gtk.Entry()
+    entry_b4_sleep.set_placeholder_text("blank to use defined locker")
+    entry_b4_sleep.set_width_chars(24)
+    entry_b4_sleep.set_text(settings["before-sleep"])
+    entry_b4_sleep.set_tooltip_text(
+        "You may enter an own 'before-sleep' command here,\nto replace the locker settings defined above.")
+    grid.attach(entry_b4_sleep, 1, 10, 1, 1)
+    entry_b4_sleep.connect("changed", set_from_entry, settings, "before-sleep")
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>Backgrounds</b>")
@@ -1008,7 +1040,7 @@ def lockscreen_tab(settings):
     entry_us_keywords.connect("changed", set_keywords_from_entry, settings)
     box.pack_start(entry_us_keywords, True, True, 0)
 
-    # WARNING about 'swaidle' in sway config
+    # WARNING about 'swayidle' in sway config
     config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
         os.getenv("HOME"), ".config/")
     sway_config = os.path.join(config_home, "sway", "config")
@@ -1021,7 +1053,7 @@ def lockscreen_tab(settings):
                     '<span foreground="red"><b>To use these settings,'
                     ' remove \'swayidle\' from your sway config file!</b></span>')
                 lbl.set_property("margin-top", 10)
-                grid.attach(lbl, 0, 9, 7, 1)
+                grid.attach(lbl, 0, 11, 7, 1)
                 cb_lockscreen_use_settings.set_active(False)
                 # Prevent settings from exporting
                 cb_lockscreen_use_settings.set_sensitive(False)
@@ -1030,20 +1062,20 @@ def lockscreen_tab(settings):
     # NOTIFICATIONS on goodies possible to install
     notifications = []
     if not is_command("gtklock"):
-        n = ("Alternative to swaylock", "You may want to install the 'gtkclock' package.")
+        n = ("Alternative to swaylock", "You may want to install the 'gtklock' package.")
         notifications.append(n)
     if not os.path.exists("/usr/share/backgrounds/nwg-shell"):
         n = ("Extra wallpapers", "You may want to install the 'nwg-shell-wallpapers' package.")
         notifications.append(n)
     release = load_text_file("/etc/os-release")
-    if release and "Archlabs" in release.splitlines()[0] and not os.path.exists("usr/share/backgrounds/archlabs-extra"):
+    if release and "ArchLabs" in release.splitlines()[0] and not os.path.exists("usr/share/backgrounds/archlabs-extra"):
         n = ("Extra wallpapers", "You may want to install the 'archlabs-wallpapers-extra' package.")
         notifications.append(n)
 
     if notifications:
         btn = Gtk.Button.new_with_label("Hints!")
         btn.set_property("halign", Gtk.Align.END)
-        grid.attach(btn, 5, 0, 1, 1)
+        grid.attach(btn, 4, 0, 1, 1)
         btn.connect("clicked", send_notifications, notifications)
 
     frame.show_all()
