@@ -878,13 +878,13 @@ def lockscreen_tab(settings):
     combo_lock_cmd = Gtk.ComboBoxText()
     combo_lock_cmd.set_tooltip_text("Set the command above from predefined commands.")
     for item in [("swaylock", "swaylock -f -c 212121"),
-                 ("Random local image -> swaylock", "nwg-lock -s"),
-                 ("Random Unsplash image -> swaylock", "nwg-lock -su")]:
+                 ("Random local image -> swaylock", "nwg-lock -i local -c swaylock"),
+                 ("Random Unsplash image -> swaylock", "nwg-lock -i unsplash -c swaylock")]:
         combo_lock_cmd.append(item[1], item[0])
     if is_command("gtklock"):
         for item in [("gtklock", "gtklock"),
-                     ("Random local image -> gtklock", "nwg-lock -g"),
-                     ("Random Unsplash image -> gtklock", "nwg-lock -gu")]:
+                     ("Random local image -> gtklock", "nwg-lock -i local -c gtklock"),
+                     ("Random Unsplash image -> gtklock", "nwg-lock -i unsplash -c gtklock")]:
             combo_lock_cmd.append(item[1], item[0])
     else:
         combo_lock_cmd.set_tooltip_text("Install 'gtklock' to see more options")
