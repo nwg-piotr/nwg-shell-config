@@ -4,6 +4,7 @@
 # All the setting come from the 'nwg-shell-config' 'settings' data file.
 
 import os
+import random
 import subprocess
 import urllib.request
 from nwg_shell_config.tools import get_data_dir, load_json
@@ -32,6 +33,21 @@ def main():
                 subprocess.Popen('exec swaylock -f -i {}'.format(wallpaper), shell=True)
             elif settings["lockscreen-locker"] == "gtklock":
                 subprocess.Popen('exec gtklock -d -b {}'.format(wallpaper), shell=True)
+
+    elif settings["lockscreen-background-source"] == "local":
+        paths = []
+        dirs = settings["background-dirs"].copy()
+        if settings["backgrounds-custom-path"]:
+            dirs.append(settings["backgrounds-custom-path"])
+        for d in dirs:
+            for item in os.listdir(d):
+                if os.path.isfile(os.path.join(d, item)):
+                    paths.append(os.path.join(d, item))
+        p = paths[random.randrange(len(paths))]
+        if settings["lockscreen-locker"] == "swaylock":
+            subprocess.Popen('exec swaylock -f -i {}'.format(p), shell=True)
+        elif settings["lockscreen-locker"] == "gtklock":
+            subprocess.Popen('exec gtklock -d -b {}'.format(p), shell=True)
 
 
 if __name__ == '__main__':
