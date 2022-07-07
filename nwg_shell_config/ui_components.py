@@ -25,12 +25,6 @@ def set_int_from_spinbutton(cb, settings, key):
     settings[key] = int(cb.get_value())
 
 
-def set_timeouts(cb, cb1, settings, key):
-    settings[key] = int(cb.get_value())
-    if int(cb1.get_value() < settings[key] + 5):
-        cb1.set_value(settings[key] + 5)
-
-
 def set_keywords_from_entry(entry, settings):
     txt = entry.get_text()
     # Sanitize
@@ -48,6 +42,12 @@ def set_keywords_from_entry(entry, settings):
 def send_notifications(btn, notifications):
     for n in notifications:
         notify(n[0], n[1], 10000)
+
+
+def set_timeouts(cb, cb1, settings, key):
+    settings[key] = int(cb.get_value())
+    if int(cb1.get_value() < settings[key] + 5):
+        cb1.set_value(settings[key] + 5)
 
 
 def set_sleep_timeout(sb, lock_timeout_sb, settings, key):
@@ -941,8 +941,7 @@ def lockscreen_tab(settings):
     sb_lock_timeout = Gtk.SpinButton.new_with_range(10, 86400, 1)
     sb_lock_timeout.set_property("halign", Gtk.Align.START)
     sb_lock_timeout.set_value(settings["lockscreen-timeout"])
-    # sb_lock_timeout.connect("value-changed", set_int_from_spinbutton, settings, "lockscreen-timeout")
-    # We need to validate `sb_sleep_timeout` as well, so let's connect if when the latter already defined
+    # We need to validate this, and `sb_sleep_timeout` as well, so let's connect both when both already defined
     sb_lock_timeout.set_tooltip_text("lock screen timeout in seconds")
     grid.attach(sb_lock_timeout, 1, 5, 1, 1)
 
@@ -969,8 +968,9 @@ def lockscreen_tab(settings):
     sb_sleep_timeout = Gtk.SpinButton.new_with_range(20, 86400, 1)
     sb_sleep_timeout.set_property("halign", Gtk.Align.START)
     sb_sleep_timeout.set_value(settings["sleep-timeout"])
-    sb_sleep_timeout.connect("value-changed", set_sleep_timeout, sb_lock_timeout, settings, "sleep-timeout")
 
+    # Sleep timeout must be longer than lock timeout; we'll validate both values
+    sb_sleep_timeout.connect("value-changed", set_sleep_timeout, sb_lock_timeout, settings, "sleep-timeout")
     sb_lock_timeout.connect("value-changed", set_timeouts, sb_sleep_timeout, settings, "lockscreen-timeout")
 
     sb_sleep_timeout.set_tooltip_text("sleep timeout in seconds, must be longer than Lock screen timeout")
