@@ -504,19 +504,20 @@ def save_includes():
     autostart.append("exec_always nwg-shell-check-updates")
 
     if settings["lockscreen-use-settings"]:
-        c_sleep = "timeout {} '{}'".format(settings["sleep-timeout"], settings["sleep-cmd"])
+        c_sleep = "timeout {} '{}'".format(settings["sleep-timeout"], settings["sleep-cmd"]) if settings[
+            "sleep-cmd"] else ""
 
-        c_resume = "resume '{}'".format(settings["resume-cmd"])
+        c_resume = "resume '{}'".format(settings["resume-cmd"]) if settings["resume-cmd"] else ""
         # Let's make it a bit idiot-proof
-        if "dpms off" in settings["sleep-cmd"] and "dpms on" not in settings["resume-cmd"]:
+        if c_sleep and "dpms off" in settings["sleep-cmd"] and "dpms on" not in settings["resume-cmd"]:
             c_resume = "swaymsg \"output * dpms on\""
 
-        c_before_sleep = "before-sleep {}".format(settings["before-sleep"]) if settings[
-            "before-sleep"] else "before-sleep nwg-lock"
+        c_before_sleep = "before-sleep '{}'".format(settings["before-sleep"]) if settings[
+            "before-sleep"] else ""
 
         cmd_idle = "exec swayidle -w timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
                                                                           c_sleep, c_resume, c_before_sleep)
-        print(cmd_idle)
+        print("Idle command:", cmd_idle)
         autostart.append(cmd_idle)
         # We can't `exec_always swayidle`, as it would create multiple instances. Let's restart it here.
         subprocess.call("killall swayidle", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)

@@ -11,6 +11,12 @@ def set_from_checkbutton(cb, settings, key):
     settings[key] = cb.get_active()
 
 
+def set_idle_use_from_checkbutton(cb, settings):
+    settings["lockscreen-use-settings"] = cb.get_active()
+    if not settings["lockscreen-use-settings"]:
+        subprocess.call("killall swayidle", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+
+
 def set_from_spinbutton(cb, settings, key, ndigits):
     settings[key] = round(cb.get_value(), ndigits)
 
@@ -872,7 +878,7 @@ def lockscreen_tab(settings):
     cb_lockscreen_use_settings.set_property("margin-bottom", 2)
     cb_lockscreen_use_settings.set_tooltip_text("Determines if to export the 'lockscreen' config include.")
     cb_lockscreen_use_settings.set_active(settings["lockscreen-use-settings"])
-    cb_lockscreen_use_settings.connect("toggled", set_from_checkbutton, settings, "lockscreen-use-settings")
+    cb_lockscreen_use_settings.connect("toggled", set_idle_use_from_checkbutton, settings)
     grid.attach(cb_lockscreen_use_settings, 0, 0, 2, 1)
 
     lbl = Gtk.Label()
@@ -974,7 +980,6 @@ def lockscreen_tab(settings):
     grid.attach(lbl, 0, 10, 1, 1)
 
     entry_b4_sleep = Gtk.Entry()
-    entry_b4_sleep.set_placeholder_text("leave blank to use defined locker")
     entry_b4_sleep.set_width_chars(24)
     entry_b4_sleep.set_text(settings["before-sleep"])
     entry_b4_sleep.set_tooltip_text(
