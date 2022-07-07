@@ -503,6 +503,21 @@ def save_includes():
 
     autostart.append("exec_always nwg-shell-check-updates")
 
+    if settings["lockscreen-use-settings"]:
+        c_sleep = "timeout {} {}".format(settings["sleep-timeout"], settings["sleep-cmd"])
+
+        c_resume = "resume {}".format(settings["resume-cmd"])
+        # Let's make it a bit idiot-proof
+        if "dpms off" in settings["sleep-cmd"] and "dpms on" not in settings["resume-cmd"]:
+            c_resume = "swaymsg \"output * dpms on\""
+
+        c_before_sleep = "before-sleep {}".format(settings["before-sleep"]) if settings[
+            "before-sleep"] else "before-sleep nwg-lock"
+
+        cmd_idle = "exec swayidle -w timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
+                                                                          c_sleep, c_resume, c_before_sleep)
+        print(cmd_idle)
+
     if settings["show-help"]:
         autostart.append("exec_always nwg-wrapper -t help-sway.pango -c help-sway.css -p right -mr 50 -si -sq 14")
 
