@@ -6,6 +6,7 @@
 import os
 import random
 import subprocess
+import sys
 import urllib.request
 from nwg_shell_config.tools import get_data_dir, load_json
 
@@ -14,14 +15,10 @@ settings = load_json(os.path.join(data_dir, "settings"))
 
 
 def main():
-    # for key in ["lockscreen-locker",
-    #             "lockscreen-background-source",
-    #             "backgrounds-custom-path",
-    #             "background-dirs",
-    #             "unsplash-width",
-    #             "unsplash-height",
-    #             "unsplash-keywords"]:
-    #     print(key, settings[key])
+    if settings["lockscreen-custom-cmd"]:
+        subprocess.Popen('exec {}'.format(settings["lockscreen-custom-cmd"]), shell=True)
+
+        sys.exit(0)
 
     if settings["lockscreen-background-source"] == "unsplash":
         url = "https://source.unsplash.com/{}x{}/?{}".format(settings["unsplash-width"], settings["unsplash-height"],
@@ -33,6 +30,8 @@ def main():
                 subprocess.Popen('exec swaylock -f -i {}'.format(wallpaper), shell=True)
             elif settings["lockscreen-locker"] == "gtklock":
                 subprocess.Popen('exec gtklock -d -b {}'.format(wallpaper), shell=True)
+
+            sys.exit(0)
 
     elif settings["lockscreen-background-source"] == "local":
         paths = []
@@ -48,6 +47,8 @@ def main():
             subprocess.Popen('exec swaylock -f -i {}'.format(p), shell=True)
         elif settings["lockscreen-locker"] == "gtklock":
             subprocess.Popen('exec gtklock -d -b {}'.format(p), shell=True)
+
+        sys.exit(0)
 
 
 if __name__ == '__main__':

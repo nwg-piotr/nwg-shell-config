@@ -863,13 +863,13 @@ def lockscreen_tab(settings):
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
     frame.add(grid)
-    grid.set_property("margin", 12)
+    grid.set_property("margin", 6)
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
     cb_lockscreen_use_settings = Gtk.CheckButton.new_with_label("Use these settings")
     cb_lockscreen_use_settings.set_property("halign", Gtk.Align.START)
-    cb_lockscreen_use_settings.set_property("margin-bottom", 6)
+    cb_lockscreen_use_settings.set_property("margin-bottom", 2)
     cb_lockscreen_use_settings.set_tooltip_text("Determines if to export the 'lockscreen' config include.")
     cb_lockscreen_use_settings.set_active(settings["lockscreen-use-settings"])
     cb_lockscreen_use_settings.connect("toggled", set_from_checkbutton, settings, "lockscreen-use-settings")
@@ -885,7 +885,7 @@ def lockscreen_tab(settings):
     grid.attach(lbl, 0, 2, 1, 1)
 
     combo_locker = Gtk.ComboBoxText()
-    combo_locker.set_tooltip_text("Set the command above from predefined commands.")
+    combo_locker.set_tooltip_text("screen locker to use")
     combo_locker.append("swaylock", "swaylock")
     if is_command("gtklock"):
         combo_locker.append("gtklock", "gtklock")
@@ -907,7 +907,7 @@ def lockscreen_tab(settings):
     combo_background.connect("changed", set_dict_key_from_combo, settings, "lockscreen-background-source")
     grid.attach(combo_background, 1, 3, 1, 1)
 
-    lbl = Gtk.Label.new("Custom:")
+    lbl = Gtk.Label.new("Own command:")
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 4, 1, 1)
 
@@ -974,7 +974,7 @@ def lockscreen_tab(settings):
     grid.attach(lbl, 0, 10, 1, 1)
 
     entry_b4_sleep = Gtk.Entry()
-    entry_b4_sleep.set_placeholder_text("blank to use defined locker")
+    entry_b4_sleep.set_placeholder_text("leave blank to use defined locker")
     entry_b4_sleep.set_width_chars(24)
     entry_b4_sleep.set_text(settings["before-sleep"])
     entry_b4_sleep.set_tooltip_text(
@@ -983,7 +983,7 @@ def lockscreen_tab(settings):
     entry_b4_sleep.connect("changed", set_from_entry, settings, "before-sleep")
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Backgrounds</b>")
+    lbl.set_markup("<b>Local background source</b>")
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 2, 1, 4, 1)
 
