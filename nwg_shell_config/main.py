@@ -661,7 +661,7 @@ def load_settings():
         "touchpad-middle-emulation": "enabled",
         "touchpad-custom-name": "",
         "touchpad-custom-value": "",
-        "lockscreen-use-settings": True,
+        "lockscreen-use-settings": False,
         "lockscreen-locker": "swaylock",  # swaylock | gtklock
         "lockscreen-background-source": "unsplash",  # unsplash | local
         "lockscreen-custom-cmd": "",

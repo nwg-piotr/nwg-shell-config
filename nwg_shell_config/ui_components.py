@@ -112,15 +112,6 @@ def toggle_custom_path(cb, settings):
     settings["backgrounds-use-custom-path"] = cb.get_active()
 
 
-def clear_folder_selection(btn, fc_btn, settings):
-    if fc_btn.get_filename():
-        settings["backgrounds-custom-path"] = ""
-        fc_btn.set_current_folder("")
-        fc_btn.unselect_all()
-        fc_btn.hide()
-        fc_btn.show()
-
-
 def on_folder_btn_toggled(btn, settings):
     p = btn.get_label()
     if btn.get_active():
@@ -937,7 +928,7 @@ def lockscreen_tab(settings):
     lbl.set_property("vexpand", False)
     entry_lock_cmd.set_width_chars(24)
     entry_lock_cmd.set_text(settings["lockscreen-custom-cmd"])
-    entry_lock_cmd.set_tooltip_text("You may enter an own command here,\nto replace the settings above.")
+    entry_lock_cmd.set_tooltip_text("You may enter your own command here,\nto replace the settings above.")
     grid.attach(entry_lock_cmd, 1, 4, 1, 1)
     entry_lock_cmd.connect("changed", set_custom_cmd_from_entry, settings, "lockscreen-custom-cmd",
                            [combo_locker, combo_background])
@@ -1031,9 +1022,6 @@ def lockscreen_tab(settings):
 
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
     grid.attach(box, 2, 5, 3, 1)
-    # lbl = Gtk.Label.new("Own folder:")
-    # lbl.set_property("halign", Gtk.Align.END)
-    # box.pack_start(lbl, False, False, 0)
 
     cb_custom_path = Gtk.CheckButton.new_with_label("own path")
     cb_custom_path.set_active(settings["backgrounds-use-custom-path"])
@@ -1046,11 +1034,6 @@ def lockscreen_tab(settings):
         fc_btn.set_current_folder(settings["backgrounds-custom-path"])
     fc_btn.connect("file-set", on_custom_folder_selected, settings)
     box.pack_start(fc_btn, False, False, 0)
-
-    clear_btn = Gtk.Button.new_from_icon_name("edit-clear", Gtk.IconSize.MENU)
-    clear_btn.set_tooltip_text("Clear selection")
-    clear_btn.connect("clicked", clear_folder_selection, fc_btn, settings)
-    box.pack_start(clear_btn, False, False, 0)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>Unsplash random image</b>")
