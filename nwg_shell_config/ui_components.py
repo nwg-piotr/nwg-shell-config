@@ -950,7 +950,7 @@ def lockscreen_tab(settings):
     grid.attach(sb_lock_timeout, 1, 5, 1, 1)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Sleep settings</b>")
+    lbl.set_markup("<b>Idle settings</b>")
     lbl.set_property("halign", Gtk.Align.START)
     lbl.set_property("margin-top", 6)
     grid.attach(lbl, 0, 6, 2, 1)
@@ -996,8 +996,8 @@ def lockscreen_tab(settings):
     entry_b4_sleep = Gtk.Entry()
     entry_b4_sleep.set_width_chars(24)
     entry_b4_sleep.set_text(settings["before-sleep"])
-    entry_b4_sleep.set_tooltip_text(
-        "You may enter an own 'before-sleep' command here,\nto replace the locker settings defined above.")
+    entry_b4_sleep.set_tooltip_text("Command to execute before systemd puts the computer to sleep.\n"
+                                    "Leave blank to use settings from the 'Lock screen' section.")
     grid.attach(entry_b4_sleep, 1, 10, 1, 1)
     entry_b4_sleep.connect("changed", set_from_entry, settings, "before-sleep")
 
