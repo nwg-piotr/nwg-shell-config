@@ -34,6 +34,10 @@ def set_keywords_from_entry(entry, settings):
     if ",," in txt:
         txt = txt.replace(",,", ",")
         entry.set_text(txt)
+    for c in txt:
+        if ord(c) > 128:
+            txt = txt.replace(c, "")
+            entry.set_text(txt)
     txt = txt.strip(",")
 
     settings["unsplash-keywords"] = txt.split(",")
@@ -938,7 +942,7 @@ def lockscreen_tab(settings):
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 5, 1, 1)
 
-    sb_lock_timeout = Gtk.SpinButton.new_with_range(10, 86400, 1)
+    sb_lock_timeout = Gtk.SpinButton.new_with_range(5, 86400, 1)
     sb_lock_timeout.set_property("halign", Gtk.Align.START)
     sb_lock_timeout.set_value(settings["lockscreen-timeout"])
     # We need to validate this, and `sb_sleep_timeout` as well, so let's connect both when both already defined
@@ -965,7 +969,7 @@ def lockscreen_tab(settings):
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 8, 1, 1)
 
-    sb_sleep_timeout = Gtk.SpinButton.new_with_range(20, 86400, 1)
+    sb_sleep_timeout = Gtk.SpinButton.new_with_range(10, 86400, 1)
     sb_sleep_timeout.set_property("halign", Gtk.Align.START)
     sb_sleep_timeout.set_value(settings["sleep-timeout"])
 
