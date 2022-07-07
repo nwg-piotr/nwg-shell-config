@@ -25,6 +25,12 @@ def set_int_from_spinbutton(cb, settings, key):
     settings[key] = int(cb.get_value())
 
 
+def set_timeouts(cb, cb1, settings, key):
+    settings[key] = int(cb.get_value())
+    if int(cb1.get_value() < settings[key] + 5):
+        cb1.set_value(settings[key] + 5)
+
+
 def set_keywords_from_entry(entry, settings):
     txt = entry.get_text()
     # Sanitize
@@ -47,8 +53,8 @@ def send_notifications(btn, notifications):
 def set_sleep_timeout(sb, lock_timeout_sb, settings, key):
     timeout = sb.get_value()
     lock_timeout = lock_timeout_sb.get_value()
-    if timeout <= lock_timeout:
-        sb.set_value(lock_timeout + 1)
+    if timeout <= lock_timeout + 5:
+        sb.set_value(lock_timeout + 5)
     settings[key] = int(sb.get_value())
 
 
@@ -935,7 +941,8 @@ def lockscreen_tab(settings):
     sb_lock_timeout = Gtk.SpinButton.new_with_range(10, 86400, 1)
     sb_lock_timeout.set_property("halign", Gtk.Align.START)
     sb_lock_timeout.set_value(settings["lockscreen-timeout"])
-    sb_lock_timeout.connect("value-changed", set_int_from_spinbutton, settings, "lockscreen-timeout")
+    # sb_lock_timeout.connect("value-changed", set_int_from_spinbutton, settings, "lockscreen-timeout")
+    # We need to validate `sb_sleep_timeout` as well, so let's connect if when the latter already defined
     sb_lock_timeout.set_tooltip_text("lock screen timeout in seconds")
     grid.attach(sb_lock_timeout, 1, 5, 1, 1)
 
@@ -963,6 +970,9 @@ def lockscreen_tab(settings):
     sb_sleep_timeout.set_property("halign", Gtk.Align.START)
     sb_sleep_timeout.set_value(settings["sleep-timeout"])
     sb_sleep_timeout.connect("value-changed", set_sleep_timeout, sb_lock_timeout, settings, "sleep-timeout")
+
+    sb_lock_timeout.connect("value-changed", set_timeouts, sb_sleep_timeout, settings, "lockscreen-timeout")
+
     sb_sleep_timeout.set_tooltip_text("sleep timeout in seconds, must be longer than Lock screen timeout")
     grid.attach(sb_sleep_timeout, 1, 8, 1, 1)
 
