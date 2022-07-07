@@ -481,10 +481,10 @@ def save_includes():
         autostart.append("exec nm-applet --indicator")
 
     if settings["autotiling-on"]:
-        cmd_autoiling = "exec_always autotiling"
+        cmd_autotiling = "exec_always autotiling"
         if settings["autotiling-workspaces"]:
-            cmd_autoiling += " -w {}".format(settings["autotiling-workspaces"])
-        autostart.append(cmd_autoiling)
+            cmd_autotiling += " -w {}".format(settings["autotiling-workspaces"])
+        autostart.append(cmd_autotiling)
 
     if cmd_launcher_autostart:
         autostart.append(cmd_launcher_autostart)
@@ -504,9 +504,9 @@ def save_includes():
     autostart.append("exec_always nwg-shell-check-updates")
 
     if settings["lockscreen-use-settings"]:
-        c_sleep = "timeout {} {}".format(settings["sleep-timeout"], settings["sleep-cmd"])
+        c_sleep = "timeout {} '{}'".format(settings["sleep-timeout"], settings["sleep-cmd"])
 
-        c_resume = "resume {}".format(settings["resume-cmd"])
+        c_resume = "resume '{}'".format(settings["resume-cmd"])
         # Let's make it a bit idiot-proof
         if "dpms off" in settings["sleep-cmd"] and "dpms on" not in settings["resume-cmd"]:
             c_resume = "swaymsg \"output * dpms on\""
@@ -517,6 +517,10 @@ def save_includes():
         cmd_idle = "exec swayidle -w timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
                                                                           c_sleep, c_resume, c_before_sleep)
         print(cmd_idle)
+        autostart.append(cmd_idle)
+        # We can't `exec_always swayidle`, as it would create multiple instances. Let's restart it here.
+        subprocess.call("killall swayidle", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        subprocess.Popen(cmd_idle, shell=True)
 
     if settings["show-help"]:
         autostart.append("exec_always nwg-wrapper -t help-sway.pango -c help-sway.css -p right -mr 50 -si -sq 14")
