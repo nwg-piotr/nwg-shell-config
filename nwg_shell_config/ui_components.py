@@ -108,6 +108,10 @@ def on_custom_folder_selected(fcb, settings):
     settings["backgrounds-custom-path"] = fcb.get_filename()
 
 
+def toggle_custom_path(cb, settings):
+    settings["backgrounds-use-custom-path"] = cb.get_active()
+
+
 def clear_folder_selection(btn, fc_btn, settings):
     if fc_btn.get_filename():
         settings["backgrounds-custom-path"] = ""
@@ -1002,7 +1006,7 @@ def lockscreen_tab(settings):
     entry_b4_sleep.connect("changed", set_from_entry, settings, "before-sleep")
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Local background source</b>")
+    lbl.set_markup("<b>Local background sources</b>")
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 2, 1, 4, 1)
 
@@ -1027,9 +1031,14 @@ def lockscreen_tab(settings):
 
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
     grid.attach(box, 2, 5, 3, 1)
-    lbl = Gtk.Label.new("Own folder:")
-    lbl.set_property("halign", Gtk.Align.END)
-    box.pack_start(lbl, False, False, 0)
+    # lbl = Gtk.Label.new("Own folder:")
+    # lbl.set_property("halign", Gtk.Align.END)
+    # box.pack_start(lbl, False, False, 0)
+
+    cb_custom_path = Gtk.CheckButton.new_with_label("own path")
+    cb_custom_path.set_active(settings["backgrounds-use-custom-path"])
+    cb_custom_path.connect("toggled", toggle_custom_path, settings)
+    box.pack_start(cb_custom_path, False, False, 0)
 
     fc_btn = Gtk.FileChooserButton.new("Select folder", Gtk.FileChooserAction.SELECT_FOLDER)
     fc_btn.set_tooltip_text("Select your own path here")

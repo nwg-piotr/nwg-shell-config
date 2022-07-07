@@ -36,17 +36,20 @@ def main():
     elif settings["lockscreen-background-source"] == "local":
         paths = []
         dirs = settings["background-dirs"].copy()
-        if settings["backgrounds-custom-path"]:
+        if settings["backgrounds-use-custom-path"] and settings["backgrounds-custom-path"]:
             dirs.append(settings["backgrounds-custom-path"])
         for d in dirs:
             for item in os.listdir(d):
                 if os.path.isfile(os.path.join(d, item)):
                     paths.append(os.path.join(d, item))
-        p = paths[random.randrange(len(paths))]
-        if settings["lockscreen-locker"] == "swaylock":
-            subprocess.Popen('exec swaylock -f -i {}'.format(p), shell=True)
-        elif settings["lockscreen-locker"] == "gtklock":
-            subprocess.Popen('exec gtklock -d -b {}'.format(p), shell=True)
+        if len(paths) > 0:
+            p = paths[random.randrange(len(paths))]
+            if settings["lockscreen-locker"] == "swaylock":
+                subprocess.Popen('exec swaylock -f -i {}'.format(p), shell=True)
+            elif settings["lockscreen-locker"] == "gtklock":
+                subprocess.Popen('exec gtklock -d -b {}'.format(p), shell=True)
+        else:
+            print("No image paths found")
 
         sys.exit(0)
 

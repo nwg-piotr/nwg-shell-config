@@ -671,6 +671,7 @@ def load_settings():
         "resume-cmd": 'swaymsg "output * dpms on"',
         "before-sleep": "",
         "backgrounds-custom-path": "",
+        "backgrounds-use-custom-path": False,
         "background-dirs": [],
         "background-dirs-once-set": False,
         "unsplash-width": 1920,
