@@ -51,6 +51,11 @@ def set_local_wallpaper():
     else:
         print("No image paths found")
 
+        if settings["lockscreen-locker"] == "swaylock":
+            subprocess.Popen('exec swaylock -f', shell=True)
+        elif settings["lockscreen-locker"] == "gtklock":
+            subprocess.Popen('exec gtklock -d', shell=True)
+
     sys.exit(0)
 
 
