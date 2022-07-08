@@ -1038,6 +1038,7 @@ def lockscreen_tab(settings):
     lbl = Gtk.Label()
     lbl.set_markup("<b>Unsplash random image</b>")
     lbl.set_property("halign", Gtk.Align.START)
+    lbl.set_property("margin-top", 6)
     grid.attach(lbl, 2, 6, 4, 1)
 
     sb_us_width = Gtk.SpinButton.new_with_range(640, 7680, 1)
