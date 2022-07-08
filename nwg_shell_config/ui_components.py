@@ -913,7 +913,7 @@ def lockscreen_tab(settings):
     combo_background = Gtk.ComboBoxText()
     combo_background.set_tooltip_text("random wallpaper source")
     combo_background.append("unsplash", "unsplash.com")
-    combo_background.append("local", "local images")
+    combo_background.append("local", "local background sources")
     combo_background.set_active_id(settings["lockscreen-background-source"])
     combo_background.connect("changed", set_dict_key_from_combo, settings, "lockscreen-background-source")
     grid.attach(combo_background, 1, 3, 1, 1)
