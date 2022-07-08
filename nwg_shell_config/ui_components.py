@@ -104,8 +104,9 @@ def set_dict_key_from_combo(combo, settings, key):
     settings[key] = combo.get_active_id()
 
 
-def on_custom_folder_selected(fcb, settings):
+def on_custom_folder_selected(fcb, cb_custom_path, settings):
     settings["backgrounds-custom-path"] = fcb.get_filename()
+    cb_custom_path.set_sensitive(True)
 
 
 def toggle_custom_path(cb, settings):
@@ -1032,8 +1033,11 @@ def lockscreen_tab(settings):
     fc_btn.set_tooltip_text("Select your own path here")
     if settings["backgrounds-custom-path"]:
         fc_btn.set_current_folder(settings["backgrounds-custom-path"])
-    fc_btn.connect("file-set", on_custom_folder_selected, settings)
+    fc_btn.connect("file-set", on_custom_folder_selected, cb_custom_path, settings)
     box.pack_start(fc_btn, False, False, 0)
+
+    if not fc_btn.get_filename():
+        cb_custom_path.set_sensitive(False)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>Unsplash random image</b>")
