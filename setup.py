@@ -9,7 +9,7 @@ def read(f_name):
 
 setup(
     name='nwg-shell-config',
-    version='0.3.5',
+    version='0.3.6',
     description='nwg-shell configuration utility',
     packages=find_packages(),
     include_package_data=True,
@@ -24,7 +24,8 @@ setup(
     install_requires=[],
     entry_points={
         'gui_scripts': [
-            'nwg-shell-config = nwg_shell_config.main:main'
+            'nwg-shell-config = nwg_shell_config.main:main',
+            'nwg-lock = nwg_shell_config.locker:main'
         ]
     }
 )

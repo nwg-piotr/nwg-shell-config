@@ -8,6 +8,7 @@ from nwg_shell_config.tools import *
 from nwg_shell_config.ui_components import *
 from nwg_shell_config.__about__ import __version__
 import gi
+
 gi.require_version('Gdk', '3.0')
 from gi.repository import Gdk, GLib
 
@@ -80,6 +81,10 @@ def side_menu():
 
     row = SideMenuRow("Touchpad")
     row.eb.connect("button-press-event", set_up_touchpad_tab)
+    list_box.add(row)
+
+    row = SideMenuRow("Idle & Lock screen")
+    row.eb.connect("button-press-event", set_up_lockscreen_tab)
     list_box.add(row)
 
     row = SideMenuRow("Applications")
@@ -236,6 +241,14 @@ def set_up_touchpad_tab(*args):
     global content
     content.destroy()
     content = touchpad_tab(settings)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_lockscreen_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = lockscreen_tab(settings)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -468,10 +481,10 @@ def save_includes():
         autostart.append("exec nm-applet --indicator")
 
     if settings["autotiling-on"]:
-        cmd_autoiling = "exec_always autotiling"
+        cmd_autotiling = "exec_always autotiling"
         if settings["autotiling-workspaces"]:
-            cmd_autoiling += " -w {}".format(settings["autotiling-workspaces"])
-        autostart.append(cmd_autoiling)
+            cmd_autotiling += " -w {}".format(settings["autotiling-workspaces"])
+        autostart.append(cmd_autotiling)
 
     if cmd_launcher_autostart:
         autostart.append(cmd_launcher_autostart)
@@ -489,6 +502,26 @@ def save_includes():
     autostart.append(cmd_panel)
 
     autostart.append("exec_always nwg-shell-check-updates")
+
+    if settings["lockscreen-use-settings"]:
+        c_sleep = "timeout {} '{}'".format(settings["sleep-timeout"], settings["sleep-cmd"]) if settings[
+            "sleep-cmd"] else ""
+
+        c_resume = "resume '{}'".format(settings["resume-cmd"]) if settings["resume-cmd"] else ""
+        # Let's make it a bit idiot-proof
+        if c_sleep and "dpms off" in settings["sleep-cmd"] and "dpms on" not in settings["resume-cmd"]:
+            c_resume = "swaymsg \"output * dpms on\""
+
+        c_before_sleep = "before-sleep '{}'".format(settings["before-sleep"]) if settings[
+            "before-sleep"] else "before-sleep nwg-lock"
+
+        cmd_idle = "exec swayidle -w timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
+                                                                          c_sleep, c_resume, c_before_sleep)
+        print("Idle command:", cmd_idle)
+        autostart.append(cmd_idle)
+        # We can't `exec_always swayidle`, as it would create multiple instances. Let's restart it here.
+        subprocess.call("killall swayidle", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        subprocess.Popen(cmd_idle, shell=True)
 
     if settings["show-help"]:
         autostart.append("exec_always nwg-wrapper -t help-sway.pango -c help-sway.css -p right -mr 50 -si -sq 14")
@@ -628,6 +661,22 @@ def load_settings():
         "touchpad-middle-emulation": "enabled",
         "touchpad-custom-name": "",
         "touchpad-custom-value": "",
+        "lockscreen-use-settings": False,
+        "lockscreen-locker": "swaylock",  # swaylock | gtklock
+        "lockscreen-background-source": "local",  # unsplash | local
+        "lockscreen-custom-cmd": "",
+        "lockscreen-timeout": 1200,
+        "sleep-cmd": 'swaymsg "output * dpms off"',
+        "sleep-timeout": 1800,
+        "resume-cmd": 'swaymsg "output * dpms on"',
+        "before-sleep": "",
+        "backgrounds-custom-path": "",
+        "backgrounds-use-custom-path": False,
+        "background-dirs": [],
+        "background-dirs-once-set": False,
+        "unsplash-width": 1920,
+        "unsplash-height": 1080,
+        "unsplash-keywords": ["nature", "water", "landscape"],
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")
@@ -642,11 +691,30 @@ def load_settings():
                 print("'{}' key missing from settings, adding '{}'".format(key, defaults[key]))
                 missing += 1
         if missing > 0:
-            print("Saving {}".format(settings_file))
+            print("{} missing config key(s) substituted. Saving {}".format(missing, settings_file))
             save_json(settings, settings_file)
     else:
         print("ERROR: failed loading settings, creating {}".format(settings_file), file=sys.stderr)
         save_json(defaults, settings_file)
+
+    # LOCK SCREEN: on 1st run preselect dedicated background dirs, if they exist
+    if not settings["background-dirs-once-set"] and not settings["background-dirs"]:
+        did = distro_id()
+        print("Distribution ID: {}".format(did))
+        if did.upper() == "ARCHLABS":
+            if os.path.isdir("/usr/share/backgrounds/archlabs-extra"):
+                settings["background-dirs"].append("/usr/share/archlabs-extra")
+                settings["background-dirs-once-set"] = True
+            else:
+                settings["background-dirs"].append("/usr/share/backgrounds/archlabs")
+                settings["background-dirs-once-set"] = True
+            if os.path.isdir("/usr/share/nwg-shell"):
+                settings["background-dirs"].append("/usr/share/backgrounds/nwg-shell")
+                settings["background-dirs-once-set"] = True
+        elif did.upper() == "ARCH":
+            if os.path.isdir("/usr/share/backgrounds/nwg-shell"):
+                settings["background-dirs"].append("/usr/share/backgrounds/nwg-shell")
+                settings["background-dirs-once-set"] = True
 
 
 def load_presets():

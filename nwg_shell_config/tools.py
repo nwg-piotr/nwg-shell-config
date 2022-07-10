@@ -133,3 +133,36 @@ def save_list_to_text_file(data, file_path):
     text_file.close()
 
 
+def distro_id():
+    r = load_text_file("/etc/os-release")
+    if r:
+        for line in r.splitlines():
+            if "ID=" in line:
+                return line.lstrip("ID=")
+
+    return ""
+
+
+def list_background_dirs():
+    files_in_main = False
+    paths = []
+    main = "/usr/share/backgrounds"
+    items = os.listdir(main)
+    for item in items:
+        try:
+            p = os.path.join(main, item)
+            if os.path.isdir(p) and os.listdir(p):
+                paths.append(p)
+            else:
+                files_in_main = True
+        except Exception as e:
+            print(e)
+    if files_in_main:
+        paths.insert(0, main)
+
+    return paths
+
+
+def notify(summary, body, timeout=3000):
+    cmd = "notify-send '{}' '{}' -i /usr/share/pixmaps/nwg-shell-config.svg -t {}".format(summary, body, timeout)
+    subprocess.call(cmd, shell=True)

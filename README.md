@@ -14,6 +14,8 @@ The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection 
 
 ![2022-06-20-233713_screenshot](https://user-images.githubusercontent.com/20579136/174680866-eb4a6222-c240-4518-b3a2-22e2bef7a315.png)
 
+## Idle & Lock screen (since v0.3.6)
+
 ## Desktop styles
 
 Every preset is bound to its own [nwg-panel](https://github.com/nwg-piotr/nwg-panel) config file and css style sheet.
