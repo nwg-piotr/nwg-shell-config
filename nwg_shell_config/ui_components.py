@@ -4,7 +4,7 @@ import os
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, notify
+from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, notify, distro_id
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -1011,6 +1011,7 @@ def lockscreen_tab(settings):
     bcg_window.add(bcg_box)
 
     paths = list_background_dirs()
+    # Preselect all in none preselected yet
     if not settings["background-dirs-once-set"]:
         settings["background-dirs"] = paths
         settings["background-dirs-once-set"] = True

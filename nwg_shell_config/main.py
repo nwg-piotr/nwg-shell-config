@@ -663,7 +663,7 @@ def load_settings():
         "touchpad-custom-value": "",
         "lockscreen-use-settings": False,
         "lockscreen-locker": "swaylock",  # swaylock | gtklock
-        "lockscreen-background-source": "unsplash",  # unsplash | local
+        "lockscreen-background-source": "local",  # unsplash | local
         "lockscreen-custom-cmd": "",
         "lockscreen-timeout": 1200,
         "sleep-cmd": 'swaymsg "output * dpms off"',
@@ -691,11 +691,30 @@ def load_settings():
                 print("'{}' key missing from settings, adding '{}'".format(key, defaults[key]))
                 missing += 1
         if missing > 0:
-            print("Saving {}".format(settings_file))
+            print("{} missing config key(s) substituted. Saving {}".format(missing, settings_file))
             save_json(settings, settings_file)
     else:
         print("ERROR: failed loading settings, creating {}".format(settings_file), file=sys.stderr)
         save_json(defaults, settings_file)
+
+    # LOCK SCREEN: on 1st run preselect dedicated background dirs, if they exist
+    if not settings["background-dirs-once-set"] and not settings["background-dirs"]:
+        did = distro_id()
+        print("Distribution ID: {}".format(did))
+        if did.upper() == "ARCHLABS":
+            if os.path.isdir("/usr/share/backgrounds/archlabs-extra"):
+                settings["background-dirs"].append("/usr/share/archlabs-extra")
+                settings["background-dirs-once-set"] = True
+            else:
+                settings["background-dirs"].append("/usr/share/backgrounds/archlabs")
+                settings["background-dirs-once-set"] = True
+            if os.path.isdir("/usr/share/nwg-shell"):
+                settings["background-dirs"].append("/usr/share/backgrounds/nwg-shell")
+                settings["background-dirs-once-set"] = True
+        elif did.upper() == "ARCH":
+            if os.path.isdir("/usr/share/backgrounds/nwg-shell"):
+                settings["background-dirs"].append("/usr/share/backgrounds/nwg-shell")
+                settings["background-dirs-once-set"] = True
 
 
 def load_presets():
