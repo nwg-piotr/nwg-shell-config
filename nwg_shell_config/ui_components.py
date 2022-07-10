@@ -1101,7 +1101,8 @@ def lockscreen_tab(settings):
         n = ("Extra wallpapers", "You may want to install the 'nwg-shell-wallpapers' package.")
         notifications.append(n)
     release = load_text_file("/etc/os-release")
-    if release and "ArchLabs" in release.splitlines()[0] and not os.path.exists("usr/share/backgrounds/archlabs-extra"):
+    if release and "ArchLabs" in release.splitlines()[0] and not os.path.exists(
+            "/usr/share/backgrounds/archlabs-extra"):
         n = ("Extra wallpapers", "You may want to install the 'archlabs-wallpapers-extra' package.")
         notifications.append(n)
 
