@@ -661,7 +661,7 @@ def load_settings():
         "touchpad-middle-emulation": "enabled",
         "touchpad-custom-name": "",
         "touchpad-custom-value": "",
-        "lockscreen-use-settings": False,
+        "lockscreen-use-settings": True,
         "lockscreen-locker": "swaylock",  # swaylock | gtklock
         "lockscreen-background-source": "local",  # unsplash | local
         "lockscreen-custom-cmd": "",
@@ -672,7 +672,7 @@ def load_settings():
         "before-sleep": "",
         "backgrounds-custom-path": "",
         "backgrounds-use-custom-path": False,
-        "background-dirs": [],
+        "background-dirs": ["/usr/share/backgrounds/nwg-shell"],
         "background-dirs-once-set": False,
         "unsplash-width": 1920,
         "unsplash-height": 1080,
@@ -682,7 +682,7 @@ def load_settings():
     settings_file = os.path.join(data_dir, "settings")
     global settings
     if os.path.isfile(settings_file):
-        print("Loading settings")
+        print("Loading settings from {}".format(settings_file))
         settings = load_json(settings_file)
         missing = 0
         for key in defaults:
@@ -697,24 +697,24 @@ def load_settings():
         print("ERROR: failed loading settings, creating {}".format(settings_file), file=sys.stderr)
         save_json(defaults, settings_file)
 
-    # LOCK SCREEN: on 1st run preselect dedicated background dirs, if they exist
-    if not settings["background-dirs-once-set"] and not settings["background-dirs"]:
-        did = distro_id()
-        print("Distribution ID: {}".format(did))
-        if did.upper() == "ARCHLABS":
-            if os.path.isdir("/usr/share/backgrounds/archlabs-extra"):
-                settings["background-dirs"].append("/usr/share/archlabs-extra")
-                settings["background-dirs-once-set"] = True
-            else:
-                settings["background-dirs"].append("/usr/share/backgrounds/archlabs")
-                settings["background-dirs-once-set"] = True
-            if os.path.isdir("/usr/share/nwg-shell"):
-                settings["background-dirs"].append("/usr/share/backgrounds/nwg-shell")
-                settings["background-dirs-once-set"] = True
-        elif did.upper() == "ARCH":
-            if os.path.isdir("/usr/share/backgrounds/nwg-shell"):
-                settings["background-dirs"].append("/usr/share/backgrounds/nwg-shell")
-                settings["background-dirs-once-set"] = True
+    # LOCK SCREEN: on 1st run preselect dedicated background dirs, if they exist.
+    # if not settings["background-dirs-once-set"] and not settings["background-dirs"]:
+    #     did = distro_id()
+    #     print("Distribution ID: {}".format(did))
+    #     if did.upper() == "ARCHLABS":
+    #         if os.path.isdir("/usr/share/backgrounds/archlabs-extra"):
+    #             settings["background-dirs"].append("/usr/share/backgrounds/archlabs-extra")
+    #             settings["background-dirs-once-set"] = True
+    #         else:
+    #             settings["background-dirs"].append("/usr/share/backgrounds/archlabs")
+    #             settings["background-dirs-once-set"] = True
+    #         if os.path.isdir("/usr/share/nwg-shell"):
+    #             settings["background-dirs"].append("/usr/share/backgrounds/nwg-shell")
+    #             settings["background-dirs-once-set"] = True
+    #     elif did.upper() == "ARCH":
+    #         if os.path.isdir("/usr/share/backgrounds/nwg-shell"):
+    #             settings["background-dirs"].append("/usr/share/backgrounds/nwg-shell")
+    #             settings["background-dirs-once-set"] = True
 
 
 def load_presets():
@@ -864,9 +864,10 @@ def main():
             init_files(os.path.join(dir_name, "shell"), data_dir, overwrite=True)
             sys.exit(0)
     else:
+        # initialize missing own data files
         init_files(os.path.join(dir_name, "shell"), data_dir)
 
-    # initialize missing folders from skel
+    # initialize missing folders from skel (exist on ArchLabs only)
     for folder in ["nwg-bar", "nwg-dock", "nwg-drawer", "nwg-panel", "nwg-wrapper", "sway", "swaync"]:
         src = os.path.join("/etc/skel/.config", folder)
         dst = os.path.join(config_home, folder)
@@ -875,7 +876,7 @@ def main():
             print(dst, "missing, initializing")
             init_files(src, dst)
 
-    for folder in ["nwg-look", "nwg-shell"]:
+    for folder in ["nwg-look", "nwg-shell", "nwg-shell-config"]:
         src = os.path.join("/etc/skel/.local/share", folder)
         dst = os.path.join(data_home, folder)
         if os.path.exists(src) and not os.path.exists(dst):

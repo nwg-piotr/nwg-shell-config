@@ -882,7 +882,7 @@ def lockscreen_tab(settings):
     cb_lockscreen_use_settings = Gtk.CheckButton.new_with_label("Use these settings")
     cb_lockscreen_use_settings.set_property("halign", Gtk.Align.START)
     cb_lockscreen_use_settings.set_property("margin-bottom", 2)
-    cb_lockscreen_use_settings.set_tooltip_text("Determines if to export the 'lockscreen' config include.")
+    cb_lockscreen_use_settings.set_tooltip_text("Determines if to add these settings to 'autostart' include.")
     cb_lockscreen_use_settings.set_active(settings["lockscreen-use-settings"])
     cb_lockscreen_use_settings.connect("toggled", set_idle_use_from_checkbutton, settings)
     grid.attach(cb_lockscreen_use_settings, 0, 0, 2, 1)
@@ -1012,7 +1012,7 @@ def lockscreen_tab(settings):
 
     paths = list_background_dirs()
     # Preselect all in none preselected yet
-    if not settings["background-dirs-once-set"]:
+    if not settings["background-dirs-once-set"] and not settings["background-dirs"]:
         settings["background-dirs"] = paths
         settings["background-dirs-once-set"] = True
 
