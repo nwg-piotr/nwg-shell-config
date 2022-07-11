@@ -864,9 +864,10 @@ def main():
             init_files(os.path.join(dir_name, "shell"), data_dir, overwrite=True)
             sys.exit(0)
     else:
+        # initialize missing own data files
         init_files(os.path.join(dir_name, "shell"), data_dir)
 
-    # initialize missing folders from skel
+    # initialize missing folders from skel (exist on ArchLabs only)
     for folder in ["nwg-bar", "nwg-dock", "nwg-drawer", "nwg-panel", "nwg-wrapper", "sway", "swaync"]:
         src = os.path.join("/etc/skel/.config", folder)
         dst = os.path.join(config_home, folder)
@@ -875,7 +876,7 @@ def main():
             print(dst, "missing, initializing")
             init_files(src, dst)
 
-    for folder in ["nwg-look", "nwg-shell"]:
+    for folder in ["nwg-look", "nwg-shell", "nwg-shell-config"]:
         src = os.path.join("/etc/skel/.local/share", folder)
         dst = os.path.join(data_home, folder)
         if os.path.exists(src) and not os.path.exists(dst):
