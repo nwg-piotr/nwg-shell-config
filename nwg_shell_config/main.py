@@ -697,13 +697,14 @@ def load_settings():
         print("ERROR: failed loading settings, creating {}".format(settings_file), file=sys.stderr)
         save_json(defaults, settings_file)
 
-    # LOCK SCREEN: on 1st run preselect dedicated background dirs, if they exist
+    # LOCK SCREEN: on 1st run preselect dedicated background dirs, if they exist.
+    # Actually an overkill, as the user needs to press Apply anyway.
     if not settings["background-dirs-once-set"] and not settings["background-dirs"]:
         did = distro_id()
         print("Distribution ID: {}".format(did))
         if did.upper() == "ARCHLABS":
             if os.path.isdir("/usr/share/backgrounds/archlabs-extra"):
-                settings["background-dirs"].append("/usr/share/archlabs-extra")
+                settings["background-dirs"].append("/usr/share/backgrounds/archlabs-extra")
                 settings["background-dirs-once-set"] = True
             else:
                 settings["background-dirs"].append("/usr/share/backgrounds/archlabs")
