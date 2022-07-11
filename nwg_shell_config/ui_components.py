@@ -1016,9 +1016,7 @@ def lockscreen_tab(settings):
         settings["background-dirs"] = paths
         settings["background-dirs-once-set"] = True
 
-    print(settings["background-dirs"])
     for p in paths:
-        print(p)
         cb = Gtk.CheckButton.new_with_label(p)
         cb.set_active(p in settings["background-dirs"])
         cb.connect("toggled", on_folder_btn_toggled, settings)

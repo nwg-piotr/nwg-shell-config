@@ -698,7 +698,7 @@ def load_settings():
         save_json(defaults, settings_file)
 
     # LOCK SCREEN: on 1st run preselect dedicated background dirs, if they exist.
-    # Actually an overkill, as the user needs to press Apply anyway.
+    # Actually an overkill, as the user needs to turn it on and Apply anyway. :/
     if not settings["background-dirs-once-set"] and not settings["background-dirs"]:
         did = distro_id()
         print("Distribution ID: {}".format(did))
