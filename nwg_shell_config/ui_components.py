@@ -1012,7 +1012,7 @@ def lockscreen_tab(settings):
 
     paths = list_background_dirs()
     # Preselect all in none preselected yet
-    if not settings["background-dirs-once-set"]:
+    if not settings["background-dirs-once-set"] and not settings["background-dirs"]:
         settings["background-dirs"] = paths
         settings["background-dirs-once-set"] = True
 
