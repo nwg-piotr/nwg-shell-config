@@ -61,7 +61,7 @@
         "backgrounds-custom-path": "",
         "backgrounds-use-custom-path": false,
         "background-dirs": ["/usr/share/backgrounds/nwg-shell"],
-        "background-dirs-once-set": false,
+        "background-dirs-once-set": true,
         "unsplash-width": 1920,
         "unsplash-height": 1080,
         "unsplash-keywords": ["nature", "water", "landscape"],

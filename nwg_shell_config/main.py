@@ -673,7 +673,7 @@ def load_settings():
         "backgrounds-custom-path": "",
         "backgrounds-use-custom-path": False,
         "background-dirs": ["/usr/share/backgrounds/nwg-shell"],
-        "background-dirs-once-set": False,
+        "background-dirs-once-set": True,
         "unsplash-width": 1920,
         "unsplash-height": 1080,
         "unsplash-keywords": ["nature", "water", "landscape"],
