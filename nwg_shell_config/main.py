@@ -682,7 +682,7 @@ def load_settings():
     settings_file = os.path.join(data_dir, "settings")
     global settings
     if os.path.isfile(settings_file):
-        print("Loading settings")
+        print("Loading settings from {}".format(settings_file))
         settings = load_json(settings_file)
         missing = 0
         for key in defaults:

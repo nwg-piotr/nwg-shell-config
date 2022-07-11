@@ -60,7 +60,7 @@
         "before-sleep": "",
         "backgrounds-custom-path": "",
         "backgrounds-use-custom-path": false,
-        "background-dirs": ["/usr/share/backgrounds/nwg-shell"],
+        "background-dirs": [""],
         "background-dirs-once-set": false,
         "unsplash-width": 1920,
         "unsplash-height": 1080,
