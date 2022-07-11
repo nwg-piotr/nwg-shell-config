@@ -1011,9 +1011,10 @@ def lockscreen_tab(settings):
     bcg_window.add(bcg_box)
 
     paths = list_background_dirs()
-    # Preselect all in none selected yet
-    if not settings["background-dirs"]:
+    # Preselect all in none preselected yet
+    if not settings["background-dirs-once-set"]:
         settings["background-dirs"] = paths
+        settings["background-dirs-once-set"] = True
 
     for p in paths:
         cb = Gtk.CheckButton.new_with_label(p)

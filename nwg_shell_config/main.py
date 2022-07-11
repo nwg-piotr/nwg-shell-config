@@ -698,19 +698,23 @@ def load_settings():
 
     # LOCK SCREEN: on 1st run preselect dedicated background dirs, if they exist.
     # Actually an overkill, as the user needs to turn it on and Apply anyway. :/
-    if not settings["background-dirs"]:
+    if not settings["background-dirs-once-set"] and not settings["background-dirs"]:
         did = distro_id()
         print("Distribution ID: {}".format(did))
         if did.upper() == "ARCHLABS":
             if os.path.isdir("/usr/share/backgrounds/archlabs-extra"):
                 settings["background-dirs"].append("/usr/share/backgrounds/archlabs-extra")
+                settings["background-dirs-once-set"] = True
             else:
                 settings["background-dirs"].append("/usr/share/backgrounds/archlabs")
+                settings["background-dirs-once-set"] = True
             if os.path.isdir("/usr/share/nwg-shell"):
                 settings["background-dirs"].append("/usr/share/backgrounds/nwg-shell")
+                settings["background-dirs-once-set"] = True
         elif did.upper() == "ARCH":
             if os.path.isdir("/usr/share/backgrounds/nwg-shell"):
                 settings["background-dirs"].append("/usr/share/backgrounds/nwg-shell")
+                settings["background-dirs-once-set"] = True
 
 
 def load_presets():
