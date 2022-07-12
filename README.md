@@ -14,7 +14,13 @@ The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection 
 
 ![2022-06-20-233713_screenshot](https://user-images.githubusercontent.com/20579136/174680866-eb4a6222-c240-4518-b3a2-22e2bef7a315.png)
 
-## Idle & Lock screen (since v0.3.6)
+## Idle & Lock screen (since v0.3.7)
+
+![image](https://user-images.githubusercontent.com/20579136/178379079-9b6c5e72-9b5a-4072-b1fb-aa6949f90cf3.png)
+
+You may use either `swaylock` or `gtklock` as the locker and either local or Unsplash random images as the background. Of course you may also opt-out, by unchecking the "Use these settings" box.
+
+Hint: use the nwg-lock command system-wide (well, wlroots only) to lock screen with the locker and background defined in this tab.
 
 ## Desktop styles
 
