@@ -15,7 +15,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 gi.require_version('GtkLayerShell', '0.1')
-from gi.repository import Gtk, GtkLayerShell
+from gi.repository import Gtk, Gdk, GtkLayerShell
 
 from nwg_shell_config.tools import get_data_dir, load_json
 
@@ -33,14 +33,34 @@ def signal_handler(sig, frame):
         pctl.die()
 
 
+def player_status():
+    try:
+        return subprocess.check_output("playerctl status 2>&1", shell=True).decode("utf-8").strip()
+    except subprocess.CalledProcessError:
+        return ""
+
+
 class PlayerctlWindow(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self)
+        screen = Gdk.Screen.get_default()
+        provider = Gtk.CssProvider()
+        style_context = Gtk.StyleContext()
+        style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        css = b"""
+                button#app-btn { padding: 6px; border: none }
+                * { border-radius: 5px; outline: none }
+                window { background-color: rgba (0, 0, 0, 0.5) }
+                """
+        provider.load_from_data(css)
+
         GtkLayerShell.init_for_window(self)
 
         GtkLayerShell.set_layer(self, GtkLayerShell.Layer.OVERLAY)
-        GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.TOP, 1)
-        GtkLayerShell.set_margin(self, GtkLayerShell.Edge.TOP, 20)
+        GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, 1)
+        GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.RIGHT, 1)
+        GtkLayerShell.set_margin(self, GtkLayerShell.Edge.BOTTOM, 40)
+        GtkLayerShell.set_margin(self, GtkLayerShell.Edge.RIGHT, 60)
         lbl = Gtk.Label.new("label")
         self.add(lbl)
         lbl.set_property("margin", 20)
@@ -70,7 +90,6 @@ def set_remote_wallpaper():
                 subprocess.Popen('gtklock -b {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
 
             Gtk.main()
-            # pctl.destroy()
 
     except Exception as e:
         print(e)
@@ -91,14 +110,12 @@ def set_local_wallpaper():
     if len(paths) > 0:
         p = paths[random.randrange(len(paths))]
         if settings["lockscreen-locker"] == "swaylock":
-            # subprocess.Popen('exec swaylock -f -i {}'.format(p), shell=True)
             subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(p, pid), shell=True)
         elif settings["lockscreen-locker"] == "gtklock":
-            # subprocess.Popen('exec gtklock -b {}'.format(p), shell=True)
             subprocess.Popen('gtklock -b {} && kill -n 15 {}'.format(p, pid), shell=True)
 
         Gtk.main()
-        # pctl.destroy()
+
     else:
         print("No image paths found")
 
