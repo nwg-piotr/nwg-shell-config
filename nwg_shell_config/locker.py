@@ -32,6 +32,9 @@ defaults = {
     "lockscreen-custom-cmd": "",
     "lockscreen-timeout": 1200,
     "lockscreen-playerctl": True,
+    "lockscreen-playerctl-position": "bottom-right",
+    "lockscreen-playerctl-hmargin": 60,
+    "lockscreen-playerctl-vmargin": 40,
     "sleep-cmd": 'swaymsg "output * dpms off"',
     "sleep-timeout": 1800,
     "resume-cmd": 'swaymsg "output * dpms on"',
@@ -92,10 +95,21 @@ class PlayerctlWindow(Gtk.Window):
         GtkLayerShell.init_for_window(self)
 
         GtkLayerShell.set_layer(self, GtkLayerShell.Layer.OVERLAY)
-        GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, 1)
-        GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.RIGHT, 1)
-        GtkLayerShell.set_margin(self, GtkLayerShell.Edge.BOTTOM, 40)
-        GtkLayerShell.set_margin(self, GtkLayerShell.Edge.RIGHT, 60)
+
+        if settings["lockscreen-playerctl-position"] in ["top-left", "top", "top-right"]:
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.TOP, 1)
+        elif settings["lockscreen-playerctl-position"] in ["bottom-left", "bottom", "bottom-right"]:
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, 1)
+
+        if settings["lockscreen-playerctl-position"] in ["top-left", "bottom-left"]:
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.LEFT, 1)
+        elif settings["lockscreen-playerctl-position"] in ["top-right", "bottom-right"]:
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.RIGHT, 1)
+
+        GtkLayerShell.set_margin(self, GtkLayerShell.Edge.TOP, settings["lockscreen-playerctl-vmargin"])
+        GtkLayerShell.set_margin(self, GtkLayerShell.Edge.BOTTOM, settings["lockscreen-playerctl-vmargin"])
+        GtkLayerShell.set_margin(self, GtkLayerShell.Edge.RIGHT, settings["lockscreen-playerctl-hmargin"])
+        GtkLayerShell.set_margin(self, GtkLayerShell.Edge.LEFT, settings["lockscreen-playerctl-hmargin"])
 
         vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 12)
         vbox.set_property("margin", 12)
