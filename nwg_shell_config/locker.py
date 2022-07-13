@@ -8,14 +8,16 @@ import random
 import subprocess
 import signal
 import sys
+import threading
 import urllib.request
+from datetime import datetime
 
 import gi
 
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 gi.require_version('GtkLayerShell', '0.1')
-from gi.repository import Gtk, Gdk, GtkLayerShell
+from gi.repository import Gtk, Gdk, GLib, GtkLayerShell
 
 from nwg_shell_config.tools import get_data_dir, load_json
 
@@ -33,11 +35,19 @@ def signal_handler(sig, frame):
         pctl.die()
 
 
-def player_status():
+def get_player_status():
     try:
         return subprocess.check_output("playerctl status 2>&1", shell=True).decode("utf-8").strip()
     except subprocess.CalledProcessError:
         return ""
+
+
+def get_player_metadata():
+    try:
+        return subprocess.check_output("playerctl metadata --format '{{artist}}:#:{{title}}'", shell=True).decode(
+            "utf-8").strip().split(":#:")
+    except subprocess.CalledProcessError:
+        return []
 
 
 class PlayerctlWindow(Gtk.Window):
@@ -66,6 +76,24 @@ class PlayerctlWindow(Gtk.Window):
         lbl.set_property("margin", 20)
         self.show_all()
 
+        GLib.timeout_add_seconds(2, self.get_output)
+
+    def get_output(self):
+        # status = get_player_status()
+        # metadata = get_player_metadata()
+        # print(status, metadata)
+        now = datetime.now()
+
+        current_time = now.strftime("%H:%M:%S")
+        print("Current Time =", current_time)
+        return True
+
+    def refresh(self):
+        thread = threading.Thread(target=self.get_output)
+        thread.daemon = True
+        thread.start()
+        return True
+
     def die(self):
         Gtk.main_quit()
         self.destroy()
@@ -86,7 +114,6 @@ def set_remote_wallpaper():
             if settings["lockscreen-locker"] == "swaylock":
                 subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
             elif settings["lockscreen-locker"] == "gtklock":
-                print("pid=", pid)
                 subprocess.Popen('gtklock -b {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
 
             Gtk.main()
@@ -99,6 +126,7 @@ def set_remote_wallpaper():
 def set_local_wallpaper():
     global pctl
     pctl = PlayerctlWindow()
+
     paths = []
     dirs = settings["background-dirs"].copy()
     if settings["backgrounds-use-custom-path"] and settings["backgrounds-custom-path"]:
