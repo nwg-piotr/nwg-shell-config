@@ -8,9 +8,7 @@ import random
 import subprocess
 import signal
 import sys
-import threading
 import urllib.request
-from datetime import datetime
 
 import gi
 
@@ -25,6 +23,27 @@ data_dir = get_data_dir()
 settings = load_json(os.path.join(data_dir, "settings"))
 
 pid = os.getpid()
+pctl = None
+
+defaults = {
+    "lockscreen-use-settings": True,
+    "lockscreen-locker": "swaylock",  # swaylock | gtklock
+    "lockscreen-background-source": "local",  # unsplash | local
+    "lockscreen-custom-cmd": "",
+    "lockscreen-timeout": 1200,
+    "lockscreen-playerctl": True,
+    "sleep-cmd": 'swaymsg "output * dpms off"',
+    "sleep-timeout": 1800,
+    "resume-cmd": 'swaymsg "output * dpms on"',
+    "before-sleep": "",
+    "backgrounds-custom-path": "",
+    "backgrounds-use-custom-path": False,
+    "background-dirs": ["/usr/share/backgrounds/nwg-shell"],
+    "background-dirs-once-set": False,
+    "unsplash-width": 1920,
+    "unsplash-height": 1080,
+    "unsplash-keywords": ["nature", "water", "landscape"],
+}
 
 
 def signal_handler(sig, frame):
@@ -32,7 +51,8 @@ def signal_handler(sig, frame):
     if sig == 2 or sig == 15:
         print("Terminated with {}".format(desc[sig]))
         global pctl
-        pctl.die()
+        if pctl:
+            pctl.die()
 
 
 def get_player_status():
@@ -50,6 +70,10 @@ def get_player_metadata():
         return []
 
 
+def launch(button, cmd):
+    subprocess.Popen('exec {}'.format(cmd), shell=True)
+
+
 class PlayerctlWindow(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self)
@@ -58,7 +82,8 @@ class PlayerctlWindow(Gtk.Window):
         style_context = Gtk.StyleContext()
         style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         css = b"""
-                button#app-btn { padding: 6px; border: none }
+                button { padding: 6px; background: none; border: none }
+                button:hover { background: rgba (255, 255, 255, 0.1) }
                 * { border-radius: 5px; outline: none }
                 window { background-color: rgba (0, 0, 0, 0.5) }
                 """
@@ -71,35 +96,70 @@ class PlayerctlWindow(Gtk.Window):
         GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.RIGHT, 1)
         GtkLayerShell.set_margin(self, GtkLayerShell.Edge.BOTTOM, 40)
         GtkLayerShell.set_margin(self, GtkLayerShell.Edge.RIGHT, 60)
-        lbl = Gtk.Label.new("label")
-        self.add(lbl)
-        lbl.set_property("margin", 20)
+
+        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 12)
+        vbox.set_property("margin", 12)
+        self.add(vbox)
+        hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        vbox.pack_start(hbox, True, True, 0)
+        self.label = Gtk.Label()
+        self.label.set_property("justify", Gtk.Justification.CENTER)
+        hbox.pack_start(self.label, True, True, 0)
+
+        if settings["lockscreen-locker"] == "gtklock":
+            hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+            vbox.pack_start(hbox, True, True, 0)
+            ibox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+            hbox.pack_start(ibox, True, False, 0)
+
+            btn_backward = Gtk.Button.new_from_icon_name("media-skip-backward", Gtk.IconSize.BUTTON)
+            btn_backward.connect("clicked", launch, "playerctl previous")
+            ibox.pack_start(btn_backward, False, False, 0)
+
+            self.img_pause = Gtk.Image.new_from_icon_name("media-pause", Gtk.IconSize.BUTTON)
+            self.img_play = Gtk.Image.new_from_icon_name("media-play", Gtk.IconSize.BUTTON)
+
+            self.btn_play_pause = Gtk.Button()
+            self.btn_play_pause.set_image(self.img_pause)
+            self.btn_play_pause.connect("clicked", launch, "playerctl play-pause")
+            ibox.pack_start(self.btn_play_pause, False, False, 0)
+
+            btn_forward = Gtk.Button.new_from_icon_name("media-skip-forward", Gtk.IconSize.BUTTON)
+            btn_forward.connect("clicked", launch, "playerctl next")
+            ibox.pack_start(btn_forward, False, False, 0)
+
+        self.refresh()
         self.show_all()
 
-        GLib.timeout_add_seconds(2, self.get_output)
-
-    def get_output(self):
-        # status = get_player_status()
-        # metadata = get_player_metadata()
-        # print(status, metadata)
-        now = datetime.now()
-
-        current_time = now.strftime("%H:%M:%S")
-        print("Current Time =", current_time)
-        return True
-
     def refresh(self):
-        thread = threading.Thread(target=self.get_output)
-        thread.daemon = True
-        thread.start()
+        status = get_player_status()
+        metadata = get_player_metadata()
+        print(status, metadata)
+        if settings["lockscreen-locker"] == "gtklock":
+            if status in ["Playing", "Paused"]:
+                if status == "Playing":
+                    self.btn_play_pause.set_image(self.img_pause)
+                else:
+                    self.btn_play_pause.set_image(self.img_play)
+                if pctl and not pctl.is_visible():
+                    pctl.show_all()
+            else:
+                if pctl and pctl.is_visible():
+                    pctl.hide()
+
+        output = []
+        for line in metadata:
+            if len(line) < 50:
+                output.append(line)
+            else:
+                output.append("{}…".format(line[:49]))
+        self.label.set_markup("\n".join(output))
+
         return True
 
     def die(self):
         Gtk.main_quit()
         self.destroy()
-
-
-pctl = PlayerctlWindow()
 
 
 def set_remote_wallpaper():
@@ -116,7 +176,9 @@ def set_remote_wallpaper():
             elif settings["lockscreen-locker"] == "gtklock":
                 subprocess.Popen('gtklock -b {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
 
-            Gtk.main()
+            if settings["lockscreen-playerctl"]:
+                Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
+                Gtk.main()
 
     except Exception as e:
         print(e)
@@ -140,10 +202,7 @@ def set_local_wallpaper():
         if settings["lockscreen-locker"] == "swaylock":
             subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(p, pid), shell=True)
         elif settings["lockscreen-locker"] == "gtklock":
-            subprocess.Popen('gtklock -b {} && kill -n 15 {}'.format(p, pid), shell=True)
-
-        Gtk.main()
-
+            subprocess.Popen('gtklock -i -b {} && kill -n 15 {}'.format(p, pid), shell=True)
     else:
         print("No image paths found")
 
@@ -152,10 +211,19 @@ def set_local_wallpaper():
         elif settings["lockscreen-locker"] == "gtklock":
             subprocess.Popen('exec gtklock -d', shell=True)
 
+    if settings["lockscreen-playerctl"]:
+        Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
+        Gtk.main()
+
     sys.exit(0)
 
 
 def main():
+    global defaults
+    for key in defaults:
+        if key not in settings:
+            settings[key] = defaults[key]
+
     catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
     for sig in catchable_sigs:
         signal.signal(sig, signal_handler)
