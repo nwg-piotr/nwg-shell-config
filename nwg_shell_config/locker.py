@@ -231,8 +231,7 @@ def set_remote_wallpaper():
             if settings["lockscreen-locker"] == "swaylock":
                 subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
             elif settings["lockscreen-locker"] == "gtklock":
-                subprocess.Popen('pkill -f nwg-lock', shell=True)
-                subprocess.Popen('pkill -f gtklock ; gtklock -i -b {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
+                subprocess.Popen('gtklock -i -b {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
 
             if pctl:
                 Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
@@ -261,6 +260,7 @@ def set_local_wallpaper():
         if settings["lockscreen-locker"] == "swaylock":
             subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(p, pid), shell=True)
         elif settings["lockscreen-locker"] == "gtklock":
+            subprocess.Popen('pkill -f nwg-lock', shell=True)
             subprocess.Popen('gtklock -i -b {} && kill -n 15 {}'.format(p, pid), shell=True)
     else:
         print("No image paths found")
