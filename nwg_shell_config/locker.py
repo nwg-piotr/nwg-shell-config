@@ -231,6 +231,7 @@ def set_remote_wallpaper():
             if settings["lockscreen-locker"] == "swaylock":
                 subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
             elif settings["lockscreen-locker"] == "gtklock":
+                subprocess.Popen('pkill -f nwg-lock', shell=True)
                 subprocess.Popen('pkill -f gtklock ; gtklock -i -b {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
 
             if pctl:
