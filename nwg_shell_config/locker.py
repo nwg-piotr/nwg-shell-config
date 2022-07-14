@@ -80,7 +80,7 @@ def launch(button, cmd):
 class PlayerctlWindow(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self)
-        # self.retries = 3
+        self.retries = 3
         self.btn_backward = None
         self.btn_play_pause = None
         self.btn_forward = None
