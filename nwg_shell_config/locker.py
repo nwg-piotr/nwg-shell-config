@@ -8,6 +8,7 @@ import random
 import subprocess
 import signal
 import sys
+import time
 import urllib.request
 
 import gi
@@ -80,15 +81,22 @@ def launch(button, cmd):
 class PlayerctlWindow(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self)
+        self.retries = 3
+        self.btn_backward = None
+        self.btn_play_pause = None
+        self.btn_forward = None
+
         screen = Gdk.Screen.get_default()
         provider = Gtk.CssProvider()
         style_context = Gtk.StyleContext()
         style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
         css = b"""
+                label { font-weight: bold }
                 button { padding: 6px; background: none; border: none }
                 button:hover { background: rgba (255, 255, 255, 0.1) }
-                * { border-radius: 5px; outline: none }
                 window { background-color: rgba (0, 0, 0, 0.5) }
+                * { border-radius: 5px; outline: none }
+                #dead { background-color: rgba (0, 0, 0, 0.0) }
                 """
         provider.load_from_data(css)
 
@@ -126,50 +134,80 @@ class PlayerctlWindow(Gtk.Window):
             ibox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
             hbox.pack_start(ibox, True, False, 0)
 
-            btn_backward = Gtk.Button.new_from_icon_name("media-skip-backward", Gtk.IconSize.BUTTON)
-            btn_backward.connect("clicked", launch, "playerctl previous")
-            ibox.pack_start(btn_backward, False, False, 0)
+            self.btn_backward = Gtk.Button.new_from_icon_name("media-skip-backward", Gtk.IconSize.BUTTON)
+            self.btn_backward.connect("clicked", launch, "playerctl -a previous")
+            ibox.pack_start(self.btn_backward, False, False, 0)
 
             self.img_pause = Gtk.Image.new_from_icon_name("media-pause", Gtk.IconSize.BUTTON)
             self.img_play = Gtk.Image.new_from_icon_name("media-play", Gtk.IconSize.BUTTON)
 
             self.btn_play_pause = Gtk.Button()
             self.btn_play_pause.set_image(self.img_pause)
-            self.btn_play_pause.connect("clicked", launch, "playerctl play-pause")
+            self.btn_play_pause.connect("clicked", launch, "playerctl -a play-pause")
             ibox.pack_start(self.btn_play_pause, False, False, 0)
 
-            btn_forward = Gtk.Button.new_from_icon_name("media-skip-forward", Gtk.IconSize.BUTTON)
-            btn_forward.connect("clicked", launch, "playerctl next")
-            ibox.pack_start(btn_forward, False, False, 0)
+            self.btn_forward = Gtk.Button.new_from_icon_name("media-skip-forward", Gtk.IconSize.BUTTON)
+            self.btn_forward.connect("clicked", launch, "playerctl -a next")
+            ibox.pack_start(self.btn_forward, False, False, 0)
 
         self.refresh()
         self.show_all()
+        self.set_size_request(self.get_allocated_height() * 4, 0)
 
     def refresh(self):
         status = get_player_status()
         metadata = get_player_metadata()
         print(status, metadata)
-        if settings["lockscreen-locker"] == "gtklock":
+        if settings["lockscreen-locker"] == "gtklock":  # otherwise we have no buttons!
             if status in ["Playing", "Paused"]:
                 if status == "Playing":
                     self.btn_play_pause.set_image(self.img_pause)
                 else:
                     self.btn_play_pause.set_image(self.img_play)
-                if pctl and not pctl.is_visible():
-                    pctl.show_all()
-            else:
-                if pctl and pctl.is_visible():
-                    pctl.hide()
 
-        output = []
-        for line in metadata:
-            if len(line) < 50:
-                output.append(line)
-            else:
-                output.append("{}…".format(line[:49]))
-        self.label.set_markup("\n".join(output))
+        if status in ["Playing", "Paused"]:
+            self.set_property("name", "")
+            self.show_all()
+            self.set_size_request(self.get_allocated_height() * 4, 0)
+
+            output = []
+            for line in metadata:
+                if len(line) < 50:
+                    output.append(line)
+                else:
+                    output.append("{}…".format(line[:49]))
+            self.label.set_text("\n".join(output))
+
+        else:
+            # Once hidden, the window will never show up again OVER THE LOCKER. We'll just hide widgets and set
+            # the background transparent. Before doingo so, let's make sure if the player really stopped .
+            # If you play via a web browser, you may get the "Stopped" status while selecting previous/next tune.
+            self.retries = 3
+            Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 3, self.hide_if_still_stopped)
 
         return True
+
+    def hide_if_still_stopped(self):
+        if self.retries > 0:
+            self.retries -= 1
+            print("{} retries left".format(self.retries))
+            # try again
+            return True
+
+        status = get_player_status()
+        if status not in ["Playing", "Paused"]:
+            # wide widgets
+            self.label.hide()
+            if self.btn_backward:
+                self.btn_backward.hide()
+            if self.btn_play_pause:
+                self.btn_play_pause.hide()
+            if self.btn_forward:
+                self.btn_forward.hide()
+            # set window background transparent
+            self.set_property("name", "dead")
+
+        return False
 
     def die(self):
         Gtk.main_quit()
@@ -177,8 +215,10 @@ class PlayerctlWindow(Gtk.Window):
 
 
 def set_remote_wallpaper():
-    global pctl
-    pctl = PlayerctlWindow()
+    if get_player_status() in ["Playing", "Paused"]:
+        global pctl
+        pctl = PlayerctlWindow()
+
     url = "https://source.unsplash.com/{}x{}/?{}".format(settings["unsplash-width"], settings["unsplash-height"],
                                                          ",".join(settings["unsplash-keywords"]))
     wallpaper = os.path.join(data_dir, "wallpaper.jpg")
@@ -200,8 +240,9 @@ def set_remote_wallpaper():
 
 
 def set_local_wallpaper():
-    global pctl
-    pctl = PlayerctlWindow()
+    if get_player_status() in ["Playing", "Paused"]:
+        global pctl
+        pctl = PlayerctlWindow()
 
     paths = []
     dirs = settings["background-dirs"].copy()
@@ -226,8 +267,9 @@ def set_local_wallpaper():
             subprocess.Popen('exec gtklock -d', shell=True)
 
     if settings["lockscreen-playerctl"]:
-        Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
-        Gtk.main()
+        if pctl:
+            Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
+            Gtk.main()
 
     sys.exit(0)
 
