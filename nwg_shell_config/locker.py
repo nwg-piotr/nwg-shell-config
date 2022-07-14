@@ -231,7 +231,7 @@ def set_remote_wallpaper():
             if settings["lockscreen-locker"] == "swaylock":
                 subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
             elif settings["lockscreen-locker"] == "gtklock":
-                subprocess.Popen('gtklock -i -b {} && pkill -n 15 {}'.format(wallpaper, pid), shell=True)
+                subprocess.Popen('gtklock -i -b {} && pkill -15 {}'.format(wallpaper, pid), shell=True)
 
             if pctl:
                 Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
