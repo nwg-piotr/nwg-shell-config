@@ -666,6 +666,10 @@ def load_settings():
         "lockscreen-background-source": "local",  # unsplash | local
         "lockscreen-custom-cmd": "",
         "lockscreen-timeout": 1200,
+        "lockscreen-playerctl": True,
+        "lockscreen-playerctl-position": "bottom-right",
+        "lockscreen-playerctl-hmargin": 60,
+        "lockscreen-playerctl-vmargin": 40,
         "sleep-cmd": 'swaymsg "output * dpms off"',
         "sleep-timeout": 1800,
         "resume-cmd": 'swaymsg "output * dpms on"',
