@@ -25,6 +25,17 @@ def get_data_dir():
     return data_dir
 
 
+def get_temp_dir():
+    if os.getenv("TMPDIR"):
+        return os.getenv("TMPDIR")
+    elif os.getenv("TEMP"):
+        return os.getenv("TEMP")
+    elif os.getenv("TMP"):
+        return os.getenv("TMP")
+
+    return "/tmp"
+
+
 def init_files(src_dir, dst_dir, overwrite=False):
     src_files = os.listdir(src_dir)
     for file in src_files:

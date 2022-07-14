@@ -17,9 +17,10 @@ gi.require_version('Gdk', '3.0')
 gi.require_version('GtkLayerShell', '0.1')
 from gi.repository import Gtk, Gdk, GLib, GtkLayerShell
 
-from nwg_shell_config.tools import get_data_dir, load_json
+from nwg_shell_config.tools import get_data_dir, get_temp_dir, load_json, load_text_file, save_string
 
 data_dir = get_data_dir()
+tmp_dir = get_temp_dir()
 settings = load_json(os.path.join(data_dir, "settings"))
 
 pid = os.getpid()
@@ -237,6 +238,13 @@ def set_remote_wallpaper():
 
             if pctl:
                 Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
+                try:
+                    old_pid = int(load_text_file(os.path.join(tmp_dir, "nwg-lock-pid")))
+                    print("old_pid", old_pid)
+                    subprocess.call("kill -n 15 {}".format(old_pid))
+                except:
+                    pass
+                save_string(str(pid), os.path.join(tmp_dir, "nwg-lock-pid"))
                 Gtk.main()
 
     except Exception as e:
@@ -273,6 +281,7 @@ def set_local_wallpaper():
 
     if pctl:
         Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
+        save_string(str(pid), os.path.join(tmp_dir, "nwg-lock-pid"))
         Gtk.main()
 
     sys.exit(0)
