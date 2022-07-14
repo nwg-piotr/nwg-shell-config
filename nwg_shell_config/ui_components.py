@@ -992,8 +992,7 @@ def lockscreen_tab(settings):
     entry_b4_sleep = Gtk.Entry()
     entry_b4_sleep.set_width_chars(24)
     entry_b4_sleep.set_text(settings["before-sleep"])
-    entry_b4_sleep.set_tooltip_text("Command to execute before systemd puts the computer to sleep.\n"
-                                    "Leave blank to use settings from the 'Lock screen' section.")
+    entry_b4_sleep.set_tooltip_text("command to execute before systemd puts the computer to sleep")
     grid.attach(entry_b4_sleep, 1, 10, 1, 1)
     entry_b4_sleep.connect("changed", set_from_entry, settings, "before-sleep")
 

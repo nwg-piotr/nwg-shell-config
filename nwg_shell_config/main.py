@@ -513,7 +513,7 @@ def save_includes():
             c_resume = "swaymsg \"output * dpms on\""
 
         c_before_sleep = "before-sleep '{}'".format(settings["before-sleep"]) if settings[
-            "before-sleep"] else "before-sleep nwg-lock"
+            "before-sleep"] else ""
 
         cmd_idle = "exec swayidle -w timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
                                                                           c_sleep, c_resume, c_before_sleep)
