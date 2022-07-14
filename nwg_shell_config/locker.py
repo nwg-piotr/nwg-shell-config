@@ -8,7 +8,6 @@ import random
 import subprocess
 import signal
 import sys
-import time
 import urllib.request
 
 import gi
@@ -81,7 +80,7 @@ def launch(button, cmd):
 class PlayerctlWindow(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self)
-        self.retries = 3
+        # self.retries = 3
         self.btn_backward = None
         self.btn_play_pause = None
         self.btn_forward = None
@@ -157,7 +156,6 @@ class PlayerctlWindow(Gtk.Window):
     def refresh(self):
         status = get_player_status()
         metadata = get_player_metadata()
-        print(status, metadata)
         if settings["lockscreen-locker"] == "gtklock":  # otherwise we have no buttons!
             if status in ["Playing", "Paused"]:
                 if status == "Playing":
@@ -182,8 +180,11 @@ class PlayerctlWindow(Gtk.Window):
                 self.label.set_text(output[0])
 
         else:
+            # If the player has been stopped for some unknown reason (the screen is locked!), we can't restart it
+            # with 'playerctl'. We'd like to hide the window, if so. BUT: playing from e.g. music.youtube.com will
+            # give us the 'Stopped' status occasionally. We want the window to survive such accidents.
             # Once hidden, the window will never show up again OVER THE LOCKER. We'll just hide widgets and set
-            # the background transparent. Before doingo so, let's make sure if the player really stopped .
+            # the window background transparent. Before doing so, let's make sure if the player really stopped .
             # If you play via a web browser, you may get the "Stopped" status while selecting previous/next tune.
             self.retries = 3
             Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 3, self.hide_if_still_stopped)
@@ -193,7 +194,6 @@ class PlayerctlWindow(Gtk.Window):
     def hide_if_still_stopped(self):
         if self.retries > 0:
             self.retries -= 1
-            print("{} retries left".format(self.retries))
             # try again
             return True
 
