@@ -95,7 +95,7 @@ class PlayerctlWindow(Gtk.Window):
                 button { padding: 6px; background: none; border: none }
                 button:hover { background: rgba (255, 255, 255, 0.1) }
                 window { background-color: rgba (0, 0, 0, 0.5) }
-                * { border-radius: 5px; outline: none }
+                * { border-radius: 0px; outline: none }
                 #dead { background-color: rgba (0, 0, 0, 0.0) }
                 """
         provider.load_from_data(css)
@@ -168,15 +168,18 @@ class PlayerctlWindow(Gtk.Window):
         if status in ["Playing", "Paused"]:
             self.set_property("name", "")
             self.show_all()
-            self.set_size_request(self.get_allocated_height() * 4, 0)
 
             output = []
             for line in metadata:
-                if len(line) < 50:
-                    output.append(line)
-                else:
-                    output.append("{}…".format(line[:49]))
-            self.label.set_text("\n".join(output))
+                if line:
+                    if len(line) < 40:
+                        output.append(line)
+                    else:
+                        output.append("{}…".format(line[:39]))
+            if len(output) > 1:
+                self.label.set_text("\n".join(output))
+            else:
+                self.label.set_text(output[0])
 
         else:
             # Once hidden, the window will never show up again OVER THE LOCKER. We'll just hide widgets and set
@@ -215,7 +218,7 @@ class PlayerctlWindow(Gtk.Window):
 
 
 def set_remote_wallpaper():
-    if get_player_status() in ["Playing", "Paused"]:
+    if settings["lockscreen-playerctl"] and get_player_status() in ["Playing", "Paused"]:
         global pctl
         pctl = PlayerctlWindow()
 
@@ -230,7 +233,7 @@ def set_remote_wallpaper():
             elif settings["lockscreen-locker"] == "gtklock":
                 subprocess.Popen('gtklock -i -b {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
 
-            if settings["lockscreen-playerctl"]:
+            if pctl:
                 Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
                 Gtk.main()
 
@@ -240,7 +243,7 @@ def set_remote_wallpaper():
 
 
 def set_local_wallpaper():
-    if get_player_status() in ["Playing", "Paused"]:
+    if settings["lockscreen-playerctl"] and get_player_status() in ["Playing", "Paused"]:
         global pctl
         pctl = PlayerctlWindow()
 
@@ -266,10 +269,9 @@ def set_local_wallpaper():
         elif settings["lockscreen-locker"] == "gtklock":
             subprocess.Popen('exec gtklock -d', shell=True)
 
-    if settings["lockscreen-playerctl"]:
-        if pctl:
-            Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
-            Gtk.main()
+    if pctl:
+        Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
+        Gtk.main()
 
     sys.exit(0)
 
