@@ -56,6 +56,7 @@ def signal_handler(sig, frame):
         global pctl
         if pctl:
             pctl.die()
+        sys.exit(0)
 
 
 def get_player_status():
