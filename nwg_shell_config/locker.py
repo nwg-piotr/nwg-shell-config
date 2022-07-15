@@ -218,7 +218,7 @@ class PlayerctlWindow(Gtk.Window):
         self.destroy()
 
 
-def kill_old_instance_if_any():
+def terminate_old_instance_if_any():
     try:
         old_pid = int(load_text_file(os.path.join(tmp_dir, "nwg-lock-pid")))
         os.kill(old_pid, 15)
@@ -239,13 +239,14 @@ def set_remote_wallpaper():
         r = urllib.request.urlretrieve(url, wallpaper)
         if r[1]["Content-Type"] in ["image/jpeg", "image/png"]:
             if settings["lockscreen-locker"] == "swaylock":
+                subprocess.call("pkill -f swaylock", shell=True)
                 subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
             elif settings["lockscreen-locker"] == "gtklock":
                 subprocess.call("pkill -f gtklock", shell=True)
                 subprocess.Popen('gtklock -i -b {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
 
             if pctl:
-                kill_old_instance_if_any()
+                terminate_old_instance_if_any()
                 Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
                 Gtk.main()
 
@@ -270,20 +271,24 @@ def set_local_wallpaper():
     if len(paths) > 0:
         p = paths[random.randrange(len(paths))]
         if settings["lockscreen-locker"] == "swaylock":
+            subprocess.call("pkill -f swaylock", shell=True)
             subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(p, pid), shell=True)
         elif settings["lockscreen-locker"] == "gtklock":
+            subprocess.call("pkill -f gtklock", shell=True)
             subprocess.Popen('gtklock -i -b {} && kill -n 15 {}'.format(p, pid), shell=True)
     else:
         print("No image paths found")
 
         if settings["lockscreen-locker"] == "swaylock":
+            subprocess.call("pkill -f swaylock", shell=True)
             subprocess.Popen('exec swaylock -f', shell=True)
         elif settings["lockscreen-locker"] == "gtklock":
+            subprocess.call("pkill -f gtklock", shell=True)
             subprocess.Popen('exec gtklock -d', shell=True)
 
     if pctl:
+        terminate_old_instance_if_any()
         Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
-        save_string(str(pid), os.path.join(tmp_dir, "nwg-lock-pid"))
         Gtk.main()
 
     sys.exit(0)
