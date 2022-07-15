@@ -57,7 +57,6 @@ def signal_handler(sig, frame):
         global pctl
         if pctl:
             pctl.die()
-        sys.exit(0)
 
 
 def get_player_status():
@@ -237,7 +236,6 @@ def set_remote_wallpaper():
                 subprocess.Popen('gtklock -i -b {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
 
             if pctl:
-                Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
                 try:
                     old_pid = int(load_text_file(os.path.join(tmp_dir, "nwg-lock-pid")))
                     print("old_pid", old_pid)
@@ -245,6 +243,7 @@ def set_remote_wallpaper():
                 except Exception as e:
                     print(e)
                 save_string(str(pid), os.path.join(tmp_dir, "nwg-lock-pid"))
+                Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
                 Gtk.main()
 
     except Exception as e:
