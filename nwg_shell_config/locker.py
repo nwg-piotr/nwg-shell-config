@@ -241,9 +241,9 @@ def set_remote_wallpaper():
                 try:
                     old_pid = int(load_text_file(os.path.join(tmp_dir, "nwg-lock-pid")))
                     print("old_pid", old_pid)
-                    subprocess.call("kill -n 15 {}".format(old_pid))
-                except:
-                    pass
+                    os.kill(old_pid, 15)
+                except Exception as e:
+                    print(e)
                 save_string(str(pid), os.path.join(tmp_dir, "nwg-lock-pid"))
                 Gtk.main()
 
