@@ -86,6 +86,11 @@ def set_from_entry(entry, settings, key):
     settings[key] = entry.get_text()
 
 
+def restore_defaults(btn, entry_dict):
+    for key in entry_dict:
+        key.set_text(entry_dict[key])
+
+
 def set_custom_cmd_from_entry(entry, settings, key, widgets_to_lock):
     text = entry.get_text()
     for widget in widgets_to_lock:
@@ -984,6 +989,14 @@ def lockscreen_tab(settings):
     entry_resume_cmd.set_text(settings["resume-cmd"])
     grid.attach(entry_resume_cmd, 1, 9, 1, 1)
     entry_resume_cmd.connect("changed", set_from_entry, settings, "resume-cmd")
+
+    defaults_btn = Gtk.Button.new_with_label("Restore defaults")
+    defaults_btn.set_property("margin-top", 6)
+    defaults_btn.set_property("halign", Gtk.Align.START)
+    defaults_btn.set_tooltip_text("restore default idle commands")
+    defaults_btn.connect("clicked", restore_defaults, {entry_sleep_cmd: 'swaymsg "output * dpms off"',
+                                                       entry_resume_cmd: 'swaymsg "output * dpms on"'})
+    grid.attach(defaults_btn, 1, 6, 1, 1)
 
     lbl = Gtk.Label.new("Before sleep:")
     lbl.set_property("halign", Gtk.Align.END)
