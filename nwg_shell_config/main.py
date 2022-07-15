@@ -515,7 +515,7 @@ def save_includes():
         c_before_sleep = "before-sleep {}".format(settings["before-sleep"]) if settings[
             "before-sleep"] else ""
 
-        cmd_idle = "exec swayidle -w timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
+        cmd_idle = "exec swayidle timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
                                                                           c_sleep, c_resume, c_before_sleep)
 
         print("Idle command:", cmd_idle)
