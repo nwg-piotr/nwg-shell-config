@@ -232,7 +232,6 @@ def set_remote_wallpaper():
             if settings["lockscreen-locker"] == "swaylock":
                 subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
             elif settings["lockscreen-locker"] == "gtklock":
-                subprocess.call("pkill -15 nwg-lock ; pkill -f gtklock", shell=True)
                 subprocess.Popen('gtklock -i -b {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
 
             if pctl:
@@ -243,6 +242,7 @@ def set_remote_wallpaper():
                 except Exception as e:
                     print(e)
                 save_string(str(pid), os.path.join(tmp_dir, "nwg-lock-pid"))
+
                 Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
                 Gtk.main()
 
