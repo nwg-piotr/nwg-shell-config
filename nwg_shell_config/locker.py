@@ -218,6 +218,15 @@ class PlayerctlWindow(Gtk.Window):
         self.destroy()
 
 
+def kill_old_instance_if_any():
+    try:
+        old_pid = int(load_text_file(os.path.join(tmp_dir, "nwg-lock-pid")))
+        os.kill(old_pid, 15)
+    except:
+        pass
+    save_string(str(pid), os.path.join(tmp_dir, "nwg-lock-pid"))
+
+
 def set_remote_wallpaper():
     if settings["lockscreen-playerctl"] and get_player_status() in ["Playing", "Paused"]:
         global pctl
@@ -236,14 +245,7 @@ def set_remote_wallpaper():
                 subprocess.Popen('gtklock -i -b {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
 
             if pctl:
-                try:
-                    old_pid = int(load_text_file(os.path.join(tmp_dir, "nwg-lock-pid")))
-                    print("old_pid", old_pid)
-                    os.kill(old_pid, 15)
-                except Exception as e:
-                    print(e)
-                save_string(str(pid), os.path.join(tmp_dir, "nwg-lock-pid"))
-
+                kill_old_instance_if_any()
                 Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
                 Gtk.main()
 
