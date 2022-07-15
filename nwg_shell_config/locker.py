@@ -221,7 +221,8 @@ class PlayerctlWindow(Gtk.Window):
 def terminate_old_instance_if_any():
     try:
         old_pid = int(load_text_file(os.path.join(tmp_dir, "nwg-lock-pid")))
-        os.kill(old_pid, 15)
+        if old_pid != pid:
+            os.kill(old_pid, 15)
     except:
         pass
     save_string(str(pid), os.path.join(tmp_dir, "nwg-lock-pid"))
