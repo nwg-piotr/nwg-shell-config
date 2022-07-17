@@ -86,6 +86,11 @@ def set_from_entry(entry, settings, key):
     settings[key] = entry.get_text()
 
 
+def restore_defaults(btn, entry_dict):
+    for key in entry_dict:
+        key.set_text(entry_dict[key])
+
+
 def set_custom_cmd_from_entry(entry, settings, key, widgets_to_lock):
     text = entry.get_text()
     for widget in widgets_to_lock:
@@ -109,8 +114,8 @@ def on_custom_folder_selected(fcb, cb_custom_path, settings):
     cb_custom_path.set_sensitive(True)
 
 
-def toggle_custom_path(cb, settings):
-    settings["backgrounds-use-custom-path"] = cb.get_active()
+def set_key_from_checkbox(cb, settings, key):
+    settings[key] = cb.get_active()
 
 
 def on_folder_btn_toggled(btn, settings):
@@ -898,11 +903,11 @@ def lockscreen_tab(settings):
 
     combo_locker = Gtk.ComboBoxText()
     combo_locker.set_tooltip_text("screen locker to use")
-    combo_locker.append("swaylock", "swaylock")
-    if is_command("gtklock"):
-        combo_locker.append("gtklock", "gtklock")
+    combo_locker.append("gtklock", "gtklock")
+    if is_command("swaylock"):
+        combo_locker.append("swaylock", "swaylock")
     else:
-        combo_locker.set_tooltip_text("Install 'gtklock' to see more options")
+        combo_locker.set_tooltip_text("You may choose from gtklock and swaylock, if both installed.")
     combo_locker.set_active_id(settings["lockscreen-locker"])
     combo_locker.connect("changed", set_dict_key_from_combo, settings, "lockscreen-locker")
     grid.attach(combo_locker, 1, 2, 1, 1)
@@ -914,7 +919,7 @@ def lockscreen_tab(settings):
     combo_background = Gtk.ComboBoxText()
     combo_background.set_tooltip_text("random wallpaper source")
     combo_background.append("unsplash", "unsplash.com")
-    combo_background.append("local", "local background sources")
+    combo_background.append("local", "local backgrounds")
     combo_background.set_active_id(settings["lockscreen-background-source"])
     combo_background.connect("changed", set_dict_key_from_combo, settings, "lockscreen-background-source")
     grid.attach(combo_background, 1, 3, 1, 1)
@@ -985,6 +990,14 @@ def lockscreen_tab(settings):
     grid.attach(entry_resume_cmd, 1, 9, 1, 1)
     entry_resume_cmd.connect("changed", set_from_entry, settings, "resume-cmd")
 
+    defaults_btn = Gtk.Button.new_with_label("Restore defaults")
+    defaults_btn.set_property("margin-top", 6)
+    defaults_btn.set_property("halign", Gtk.Align.START)
+    defaults_btn.set_tooltip_text("restore default idle commands")
+    defaults_btn.connect("clicked", restore_defaults, {entry_sleep_cmd: 'swaymsg "output * dpms off"',
+                                                       entry_resume_cmd: 'swaymsg "output * dpms on"'})
+    grid.attach(defaults_btn, 1, 6, 1, 1)
+
     lbl = Gtk.Label.new("Before sleep:")
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 10, 1, 1)
@@ -992,21 +1005,20 @@ def lockscreen_tab(settings):
     entry_b4_sleep = Gtk.Entry()
     entry_b4_sleep.set_width_chars(24)
     entry_b4_sleep.set_text(settings["before-sleep"])
-    entry_b4_sleep.set_tooltip_text("Command to execute before systemd puts the computer to sleep.\n"
-                                    "Leave blank to use settings from the 'Lock screen' section.")
+    entry_b4_sleep.set_tooltip_text("command to execute before systemd puts the computer to sleep")
     grid.attach(entry_b4_sleep, 1, 10, 1, 1)
     entry_b4_sleep.connect("changed", set_from_entry, settings, "before-sleep")
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>Local background sources</b>")
     lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 2, 1, 4, 1)
+    grid.attach(lbl, 2, 0, 4, 1)
 
     bcg_window = Gtk.ScrolledWindow.new(None, None)
     bcg_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS)
     bcg_window.set_propagate_natural_width(True)
 
-    grid.attach(bcg_window, 2, 2, 4, 3)
+    grid.attach(bcg_window, 2, 1, 4, 2)
     bcg_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
     bcg_window.add(bcg_box)
 
@@ -1023,11 +1035,11 @@ def lockscreen_tab(settings):
         bcg_box.pack_start(cb, False, False, 0)
 
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
-    grid.attach(box, 2, 5, 3, 1)
+    grid.attach(box, 2, 3, 3, 1)
 
     cb_custom_path = Gtk.CheckButton.new_with_label("own path")
     cb_custom_path.set_active(settings["backgrounds-use-custom-path"])
-    cb_custom_path.connect("toggled", toggle_custom_path, settings)
+    cb_custom_path.connect("toggled", set_key_from_checkbox, settings, "backgrounds-use-custom-path")
     box.pack_start(cb_custom_path, False, False, 0)
 
     fc_btn = Gtk.FileChooserButton.new("Select folder", Gtk.FileChooserAction.SELECT_FOLDER)
@@ -1044,25 +1056,25 @@ def lockscreen_tab(settings):
     lbl.set_markup("<b>Unsplash random image</b>")
     lbl.set_property("halign", Gtk.Align.START)
     lbl.set_property("margin-top", 6)
-    grid.attach(lbl, 2, 6, 4, 1)
+    grid.attach(lbl, 2, 4, 4, 1)
 
     sb_us_width = Gtk.SpinButton.new_with_range(640, 7680, 1)
     sb_us_width.set_value(settings["unsplash-width"])
     sb_us_width.connect("value-changed", set_int_from_spinbutton, settings, "unsplash-width")
     sb_us_width.set_tooltip_text("desired wallpaper width")
-    grid.attach(sb_us_width, 2, 7, 1, 1)
+    grid.attach(sb_us_width, 2, 5, 1, 1)
 
     lbl = Gtk.Label.new("x")
-    grid.attach(lbl, 3, 7, 1, 1)
+    grid.attach(lbl, 3, 5, 1, 1)
 
     sb_us_width = Gtk.SpinButton.new_with_range(480, 4320, 1)
     sb_us_width.set_value(settings["unsplash-height"])
     sb_us_width.connect("value-changed", set_int_from_spinbutton, settings, "unsplash-height")
     sb_us_width.set_tooltip_text("desired wallpaper height")
-    grid.attach(sb_us_width, 4, 7, 1, 1)
+    grid.attach(sb_us_width, 4, 5, 1, 1)
 
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
-    grid.attach(box, 2, 8, 3, 1)
+    grid.attach(box, 2, 6, 3, 1)
     lbl = Gtk.Label.new("Keywords:")
     lbl.set_property("halign", Gtk.Align.START)
     box.pack_start(lbl, False, False, 0)
@@ -1072,6 +1084,46 @@ def lockscreen_tab(settings):
     entry_us_keywords.set_text(",".join(settings["unsplash-keywords"]))
     entry_us_keywords.connect("changed", set_keywords_from_entry, settings)
     box.pack_start(entry_us_keywords, True, True, 0)
+
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>Media player control</b>")
+    lbl.set_property("halign", Gtk.Align.START)
+    lbl.set_property("margin-top", 6)
+    grid.attach(lbl, 2, 7, 2, 1)
+
+    cb_playerctl = Gtk.CheckButton.new_with_label("On")
+    cb_playerctl.set_active(settings["lockscreen-playerctl"])
+    cb_playerctl.connect("toggled", set_key_from_checkbox, settings, "lockscreen-playerctl")
+    grid.attach(cb_playerctl, 4, 7, 1, 1)
+
+    lbl = Gtk.Label.new("Position:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 8, 1, 1)
+
+    combo_playerctl_pos = Gtk.ComboBoxText()
+    for item in ["top-left", "top", "top-right", "bottom-left", "bottom", "bottom-right"]:
+        combo_playerctl_pos.append(item, item)
+    combo_playerctl_pos.set_active_id(settings["lockscreen-playerctl-position"])
+    combo_playerctl_pos.connect("changed", set_dict_key_from_combo, settings, "lockscreen-playerctl-position")
+    grid.attach(combo_playerctl_pos, 3, 8, 2, 1)
+
+    lbl = Gtk.Label.new("Horizontal margin:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 9, 1, 1)
+
+    sb_playerctl_hmargin = Gtk.SpinButton.new_with_range(0, 3840, 1)
+    sb_playerctl_hmargin.set_value(settings["lockscreen-playerctl-hmargin"])
+    sb_playerctl_hmargin.connect("value-changed", set_int_from_spinbutton, settings, "lockscreen-playerctl-hmargin")
+    grid.attach(sb_playerctl_hmargin, 3, 9, 2, 1)
+
+    lbl = Gtk.Label.new("Vertical margin:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 10, 1, 1)
+
+    sb_playerctl_vmargin = Gtk.SpinButton.new_with_range(0, 2160, 1)
+    sb_playerctl_vmargin.set_value(settings["lockscreen-playerctl-vmargin"])
+    sb_playerctl_vmargin.connect("value-changed", set_int_from_spinbutton, settings, "lockscreen-playerctl-vmargin")
+    grid.attach(sb_playerctl_vmargin, 3, 10, 2, 1)
 
     # WARNING about 'swayidle' in sway config
     config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
