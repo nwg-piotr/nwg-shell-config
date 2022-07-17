@@ -903,11 +903,11 @@ def lockscreen_tab(settings):
 
     combo_locker = Gtk.ComboBoxText()
     combo_locker.set_tooltip_text("screen locker to use")
-    combo_locker.append("swaylock", "swaylock")
-    if is_command("gtklock"):
-        combo_locker.append("gtklock", "gtklock")
+    combo_locker.append("gtklock", "gtklock")
+    if is_command("swaylock"):
+        combo_locker.append("swaylock", "swaylock")
     else:
-        combo_locker.set_tooltip_text("Install 'gtklock' to see more options")
+        combo_locker.set_tooltip_text("You may choose from gtklock and swaylock, if both installed.")
     combo_locker.set_active_id(settings["lockscreen-locker"])
     combo_locker.connect("changed", set_dict_key_from_combo, settings, "lockscreen-locker")
     grid.attach(combo_locker, 1, 2, 1, 1)
