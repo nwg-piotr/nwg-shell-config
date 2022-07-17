@@ -244,7 +244,7 @@ def set_remote_wallpaper():
                 subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
             elif settings["lockscreen-locker"] == "gtklock":
                 subprocess.call("pkill -f gtklock", shell=True)
-                subprocess.Popen('gtklock -i -b {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
+                subprocess.Popen('gtklock -S -i -b {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
 
             if pctl:
                 terminate_old_instance_if_any()
@@ -276,7 +276,7 @@ def set_local_wallpaper():
             subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(p, pid), shell=True)
         elif settings["lockscreen-locker"] == "gtklock":
             subprocess.call("pkill -f gtklock", shell=True)
-            subprocess.Popen('gtklock -i -b {} && kill -n 15 {}'.format(p, pid), shell=True)
+            subprocess.Popen('gtklock -S -i -b {} && kill -n 15 {}'.format(p, pid), shell=True)
     else:
         print("No image paths found")
 
