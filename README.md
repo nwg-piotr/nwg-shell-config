@@ -16,7 +16,7 @@ The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection 
 
 ## Idle & Lock screen (since v0.3.7)
 
-![image](https://user-images.githubusercontent.com/20579136/178379079-9b6c5e72-9b5a-4072-b1fb-aa6949f90cf3.png)
+![image](https://user-images.githubusercontent.com/20579136/179640976-22be9fb7-970f-4d4a-bae5-ab48fb495984.png)
 
 You may use either Jovan Lanik's [gtklock](https://github.com/jovanlanik/gtklock) or `swaylock` as the locker, and either local or Unsplash random images as the background. Of course you may also opt-out, by unchecking the "Use these settings" box.
 
