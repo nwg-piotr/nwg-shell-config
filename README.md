@@ -18,11 +18,11 @@ The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection 
 
 ![image](https://user-images.githubusercontent.com/20579136/178379079-9b6c5e72-9b5a-4072-b1fb-aa6949f90cf3.png)
 
-You may use either `swaylock` or `gtklock` as the locker and either local or Unsplash random images as the background. Of course you may also opt-out, by unchecking the "Use these settings" box.
+You may use either Jovan Lanik's [gtklock](https://github.com/jovanlanik/gtklock) or `swaylock` as the locker, and either local or Unsplash random images as the background. Of course you may also opt-out, by unchecking the "Use these settings" box.
 
 Hint: use the nwg-lock command system-wide (well, wlroots only) to lock screen with the locker and background defined in this tab.
 
-Safety: for the media player buttons to work with gtklock, we use the `--no-input-inhibit` argument. If safety is more important to you than appearance, consider using swaylock.
+**Safety**: for the media player buttons to work with gtklock, we use the `--no-input-inhibit` argument. If safety is more important to you than appearance, consider using swaylock.
 
 ## Desktop styles
 
