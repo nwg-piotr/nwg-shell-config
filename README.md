@@ -1,6 +1,6 @@
 # nwg-shell config utility
 
-The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection of components for building a GTK-based user interface for [sway](https://github.com/swaywm/sway) Wayland compositor. It consists of a panel, launcher, dock, traditional menu, wallpaper manager, as well as some helper scripts. Until now, it has functioned as a do-it-yourself kit, with items to choose from. This program is a GUI to configure all the components in one place. It also integrates several external programs, which we arbitrarily found the best to build a coherent user experience.
+The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection of components for building a GTK-based user interface for [sway](https://github.com/swaywm/sway) Wayland compositor. It consists of a panel, launcher, dock, traditional menu, wallpaper manager, as well as some helper scripts. Until now, it has functioned as a do-it-yourself kit, with items to choose from. This program is a GUI to configure all the components in one place. It also integrates several third party components, which we arbitrarily found the best to build a coherent user experience. Especially I mean Erik Reider's [swaync](https://github.com/ErikReider/SwayNotificationCenter) and [gtklock](https://github.com/jovanlanik/gtklock) by Jovan Lanik.
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/nwg-shell-config.svg)](https://repology.org/project/nwg-shell-config/versions)
 
@@ -18,11 +18,11 @@ The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection 
 
 ![image](https://user-images.githubusercontent.com/20579136/179640976-22be9fb7-970f-4d4a-bae5-ab48fb495984.png)
 
-You may use either Jovan Lanik's [gtklock](https://github.com/jovanlanik/gtklock) or `swaylock` as the locker, and either local or Unsplash random images as the background. Of course you may also opt-out, by unchecking the "Use these settings" box.
+You may use either `gtklock` or `swaylock` as the locker, and either local or Unsplash random images as the background. Of course you may also opt-out, by unchecking the "Use these settings" box.
 
 Hint: use the nwg-lock command system-wide (well, wlroots only) to lock screen with the locker and background defined in this tab.
 
-**Safety**: for the media player buttons to work with gtklock, we use the `--no-input-inhibit` argument. If safety is more important to you than appearance, consider using swaylock.
+**Safety**: for the media player buttons to work with gtklock, we use the `--no-input-inhibit` argument. If safety is more important to you than appearance, consider using swaylock. The playerctl window will display no buttons, however
 
 ## Desktop styles
 
