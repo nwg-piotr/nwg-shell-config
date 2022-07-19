@@ -22,6 +22,8 @@ You may use either `swaylock` or `gtklock` as the locker and either local or Uns
 
 Hint: use the nwg-lock command system-wide (well, wlroots only) to lock screen with the locker and background defined in this tab.
 
+Safety: for the media player buttons to work with gtklock, we use the `--no-input-inhibit` argument. If safety is more important to you than appearance, consider using swaylock.
+
 ## Desktop styles
 
 Every preset is bound to its own [nwg-panel](https://github.com/nwg-piotr/nwg-panel) config file and css style sheet.
