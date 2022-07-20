@@ -2,6 +2,8 @@
 
 The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection of components to build a GTK-based user interface for [sway](https://github.com/swaywm/sway) Wayland compositor. It consists of a panel, launcher, dock, traditional menu, wallpaper manager, as well as some helper scripts. Until now, it has functioned as a do-it-yourself kit, with items to choose from. This program is a GUI to configure all the components in one place. It also integrates several third party components, which we arbitrarily found the best to build a coherent user experience.
 
+[Learn more about nwg-shell on the project website](https://nwg-piotr.github.io/nwg-shell)
+
 [![Packaging status](https://repology.org/badge/vertical-allrepos/nwg-shell-config.svg)](https://repology.org/project/nwg-shell-config/versions)
 
 ![2022-06-20-233635_screenshot](https://user-images.githubusercontent.com/20579136/174680829-84065416-b270-4ffe-bd36-23dd266d3cf8.png)
