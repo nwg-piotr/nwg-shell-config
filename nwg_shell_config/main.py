@@ -821,6 +821,14 @@ def update_swaync_config(pos_x, pos_y, cc_width, window_width):
     if os.path.isfile(settings_file):
         print("Loading swaync settings from {}".format(settings_file))
         swaync_settings = load_json(settings_file)
+
+        # Check if some new keys appeared
+        defaults = load_json("/etc/xdg/swaync/config.json")
+
+        for key in defaults:
+            if key not in swaync_settings:
+                swaync_settings[key] = defaults[key]
+
         swaync_settings["positionX"] = pos_x
         swaync_settings["positionY"] = pos_y
         swaync_settings["control-center-width"] = cc_width
