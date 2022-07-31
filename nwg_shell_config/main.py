@@ -824,6 +824,7 @@ def update_swaync_config(pos_x, pos_y, cc_width, window_width):
 
         # Check if some new keys appeared
         defaults = load_json("/etc/xdg/swaync/config.json")
+        print(defaults)
 
         for key in defaults:
             if key not in swaync_settings:
