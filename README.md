@@ -1,6 +1,8 @@
 # nwg-shell config utility
 
-The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection of components for building a GTK-based user interface for [sway](https://github.com/swaywm/sway) Wayland compositor. It consists of a panel, launcher, dock, traditional menu, wallpaper manager, as well as some helper scripts. Until now, it has functioned as a do-it-yourself kit, with items to choose from. This program is a GUI to configure all the components in one place. It also integrates several third party components, which we arbitrarily found the best to build a coherent user experience. Especially I mean Erik Reider's [swaync](https://github.com/ErikReider/SwayNotificationCenter) and [gtklock](https://github.com/jovanlanik/gtklock) by Jovan Lanik.
+The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection of components to build a GTK-based user interface for [sway](https://github.com/swaywm/sway) Wayland compositor. It consists of a panel, launcher, dock, traditional menu, wallpaper manager, as well as some helper scripts. Until now, it has functioned as a do-it-yourself kit, with items to choose from. This program is a GUI to configure all the components in one place. It also integrates several third party components, which we arbitrarily found the best to build a coherent user experience.
+
+[Learn more about nwg-shell on the project website](https://nwg-piotr.github.io/nwg-shell)
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/nwg-shell-config.svg)](https://repology.org/project/nwg-shell-config/versions)
 
@@ -43,24 +45,6 @@ The latter is only turned on by default in `preset-1` and `preset-3`.
 To familiarize yourself with key bindings, you may want to mark the "Show help" check box in the config utility. 
 This will display a conky-like help widget, supported by [nwg-wrapper](https://github.com/nwg-piotr/nwg-wrapper).
 
-The **Controls module** of the panel comes with some preconfigured goodies to fine tune what your system looks and 
-behaves like. Some menu items rely on the other software you need to have installed. 
-
-<div align="center">nwg-panel Controls module<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell-config/controls.png"/></div>
-
-- **Wallpapers**: you need [Azote](https://github.com/nwg-piotr/azote), which is a part of the nwg-shell project;
-- **GTK settings**: you need the [nwg-look](https://github.com/nwg-piotr/nwg-look) package;
-- **Outputs** management relies on [nwg-displays](https://github.com/nwg-piotr/nwg-displays).
-
-**Notification Center** is supported by Eric Reider's [SwayNotificationCenter](https://github.com/ErikReider/SwayNotificationCenter).
-
-<div align="center">Notification Center<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell-config/swaync.png" width="480"/></div>
-
-All of above is installed by default together with the sway session of [ArchLabs Linux](https://archlabslinux.com), 
-which the nwg-shell-config utility was developed for. Anyway, if you'd like to give it a try on another system,
-take a look at the [skel/sway-home/.config](https://github.com/nwg-piotr/nwg-shell-config/tree/master/skel/sway-home/.config)
-directory. It contains the sway config, together with the rest of necessary configs and style sheets.
-
 ## Notes
 
 ### Includes
@@ -81,6 +65,8 @@ include touchpad
 
 Leave these lines as they are. You also should not edit these files manually: the program will overwrite your changes.
 
+In case you need to configure some settings on your own, uncheck the appropriate "Use these settings" box and/or delete `include <whatever>` from the sway config file.
+
 Basic key bindings use variables, which are also provided by the config utility:
 
 ```text
@@ -98,7 +84,7 @@ bindsym $Mod+e          exec $editor
 bindsym $Mod+d          exec $dock
 ```
 
-Feel free to add whichever other binding you need, but do not change the variable values other way than with config GUI.
+Feel free to add whichever other binding you need, but do not change the variable values other way than with the config GUI.
 
 ### Styling
 
