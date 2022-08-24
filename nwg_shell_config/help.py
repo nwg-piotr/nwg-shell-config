@@ -106,7 +106,7 @@ def main():
     style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
     css = b""" * { border-radius: 0px } """
     css += b""" window { border: solid 1px; border-color: #000 } """
-    font_size = 12
+    font_size = 22
     font_string = "label { font-size: %dpx }" % font_size
     css += str.encode(font_string)
     provider.load_from_data(css)
