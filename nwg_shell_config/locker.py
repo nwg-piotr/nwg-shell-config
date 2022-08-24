@@ -17,10 +17,10 @@ gi.require_version('Gdk', '3.0')
 gi.require_version('GtkLayerShell', '0.1')
 from gi.repository import Gtk, Gdk, GLib, GtkLayerShell
 
-from nwg_shell_config.tools import get_data_dir, get_temp_dir, load_json, load_text_file, save_string
+from nwg_shell_config.tools import get_data_dir, temp_dir, load_json, load_text_file, save_string
 
 data_dir = get_data_dir()
-tmp_dir = get_temp_dir()
+tmp_dir = temp_dir()
 settings = load_json(os.path.join(data_dir, "settings"))
 
 pid = os.getpid()
