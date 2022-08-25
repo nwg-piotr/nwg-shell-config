@@ -50,7 +50,7 @@
   "touchpad-custom-name": "",
   "touchpad-custom-value": "",
   "lockscreen-use-settings": true,
-  "lockscreen-locker": "swaylock",
+  "lockscreen-locker": "gtklock",
   "lockscreen-background-source": "local",
   "lockscreen-custom-cmd": "",
   "lockscreen-timeout": 1200,

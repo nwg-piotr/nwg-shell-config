@@ -43,11 +43,6 @@ def set_keywords_from_entry(entry, settings):
     settings["unsplash-keywords"] = txt.split(",")
 
 
-def send_notifications(btn, notifications):
-    for n in notifications:
-        notify(n[0], n[1], 10000)
-
-
 def set_timeouts(cb, cb1, settings, key):
     settings[key] = int(cb.get_value())
     if int(cb1.get_value() < settings[key] + 5):
@@ -203,73 +198,88 @@ def screen_tab(settings):
     box.pack_start(btn, False, True, 0)
 
     lbl = Gtk.Label()
+    lbl.set_markup("<b>Desktop style</b>")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    combo = Gtk.ComboBoxText()
+    combo.set_property("halign", Gtk.Align.START)
+    grid.attach(combo, 1, 1, 1, 1)
+    for p in ["preset-0", "preset-1", "preset-2", "preset-3", "custom"]:
+        combo.append(p, p)
+    combo.set_active_id(settings["panel-preset"])
+    combo.connect("changed", set_dict_key_from_combo, settings, "panel-preset")
+    combo.set_tooltip_text("Switches current desktop preset.")
+    frame.show_all()
+
+    lbl = Gtk.Label()
     lbl.set_markup("<b>Autotiling</b>")
     lbl.set_property("margin-top", 6)
     lbl.set_property("margin-bottom", 6)
     lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 0, 1, 1, 1)
+    grid.attach(lbl, 0, 2, 1, 1)
 
     cb_autotiling_on = Gtk.CheckButton.new_with_label("on")
     cb_autotiling_on.set_active(settings["autotiling-on"])
     cb_autotiling_on.connect("toggled", set_from_checkbutton, settings, "autotiling-on")
     cb_autotiling_on.set_tooltip_text("Automates changing the horizontal/vertical\nwindow split orientation.")
-    grid.attach(cb_autotiling_on, 1, 1, 1, 1)
+    grid.attach(cb_autotiling_on, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("Workspaces:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 2, 1, 1)
+    grid.attach(lbl, 0, 3, 1, 1)
 
     entry = Gtk.Entry()
     entry.set_placeholder_text("1 2 3 4 5 6 7 8")
     entry.set_text(settings["autotiling-workspaces"])
     entry.set_tooltip_text("Defines which workspaces to use autotiling on.\nSee 'autotiling -h`.")
     entry.connect("changed", set_from_workspaces, settings)
-    grid.attach(entry, 1, 2, 1, 1)
+    grid.attach(entry, 1, 3, 1, 1)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>Night light</b>")
     lbl.set_property("margin-top", 6)
     lbl.set_property("margin-bottom", 6)
     lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 0, 3, 1, 1)
+    grid.attach(lbl, 0, 4, 1, 1)
 
     cb_night_light_on = Gtk.CheckButton.new_with_label("on")
     cb_night_light_on.set_active(settings["night-on"])
     cb_night_light_on.connect("toggled", set_from_checkbutton, settings, "night-on")
     cb_night_light_on.set_tooltip_text("Determines if to use `wlsunset'.")
-    grid.attach(cb_night_light_on, 1, 3, 1, 1)
+    grid.attach(cb_night_light_on, 1, 4, 1, 1)
 
     lbl = Gtk.Label.new("Latitude:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 4, 1, 1)
+    grid.attach(lbl, 2, 5, 1, 1)
 
     sb_lat = Gtk.SpinButton.new_with_range(-90.0, 90.0, 0.1)
     sb_lat.set_tooltip_text("Your location latitude.\n'wlsunset -l'")
     sb_lat.set_digits(4)
     sb_lat.set_value(settings["night-lat"])
     sb_lat.connect("value-changed", set_from_spinbutton, settings, "night-lat", 4)
-    grid.attach(sb_lat, 3, 4, 1, 1)
+    grid.attach(sb_lat, 3, 5, 1, 1)
 
     lbl = Gtk.Label.new("Temp low:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 4, 1, 1)
+    grid.attach(lbl, 0, 5, 1, 1)
 
     sb_temp_low = Gtk.SpinButton.new_with_range(1000, 10000, 100)
     sb_temp_low.set_tooltip_text("Night light color temperature.\n'wlsunset -t'")
     sb_temp_low.set_value(settings["night-temp-low"])
     sb_temp_low.connect("value-changed", set_int_from_spinbutton, settings, "night-temp-low")
-    grid.attach(sb_temp_low, 1, 4, 1, 1)
+    grid.attach(sb_temp_low, 1, 5, 1, 1)
 
     lbl = Gtk.Label.new("Longitude:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 5, 1, 1)
+    grid.attach(lbl, 2, 6, 1, 1)
 
     sb_lon = Gtk.SpinButton.new_with_range(-180, 180, 0.1)
     sb_lon.set_tooltip_text("Your location longitude.\n'wlsunset -L'")
     sb_lon.set_value(settings["night-long"])
     sb_lon.connect("value-changed", set_from_spinbutton, settings, "night-long", 4)
     sb_lon.set_digits(4)
-    grid.attach(sb_lon, 3, 5, 1, 1)
+    grid.attach(sb_lon, 3, 6, 1, 1)
 
     if (sb_lat.get_value() == -1.0 and sb_lon.get_value()) == -1.0 \
             or (sb_lat.get_value() == 0.0 and sb_lon.get_value() == 0.0):
@@ -277,68 +287,52 @@ def screen_tab(settings):
 
     lbl = Gtk.Label.new("Temp high:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 5, 1, 1)
+    grid.attach(lbl, 0, 6, 1, 1)
 
     sb_temp_high = Gtk.SpinButton.new_with_range(1000, 10000, 100)
     sb_temp_high.set_tooltip_text("Day light color temperature.\n'wlsunset -T'")
     sb_temp_high.set_value(settings["night-temp-high"])
     sb_temp_high.connect("value-changed", set_int_from_spinbutton, settings, "night-temp-high")
-    grid.attach(sb_temp_high, 1, 5, 1, 1)
+    grid.attach(sb_temp_high, 1, 6, 1, 1)
 
     lbl = Gtk.Label.new("Gamma:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 6, 1, 1)
+    grid.attach(lbl, 0, 7, 1, 1)
 
     btn = Gtk.Button.new_with_label("Calculate Lat/Long")
     btn.set_tooltip_text("If you were online during the first run, the Lat/Long"
                          "\nvalues should already reflect your timezone settings.\n"
                          "Push the button if something went wrong\nAND if you're online now.")
     btn.connect("clicked", update_lat_lon, sb_lat, sb_lon)
-    grid.attach(btn, 3, 6, 1, 1)
+    grid.attach(btn, 3, 7, 1, 1)
 
     sb_gamma = Gtk.SpinButton.new_with_range(0.1, 10.0, 0.1)
     sb_gamma.set_value(settings["night-gamma"])
     sb_gamma.connect("value-changed", set_from_spinbutton, settings, "night-gamma", 1)
     sb_gamma.set_tooltip_text("Monitor gamma.\n'wlsunset -g'")
-    grid.attach(sb_gamma, 1, 6, 1, 1)
+    grid.attach(sb_gamma, 1, 7, 1, 1)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>Help window</b>")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 7, 1, 1)
+    grid.attach(lbl, 0, 8, 1, 1)
 
     cb_help_on = Gtk.CheckButton.new_with_label("on overlay")
     cb_help_on.set_active(settings["help-layer-shell"])
     cb_help_on.connect("toggled", set_from_checkbutton, settings, "help-layer-shell")
     cb_help_on.set_tooltip_text(
         "Determines if to display the help window\non the overlay layer, or as a regular window.")
-    grid.attach(cb_help_on, 1, 7, 1, 1)
+    grid.attach(cb_help_on, 1, 8, 1, 1)
 
     lbl = Gtk.Label.new("Font size:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 7, 1, 1)
+    grid.attach(lbl, 2, 8, 1, 1)
 
     sb_help_font_size = Gtk.SpinButton.new_with_range(6, 48, 1)
     sb_help_font_size.set_tooltip_text("Help text font size")
     sb_help_font_size.set_value(settings["help-font-size"])
     sb_help_font_size.connect("value-changed", set_int_from_spinbutton, settings, "help-font-size")
-    grid.attach(sb_help_font_size, 3, 7, 1, 1)
-
-    lbl = Gtk.Label()
-    lbl.set_markup("<b>Style</b>")
-    lbl.set_property("halign", Gtk.Align.END)
-    lbl.set_property("margin-top", 12)
-    grid.attach(lbl, 0, 8, 1, 1)
-
-    combo = Gtk.ComboBoxText()
-    combo.set_property("halign", Gtk.Align.START)
-    grid.attach(combo, 1, 8, 1, 2)
-    for p in ["preset-0", "preset-1", "preset-2", "preset-3", "custom"]:
-        combo.append(p, p)
-    combo.set_active_id(settings["panel-preset"])
-    combo.connect("changed", set_dict_key_from_combo, settings, "panel-preset")
-    combo.set_tooltip_text("Switches current desktop preset.")
-    frame.show_all()
+    grid.attach(sb_help_font_size, 3, 8, 1, 1)
 
     return frame
 
@@ -1154,26 +1148,6 @@ def lockscreen_tab(settings):
                 # Prevent settings from exporting
                 cb_lockscreen_use_settings.set_sensitive(False)
                 break
-
-    # NOTIFICATIONS on goodies possible to install
-    notifications = []
-    if not is_command("gtklock"):
-        n = ("Alternative to swaylock", "You may want to install the 'gtklock' package.")
-        notifications.append(n)
-    if not os.path.exists("/usr/share/backgrounds/nwg-shell"):
-        n = ("Extra wallpapers", "You may want to install the 'nwg-shell-wallpapers' package.")
-        notifications.append(n)
-    release = load_text_file("/etc/os-release")
-    if release and "ArchLabs" in release.splitlines()[0] and not os.path.exists(
-            "/usr/share/backgrounds/archlabs-extra"):
-        n = ("Extra wallpapers", "You may want to install the 'archlabs-wallpapers-extra' package.")
-        notifications.append(n)
-
-    if notifications:
-        btn = Gtk.Button.new_with_label("Hints!")
-        btn.set_property("halign", Gtk.Align.END)
-        grid.attach(btn, 4, 0, 1, 1)
-        btn.connect("clicked", send_notifications, notifications)
 
     frame.show_all()
 

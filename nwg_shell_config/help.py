@@ -24,9 +24,11 @@ except ValueError:
                        'For example you might need to run:\n\n' +
                        'GI_TYPELIB_PATH=build/src LD_LIBRARY_PATH=build/src python3 ' + ' '.join(sys.argv))
 
+dir_name = os.path.dirname(__file__)
+
 from gi.repository import Gtk, Gdk, GtkLayerShell
 
-from nwg_shell_config.tools import temp_dir, data_home, get_data_dir, load_json, load_text_file, save_string, eprint, \
+from nwg_shell_config.tools import temp_dir, init_files, get_data_dir, load_json, load_text_file, save_string, eprint, \
     check_key
 
 data_dir = get_data_dir()
@@ -64,13 +66,10 @@ def main():
             pass
     save_string(str(os.getpid()), pid_file)
 
-    content_path = os.path.join(data_home(), "nwg-shell", "help.pango")
-    if os.path.isfile(content_path):
-        content = load_text_file(content_path)
-
-    else:
-        eprint("ERROR: '{}' file does not exist, terminating.".format(args.content))
-        sys.exit(1)
+    content_path = os.path.join(data_dir, "help.pango")
+    if not os.path.isfile(content_path):
+        init_files(os.path.join(dir_name, "shell"), data_dir)
+    content = load_text_file(content_path)
 
     window = Gtk.Window()
 
