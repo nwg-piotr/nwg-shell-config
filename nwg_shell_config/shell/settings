@@ -16,7 +16,6 @@
   "panel-preset": "preset-0",
   "panel-custom": "",
   "show-on-startup": true,
-  "show-help": false,
   "keyboard-use-settings": true,
   "keyboard-xkb-layout": "us",
   "keyboard-xkb-variant": "",

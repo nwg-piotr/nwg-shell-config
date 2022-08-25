@@ -524,9 +524,6 @@ def save_includes():
         subprocess.call("killall swayidle", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         subprocess.Popen(cmd_idle, shell=True)
 
-    if settings["show-help"]:
-        autostart.append("exec_always nwg-wrapper -t help-sway.pango -c help-sway.css -p right -mr 50 -si -sq 14")
-
     if settings["show-on-startup"]:
         autostart.append("exec nwg-shell-config")
 
@@ -604,10 +601,6 @@ def reload():
                 "swaync-client --reload-config",
                 "swaymsg reload"]:
         subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-
-    # kill running help window if any
-    if not settings["show-help"]:
-        subprocess.call("pkill -14 nwg-wrapper", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
 
 def load_settings():
