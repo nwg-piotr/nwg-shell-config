@@ -210,7 +210,6 @@ def screen_tab(settings):
     combo.set_active_id(settings["panel-preset"])
     combo.connect("changed", set_dict_key_from_combo, settings, "panel-preset")
     combo.set_tooltip_text("Switches current desktop preset.")
-    frame.show_all()
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>Autotiling</b>")
@@ -333,6 +332,8 @@ def screen_tab(settings):
     sb_help_font_size.set_value(settings["help-font-size"])
     sb_help_font_size.connect("value-changed", set_int_from_spinbutton, settings, "help-font-size")
     grid.attach(sb_help_font_size, 3, 8, 1, 1)
+
+    frame.show_all()
 
     return frame
 
