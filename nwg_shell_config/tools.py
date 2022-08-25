@@ -186,5 +186,13 @@ def notify(summary, body, timeout=3000):
     subprocess.call(cmd, shell=True)
 
 
+def check_key(dictionary, key, default_value):
+    """
+    Adds a key w/ default value if missing from the dictionary
+    """
+    if key not in dictionary:
+        dictionary[key] = default_value
+
+
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)

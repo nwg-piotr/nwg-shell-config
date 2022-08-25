@@ -303,15 +303,26 @@ def screen_tab(settings):
     grid.attach(sb_gamma, 1, 6, 1, 1)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Help widget</b>")
+    lbl.set_markup("<b>Help window</b>")
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 7, 1, 1)
 
-    cb_help_on = Gtk.CheckButton.new_with_label("on")
-    cb_help_on.set_active(settings["show-help"])
-    cb_help_on.connect("toggled", set_from_checkbutton, settings, "show-help")
-    cb_help_on.set_tooltip_text("Determines if to display the 'conky-like' help widget.")
+    cb_help_on = Gtk.CheckButton.new_with_label("on overlay")
+    cb_help_on.set_active(settings["help-layer-shell"])
+    cb_help_on.connect("toggled", set_from_checkbutton, settings, "help-layer-shell")
+    cb_help_on.set_tooltip_text(
+        "Determines if to display the help window\non the overlay layer, or as a regular window.")
     grid.attach(cb_help_on, 1, 7, 1, 1)
+
+    lbl = Gtk.Label.new("Font size:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 7, 1, 1)
+
+    sb_help_font_size = Gtk.SpinButton.new_with_range(6, 48, 1)
+    sb_help_font_size.set_tooltip_text("Help text font size")
+    sb_help_font_size.set_value(settings["help-font-size"])
+    sb_help_font_size.connect("value-changed", set_int_from_spinbutton, settings, "help-font-size")
+    grid.attach(sb_help_font_size, 3, 7, 1, 1)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>Style</b>")

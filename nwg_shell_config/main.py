@@ -629,7 +629,6 @@ def load_settings():
         "panel-preset": "preset-0",
         "panel-custom": "",
         "show-on-startup": True,
-        "show-help": False,
         "keyboard-use-settings": True,
         "keyboard-xkb-layout": "us",
         "keyboard-xkb-variant": "",
@@ -682,6 +681,8 @@ def load_settings():
         "unsplash-width": 1920,
         "unsplash-height": 1080,
         "unsplash-keywords": ["nature", "water", "landscape"],
+        "help-font-size": 12,
+        "help-layer-shell": True,
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")

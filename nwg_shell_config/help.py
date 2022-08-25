@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 
 """
-Helper script to display system help window on the gtk-layer-shell overlay layer
+nwg-shell helper script to display system help window
 Copyright (c) 2022 Piotr Miller
 e-mail: nwg.piotr@gmail.com
 Project: https://github.com/nwg-piotr/nwg-shell
 License: MIT
 """
 
-import argparse
 import os
 import signal
 import sys
@@ -27,7 +26,17 @@ except ValueError:
 
 from gi.repository import Gtk, Gdk, GtkLayerShell
 
-from nwg_shell_config.tools import temp_dir, data_home, load_text_file, save_string, eprint
+from nwg_shell_config.tools import temp_dir, data_home, get_data_dir, load_json, load_text_file, save_string, eprint, \
+    check_key
+
+data_dir = get_data_dir()
+settings = load_json(os.path.join(data_dir, "settings"))
+defaults = {
+    "help-font-size": 14,
+    "help-layer-shell": True
+}
+for key in defaults:
+    check_key(settings, key, defaults[key])
 
 
 def signal_handler(sig, frame):
@@ -43,7 +52,7 @@ def handle_keyboard(win, event):
 
 
 def main():
-    # Try and kill already running instance if any
+    # Try and kill already running instance, if any
     pid_file = os.path.join(temp_dir(), "nwg-help.pid")
     if os.path.isfile(pid_file):
         try:
@@ -55,22 +64,9 @@ def main():
             pass
     save_string(str(os.getpid()), pid_file)
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-c",
-                        "--content",
-                        type=str,
-                        default=os.path.join(data_home(), "nwg-shell", "help.pango"),
-                        help="path to the help Content file; default: '{}'".format(
-                            os.path.join(data_home(), "nwg-shell", "help.pango")))
-    parser.add_argument("-l",
-                        "--no_layer_shell",
-                        action="store_true",
-                        help="display in regular window instead of the layer shell")
-
-    args = parser.parse_args()
-
-    if os.path.isfile(args.content):
-        content = load_text_file(args.content)
+    content_path = os.path.join(data_home(), "nwg-shell", "help.pango")
+    if os.path.isfile(content_path):
+        content = load_text_file(content_path)
 
     else:
         eprint("ERROR: '{}' file does not exist, terminating.".format(args.content))
@@ -78,7 +74,7 @@ def main():
 
     window = Gtk.Window()
 
-    if not args.no_layer_shell:
+    if settings["help-layer-shell"]:
         GtkLayerShell.init_for_window(window)
         GtkLayerShell.set_layer(window, GtkLayerShell.Layer.OVERLAY)
         GtkLayerShell.set_exclusive_zone(window, 0)
@@ -106,14 +102,13 @@ def main():
     style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
     css = b""" * { border-radius: 0px } """
     css += b""" window { border: solid 1px; border-color: #000 } """
-    font_size = 14
-    font_string = "label { font-size: %dpx }" % font_size
+    font_string = "label { font-size: %dpx }" % settings["help-font-size"]
     css += str.encode(font_string)
     provider.load_from_data(css)
 
     window.show_all()
 
-    if not args.no_layer_shell:
+    if settings["help-layer-shell"]:
         window.set_size_request(0, window.get_allocated_width() * 2)
 
     catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
