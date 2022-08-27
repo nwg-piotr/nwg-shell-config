@@ -35,7 +35,8 @@ data_dir = get_data_dir()
 settings = load_json(os.path.join(data_dir, "settings"))
 defaults = {
     "help-font-size": 14,
-    "help-layer-shell": True
+    "help-layer-shell": True,
+    "help-keyboard": False
 }
 for key in defaults:
     check_key(settings, key, defaults[key])
@@ -71,12 +72,14 @@ def main():
         init_files(os.path.join(dir_name, "shell"), data_dir)
     content = load_text_file(content_path)
 
-    window = Gtk.Window()
+    window = Gtk.Window.new(Gtk.WindowType.POPUP)
 
     if settings["help-layer-shell"]:
         GtkLayerShell.init_for_window(window)
         GtkLayerShell.set_layer(window, GtkLayerShell.Layer.OVERLAY)
         GtkLayerShell.set_exclusive_zone(window, 0)
+        if settings["help-keyboard"]:
+            GtkLayerShell.set_keyboard_interactivity(window, True)
 
     window.connect('destroy', Gtk.main_quit)
     window.connect("key-release-event", handle_keyboard)
