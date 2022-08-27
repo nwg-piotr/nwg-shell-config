@@ -72,5 +72,6 @@
   ],
   "help-font-size": 12,
   "help-layer-shell": true,
+  "help-keyboard": false,
   "last-upgrade-check": 0
 }

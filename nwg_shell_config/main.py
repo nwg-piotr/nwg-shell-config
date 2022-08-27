@@ -676,6 +676,7 @@ def load_settings():
         "unsplash-keywords": ["nature", "water", "landscape"],
         "help-font-size": 12,
         "help-layer-shell": True,
+        "help-keyboard": False,
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")

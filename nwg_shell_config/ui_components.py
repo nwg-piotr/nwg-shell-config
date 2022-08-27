@@ -316,12 +316,22 @@ def screen_tab(settings):
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 8, 1, 1)
 
-    cb_help_on = Gtk.CheckButton.new_with_label("on overlay")
-    cb_help_on.set_active(settings["help-layer-shell"])
-    cb_help_on.connect("toggled", set_from_checkbutton, settings, "help-layer-shell")
-    cb_help_on.set_tooltip_text(
+    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+    grid.attach(box, 1, 8, 1, 1)
+
+    cb_help_overlay = Gtk.CheckButton.new_with_label("Overlay")
+    cb_help_overlay.set_active(settings["help-layer-shell"])
+    cb_help_overlay.connect("toggled", set_from_checkbutton, settings, "help-layer-shell")
+    cb_help_overlay.set_tooltip_text(
         "Determines if to display the help window\non the overlay layer, or as a regular window.")
-    grid.attach(cb_help_on, 1, 8, 1, 1)
+    box.pack_start(cb_help_overlay, False, False, 0)
+
+    cb_help_keyboard = Gtk.CheckButton.new_with_label("Keyboard")
+    cb_help_keyboard.set_active(settings["help-keyboard"])
+    cb_help_keyboard.connect("toggled", set_from_checkbutton, settings, "help-keyboard")
+    cb_help_keyboard.set_tooltip_text(
+        "Determines if the help window\nshould intercept the keyboard input.")
+    box.pack_start(cb_help_keyboard, False, False, 0)
 
     lbl = Gtk.Label.new("Font size:")
     lbl.set_property("halign", Gtk.Align.END)
