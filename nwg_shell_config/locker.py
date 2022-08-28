@@ -232,6 +232,8 @@ def set_remote_wallpaper():
     if settings["lockscreen-playerctl"] and get_player_status() in ["Playing", "Paused"]:
         global pctl
         pctl = PlayerctlWindow()
+    else:
+        pctl = None
 
     url = "https://source.unsplash.com/{}x{}/?{}".format(settings["unsplash-width"], settings["unsplash-height"],
                                                          ",".join(settings["unsplash-keywords"]))
@@ -244,7 +246,14 @@ def set_remote_wallpaper():
                 subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
             elif settings["lockscreen-locker"] == "gtklock":
                 subprocess.call("pkill -f gtklock", shell=True)
-                subprocess.Popen('gtklock -S -H -T 10 -i -b {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
+
+                # This will need more code when new gtklock modules appear
+                gtklock_cmd = "gtklock"
+                if settings["gtklock-userinfo"]:
+                    gtklock_cmd += "-m userinfo-module"
+
+                subprocess.Popen('{} -S -H -T 10 -i -b {} && kill -n 15 {}'.format(gtklock_cmd, wallpaper, pid),
+                                 shell=True)
 
             if pctl:
                 terminate_old_instance_if_any()

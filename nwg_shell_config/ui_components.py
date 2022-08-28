@@ -1026,6 +1026,19 @@ def lockscreen_tab(settings):
     entry_b4_sleep.connect("changed", set_from_entry, settings, "before-sleep")
 
     lbl = Gtk.Label()
+    lbl.set_markup("<b>gtklock modules</b>")
+    lbl.set_property("halign", Gtk.Align.START)
+    lbl.set_property("margin-top", 6)
+    grid.attach(lbl, 0, 11, 1, 1)
+
+    cb_gtklock_userinfo = Gtk.CheckButton.new_with_label("userinfo")
+    cb_gtklock_userinfo.set_active(settings["gtklock-userinfo"])
+    cb_gtklock_userinfo.connect("toggled", set_key_from_checkbox, settings, "gtklock-userinfo")
+    cb_gtklock_userinfo.set_tooltip_text("For this module to work, you need to set the user info first."
+                                         "\nYou may use the `mugshot` or `SwaySettings` package.")
+    grid.attach(cb_gtklock_userinfo, 1, 11, 1, 1)
+
+    lbl = Gtk.Label()
     lbl.set_markup("<b>Local background sources</b>")
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 2, 0, 4, 1)

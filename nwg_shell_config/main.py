@@ -677,6 +677,7 @@ def load_settings():
         "help-font-size": 12,
         "help-layer-shell": True,
         "help-keyboard": False,
+        "gtklock-userinfo": False,
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")

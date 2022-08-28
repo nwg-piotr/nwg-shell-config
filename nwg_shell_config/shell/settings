@@ -73,5 +73,6 @@
   "help-font-size": 14,
   "help-layer-shell": true,
   "help-keyboard": false,
+  "gtklock-userinfo": false,
   "last-upgrade-check": 0
 }
