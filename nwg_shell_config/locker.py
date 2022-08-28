@@ -250,7 +250,7 @@ def set_remote_wallpaper():
                 # This will need more code when new gtklock modules appear
                 gtklock_cmd = "gtklock"
                 if settings["gtklock-userinfo"]:
-                    gtklock_cmd += "-m userinfo-module"
+                    gtklock_cmd += " -m userinfo-module"
 
                 subprocess.Popen('{} -S -H -T 10 -i -b {} && kill -n 15 {}'.format(gtklock_cmd, wallpaper, pid),
                                  shell=True)
@@ -285,7 +285,13 @@ def set_local_wallpaper():
             subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(p, pid), shell=True)
         elif settings["lockscreen-locker"] == "gtklock":
             subprocess.call("pkill -f gtklock", shell=True)
-            subprocess.Popen('gtklock -S -H -T 10 -i -b {} && kill -n 15 {}'.format(p, pid), shell=True)
+
+            # This will need more code when new gtklock modules appear
+            gtklock_cmd = "gtklock"
+            if settings["gtklock-userinfo"]:
+                gtklock_cmd += " -m userinfo-module"
+
+            subprocess.Popen('{} -S -H -T 10 -i -b {} && kill -n 15 {}'.format(gtklock_cmd, p, pid), shell=True)
     else:
         print("No image paths found")
 
