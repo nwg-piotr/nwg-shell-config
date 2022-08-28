@@ -25,7 +25,7 @@ def get_data_dir():
     return data_dir
 
 
-def get_temp_dir():
+def temp_dir():
     if os.getenv("TMPDIR"):
         return os.getenv("TMPDIR")
     elif os.getenv("TEMP"):
@@ -34,6 +34,13 @@ def get_temp_dir():
         return os.getenv("TMP")
 
     return "/tmp"
+
+
+def data_home():
+    if os.getenv("XDG_DATA_HOME"):
+        return os.getenv("XDG_DATA_HOME")
+
+    return os.path.join(os.getenv("HOME"), ".local/share")
 
 
 def init_files(src_dir, dst_dir, overwrite=False):
@@ -177,3 +184,15 @@ def list_background_dirs():
 def notify(summary, body, timeout=3000):
     cmd = "notify-send '{}' '{}' -i /usr/share/pixmaps/nwg-shell-config.svg -t {}".format(summary, body, timeout)
     subprocess.call(cmd, shell=True)
+
+
+def check_key(dictionary, key, default_value):
+    """
+    Adds a key w/ default value if missing from the dictionary
+    """
+    if key not in dictionary:
+        dictionary[key] = default_value
+
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)

@@ -33,7 +33,6 @@ Along with it come settings for the launcher ([nwg-drawer](https://github.com/nw
 ([nwg-bar](https://github.com/nwg-piotr/nwg-bar)), and the dock ([nwg-dock](https://github.com/nwg-piotr/nwg-dock)).
 The latter is only turned on by default in `preset-1` and `preset-3`.
 
-
 <div align="center">preset-0<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell-config/preset-0.png" width="480"/></div>
 
 <div align="center">preset-1<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell-config/preset-1.png" width="480"/></div>
@@ -42,8 +41,7 @@ The latter is only turned on by default in `preset-1` and `preset-3`.
 
 <div align="center">preset-3<br /><img src="https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-shell-config/preset-3.png" width="480"/></div>
 
-To familiarize yourself with key bindings, you may want to mark the "Show help" check box in the config utility. 
-This will display a conky-like help widget, supported by [nwg-wrapper](https://github.com/nwg-piotr/nwg-wrapper).
+For key bindings help, press `[Super]+F1`.
 
 ## Notes
 

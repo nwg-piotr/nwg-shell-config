@@ -481,7 +481,7 @@ def save_includes():
         autostart.append("exec nm-applet --indicator")
 
     if settings["autotiling-on"]:
-        cmd_autotiling = "exec_always autotiling"
+        cmd_autotiling = "exec_always killall autotiling ; autotiling"
         if settings["autotiling-workspaces"]:
             cmd_autotiling += " -w {}".format(settings["autotiling-workspaces"])
         autostart.append(cmd_autotiling)
@@ -523,9 +523,6 @@ def save_includes():
         # We can't `exec_always swayidle`, as it would create multiple instances. Let's restart it here.
         subprocess.call("killall swayidle", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         subprocess.Popen(cmd_idle, shell=True)
-
-    if settings["show-help"]:
-        autostart.append("exec_always nwg-wrapper -t help-sway.pango -c help-sway.css -p right -mr 50 -si -sq 14")
 
     if settings["show-on-startup"]:
         autostart.append("exec nwg-shell-config")
@@ -605,10 +602,6 @@ def reload():
                 "swaymsg reload"]:
         subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
-    # kill running help window if any
-    if not settings["show-help"]:
-        subprocess.call("pkill -14 nwg-wrapper", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-
 
 def load_settings():
     defaults = {
@@ -629,7 +622,6 @@ def load_settings():
         "panel-preset": "preset-0",
         "panel-custom": "",
         "show-on-startup": True,
-        "show-help": False,
         "keyboard-use-settings": True,
         "keyboard-xkb-layout": "us",
         "keyboard-xkb-variant": "",
@@ -682,6 +674,10 @@ def load_settings():
         "unsplash-width": 1920,
         "unsplash-height": 1080,
         "unsplash-keywords": ["nature", "water", "landscape"],
+        "help-font-size": 12,
+        "help-layer-shell": True,
+        "help-keyboard": False,
+        "gtklock-userinfo": False,
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")
@@ -701,25 +697,6 @@ def load_settings():
     else:
         print("ERROR: failed loading settings, creating {}".format(settings_file), file=sys.stderr)
         save_json(defaults, settings_file)
-
-    # LOCK SCREEN: on 1st run preselect dedicated background dirs, if they exist.
-    # if not settings["background-dirs-once-set"] and not settings["background-dirs"]:
-    #     did = distro_id()
-    #     print("Distribution ID: {}".format(did))
-    #     if did.upper() == "ARCHLABS":
-    #         if os.path.isdir("/usr/share/backgrounds/archlabs-extra"):
-    #             settings["background-dirs"].append("/usr/share/backgrounds/archlabs-extra")
-    #             settings["background-dirs-once-set"] = True
-    #         else:
-    #             settings["background-dirs"].append("/usr/share/backgrounds/archlabs")
-    #             settings["background-dirs-once-set"] = True
-    #         if os.path.isdir("/usr/share/nwg-shell"):
-    #             settings["background-dirs"].append("/usr/share/backgrounds/nwg-shell")
-    #             settings["background-dirs-once-set"] = True
-    #     elif did.upper() == "ARCH":
-    #         if os.path.isdir("/usr/share/backgrounds/nwg-shell"):
-    #             settings["background-dirs"].append("/usr/share/backgrounds/nwg-shell")
-    #             settings["background-dirs-once-set"] = True
 
 
 def load_presets():
@@ -880,15 +857,6 @@ def main():
     else:
         # initialize missing own data files
         init_files(os.path.join(dir_name, "shell"), data_dir)
-
-    # initialize missing folders from skel (exist on ArchLabs only)
-    for folder in ["nwg-bar", "nwg-dock", "nwg-drawer", "nwg-panel", "nwg-wrapper", "sway", "swaync"]:
-        src = os.path.join("/etc/skel/.config", folder)
-        dst = os.path.join(config_home, folder)
-        if os.path.exists(src) and not os.path.exists(dst):
-            os.mkdir(dst)
-            print(dst, "missing, initializing")
-            init_files(src, dst)
 
     for folder in ["nwg-look", "nwg-shell", "nwg-shell-config"]:
         src = os.path.join("/etc/skel/.local/share", folder)
