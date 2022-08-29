@@ -47,6 +47,7 @@ defaults = {
     "unsplash-width": 1920,
     "unsplash-height": 1080,
     "unsplash-keywords": ["nature", "water", "landscape"],
+    "gtklock-userinfo": False
 }
 
 
