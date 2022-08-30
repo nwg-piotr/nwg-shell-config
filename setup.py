@@ -26,7 +26,8 @@ setup(
         'gui_scripts': [
             'nwg-shell-config = nwg_shell_config.main:main',
             'nwg-lock = nwg_shell_config.locker:main',
-            'nwg-shell-help = nwg_shell_config.help:main'
+            'nwg-shell-help = nwg_shell_config.help:main',
+            'nwg-autotiling = nwg_shell_config.autotiling:main'
         ]
     }
 )
