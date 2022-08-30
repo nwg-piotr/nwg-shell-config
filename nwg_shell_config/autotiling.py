@@ -101,19 +101,6 @@ def signal_handler(sig, frame):
 
 
 def main():
-    own_pid = os.getpid()
-
-    for proc in process_iter():
-        if "autotiling" in proc.name():
-            pid = proc.pid
-            if not pid == own_pid:
-                print("Killing '{}', pid {}".format(proc.name(), pid))
-                os.kill(pid, signal.SIGINT)
-
-    catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
-    for sig in catchable_sigs:
-        signal.signal(sig, signal_handler)
-
     parser = argparse.ArgumentParser()
     parser.add_argument("-d",
                         "--debug",
@@ -142,6 +129,19 @@ def main():
                         default=["WINDOW", "MODE"])
 
     args = parser.parse_args()
+
+    own_pid = os.getpid()
+
+    for proc in process_iter():
+        if "autotiling" in proc.name():
+            pid = proc.pid
+            if not pid == own_pid:
+                print("Killing '{}', pid {}".format(proc.name(), pid))
+                os.kill(pid, signal.SIGINT)
+
+    catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
+    for sig in catchable_sigs:
+        signal.signal(sig, signal_handler)
 
     if args.debug and args.workspaces:
         print("autotiling is only active on workspaces:", ','.join(args.workspaces))
