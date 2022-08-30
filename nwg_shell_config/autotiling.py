@@ -3,13 +3,22 @@
 """
 This script uses the i3ipc python module to switch the layout splith / splitv
 for the currently focused window, depending on its dimensions.
-It works on both sway and i3 window managers.
+It works both on sway and i3 window managers.
 Inspired by https://github.com/olemartinorg/i3-alternating-layout
 Copyright: 2019-2022 Piotr Miller & Contributors
 e-mail: nwg.piotr@gmail.com
-Project: https://github.com/nwg-piotr/autotiling
-License: GPL3
+Project: https://github.com/nwg-piotr/nwg-shell
+License: MIT
 Dependencies: python-i3ipc>=2.0.1 (i3ipc-python), python-psutil
+
+This code is a version of the 'autotiling` script (https://github.com/nwg-piotr/nwg-shell),
+modified for use with nwg-shell. I wanted to avoid adding the shell-specific stuff to the original script,
+as it's quite widely used outside the project. All the arguments remain the same. One more dependency (psutil).
+
+Additions:
+- killing existing *autotiling* process instances on startup;
+- gentle SIGINT & SIGTERM handler;
+- clearing used workspaces info ('/tmp/autotiling' file) if started w/o the -- workspaces argument.
 """
 import argparse
 import os
