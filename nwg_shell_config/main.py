@@ -481,7 +481,7 @@ def save_includes():
         autostart.append("exec nm-applet --indicator")
 
     if settings["autotiling-on"]:
-        cmd_autotiling = "exec_always killall autotiling ; autotiling"
+        cmd_autotiling = "exec_always nwg-autotiling"
         if settings["autotiling-workspaces"]:
             cmd_autotiling += " -w {}".format(settings["autotiling-workspaces"])
         autostart.append(cmd_autotiling)
@@ -592,7 +592,7 @@ def reload():
     p = os.path.join(config_home, "swaync")
     swaync_daemon = "swaync -s {}/{}.css &".format(p, name)
 
-    for cmd in ["pkill -f autotiling",
+    for cmd in ["pkill -f nwg-autotiling",
                 "pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
