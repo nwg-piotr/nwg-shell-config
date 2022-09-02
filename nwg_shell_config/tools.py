@@ -216,7 +216,7 @@ def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 
-def current_shell_version():
+def get_shell_version():
     lines = subprocess.check_output("nwg-shell -v".split()).decode('utf-8').splitlines()
     return lines[0].split()[2]
 

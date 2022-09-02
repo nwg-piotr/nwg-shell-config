@@ -21,7 +21,7 @@ dir_name = os.path.dirname(__file__)
 from gi.repository import Gtk, Gdk
 
 from nwg_shell_config.tools import temp_dir, init_files, get_data_dir, get_shell_data_dir, load_json, load_text_file, \
-    save_string, current_shell_version, is_newer
+    save_string, get_shell_version, is_newer
 
 # Shell versions that need to trigger upgrade
 need_upgrade = ["0.2.0", "0.2.4", "0.2.5"]
@@ -30,8 +30,8 @@ data_dir = get_data_dir()
 updates_dir = os.path.join(dir_name, "updates")
 shell_data = load_json(os.path.join(get_shell_data_dir(), "data"))
 print(shell_data)
-# current_version = current_shell_version()
-current_version = "0.2.0"
+# current_shell_version = get_shell_version()
+current_shell_version = "0.2.1"
 
 
 def signal_handler(sig, frame):
@@ -61,12 +61,10 @@ def main():
 
     version_descriptions = []
     for version in need_upgrade:
-        if is_newer(current_version, version):
-            print("current_version {} is newer than {}".format(current_version, version))
-        else:
+        if is_newer(version, current_shell_version):
             content_path = os.path.join(updates_dir, version)
             version_descriptions.append(load_text_file(content_path))
-            print("current_version {} is older than {}".format(current_version, version))
+            print("Pending update to v{}".format(version))
 
     content = "\n".join(version_descriptions)
 
@@ -85,7 +83,7 @@ def main():
     box.set_property("hexpand", True)
     scrolled_window.add(box)
 
-    frame = Gtk.Frame.new(" Description ")
+    frame = Gtk.Frame.new(" Pending updates ")
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     label = Gtk.Label()
