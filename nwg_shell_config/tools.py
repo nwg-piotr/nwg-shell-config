@@ -25,6 +25,24 @@ def get_data_dir():
     return data_dir
 
 
+def get_shell_data_dir():
+    data_dir = ""
+    home = os.getenv("HOME")
+    xdg_data_home = os.getenv("XDG_DATA_HOME")
+
+    if xdg_data_home:
+        data_dir = os.path.join(xdg_data_home, "nwg-shell/")
+    else:
+        if home:
+            data_dir = os.path.join(home, ".local/share/nwg-shell/")
+
+    if not os.path.isdir(data_dir):
+        print("Creating '{}'".format(data_dir))
+        os.makedirs(data_dir, exist_ok=True)
+
+    return data_dir
+
+
 def temp_dir():
     if os.getenv("TMPDIR"):
         return os.getenv("TMPDIR")
@@ -196,3 +214,40 @@ def check_key(dictionary, key, default_value):
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
+
+
+def current_shell_version():
+    lines = subprocess.check_output("nwg-shell -v".split()).decode('utf-8').splitlines()
+    return lines[0].split()[2]
+
+
+def is_newer(string_new, string_existing):
+    """
+    Compares versions in format 'major.minor.patch' (just numbers allowed).
+    :param string_new: new version to compare with existing one
+    :param string_existing: existing version
+    :return: True if new is newer then existing
+    """
+    new = major_minor_path(string_new)
+    existing = major_minor_path(string_existing)
+    if new and existing:
+        if new[0] > existing[0]:
+            return True
+        elif new[1] > existing[1] and new[0] >= existing[0]:
+            return True
+        elif new[2] > existing[2] and new[0] >= existing[0] and new[1] >= existing[1]:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+
+def major_minor_path(string):
+    parts = string.split(".")
+    if len(parts) != 3:
+        return None
+    try:
+        return int(parts[0]), int(parts[1]), int(parts[2])
+    except:
+        return None
