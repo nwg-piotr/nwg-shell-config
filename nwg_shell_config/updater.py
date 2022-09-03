@@ -29,9 +29,16 @@ need_upgrade = ["0.2.0", "0.2.4", "0.2.5"]
 data_dir = get_data_dir()
 updates_dir = os.path.join(dir_name, "updates")
 shell_data = load_json(os.path.join(get_shell_data_dir(), "data"))
+defaults = {
+    "installed-version": "0.1.1",
+    "updates": []
+}
+for key in defaults:
+    if key not in shell_data:
+        shell_data[key] = defaults[key]
 print(shell_data)
-# current_shell_version = get_shell_version()
-current_shell_version = "0.2.1"
+current_shell_version = get_shell_version()
+# current_shell_version = "0.3.0"
 
 
 def signal_handler(sig, frame):
@@ -47,8 +54,8 @@ def handle_keyboard(win, event):
 
 
 def main():
-    # Try and kill already running instance, if any
-    pid_file = os.path.join(temp_dir(), "nwg-help.pid")
+    # Try and kill already running instance, if any.
+    pid_file = os.path.join(temp_dir(), "nwg-updater.pid")
     if os.path.isfile(pid_file):
         try:
             pid = int(load_text_file(pid_file))
@@ -59,14 +66,27 @@ def main():
             pass
     save_string(str(os.getpid()), pid_file)
 
+    print("First installed version: {}".format(shell_data["installed-version"]))
+    print("Current version: {}".format(current_shell_version))
+    pending_updates = []
     version_descriptions = []
-    for version in need_upgrade:
-        if is_newer(version, current_shell_version):
-            content_path = os.path.join(updates_dir, version)
-            version_descriptions.append(load_text_file(content_path))
-            print("Pending update to v{}".format(version))
+    # If shell not just installed (no updates needed)
+    if current_shell_version > shell_data["installed-version"]:
+        print("Checking pending updates", end="... ")
+        for version in need_upgrade:
+            if is_newer(version, shell_data["installed-version"]) and version not in shell_data["updates"]:
+                content_path = os.path.join(updates_dir, version)
+                version_descriptions.append(load_text_file(content_path))
+                pending_updates.append(version)
 
-    content = "\n".join(version_descriptions)
+        content = "\n".join(version_descriptions)
+        if len(pending_updates) > 0:
+            print(pending_updates)
+        else:
+            print("None")
+    else:
+        content = "None"
+        print("Just installed")
 
     window = Gtk.Window.new(Gtk.WindowType.TOPLEVEL)
 
@@ -79,7 +99,7 @@ def main():
     window.add(scrolled_window)
 
     box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-    box.set_property("margin", 12)
+    box.set_property("margin", 6)
     box.set_property("hexpand", True)
     scrolled_window.add(box)
 
@@ -99,7 +119,7 @@ def main():
     style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
     css = b""" * { border-radius: 0px } """
     css += b""" window { border: solid 1px; border-color: #000 } """
-    css += b""" label { padding: 10px } """
+    css += b""" label { padding: 6px } """
     provider.load_from_data(css)
 
     window.show_all()
