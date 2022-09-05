@@ -169,16 +169,6 @@ def save_list_to_text_file(data, file_path):
     text_file.close()
 
 
-def distro_id():
-    r = load_text_file("/etc/os-release")
-    if r:
-        for line in r.splitlines():
-            if "ID=" in line:
-                return line.lstrip("ID=")
-
-    return ""
-
-
 def list_background_dirs():
     files_in_main = False
     paths = []
@@ -214,6 +204,19 @@ def check_key(dictionary, key, default_value):
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
+
+
+def load_shell_data():
+    shell_data = load_json(os.path.join(get_shell_data_dir(), "data"))
+    defaults = {
+        "installed-version": "0.1.9",
+        "updates": []
+    }
+    for key in defaults:
+        if key not in shell_data:
+            shell_data[key] = defaults[key]
+
+    return shell_data
 
 
 def get_shell_version():

@@ -6,7 +6,7 @@ import argparse
 
 from nwg_shell_config.tools import *
 from nwg_shell_config.ui_components import *
-from nwg_shell_config.__about__ import __version__
+from nwg_shell_config.__about__ import __version__, __need_update__
 import gi
 
 gi.require_version('Gdk', '3.0')
@@ -15,6 +15,14 @@ from gi.repository import Gdk, GLib
 gi.require_version('Gtk', '3.0')
 
 dir_name = os.path.dirname(__file__)
+
+shell_data = load_shell_data()
+print(shell_data)
+pending_updates = 0
+for v in __need_update__:
+    if v not in shell_data["updates"]:
+        pending_updates += 1
+
 
 data_dir = ""
 config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
@@ -208,7 +216,7 @@ def set_up_screen_tab(*args):
     hide_submenus()
     global content
     content.destroy()
-    content = screen_tab(settings)
+    content = screen_tab(settings, pending_updates)
     grid.attach(content, 1, 0, 1, 1)
 
 

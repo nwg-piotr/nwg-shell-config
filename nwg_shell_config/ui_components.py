@@ -4,7 +4,7 @@ import os
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, notify, distro_id
+from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, notify
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -140,7 +140,7 @@ class SideMenuRow(Gtk.ListBoxRow):
         self.eb.add(lbl)
 
 
-def screen_tab(settings):
+def screen_tab(settings, pending_updates):
     frame = Gtk.Frame()
     frame.set_label("  Common: Screen settings  ")
     frame.set_label_align(0.5, 0.5)
@@ -194,6 +194,20 @@ def screen_tab(settings):
     img = Gtk.Image.new_from_icon_name("nwg-panel", Gtk.IconSize.DIALOG)
     btn.set_image(img)
     btn.set_label("Panel settings")
+    btn.connect("clicked", launch, "nwg-panel-config")
+    box.pack_start(btn, False, True, 0)
+
+    btn = Gtk.Button()
+    btn.set_property("name", "app-btn")
+    btn.set_always_show_image(True)
+    btn.set_image_position(Gtk.PositionType.TOP)
+    if pending_updates == 0:
+        btn.set_label("Updates")
+        img = Gtk.Image.new_from_icon_name("nwg-shell", Gtk.IconSize.DIALOG)
+    else:
+        btn.set_label("Updates ({})".format(pending_updates))
+        img = Gtk.Image.new_from_icon_name("nwg-shell-update", Gtk.IconSize.DIALOG)
+    btn.set_image(img)
     btn.connect("clicked", launch, "nwg-panel-config")
     box.pack_start(btn, False, True, 0)
 
