@@ -115,7 +115,7 @@ def main():
     h_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
     box.pack_end(h_box, False, False, 0)
 
-    img = Gtk.Image.new_from_icon_name("system-run", Gtk.IconSize.BUTTON)
+    img = Gtk.Image.new_from_icon_name("nwg-shell", Gtk.IconSize.BUTTON)
     h_box.pack_start(img, False, False, 0)
     lbl = Gtk.Label()
     lbl.set_markup('nwg-shell updates  <a href="https://nwg-piotr.github.io/nwg-shell/updates">Updates page</a>')
