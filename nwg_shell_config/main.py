@@ -64,7 +64,10 @@ def signal_handler(sig, frame):
         print("Terminated with {}".format(desc[sig]))
         Gtk.main_quit()
     elif sig == 10:
+        print("SIGUSR1 received")
         check_updates()
+    else:
+        print("Signal {} received".format(sig))
 
 
 def validate_workspaces(gtk_entry):
