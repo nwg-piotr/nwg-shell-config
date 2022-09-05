@@ -5,6 +5,7 @@ import sys
 from shutil import copy2
 
 from geopy.geocoders import Nominatim
+from datetime import datetime as dt
 
 
 def get_data_dir():
@@ -254,3 +255,10 @@ def major_minor_path(string):
         return int(parts[0]), int(parts[1]), int(parts[2])
     except:
         return None
+
+
+def log_line(file, label, line):
+    now = dt.now()
+    label.set_text(label.get_text() + line)
+    print("{}".format(line), end="")
+    file.write("{} {}".format(now, line))

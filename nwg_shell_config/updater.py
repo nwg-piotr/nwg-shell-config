@@ -22,8 +22,8 @@ from nwg_shell_config.__about__ import __need_update__
 
 from gi.repository import Gtk, Gdk
 
-from nwg_shell_config.tools import temp_dir, get_data_dir, load_text_file, \
-    save_string, get_shell_version, is_newer, load_shell_data
+from nwg_shell_config.tools import temp_dir, get_data_dir, get_shell_data_dir, load_text_file, save_string, \
+    get_shell_version, is_newer, load_shell_data, save_list_to_text_file, log_line, is_command
 
 # Shell versions that need to trigger upgrade
 need_upgrade = ["0.2.4", "0.2.5"]
@@ -38,6 +38,12 @@ current_shell_version = get_shell_version()
 # current_shell_version = "0.3.0"
 
 lock_file = os.path.join(temp_dir(), "nwg-shell-updater.lock")
+
+config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(os.getenv("HOME"),
+                                                                                             ".config")
+
+data_home = os.getenv('XDG_DATA_HOME') if os.getenv('XDG_DATA_HOME') else os.path.join(os.getenv("HOME"),
+                                                                                       ".local/share")
 
 
 def terminate(*args):
@@ -115,7 +121,9 @@ def main():
     label.set_line_wrap(True)
     label.set_markup(content)
     label.set_property("vexpand", True)
+    label.set_property("hexpand", True)
     label.set_property("valign", Gtk.Align.START)
+    label.set_property("halign", Gtk.Align.START)
     label.set_property("margin", 10)
     scrolled_window.add(label)
 
@@ -130,6 +138,7 @@ def main():
 
     btn_update.set_label("Update")
     h_box.pack_end(btn_update, False, False, 0)
+    btn_update.connect("clicked", do_update, frame, label, pending_updates)
 
     btn_close = Gtk.Button.new()
     btn_close.set_label("Close")
@@ -143,6 +152,57 @@ def main():
         signal.signal(sig, signal_handler)
 
     Gtk.main()
+
+
+def do_update(btn, frame, label, updates):
+    frame.set_label(" Updating ")
+    label.set_text("")
+    log_path = os.path.join(get_shell_data_dir(), "update.log")
+    log_file = open(log_path, 'a')
+    label.set_justify(Gtk.Justification.LEFT)
+
+    for version in updates:
+        log_line(log_file, label, "[Applying {} update]\n".format(version))
+        if version == "0.2.5":
+            autostart = os.path.join(config_home, "sway", "autostart")
+            old = load_text_file(autostart).splitlines()
+            new = []
+            changed = False
+            for line in old:
+                if "autotiling" not in line:
+                    new.append(line)
+                elif "nwg-autotiling" not in line:
+                    new.append("exec_always nwg-autotiling")
+                    log_line(log_file, label, "`autotiling` replaced  with nwg-autotiling\n")
+                    changed = True
+
+            if changed:
+                save_list_to_text_file(new, autostart)
+            else:
+                log_line(log_file, label, "No change needed.\n")
+
+            # Inform about no longer needed stuff
+            # Packages
+            for item in ["lxappearance", "wdisplays", "nwg-wrapper", "autotiling"]:
+                if is_command(item):
+                    log_line(log_file, label,
+                             "The '{}' package is no longer necessary, you may uninstall it now.".format(item))
+
+            # Scripts
+            for item in ["import-gsettings", "sway-save-outputs"]:
+                if is_command(item):
+                    c = is_command(item)
+                    if c:
+                        log_line(log_file, label,
+                                 "The '{}' script is no longer necessary, you may delete it now.".format(c))
+
+            # Save shell data file
+            # shell_data = {"last-upgrade": __version__}
+            # save_json(shell_data, shell_data_file)
+
+    log_line(log_file, label, "Change log saved to {}.".format(log_path))
+    log_file.close()
+    btn.set_sensitive(False)
 
 
 if __name__ == "__main__":
