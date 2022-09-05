@@ -208,7 +208,7 @@ def screen_tab(settings, pending_updates):
         btn.set_label("Updates ({})".format(pending_updates))
         img = Gtk.Image.new_from_icon_name("nwg-shell-update", Gtk.IconSize.DIALOG)
     btn.set_image(img)
-    btn.connect("clicked", launch, "nwg-panel-config")
+    btn.connect("clicked", launch, "nwg-shell-updater")
     box.pack_start(btn, False, True, 0)
 
     lbl = Gtk.Label()
