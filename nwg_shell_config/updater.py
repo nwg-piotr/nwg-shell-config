@@ -10,6 +10,7 @@ License: MIT
 
 import os
 import signal
+import subprocess
 import sys
 
 import gi
@@ -54,6 +55,7 @@ data_home = os.getenv('XDG_DATA_HOME') if os.getenv('XDG_DATA_HOME') else os.pat
 def terminate(*args):
     if os.path.isfile(lock_file):
         os.remove(lock_file)
+    subprocess.Popen("killall -s 10 nwg-shell-config", shell=True)
     Gtk.main_quit()
 
 

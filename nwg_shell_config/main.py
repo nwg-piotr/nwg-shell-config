@@ -3,6 +3,7 @@
 # Dependencies: python-geopy i3ipc
 
 import argparse
+import signal
 
 from nwg_shell_config.tools import *
 from nwg_shell_config.ui_components import *
@@ -19,9 +20,7 @@ dir_name = os.path.dirname(__file__)
 shell_data = load_shell_data()
 print(shell_data)
 pending_updates = 0
-for v in __need_update__:
-    if v not in shell_data["updates"]:
-        pending_updates += 1
+update_btn = Gtk.Button()
 
 
 data_dir = ""
@@ -44,6 +43,28 @@ submenus = []
 current_submenu = None
 btn_apply = Gtk.Button()
 grid = Gtk.Grid()
+
+
+def check_updates():
+    global pending_updates
+    for v in __need_update__:
+        if v not in shell_data["updates"]:
+            pending_updates += 1
+    global update_btn
+    if update_btn:
+        if pending_updates > 0:
+            update_btn.set_label("Updates ({})".format(pending_updates))
+        else:
+            update_btn.set_label("Updates")
+
+
+def signal_handler(sig, frame):
+    if sig == 2 or sig == 15:
+        desc = {2: "SIGINT", 15: "SIGTERM"}
+        print("Terminated with {}".format(desc[sig]))
+        Gtk.main_quit()
+    elif sig == 10:
+        check_updates()
 
 
 def validate_workspaces(gtk_entry):
@@ -216,7 +237,7 @@ def set_up_screen_tab(*args):
     hide_submenus()
     global content
     content.destroy()
-    content = screen_tab(settings, pending_updates)
+    content, update_btn = screen_tab(settings, pending_updates)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -866,6 +887,8 @@ def main():
         # initialize missing own data files
         init_files(os.path.join(dir_name, "shell"), data_dir)
 
+    check_updates()
+
     for folder in ["nwg-look", "nwg-shell", "nwg-shell-config"]:
         src = os.path.join("/etc/skel/.local/share", folder)
         dst = os.path.join(data_home, folder)
@@ -897,6 +920,10 @@ def main():
 
     ui.window.show_all()
     hide_submenus()
+
+    catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
+    for sig in catchable_sigs:
+        signal.signal(sig, signal_handler)
 
     Gtk.main()
 

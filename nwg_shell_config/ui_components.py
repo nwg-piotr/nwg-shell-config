@@ -197,19 +197,19 @@ def screen_tab(settings, pending_updates):
     btn.connect("clicked", launch, "nwg-panel-config")
     box.pack_start(btn, False, True, 0)
 
-    btn = Gtk.Button()
-    btn.set_property("name", "app-btn")
-    btn.set_always_show_image(True)
-    btn.set_image_position(Gtk.PositionType.TOP)
+    update_btn = Gtk.Button()
+    update_btn.set_property("name", "app-btn")
+    update_btn.set_always_show_image(True)
+    update_btn.set_image_position(Gtk.PositionType.TOP)
     if pending_updates == 0:
-        btn.set_label("Updates")
+        update_btn.set_label("Updates")
         img = Gtk.Image.new_from_icon_name("nwg-shell", Gtk.IconSize.DIALOG)
     else:
-        btn.set_label("Updates ({})".format(pending_updates))
+        update_btn.set_label("Updates ({})".format(pending_updates))
         img = Gtk.Image.new_from_icon_name("nwg-shell-update", Gtk.IconSize.DIALOG)
-    btn.set_image(img)
-    btn.connect("clicked", launch, "nwg-shell-updater")
-    box.pack_start(btn, False, True, 0)
+    update_btn.set_image(img)
+    update_btn.connect("clicked", launch, "nwg-shell-updater")
+    box.pack_start(update_btn, False, True, 0)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>Desktop style</b>")
@@ -359,7 +359,7 @@ def screen_tab(settings, pending_updates):
 
     frame.show_all()
 
-    return frame
+    return frame, update_btn
 
 
 def applications_tab(settings, warn):
