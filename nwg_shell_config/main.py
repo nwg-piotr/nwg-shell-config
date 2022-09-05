@@ -48,6 +48,7 @@ grid = Gtk.Grid()
 def check_updates():
     global shell_data
     shell_data = load_shell_data()
+    print("Shell data: {}".format(shell_data))
     global pending_updates
     for v in __need_update__:
         if v not in shell_data["updates"]:
