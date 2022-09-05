@@ -52,13 +52,13 @@ def handle_keyboard(win, event):
 
 def main():
     # Try and kill already running instance, if any.
-    pid_file = os.path.join(temp_dir(), "nwg-updater.pid")
+    pid_file = os.path.join(temp_dir(), "nwg-shell-updater.pid")
     if os.path.isfile(pid_file):
         try:
             pid = int(load_text_file(pid_file))
             os.kill(pid, signal.SIGINT)
             print("Running instance killed, PID {}".format(pid))
-            sys.exit(0)
+            # sys.exit(0)
         except ProcessLookupError:
             pass
     save_string(str(os.getpid()), pid_file)
