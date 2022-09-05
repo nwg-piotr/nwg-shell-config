@@ -51,11 +51,11 @@ def check_updates():
         if v not in shell_data["updates"]:
             pending_updates += 1
     global update_btn
-    if update_btn:
-        if pending_updates > 0:
-            update_btn.set_label("Updates ({})".format(pending_updates))
-        else:
-            update_btn.set_label("Updates")
+    # if update_btn:
+    if pending_updates > 0:
+        update_btn.set_label("Updates ({})".format(pending_updates))
+    else:
+        update_btn.set_label("Updates")
 
 
 def signal_handler(sig, frame):
