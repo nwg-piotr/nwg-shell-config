@@ -38,7 +38,6 @@ current_shell_version = get_shell_version()
 # current_shell_version = "0.3.0"
 
 lock_file = os.path.join(temp_dir(), "nwg-shell-updater.lock")
-print(lock_file)
 
 
 def terminate(*args):
