@@ -46,6 +46,8 @@ grid = Gtk.Grid()
 
 
 def check_updates():
+    global shell_data
+    shell_data = load_shell_data()
     global pending_updates
     for v in __need_update__:
         if v not in shell_data["updates"]:
@@ -240,6 +242,7 @@ def set_up_screen_tab(*args):
     hide_submenus()
     global content
     content.destroy()
+    global update_btn
     content, update_btn = screen_tab(settings, pending_updates)
     grid.attach(content, 1, 0, 1, 1)
 
