@@ -37,31 +37,39 @@ shell_data = load_shell_data()
 current_shell_version = get_shell_version()
 # current_shell_version = "0.3.0"
 
+lock_file = os.path.join(temp_dir(), "nwg-shell-updater.lock")
+print(lock_file)
+
+
+def terminate(*args):
+    if os.path.isfile(lock_file):
+        os.remove(lock_file)
+    Gtk.main_quit()
+
 
 def signal_handler(sig, frame):
     if sig == 2 or sig == 15:
         desc = {2: "SIGINT", 15: "SIGTERM"}
         print("Terminated with {}".format(desc[sig]))
-        Gtk.main_quit()
+        terminate()
 
 
 def handle_keyboard(win, event):
     if event.type == Gdk.EventType.KEY_RELEASE and event.keyval == Gdk.KEY_Escape:
-        Gtk.main_quit()
+        terminate()
 
 
 def main():
-    # Try and kill already running instance, if any.
-    pid_file = os.path.join(temp_dir(), "nwg-shell-updater.pid")
-    if os.path.isfile(pid_file):
+    global lock_file
+    if os.path.isfile(lock_file):
         try:
-            pid = int(load_text_file(pid_file))
-            os.kill(pid, signal.SIGINT)
-            print("Running instance killed, PID {}".format(pid))
-            # sys.exit(0)
+            pid = int(load_text_file(lock_file))
+            # os.kill(pid, signal.SIGINT)
+            print("Running instance found, PID {}".format(pid))
+            sys.exit(0)
         except ProcessLookupError:
             pass
-    save_string(str(os.getpid()), pid_file)
+    save_string(str(os.getpid()), lock_file)
 
     print("First installed version: {}".format(shell_data["installed-version"]))
     print("Current version: {}".format(current_shell_version))
@@ -87,7 +95,7 @@ def main():
 
     window = Gtk.Window.new(Gtk.WindowType.TOPLEVEL)
 
-    window.connect('destroy', Gtk.main_quit)
+    window.connect('destroy', terminate)
     window.connect("key-release-event", handle_keyboard)
 
     box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
@@ -126,7 +134,7 @@ def main():
 
     btn_close = Gtk.Button.new()
     btn_close.set_label("Close")
-    btn_close.connect("clicked", Gtk.main_quit)
+    btn_close.connect("clicked", terminate)
     h_box.pack_end(btn_close, False, False, 6)
 
     window.show_all()
