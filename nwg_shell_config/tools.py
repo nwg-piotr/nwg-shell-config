@@ -36,10 +36,6 @@ def get_shell_data_dir():
         if home:
             data_dir = os.path.join(home, ".local/share/nwg-shell/")
 
-    if not os.path.isdir(data_dir):
-        print("Creating '{}'".format(data_dir))
-        os.makedirs(data_dir, exist_ok=True)
-
     return data_dir
 
 

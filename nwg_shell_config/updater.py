@@ -25,7 +25,9 @@ from nwg_shell_config.__about__ import __need_update__
 from gi.repository import Gtk, Gdk
 
 from nwg_shell_config.tools import temp_dir, get_data_dir, get_shell_data_dir, load_text_file, save_string, \
-    get_shell_version, is_newer, load_shell_data, save_list_to_text_file, log_line, is_command
+    get_shell_version, is_newer, load_shell_data, save_list_to_text_file, log_line, is_command, save_json
+
+from nwg_shell_config.updates import *
 
 # Shell versions that need to trigger upgrade
 need_upgrade = ["0.2.4", "0.2.5"]
@@ -35,6 +37,7 @@ updates_dir = os.path.join(dir_name, "updates")
 btn_update = Gtk.Button()
 
 shell_data = load_shell_data()
+print(shell_data)
 
 current_shell_version = get_shell_version()
 # current_shell_version = "0.3.0"
@@ -82,7 +85,7 @@ def main():
     print("Current version: {}".format(current_shell_version))
     pending_updates = []
     version_descriptions = []
-    # If shell not just installed (no updates needed)
+    # If shell not just installed, let's check updates
     if current_shell_version > shell_data["installed-version"]:
         for version in __need_update__:
             if is_newer(version, shell_data["installed-version"]) and version not in shell_data["updates"]:
@@ -91,11 +94,12 @@ def main():
 
         content = '\n'.join(version_descriptions)
 
-        if len(pending_updates) > 0:
-            print("Pending updates: {}".format(pending_updates))
-        else:
-            print("No pending updates")
+        if len(pending_updates) == 0:
+            content = '<span font-size="large">You are up to date :)</span>'
+            btn_update.set_sensitive(False)
+            print("You are up to date :)")
     else:
+        # Just installed, no check needed
         content = '<span font-size="large">You are up to date :)</span>'
         btn_update.set_sensitive(False)
         print("Just installed, nothing to do.")
@@ -166,42 +170,26 @@ def do_update(btn, frame, label, updates):
     for version in updates:
         now = dt.now()
         log_line(log_file, label, "['{}' update {}]\n".format(version, now))
-        if version == "0.2.5":
-            autostart = os.path.join(config_home, "sway", "autostart")
-            old = load_text_file(autostart).splitlines()
-            new = []
-            changed = False
-            for line in old:
-                if "autotiling" not in line:
-                    new.append(line)
-                elif "nwg-autotiling" not in line:
-                    new.append("exec_always nwg-autotiling")
-                    log_line(log_file, label, "\n`autotiling` replaced  with nwg-autotiling\n\n")
-                    changed = True
+        update_version(version, log_file, label, config_home, shell_data)
 
-            if changed:
-                save_list_to_text_file(new, autostart)
-            else:
-                log_line(log_file, label, "\nNo change needed.\n\n")
+    # Inform about no longer needed stuff
+    # Packages
+    for item in ["lxappearance", "wdisplays", "nwg-wrapper", "autotiling"]:
+        if is_command(item):
+            log_line(log_file, label,
+                     "The '{}' package is no longer necessary, you may uninstall it now.\n".format(item))
 
-            # Inform about no longer needed stuff
-            # Packages
-            for item in ["lxappearance", "wdisplays", "nwg-wrapper", "autotiling"]:
-                if is_command(item):
-                    log_line(log_file, label,
-                             "The '{}' package is no longer necessary, you may uninstall it now.\n".format(item))
+    # Scripts
+    for item in ["import-gsettings", "sway-save-outputs"]:
+        if is_command(item):
+            c = is_command(item)
+            if c:
+                log_line(log_file, label,
+                         "The '{}' script is no longer necessary, you may delete it now.\n".format(item))
 
-            # Scripts
-            for item in ["import-gsettings", "sway-save-outputs"]:
-                if is_command(item):
-                    c = is_command(item)
-                    if c:
-                        log_line(log_file, label,
-                                 "The '{}' script is no longer necessary, you may delete it now.\n".format(item))
-
-            # Save shell data file
-            # shell_data = {"last-upgrade": __version__}
-            # save_json(shell_data, shell_data_file)
+    # Save shell data file
+    # shell_data = {"last-upgrade": __version__}
+    save_json(shell_data, os.path.join(get_shell_data_dir(), "data"))
 
     log_line(log_file, label, "\nUpdate log: '{}'\n\n".format(log_path))
     log_file.close()
