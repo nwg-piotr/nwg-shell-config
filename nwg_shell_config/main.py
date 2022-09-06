@@ -57,9 +57,13 @@ def check_updates():
     global update_btn
     print("Pending updates: {}".format(pending_updates))
     if pending_updates > 0:
+        img = Gtk.Image.new_from_icon_name("nwg-shell-update", Gtk.IconSize.DIALOG)
+
         update_btn.set_label("Updates ({})".format(pending_updates))
     else:
+        img = Gtk.Image.new_from_icon_name("nwg-shell", Gtk.IconSize.DIALOG)
         update_btn.set_label("Updates")
+    update_btn.set_image(img)
 
 
 def signal_handler(sig, frame):
