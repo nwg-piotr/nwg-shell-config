@@ -28,6 +28,6 @@ def update_version(version, log_file, label, config_home, shell_data):
             log_line(log_file, label, "\nNo change needed.\n\n")
 
     if version == "0.3.0":
-        log_line(log_file, label, "\nJust wanted you to know how the new updater works. You're all done.\n\n")
+        log_line(log_file, label, "\nNothing to do in config files.\n\n")
 
     shell_data["updates"].append(version)
