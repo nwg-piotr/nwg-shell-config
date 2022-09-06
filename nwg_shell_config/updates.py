@@ -6,9 +6,6 @@ from nwg_shell_config.tools import load_text_file, log_line, save_list_to_text_f
 
 
 def update_version(version, log_file, label, config_home, shell_data):
-    if version == "0.2.4":
-        log_line(log_file, label, "\nDummy update.\n\n")
-
     if version == "0.2.5":
         autostart = os.path.join(config_home, "sway", "autostart")
         old = load_text_file(autostart).splitlines()
