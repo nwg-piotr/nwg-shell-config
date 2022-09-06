@@ -67,13 +67,13 @@ def check_updates():
 def signal_handler(sig, frame):
     if sig == 2 or sig == 15:
         desc = {2: "SIGINT", 15: "SIGTERM"}
-        print("Terminated with {}".format(desc[sig]))
+        print("terminated with {}".format(desc[sig]))
         Gtk.main_quit()
     elif sig == 10:
-        print("SIGUSR1 received")
+        print("SIGUSR1 received, checking updates")
         check_updates()
     else:
-        print("Signal {} received".format(sig))
+        print("signal {} received".format(sig))
 
 
 def validate_workspaces(gtk_entry):
