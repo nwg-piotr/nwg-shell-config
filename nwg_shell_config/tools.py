@@ -205,7 +205,7 @@ def eprint(*args, **kwargs):
 def load_shell_data():
     shell_data = load_json(os.path.join(get_shell_data_dir(), "data"))
     defaults = {
-        "installed-version": "0.1.9",
+        "installed-version": "0.0.1",
         "updates": []
     }
     for key in defaults:

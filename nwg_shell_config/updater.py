@@ -25,23 +25,18 @@ from nwg_shell_config.__about__ import __need_update__
 
 from gi.repository import Gtk, Gdk
 
-from nwg_shell_config.tools import temp_dir, get_data_dir, get_shell_data_dir, load_text_file, save_string, \
-    get_shell_version, is_newer, load_shell_data, save_list_to_text_file, log_line, is_command, save_json
+from nwg_shell_config.tools import temp_dir, get_data_dir, get_shell_data_dir, save_string, get_shell_version, \
+    is_newer, load_shell_data, is_command, save_json
 
 from nwg_shell_config.updates import *
-
-# Shell versions that need to trigger upgrade
-need_upgrade = ["0.2.4", "0.2.5"]
 
 data_dir = get_data_dir()
 updates_dir = os.path.join(dir_name, "updates")
 btn_update = Gtk.Button()
 
 shell_data = load_shell_data()
-print(shell_data)
 
 current_shell_version = get_shell_version()
-# current_shell_version = "0.3.0"
 
 lock_file = os.path.join(temp_dir(), "nwg-shell-updater.lock")
 
@@ -191,7 +186,6 @@ def do_update(btn, frame, label, updates):
                          "The '{}' script is no longer necessary, you may delete it now.\n".format(item))
 
     # Save shell data file
-    # shell_data = {"last-upgrade": __version__}
     save_json(shell_data, os.path.join(get_shell_data_dir(), "data"))
 
     log_line(log_file, label, "\nUpdate log: '{}'\n\n".format(log_path))
