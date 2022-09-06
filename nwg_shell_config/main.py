@@ -48,14 +48,12 @@ grid = Gtk.Grid()
 def check_updates():
     global shell_data
     shell_data = load_shell_data()
-    print("Shell data: {}".format(shell_data))
     global pending_updates
     pending_updates = 0
     for v in __need_update__:
         if v not in shell_data["updates"]:
             pending_updates += 1
     global update_btn
-    print("Pending updates: {}".format(pending_updates))
     if pending_updates > 0:
         img = Gtk.Image.new_from_icon_name("nwg-shell-update", Gtk.IconSize.DIALOG)
 
