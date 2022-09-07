@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 """
-nwg-shell update window script
+nwg-shell graphical updater script
+
 Copyright (c) 2022 Piotr Miller
 e-mail: nwg.piotr@gmail.com
 Project: https://github.com/nwg-piotr/nwg-shell
@@ -47,7 +48,7 @@ config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else 
 def terminate(*args):
     if os.path.isfile(lock_file):
         os.remove(lock_file)
-    # Trigger 'Update' button refresh
+    # trigger 'Update' button refresh in the config utility
     subprocess.Popen("killall -s 10 nwg-shell-config", shell=True)
     Gtk.main_quit()
 

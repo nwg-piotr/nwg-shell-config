@@ -203,11 +203,17 @@ def eprint(*args, **kwargs):
 
 
 def load_shell_data():
-    shell_data = load_json(os.path.join(get_shell_data_dir(), "data"))
+    shell_data_file = os.path.join(get_shell_data_dir(), "data")
+    shell_data = load_json(shell_data_file)
     defaults = {
-        "installed-version": "0.0.1",
+        "installed-version": get_shell_version(),
         "updates": []
     }
+    if not shell_data:
+        shell_data = defaults
+        save_json(shell_data, shell_data_file)
+        eprint("ERROR: '{}' file not found or corrupted. Initializing from defaults.".format(shell_data_file))
+
     for key in defaults:
         if key not in shell_data:
             shell_data[key] = defaults[key]
