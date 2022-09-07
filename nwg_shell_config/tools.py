@@ -213,6 +213,7 @@ def load_shell_data():
         shell_data = defaults.copy()
         save_json(shell_data, shell_data_file)
         eprint("ERROR: '{}' file not found or corrupted. Initializing from defaults.".format(shell_data_file))
+        eprint("The update history has been lost!")
 
     for key in defaults:
         if key not in shell_data:
