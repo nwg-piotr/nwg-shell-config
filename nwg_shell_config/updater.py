@@ -167,20 +167,24 @@ def do_update(btn, frame, label, updates):
         log_line(log_file, label, "['{}' update {}]\n".format(version, now))
         update_version(version, log_file, label, config_home, shell_data)
 
-    # Inform about no longer needed stuff
-    # Packages
+    # Delete unused scripts
+    home = os.getenv("HOME")
+    paths = [os.path.join(home, "bin"), os.path.join(home, ".local", "bin")]
+    scripts = ["import-gsettings", "sway-save-outputs", "screenshot", "sway-check-updates", "sway-update"]
+    for path in paths:
+        for script in scripts:
+            script_path = os.path.join(home, path, script)
+            if os.path.isfile(script_path):
+                log_line(log_file, label, "Deleted '{}' script.\n".format(
+                    os.path.join(path, script)))
+
+    log_line(log_file, label, "\n")
+
+    # Inform about no longer needed packages
     for item in ["lxappearance", "wdisplays", "nwg-wrapper", "autotiling"]:
         if is_command(item):
             log_line(log_file, label,
                      "The '{}' package is no longer necessary, you may uninstall it now.\n".format(item))
-
-    # Scripts
-    for item in ["import-gsettings", "sway-save-outputs"]:
-        if is_command(item):
-            c = is_command(item)
-            if c:
-                log_line(log_file, label,
-                         "The '{}' script is no longer necessary, you may delete it now.\n".format(item))
 
     # Save shell data file
     save_json(shell_data, os.path.join(get_shell_data_dir(), "data"))

@@ -1,5 +1,11 @@
-<span font-size="large"><b>nwg-shell v0.3.0</b> (one day)</span>
+<span font-size="large"><b>Welcome to the new updater</b></span>
 
-This release brings the new, graphical updater. It changes nothing in your config files. Just wanted you to know how the stuff works now.
+All actual nwg-shell software updates are handled by installing new versions of the packages. However, sometimes we also need to update configuration files, and that's what this updater is for. Since the 0.3.0 release, it replaces the former `nwg-shell-installer -u` CLI command.
 
-<b>Press the 'Update' button and you're all done</b>.
+<span font-size="large"><b>nwg-shell v0.3.0</b> (2022.09.07)</span>
+
+This update changes nothing in your config files.
+
+As of version 0.3.0, the helper scripts are installed to `/usr/local/bin`. Old files from your home directory will be deleted.
+
+<b>Press the 'Update' to continue</b>.
