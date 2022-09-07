@@ -497,7 +497,7 @@ def save_includes():
     save_list_to_text_file(variables, os.path.join(config_home, "sway/variables"))
 
     # ~/.config/sway/autostart
-    autostart = []
+    autostart = ["exec rm {}".format(os.path.join(temp_dir(), "nwg-shell-check-update.lock"))]
     if settings["night-on"]:
         cmd_night = "exec wlsunset"
         if settings["night-lat"]:
