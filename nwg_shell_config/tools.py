@@ -210,10 +210,15 @@ def load_shell_data():
         "updates": []
     }
     if not shell_data:
-        shell_data = defaults.copy()
+        shell_data = defaults
         save_json(shell_data, shell_data_file)
         eprint("ERROR: '{}' file not found or corrupted. Initializing from defaults.".format(shell_data_file))
         eprint("The update history has been lost!")
+
+    # We no longer need the pre-v0.3.0 "last-upgrade" key: delete it if found
+    if "last-upgrade" in shell_data:
+        del shell_data["last-upgrade"]
+        save_json(shell_data, shell_data_file)
 
     for key in defaults:
         if key not in shell_data:
