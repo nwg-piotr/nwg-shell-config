@@ -40,8 +40,6 @@ btn_update = Gtk.Button()
 
 shell_data = load_shell_data()
 
-current_shell_version = get_shell_version()
-
 lock_file = os.path.join(temp_dir(), "nwg-shell-updater.lock")
 
 config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(os.getenv("HOME"),
@@ -69,6 +67,7 @@ def handle_keyboard(win, event):
 
 
 def main():
+    current_shell_version = get_shell_version()
     global lock_file
     if os.path.isfile(lock_file):
         try:
