@@ -32,7 +32,10 @@ from nwg_shell_config.tools import temp_dir, get_data_dir, get_shell_data_dir, s
 from nwg_shell_config.updates import *
 
 data_dir = get_data_dir()
+
+# pango-formatted descriptions
 updates_dir = os.path.join(dir_name, "updates")
+
 btn_update = Gtk.Button()
 
 shell_data = load_shell_data()
