@@ -215,8 +215,11 @@ def load_shell_data():
         eprint("ERROR: '{}' file not found or corrupted. Initializing from defaults.".format(shell_data_file))
         eprint("The update history has been lost!")
 
-    # We no longer need the pre-v0.3.0 "last-upgrade" key: delete it if found
+    # Upgrade v0.2.5 -> v0.3.0
+    # 1. If the "last-upgrade" key found, let's use the value as the "installed-version".
+    # 2. We no longer need the pre-v0.3.0 "last-upgrade" key: delete it if found.
     if "last-upgrade" in shell_data:
+        shell_data["installed-version"] = shell_data["last-upgrade"]
         del shell_data["last-upgrade"]
         save_json(shell_data, shell_data_file)
 
