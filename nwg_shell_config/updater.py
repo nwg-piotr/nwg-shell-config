@@ -178,7 +178,7 @@ def do_update(btn, frame, label, updates):
         for script in scripts:
             script_path = os.path.join(home, path, script)
             if os.path.isfile(script_path):
-                # os.remove(script_path) TODO uncomment
+                os.remove(script_path)
                 log_line(log_file, label, "Deleted '{}' script.\n".format(os.path.join(path, script)))
 
     log_line(log_file, label, "\n")
