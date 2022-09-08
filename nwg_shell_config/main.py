@@ -3,10 +3,11 @@
 # Dependencies: python-geopy i3ipc
 
 import argparse
+import signal
 
 from nwg_shell_config.tools import *
 from nwg_shell_config.ui_components import *
-from nwg_shell_config.__about__ import __version__
+from nwg_shell_config.__about__ import __version__, __need_update__
 import gi
 
 gi.require_version('Gdk', '3.0')
@@ -15,6 +16,12 @@ from gi.repository import Gdk, GLib
 gi.require_version('Gtk', '3.0')
 
 dir_name = os.path.dirname(__file__)
+
+shell_data = load_shell_data()
+print(shell_data)
+pending_updates = 0
+update_btn = Gtk.Button()
+
 
 data_dir = ""
 config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
@@ -36,6 +43,37 @@ submenus = []
 current_submenu = None
 btn_apply = Gtk.Button()
 grid = Gtk.Grid()
+
+
+def check_updates():
+    global shell_data
+    shell_data = load_shell_data()
+    global pending_updates
+    pending_updates = 0
+    for v in __need_update__:
+        if v not in shell_data["updates"]:
+            pending_updates += 1
+    global update_btn
+    if pending_updates > 0:
+        img = Gtk.Image.new_from_icon_name("nwg-shell-update", Gtk.IconSize.DIALOG)
+
+        update_btn.set_label("Updates ({})".format(pending_updates))
+    else:
+        img = Gtk.Image.new_from_icon_name("nwg-shell", Gtk.IconSize.DIALOG)
+        update_btn.set_label("Updates")
+    update_btn.set_image(img)
+
+
+def signal_handler(sig, frame):
+    if sig == 2 or sig == 15:
+        desc = {2: "SIGINT", 15: "SIGTERM"}
+        print("terminated with {}".format(desc[sig]))
+        Gtk.main_quit()
+    elif sig == 10:
+        print("SIGUSR1 received, checking updates")
+        check_updates()
+    else:
+        print("signal {} received".format(sig))
 
 
 def validate_workspaces(gtk_entry):
@@ -208,7 +246,8 @@ def set_up_screen_tab(*args):
     hide_submenus()
     global content
     content.destroy()
-    content = screen_tab(settings)
+    global update_btn
+    content, update_btn = screen_tab(settings, pending_updates)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -458,7 +497,7 @@ def save_includes():
     save_list_to_text_file(variables, os.path.join(config_home, "sway/variables"))
 
     # ~/.config/sway/autostart
-    autostart = []
+    autostart = ["exec rm {}".format(os.path.join(temp_dir(), "nwg-shell-check-update.lock"))]
     if settings["night-on"]:
         cmd_night = "exec wlsunset"
         if settings["night-lat"]:
@@ -858,6 +897,8 @@ def main():
         # initialize missing own data files
         init_files(os.path.join(dir_name, "shell"), data_dir)
 
+    check_updates()
+
     for folder in ["nwg-look", "nwg-shell", "nwg-shell-config"]:
         src = os.path.join("/etc/skel/.local/share", folder)
         dst = os.path.join(data_home, folder)
@@ -889,6 +930,10 @@ def main():
 
     ui.window.show_all()
     hide_submenus()
+
+    catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
+    for sig in catchable_sigs:
+        signal.signal(sig, signal_handler)
 
     Gtk.main()
 

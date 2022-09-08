@@ -25,6 +25,20 @@ def get_data_dir():
     return data_dir
 
 
+def get_shell_data_dir():
+    data_dir = ""
+    home = os.getenv("HOME")
+    xdg_data_home = os.getenv("XDG_DATA_HOME")
+
+    if xdg_data_home:
+        data_dir = os.path.join(xdg_data_home, "nwg-shell/")
+    else:
+        if home:
+            data_dir = os.path.join(home, ".local/share/nwg-shell/")
+
+    return data_dir
+
+
 def temp_dir():
     if os.getenv("TMPDIR"):
         return os.getenv("TMPDIR")
@@ -151,16 +165,6 @@ def save_list_to_text_file(data, file_path):
     text_file.close()
 
 
-def distro_id():
-    r = load_text_file("/etc/os-release")
-    if r:
-        for line in r.splitlines():
-            if "ID=" in line:
-                return line.lstrip("ID=")
-
-    return ""
-
-
 def list_background_dirs():
     files_in_main = False
     paths = []
@@ -196,3 +200,70 @@ def check_key(dictionary, key, default_value):
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
+
+
+def load_shell_data():
+    shell_data_file = os.path.join(get_shell_data_dir(), "data")
+    shell_data = load_json(shell_data_file)
+    defaults = {
+        "installed-version": get_shell_version(),
+        "updates": []
+    }
+    if not shell_data:
+        shell_data = defaults
+        save_json(shell_data, shell_data_file)
+        eprint("ERROR: '{}' file not found or corrupted. Initializing from defaults.".format(shell_data_file))
+        eprint("The update history has been lost!")
+
+    # We no longer need the pre-v0.3.0 "last-upgrade" key: delete it if found
+    if "last-upgrade" in shell_data:
+        del shell_data["last-upgrade"]
+        save_json(shell_data, shell_data_file)
+
+    for key in defaults:
+        if key not in shell_data:
+            shell_data[key] = defaults[key]
+
+    return shell_data
+
+
+def get_shell_version():
+    lines = subprocess.check_output("nwg-shell -v".split()).decode('utf-8').splitlines()
+    return lines[0].split()[2]
+
+
+def is_newer(string_new, string_existing):
+    """
+    Compares versions in format 'major.minor.patch' (just numbers allowed).
+    :param string_new: new version to compare with existing one
+    :param string_existing: existing version
+    :return: True if new is newer then existing
+    """
+    new = major_minor_path(string_new)
+    existing = major_minor_path(string_existing)
+    if new and existing:
+        if new[0] > existing[0]:
+            return True
+        elif new[1] > existing[1] and new[0] >= existing[0]:
+            return True
+        elif new[2] > existing[2] and new[0] >= existing[0] and new[1] >= existing[1]:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+
+def major_minor_path(string):
+    parts = string.split(".")
+    if len(parts) != 3:
+        return None
+    try:
+        return int(parts[0]), int(parts[1]), int(parts[2])
+    except:
+        return None
+
+
+def log_line(file, label, line):
+    label.set_markup(label.get_text() + line)
+    file.write(line)

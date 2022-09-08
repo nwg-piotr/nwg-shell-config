@@ -9,12 +9,12 @@ def read(f_name):
 
 setup(
     name='nwg-shell-config',
-    version='0.3.11',
+    version='0.3.12',
     description='nwg-shell configuration utility',
     packages=find_packages(),
     include_package_data=True,
     package_data={
-        "": ["glade/*", "shell/*"]
+        "": ["glade/*", "shell/*", "updates/*"]
     },
     url='https://github.com/nwg-piotr/nwg-shell-config',
     license='MIT',
@@ -27,7 +27,8 @@ setup(
             'nwg-shell-config = nwg_shell_config.main:main',
             'nwg-lock = nwg_shell_config.locker:main',
             'nwg-shell-help = nwg_shell_config.help:main',
-            'nwg-autotiling = nwg_shell_config.autotiling:main'
+            'nwg-autotiling = nwg_shell_config.autotiling:main',
+            'nwg-shell-updater = nwg_shell_config.updater:main'
         ]
     }
 )
