@@ -6,6 +6,6 @@ All actual nwg-shell software updates are handled by installing new versions of 
 
 This update changes nothing in your config files.
 
-As of nwg-shell 0.3.0, all the helper scripts have been moved to `/usr/local/bin`, to simplify the installation process. Old files will be deleted from your home directory.
+As of the nwg-shell 0.3.0 version, all the helper scripts have been moved to `/usr/local/bin`, to simplify the installation process. Old files will be deleted from your home directory.
 
 <b>Press the 'Update' button to continue</b>.
