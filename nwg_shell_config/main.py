@@ -51,7 +51,7 @@ def check_updates():
     global pending_updates
     pending_updates = 0
     for v in __need_update__:
-        if v not in shell_data["updates"]:
+        if v not in shell_data["updates"] and is_newer(v, shell_data["installed-version"]):
             pending_updates += 1
     global update_btn
     if pending_updates > 0:
