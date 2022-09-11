@@ -294,7 +294,7 @@ def set_local_wallpaper():
             gtklock_cmd = "gtklock"
             if settings["gtklock-userinfo"]:
                 gtklock_cmd += " -m userinfo-module"
-            if settings["powerbar-userinfo"]:
+            if settings["gtklock-powerbar"]:
                 gtklock_cmd += " -m powerbar-module"
 
             subprocess.Popen('{} -S -H -T 10 -i -b {} && kill -n 15 {}'.format(gtklock_cmd, p, pid), shell=True)
