@@ -1045,12 +1045,21 @@ def lockscreen_tab(settings):
     lbl.set_property("margin-top", 6)
     grid.attach(lbl, 0, 11, 1, 1)
 
+    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+    grid.attach(box, 1, 11, 1, 1)
     cb_gtklock_userinfo = Gtk.CheckButton.new_with_label("userinfo")
     cb_gtklock_userinfo.set_active(settings["gtklock-userinfo"])
     cb_gtklock_userinfo.connect("toggled", set_key_from_checkbox, settings, "gtklock-userinfo")
     cb_gtklock_userinfo.set_tooltip_text("For this module to work, you need to set the user info first."
-                                         "\nYou may use the `mugshot` or `SwaySettings` package.")
-    grid.attach(cb_gtklock_userinfo, 1, 11, 1, 1)
+                                         "\nYou may use the `mugshot` or `SwaySettings` package."
+                                         "\nYou also need the `gtklock-userinfo-module` package.")
+    box.pack_start(cb_gtklock_userinfo, False, False, 0)
+
+    cb_gtklock_powerbar = Gtk.CheckButton.new_with_label("powerbar")
+    cb_gtklock_powerbar.set_active(settings["gtklock-powerbar"])
+    cb_gtklock_powerbar.connect("toggled", set_key_from_checkbox, settings, "gtklock-powerbar")
+    cb_gtklock_powerbar.set_tooltip_text("For this module to work, you need the `gtklock-powerbar-module` package.")
+    box.pack_start(cb_gtklock_powerbar, False, False, 0)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>Local background sources</b>")

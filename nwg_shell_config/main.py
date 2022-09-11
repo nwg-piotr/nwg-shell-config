@@ -717,6 +717,7 @@ def load_settings():
         "help-layer-shell": True,
         "help-keyboard": False,
         "gtklock-userinfo": False,
+        "gtklock-powerbar": False,
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")

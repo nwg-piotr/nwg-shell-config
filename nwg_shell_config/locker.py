@@ -47,7 +47,8 @@ defaults = {
     "unsplash-width": 1920,
     "unsplash-height": 1080,
     "unsplash-keywords": ["nature", "water", "landscape"],
-    "gtklock-userinfo": False
+    "gtklock-userinfo": False,
+    "gtklock-powerbar": False
 }
 
 
@@ -252,6 +253,8 @@ def set_remote_wallpaper():
                 gtklock_cmd = "gtklock"
                 if settings["gtklock-userinfo"]:
                     gtklock_cmd += " -m userinfo-module"
+                if settings["gtklock-powerbar"]:
+                    gtklock_cmd += " -m powerbar-module"
 
                 subprocess.Popen('{} -S -H -T 10 -i -b {} && kill -n 15 {}'.format(gtklock_cmd, wallpaper, pid),
                                  shell=True)
@@ -267,9 +270,9 @@ def set_remote_wallpaper():
 
 
 def set_local_wallpaper():
-    if settings["lockscreen-playerctl"] and get_player_status() in ["Playing", "Paused"]:
-        global pctl
-        pctl = PlayerctlWindow()
+    global pctl
+    pctl = PlayerctlWindow() if settings["lockscreen-playerctl"] and get_player_status() in ["Playing",
+                                                                                             "Paused"] else None
 
     paths = []
     dirs = settings["background-dirs"].copy()
@@ -287,10 +290,12 @@ def set_local_wallpaper():
         elif settings["lockscreen-locker"] == "gtklock":
             subprocess.call("pkill -f gtklock", shell=True)
 
-            # This will need more code when new gtklock modules appear
+            # This will need more code when we have a number of gtklock modules
             gtklock_cmd = "gtklock"
             if settings["gtklock-userinfo"]:
                 gtklock_cmd += " -m userinfo-module"
+            if settings["powerbar-userinfo"]:
+                gtklock_cmd += " -m powerbar-module"
 
             subprocess.Popen('{} -S -H -T 10 -i -b {} && kill -n 15 {}'.format(gtklock_cmd, p, pid), shell=True)
     else:

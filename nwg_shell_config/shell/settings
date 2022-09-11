@@ -74,5 +74,6 @@
   "help-layer-shell": true,
   "help-keyboard": false,
   "gtklock-userinfo": false,
+  "gtklock-powerbar": false,
   "last-upgrade-check": 0
 }
