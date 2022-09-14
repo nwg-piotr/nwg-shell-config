@@ -19,6 +19,8 @@ from gi.repository import Gtk, Gdk, GLib, GtkLayerShell
 
 from nwg_shell_config.tools import get_data_dir, temp_dir, load_json, load_text_file, save_string
 
+config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(os.getenv("HOME"),
+                                                                                             ".config/")
 data_dir = get_data_dir()
 tmp_dir = temp_dir()
 settings = load_json(os.path.join(data_dir, "settings"))
@@ -27,6 +29,7 @@ pid = os.getpid()
 pctl = None
 
 defaults = {
+    "panel-preset": "preset-0",
     "lockscreen-use-settings": True,
     "lockscreen-locker": "swaylock",  # swaylock | gtklock
     "lockscreen-background-source": "local",  # unsplash | local
@@ -256,6 +259,8 @@ def set_remote_wallpaper():
                 if settings["gtklock-powerbar"]:
                     gtklock_cmd += " -m powerbar-module"
 
+                print(settings)
+
                 subprocess.Popen('{} -S -H -T 10 -i -b {} && kill -n 15 {}'.format(gtklock_cmd, wallpaper, pid),
                                  shell=True)
 
@@ -296,6 +301,18 @@ def set_local_wallpaper():
                 gtklock_cmd += " -m userinfo-module"
             if settings["gtklock-powerbar"]:
                 gtklock_cmd += " -m powerbar-module"
+
+            # gtklock configs & style sheets
+            if settings["panel-preset"]:
+                gtklock_config_dir = os.path.join(config_home, "gtklock")
+                config_file = os.path.join(gtklock_config_dir, settings["panel-preset"])
+
+                if os.path.isfile(config_file):
+                    gtklock_cmd += " -c {}".format(config_file)
+                css_file = os.path.join(gtklock_config_dir, "{}.css".format(settings["panel-preset"]))
+
+                if os.path.isfile(css_file):
+                    gtklock_cmd += " -s {}".format(css_file)
 
             subprocess.Popen('{} -S -H -T 10 -i -b {} && kill -n 15 {}'.format(gtklock_cmd, p, pid), shell=True)
     else:
