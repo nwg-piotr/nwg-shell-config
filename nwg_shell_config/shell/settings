@@ -75,5 +75,7 @@
   "help-keyboard": false,
   "gtklock-userinfo": false,
   "gtklock-powerbar": false,
+  "gtklock-reboot-command": "systemctl reboot",
+  "gtklock-poweroff-command": "systemctl -i poweroff",
   "last-upgrade-check": 0
 }

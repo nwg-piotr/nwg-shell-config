@@ -1040,28 +1040,6 @@ def lockscreen_tab(settings):
     entry_b4_sleep.connect("changed", set_from_entry, settings, "before-sleep")
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>gtklock modules</b>")
-    lbl.set_property("halign", Gtk.Align.START)
-    lbl.set_property("margin-top", 6)
-    grid.attach(lbl, 0, 11, 1, 1)
-
-    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
-    grid.attach(box, 1, 11, 1, 1)
-    cb_gtklock_userinfo = Gtk.CheckButton.new_with_label("userinfo")
-    cb_gtklock_userinfo.set_active(settings["gtklock-userinfo"])
-    cb_gtklock_userinfo.connect("toggled", set_key_from_checkbox, settings, "gtklock-userinfo")
-    cb_gtklock_userinfo.set_tooltip_text("For this module to work, you need to set the user info first."
-                                         "\nYou may use the `mugshot` or `SwaySettings` package."
-                                         "\nYou also need the `gtklock-userinfo-module` package.")
-    box.pack_start(cb_gtklock_userinfo, False, False, 0)
-
-    cb_gtklock_powerbar = Gtk.CheckButton.new_with_label("powerbar")
-    cb_gtklock_powerbar.set_active(settings["gtklock-powerbar"])
-    cb_gtklock_powerbar.connect("toggled", set_key_from_checkbox, settings, "gtklock-powerbar")
-    cb_gtklock_powerbar.set_tooltip_text("For this module to work, you need the `gtklock-powerbar-module` package.")
-    box.pack_start(cb_gtklock_powerbar, False, False, 0)
-
-    lbl = Gtk.Label()
     lbl.set_markup("<b>Local background sources</b>")
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 2, 0, 4, 1)
@@ -1195,6 +1173,70 @@ def lockscreen_tab(settings):
                 # Prevent settings from exporting
                 cb_lockscreen_use_settings.set_sensitive(False)
                 break
+
+    frame.show_all()
+
+    return frame
+
+
+def gtklock_tab(settings):
+    frame = Gtk.Frame()
+    frame.set_label("  Common: gtklock  ")
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 6)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>Modules</b>")
+    lbl.set_property("halign", Gtk.Align.START)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+    grid.attach(box, 1, 2, 1, 1)
+    cb_gtklock_userinfo = Gtk.CheckButton.new_with_label("userinfo")
+    cb_gtklock_userinfo.set_active(settings["gtklock-userinfo"])
+    cb_gtklock_userinfo.connect("toggled", set_key_from_checkbox, settings, "gtklock-userinfo")
+    cb_gtklock_userinfo.set_tooltip_text("For this module to work, you need to set the user info first."
+                                         "\nYou may use the `mugshot` or `SwaySettings` package."
+                                         "\nYou also need the `gtklock-userinfo-module` package.")
+    box.pack_start(cb_gtklock_userinfo, False, False, 0)
+
+    cb_gtklock_powerbar = Gtk.CheckButton.new_with_label("powerbar")
+    cb_gtklock_powerbar.set_active(settings["gtklock-powerbar"])
+    cb_gtklock_powerbar.connect("toggled", set_key_from_checkbox, settings, "gtklock-powerbar")
+    cb_gtklock_powerbar.set_tooltip_text("For this module to work, you need the `gtklock-powerbar-module` package.")
+    box.pack_start(cb_gtklock_powerbar, False, False, 0)
+
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>Power menu</b>")
+    lbl.set_property("halign", Gtk.Align.START)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    lbl = Gtk.Label.new("Reboot:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    entry_layout = Gtk.Entry()
+    entry_layout.set_tooltip_text("Layout of the keyboard like 'us' or 'de'.\nMultiple layouts can be specified\n"
+                                  "by separating them with commas.")
+    entry_layout.set_text(settings["gtklock-reboot-command"])
+    entry_layout.connect("changed", set_from_entry, settings, "gtklock-reboot-command")
+    grid.attach(entry_layout, 1, 4, 1, 1)
+
+    lbl = Gtk.Label.new("Power off:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 5, 1, 1)
+
+    entry_layout = Gtk.Entry()
+    entry_layout.set_tooltip_text("Layout of the keyboard like 'us' or 'de'.\nMultiple layouts can be specified\n"
+                                  "by separating them with commas.")
+    entry_layout.set_text(settings["gtklock-poweroff-command"])
+    entry_layout.connect("changed", set_from_entry, settings, "gtklock-poweroff-command")
+    grid.attach(entry_layout, 1, 5, 1, 1)
 
     frame.show_all()
 

@@ -125,6 +125,10 @@ def side_menu():
     row.eb.connect("button-press-event", set_up_lockscreen_tab)
     list_box.add(row)
 
+    row = SideMenuRow("Gtklock")
+    row.eb.connect("button-press-event", set_up_gtklock_tab)
+    list_box.add(row)
+
     row = SideMenuRow("Applications")
     row.eb.connect("button-press-event", set_up_applications_tab)
     list_box.add(row)
@@ -288,6 +292,14 @@ def set_up_lockscreen_tab(*args):
     global content
     content.destroy()
     content = lockscreen_tab(settings)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_gtklock_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = gtklock_tab(settings)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -718,6 +730,8 @@ def load_settings():
         "help-keyboard": False,
         "gtklock-userinfo": False,
         "gtklock-powerbar": False,
+        "gtklock-reboot-command": "systemctl reboot",
+        "gtklock-poweroff-command": "systemctl -i poweroff",
         "last-upgrade-check": 0
     }
     settings_file = os.path.join(data_dir, "settings")
