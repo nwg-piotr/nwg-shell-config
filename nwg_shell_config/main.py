@@ -387,8 +387,13 @@ class GUI(object):
         global grid
         grid = builder.get_object("grid")
 
+        scrolled_window = Gtk.ScrolledWindow.new(None, None)
+        scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scrolled_window.set_propagate_natural_height(True)
+        grid.attach(scrolled_window, 0, 0, 1, 1)
+
         self.menu = side_menu()
-        grid.attach(self.menu, 0, 0, 1, 1)
+        scrolled_window.add(self.menu)
 
         self.version = builder.get_object("version-label")
         self.version.set_text("v{}".format(__version__))
