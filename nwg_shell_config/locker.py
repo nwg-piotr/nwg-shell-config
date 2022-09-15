@@ -50,6 +50,8 @@ defaults = {
     "unsplash-width": 1920,
     "unsplash-height": 1080,
     "unsplash-keywords": ["nature", "water", "landscape"],
+    "gtklock-time-format": "%H:%M:%S",
+    "gtklock-idle-timeout": 10,
     "gtklock-userinfo": False,
     "gtklock-powerbar": False
 }
@@ -301,6 +303,8 @@ def set_local_wallpaper():
                 gtklock_cmd += " -m userinfo-module"
             if settings["gtklock-powerbar"]:
                 gtklock_cmd += " -m powerbar-module"
+            if settings["gtklock-time-format"]:
+                gtklock_cmd += " --time-format '{}'".format(settings["gtklock-time-format"])
 
             # gtklock style sheets
             if settings["panel-preset"]:
@@ -310,7 +314,9 @@ def set_local_wallpaper():
                 if os.path.isfile(css_file):
                     gtklock_cmd += " -s {}".format(css_file)
 
-            subprocess.Popen('{} -S -H -T 10 -i -b {} && kill -n 15 {}'.format(gtklock_cmd, p, pid), shell=True)
+            subprocess.Popen(
+                '{} -S -H -T {} -i -b {} && kill -n 15 {}'.format(gtklock_cmd, settings["gtklock-idle-timeout"], p,
+                                                                  pid), shell=True)
     else:
         print("No image paths found")
 

@@ -741,6 +741,8 @@ def load_settings():
         "help-keyboard": False,
         "gtklock-userinfo": False,
         "gtklock-powerbar": False,
+        "gtklock-time-format": "%H:%M:%S",
+        "gtklock-idle-timeout": 10,
         "gtklock-reboot-command": "systemctl reboot",
         "gtklock-poweroff-command": "systemctl -i poweroff",
         "last-upgrade-check": 0

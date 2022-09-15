@@ -1221,8 +1221,7 @@ def gtklock_tab(settings):
     grid.attach(lbl, 0, 4, 1, 1)
 
     entry_layout = Gtk.Entry()
-    entry_layout.set_tooltip_text("Layout of the keyboard like 'us' or 'de'.\nMultiple layouts can be specified\n"
-                                  "by separating them with commas.")
+    entry_layout.set_tooltip_text("Command to reboot the computer")
     entry_layout.set_text(settings["gtklock-reboot-command"])
     entry_layout.connect("changed", set_from_entry, settings, "gtklock-reboot-command")
     grid.attach(entry_layout, 1, 4, 1, 1)
@@ -1231,12 +1230,36 @@ def gtklock_tab(settings):
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 5, 1, 1)
 
-    entry_layout = Gtk.Entry()
-    entry_layout.set_tooltip_text("Layout of the keyboard like 'us' or 'de'.\nMultiple layouts can be specified\n"
-                                  "by separating them with commas.")
-    entry_layout.set_text(settings["gtklock-poweroff-command"])
-    entry_layout.connect("changed", set_from_entry, settings, "gtklock-poweroff-command")
-    grid.attach(entry_layout, 1, 5, 1, 1)
+    entry_gtklock_poweroff_command = Gtk.Entry()
+    entry_gtklock_poweroff_command.set_tooltip_text("Command to power off the computer")
+    entry_gtklock_poweroff_command.set_text(settings["gtklock-poweroff-command"])
+    entry_gtklock_poweroff_command.connect("changed", set_from_entry, settings, "gtklock-poweroff-command")
+    grid.attach(entry_gtklock_poweroff_command, 1, 5, 1, 1)
+
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>Other</b>")
+    lbl.set_property("halign", Gtk.Align.START)
+    grid.attach(lbl, 0, 6, 1, 1)
+
+    lbl = Gtk.Label.new("Time format:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 7, 1, 1)
+
+    entry_time_format = Gtk.Entry()
+    entry_time_format.set_tooltip_text("See 'man date' for format details")
+    entry_time_format.set_text(settings["gtklock-time-format"])
+    entry_time_format.connect("changed", set_from_entry, settings, "gtklock-time-format")
+    grid.attach(entry_time_format, 1, 7, 1, 1)
+
+    lbl = Gtk.Label.new("Idle timeout:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 8, 1, 1)
+
+    sb_gtklock_idle_timeout = Gtk.SpinButton.new_with_range(5, 3600, 1)
+    sb_gtklock_idle_timeout.set_value(settings["gtklock-idle-timeout"])
+    sb_gtklock_idle_timeout.connect("value-changed", set_int_from_spinbutton, settings, "gtklock-idle-timeout")
+    sb_gtklock_idle_timeout.set_tooltip_text("Idle timeout in seconds")
+    grid.attach(sb_gtklock_idle_timeout, 1, 8, 1, 1)
 
     frame.show_all()
 
