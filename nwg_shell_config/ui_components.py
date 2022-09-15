@@ -1547,6 +1547,62 @@ def notification_tab(preset, preset_name):
     return frame
 
 
+def gtklock_preset_tab(preset, preset_name):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: gtklock  ".format(preset_name))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    lbl = Gtk.Label.new("Userinfo module:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+    grid.attach(box, 1, 1, 3, 1)
+
+    cb_userinfo_round_image = Gtk.CheckButton.new_with_label("round image")
+    cb_userinfo_round_image.set_active(preset["gtklock-userinfo-round-image"])
+    cb_userinfo_round_image.connect("toggled", set_from_checkbutton, preset, "gtklock-userinfo-round-image")
+    # cb_userinfo_round_image.set_tooltip_text("User avatar shape")
+    box.pack_start(cb_userinfo_round_image, False, False, 0)
+
+    cb_userinfo_vertical_layout = Gtk.CheckButton.new_with_label("vertical layout")
+    cb_userinfo_vertical_layout.set_active(preset["gtklock-userinfo-vertical-layout"])
+    cb_userinfo_vertical_layout.connect("toggled", set_from_checkbutton, preset, "gtklock-userinfo-vertical-layout")
+    box.pack_start(cb_userinfo_vertical_layout, False, False, 0)
+
+    cb_userinfo_under_clock = Gtk.CheckButton.new_with_label("under clock")
+    cb_userinfo_under_clock.set_active(preset["gtklock-userinfo-under-clock"])
+    cb_userinfo_under_clock.connect("toggled", set_from_checkbutton, preset, "gtklock-userinfo-under-clock")
+    box.pack_start(cb_userinfo_under_clock, False, False, 0)
+
+    lbl = Gtk.Label.new("Powerbar module:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+    grid.attach(box, 1, 2, 3, 1)
+
+    cb_powerbar_show_labels = Gtk.CheckButton.new_with_label("show labels")
+    cb_powerbar_show_labels.set_active(preset["gtklock-powerbar-show-labels"])
+    cb_powerbar_show_labels.connect("toggled", set_from_checkbutton, preset, "gtklock-powerbar-show-labels")
+    box.pack_start(cb_powerbar_show_labels, False, False, 0)
+
+    cb_powerbar_linked_buttons = Gtk.CheckButton.new_with_label("linked buttons")
+    cb_powerbar_linked_buttons.set_active(preset["gtklock-powerbar-linked-buttons"])
+    cb_powerbar_linked_buttons.connect("toggled", set_from_checkbutton, preset, "gtklock-powerbar-linked-buttons")
+    box.pack_start(cb_powerbar_linked_buttons, False, False, 0)
+
+    frame.show_all()
+
+    return frame
+
+
 def panel_styling_tab(settings, preset, preset_name):
     frame = Gtk.Frame()
     frame.set_label("  {}: Panel & css styles  ".format(preset_name))

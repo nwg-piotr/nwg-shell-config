@@ -30,5 +30,10 @@
   "swaync-positionX": "center",
   "swaync-positionY": "top",
   "swaync-control-center-width": 500,
-  "swaync-notification-window-width": 500
+  "swaync-notification-window-width": 500,
+  "gtklock-userinfo-round-image": true,
+  "gtklock-userinfo-vertical-layout": true,
+  "gtklock-userinfo-under-clock": false,
+  "gtklock-powerbar-show-labels": true,
+  "gtklock-powerbar-linked-buttons": false
 }

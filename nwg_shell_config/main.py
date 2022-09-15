@@ -22,7 +22,6 @@ print(shell_data)
 pending_updates = 0
 update_btn = Gtk.Button()
 
-
 data_dir = ""
 config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
     os.getenv("HOME"), ".config/")
@@ -217,6 +216,10 @@ def preset_menu(preset_id):
     row.eb.connect("button-press-event", set_up_notification_tab, preset, preset_name)
     list_box.add(row)
 
+    row = SideMenuRow("Gtklock", margin_start=18)
+    row.eb.connect("button-press-event", set_up_gtklock_preset_tab, preset, preset_name)
+    list_box.add(row)
+
     if preset_id == "c":
         row = SideMenuRow("Panel & css", margin_start=18)
         row.eb.connect("button-press-event", set_up_panel_styling_tab, preset, preset_name)
@@ -332,6 +335,14 @@ def set_up_notification_tab(event_box, event_button, preset, preset_name):
     global content
     content.destroy()
     content = notification_tab(preset, preset_name)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_gtklock_preset_tab(event_box, event_button, preset, preset_name):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = gtklock_preset_tab(preset, preset_name)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -567,7 +578,7 @@ def save_includes():
             "before-sleep"] else ""
 
         cmd_idle = "exec swayidle timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
-                                                                          c_sleep, c_resume, c_before_sleep)
+                                                                       c_sleep, c_resume, c_before_sleep)
 
         print("Idle command:", cmd_idle)
         autostart.append(cmd_idle)
@@ -799,7 +810,12 @@ def load_preset(file_name):
         "swaync-positionX": "right",
         "swaync-positionY": "top",
         "swaync-control-center-width": 500,
-        "swaync-notification-window-width": 500
+        "swaync-notification-window-width": 500,
+        "gtklock-userinfo-round-image": True,
+        "gtklock-userinfo-vertical-layout": True,
+        "gtklock-userinfo-under-clock": False,
+        "gtklock-powerbar-show-labels": True,
+        "gtklock-powerbar-linked-buttons": False
     }
     preset_file = os.path.join(data_dir, file_name)
     if os.path.isfile(preset_file):

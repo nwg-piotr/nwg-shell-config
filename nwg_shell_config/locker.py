@@ -302,13 +302,9 @@ def set_local_wallpaper():
             if settings["gtklock-powerbar"]:
                 gtklock_cmd += " -m powerbar-module"
 
-            # gtklock configs & style sheets
+            # gtklock style sheets
             if settings["panel-preset"]:
                 gtklock_config_dir = os.path.join(config_home, "gtklock")
-                config_file = os.path.join(gtklock_config_dir, settings["panel-preset"])
-
-                if os.path.isfile(config_file):
-                    gtklock_cmd += " -c {}".format(config_file)
                 css_file = os.path.join(gtklock_config_dir, "{}.css".format(settings["panel-preset"]))
 
                 if os.path.isfile(css_file):
