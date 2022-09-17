@@ -367,7 +367,8 @@ def on_apply_btn(b):
     update_swaync_config(preset["swaync-positionX"],
                          preset["swaync-positionY"],
                          preset["swaync-control-center-width"],
-                         preset["swaync-notification-window-width"])
+                         preset["swaync-notification-window-width"],
+                         preset["swaync-mpris"])
 
     save_includes()
     f = os.path.join(data_dir, "settings")
@@ -818,6 +819,7 @@ def load_preset(file_name):
         "swaync-positionY": "top",
         "swaync-control-center-width": 500,
         "swaync-notification-window-width": 500,
+        "swaync-mpris": False,
         "gtklock-userinfo-round-image": True,
         "gtklock-userinfo-vertical-layout": True,
         "gtklock-userinfo-under-clock": False,
@@ -870,7 +872,7 @@ def save_presets():
     save_json(preset_custom, f)
 
 
-def update_swaync_config(pos_x, pos_y, cc_width, window_width):
+def update_swaync_config(pos_x, pos_y, cc_width, window_width, mpris):
     settings_file = os.path.join(config_home, "swaync/config.json")
     if os.path.isfile(settings_file):
         print("Loading swaync settings from {}".format(settings_file))
@@ -895,6 +897,14 @@ def update_swaync_config(pos_x, pos_y, cc_width, window_width):
             "control-center-width": cc_width,
             "notification-window-width": window_width
         }
+
+    if mpris:
+        if "mpris" not in swaync_settings["widgets"]:
+            swaync_settings["widgets"].append("mpris")
+    else:
+        if "mpris" in swaync_settings["widgets"]:
+            swaync_settings["widgets"].remove("mpris")
+
     print("Saving swaync settings to {}".format(settings_file))
     save_json(swaync_settings, settings_file)
 

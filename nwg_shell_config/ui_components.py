@@ -1565,6 +1565,12 @@ def notification_tab(preset, preset_name):
     sb_window_width.connect("value-changed", set_int_from_spinbutton, preset, "swaync-notification-window-width")
     grid.attach(sb_window_width, 1, 4, 1, 1)
 
+    cb_swaync_mpris = Gtk.CheckButton.new_with_label("MPRIS widget")
+    cb_swaync_mpris.set_active(preset["swaync-mpris"])
+    cb_swaync_mpris.connect("toggled", set_from_checkbutton, preset, "swaync-mpris")
+    cb_swaync_mpris.set_tooltip_text("Show MPRIS media player control widget")
+    grid.attach(cb_swaync_mpris, 1, 5, 1, 1)
+
     frame.show_all()
 
     return frame
