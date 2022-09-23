@@ -14,30 +14,37 @@ import sys
 
 import gi
 
-gi.require_version('Gtk', '3.0')
+gi.require_version("Gtk", "3.0")
 try:
-    gi.require_version('GtkLayerShell', '0.1')
+    gi.require_version("GtkLayerShell", "0.1")
 except ValueError:
-    raise RuntimeError('\n\n' +
-                       'If you haven\'t installed GTK Layer Shell, you need to point Python to the\n' +
-                       'library by setting GI_TYPELIB_PATH and LD_LIBRARY_PATH to <build-dir>/src/.\n' +
-                       'For example you might need to run:\n\n' +
-                       'GI_TYPELIB_PATH=build/src LD_LIBRARY_PATH=build/src python3 ' + ' '.join(sys.argv))
+    raise RuntimeError(
+        "\n\n"
+        + "If you haven't installed GTK Layer Shell, you need to point Python to the\n"
+        + "library by setting GI_TYPELIB_PATH and LD_LIBRARY_PATH to <build-dir>/src/.\n"
+        + "For example you might need to run:\n\n"
+        + "GI_TYPELIB_PATH=build/src LD_LIBRARY_PATH=build/src python3 "
+        + " ".join(sys.argv)
+    )
 
 dir_name = os.path.dirname(__file__)
 
 from gi.repository import Gtk, Gdk, GtkLayerShell
 
-from nwg_shell_config.tools import temp_dir, init_files, get_data_dir, load_json, load_text_file, save_string, eprint, \
-    check_key
+from nwg_shell_config.tools import (
+    temp_dir,
+    init_files,
+    get_data_dir,
+    load_json,
+    load_text_file,
+    save_string,
+    eprint,
+    check_key,
+)
 
 data_dir = get_data_dir()
 settings = load_json(os.path.join(data_dir, "settings"))
-defaults = {
-    "help-font-size": 14,
-    "help-layer-shell": True,
-    "help-keyboard": False
-}
+defaults = {"help-font-size": 14, "help-layer-shell": True, "help-keyboard": False}
 for key in defaults:
     check_key(settings, key, defaults[key])
 
@@ -81,7 +88,7 @@ def main():
         if settings["help-keyboard"]:
             GtkLayerShell.set_keyboard_interactivity(window, True)
 
-    window.connect('destroy', Gtk.main_quit)
+    window.connect("destroy", Gtk.main_quit)
     window.connect("key-release-event", handle_keyboard)
 
     scrolled_window = Gtk.ScrolledWindow.new(None, None)
@@ -101,7 +108,9 @@ def main():
     screen = Gdk.Screen.get_default()
     provider = Gtk.CssProvider()
     style_context = Gtk.StyleContext()
-    style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+    style_context.add_provider_for_screen(
+        screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+    )
     css = b""" * { border-radius: 0px } """
     css += b""" window { border: solid 1px; border-color: #000 } """
     font_string = "label { font-size: %dpx }" % settings["help-font-size"]

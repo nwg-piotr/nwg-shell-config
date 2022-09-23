@@ -10,10 +10,10 @@ from nwg_shell_config.ui_components import *
 from nwg_shell_config.__about__ import __version__, __need_update__
 import gi
 
-gi.require_version('Gdk', '3.0')
+gi.require_version("Gdk", "3.0")
 from gi.repository import Gdk, GLib
 
-gi.require_version('Gtk', '3.0')
+gi.require_version("Gtk", "3.0")
 
 dir_name = os.path.dirname(__file__)
 
@@ -24,11 +24,17 @@ update_btn = Gtk.Button()
 
 
 data_dir = ""
-config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
-    os.getenv("HOME"), ".config/")
+config_home = (
+    os.getenv("XDG_CONFIG_HOME")
+    if os.getenv("XDG_CONFIG_HOME")
+    else os.path.join(os.getenv("HOME"), ".config/")
+)
 
-data_home = os.getenv('XDG_DATA_HOME') if os.getenv('XDG_DATA_HOME') else os.path.join(
-    os.getenv("HOME"), ".local/share")
+data_home = (
+    os.getenv("XDG_DATA_HOME")
+    if os.getenv("XDG_DATA_HOME")
+    else os.path.join(os.getenv("HOME"), ".local/share")
+)
 
 outputs = []
 settings = {}
@@ -51,7 +57,9 @@ def check_updates():
     global pending_updates
     pending_updates = 0
     for v in __need_update__:
-        if v not in shell_data["updates"] and is_newer(v, shell_data["installed-version"]):
+        if v not in shell_data["updates"] and is_newer(
+            v, shell_data["installed-version"]
+        ):
             pending_updates += 1
     global update_btn
     if pending_updates > 0:
@@ -81,8 +89,8 @@ def validate_workspaces(gtk_entry):
     for char in gtk_entry.get_text():
         if char.isdigit() or char == " ":
             valid_text += char
-    while '  ' in valid_text:
-        valid_text = valid_text.replace('  ', ' ')
+    while "  " in valid_text:
+        valid_text = valid_text.replace("  ", " ")
     gtk_entry.set_text(valid_text)
 
 
@@ -215,7 +223,9 @@ def preset_menu(preset_id):
 
     if preset_id == "c":
         row = SideMenuRow("Panel & css", margin_start=18)
-        row.eb.connect("button-press-event", set_up_panel_styling_tab, preset, preset_name)
+        row.eb.connect(
+            "button-press-event", set_up_panel_styling_tab, preset, preset_name
+        )
         list_box.add(row)
 
     global submenus
@@ -338,13 +348,15 @@ def on_apply_btn(b):
         "preset-1": preset_1,
         "preset-2": preset_2,
         "preset-3": preset_3,
-        "custom": preset_custom
+        "custom": preset_custom,
     }
     preset = presets[settings["panel-preset"]]
-    update_swaync_config(preset["swaync-positionX"],
-                         preset["swaync-positionY"],
-                         preset["swaync-control-center-width"],
-                         preset["swaync-notification-window-width"])
+    update_swaync_config(
+        preset["swaync-positionX"],
+        preset["swaync-positionY"],
+        preset["swaync-control-center-width"],
+        preset["swaync-notification-window-width"],
+    )
 
     save_includes()
     f = os.path.join(data_dir, "settings")
@@ -358,7 +370,7 @@ class GUI(object):
         builder.add_from_file(os.path.join(dir_name, "glade/form.glade"))
 
         self.window = builder.get_object("window")
-        self.window.connect('destroy', Gtk.main_quit)
+        self.window.connect("destroy", Gtk.main_quit)
         self.window.connect("key-release-event", handle_keyboard)
 
         global grid
@@ -371,7 +383,9 @@ class GUI(object):
         self.version.set_text("v{}".format(__version__))
 
         github = builder.get_object("github")
-        github.set_markup('<a href="https://github.com/nwg-piotr/nwg-shell-config">GitHub</a>')
+        github.set_markup(
+            '<a href="https://github.com/nwg-piotr/nwg-shell-config">GitHub</a>'
+        )
 
         cb_show = builder.get_object("show-on-startup")
         cb_show.set_active(settings["show-on-startup"])
@@ -452,8 +466,12 @@ def save_includes():
     if preset["exit-alignment"]:
         cmd_exit += " -a {}".format(preset["exit-alignment"])
     if preset["exit-margin"]:
-        cmd_exit += " -mb {} -ml {} -mr {} -mt {}".format(preset["exit-margin"], preset["exit-margin"],
-                                                          preset["exit-margin"], preset["exit-margin"])
+        cmd_exit += " -mb {} -ml {} -mr {} -mt {}".format(
+            preset["exit-margin"],
+            preset["exit-margin"],
+            preset["exit-margin"],
+            preset["exit-margin"],
+        )
     if preset["exit-icon-size"]:
         cmd_exit += " -i {}".format(preset["exit-icon-size"])
 
@@ -478,8 +496,12 @@ def save_includes():
     if preset["dock-alignment"]:
         cmd_dock += " -a {}".format(preset["dock-alignment"])
     if preset["dock-margin"]:
-        cmd_dock += " -mb {} -ml {} -mr {} -mt {}".format(preset["dock-margin"], preset["dock-margin"],
-                                                          preset["dock-margin"], preset["dock-margin"])
+        cmd_dock += " -mb {} -ml {} -mr {} -mt {}".format(
+            preset["dock-margin"],
+            preset["dock-margin"],
+            preset["dock-margin"],
+            preset["dock-margin"],
+        )
     if preset["dock-icon-size"]:
         cmd_dock += " -i {}".format(preset["dock-icon-size"])
 
@@ -491,13 +513,19 @@ def save_includes():
     elif preset["dock-css"]:
         cmd_dock += " -s {}".format(preset["dock-css"])
 
-    if preset["dock-on"] and not preset["dock-autohide"] and not preset["dock-permanent"]:
+    if (
+        preset["dock-on"]
+        and not preset["dock-autohide"]
+        and not preset["dock-permanent"]
+    ):
         variables.append("set $dock {}".format(cmd_dock))
 
     save_list_to_text_file(variables, os.path.join(config_home, "sway/variables"))
 
     # ~/.config/sway/autostart
-    autostart = ["exec rm {}".format(os.path.join(temp_dir(), "nwg-shell-check-update.lock"))]
+    autostart = [
+        "exec rm {}".format(os.path.join(temp_dir(), "nwg-shell-check-update.lock"))
+    ]
     if settings["night-on"]:
         cmd_night = "exec wlsunset"
         if settings["night-lat"]:
@@ -512,7 +540,11 @@ def save_includes():
             cmd_night += " -g {}".format(settings["night-gamma"])
         autostart.append(cmd_night)
 
-    name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
+    name = (
+        settings["panel-preset"]
+        if not settings["panel-preset"] == "custom"
+        else "style"
+    )
     p = os.path.join(config_home, "swaync")
     autostart.append("exec swaync -s {}/{}.css".format(p, name))
 
@@ -543,24 +575,44 @@ def save_includes():
     autostart.append("exec_always nwg-shell-check-updates")
 
     if settings["lockscreen-use-settings"]:
-        c_sleep = "timeout {} '{}'".format(settings["sleep-timeout"], settings["sleep-cmd"]) if settings[
-            "sleep-cmd"] else ""
+        c_sleep = (
+            "timeout {} '{}'".format(settings["sleep-timeout"], settings["sleep-cmd"])
+            if settings["sleep-cmd"]
+            else ""
+        )
 
-        c_resume = "resume '{}'".format(settings["resume-cmd"]) if settings["resume-cmd"] else ""
+        c_resume = (
+            "resume '{}'".format(settings["resume-cmd"])
+            if settings["resume-cmd"]
+            else ""
+        )
         # Let's make it a bit idiot-proof
-        if c_sleep and "dpms off" in settings["sleep-cmd"] and "dpms on" not in settings["resume-cmd"]:
-            c_resume = "swaymsg \"output * dpms on\""
+        if (
+            c_sleep
+            and "dpms off" in settings["sleep-cmd"]
+            and "dpms on" not in settings["resume-cmd"]
+        ):
+            c_resume = 'swaymsg "output * dpms on"'
 
-        c_before_sleep = "before-sleep {}".format(settings["before-sleep"]) if settings[
-            "before-sleep"] else ""
+        c_before_sleep = (
+            "before-sleep {}".format(settings["before-sleep"])
+            if settings["before-sleep"]
+            else ""
+        )
 
-        cmd_idle = "exec swayidle timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
-                                                                          c_sleep, c_resume, c_before_sleep)
+        cmd_idle = "exec swayidle timeout {} nwg-lock {} {} {}".format(
+            settings["lockscreen-timeout"], c_sleep, c_resume, c_before_sleep
+        )
 
         print("Idle command:", cmd_idle)
         autostart.append(cmd_idle)
         # We can't `exec_always swayidle`, as it would create multiple instances. Let's restart it here.
-        subprocess.call("killall swayidle", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        subprocess.call(
+            "killall swayidle",
+            shell=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.STDOUT,
+        )
         subprocess.Popen(cmd_idle, shell=True)
 
     if settings["show-on-startup"]:
@@ -572,16 +624,20 @@ def save_includes():
     if settings["keyboard-use-settings"]:
         lines = ['input "type:keyboard" {']
         if settings["keyboard-xkb-layout"]:
-            lines.append('  xkb_layout {}'.format(settings["keyboard-xkb-layout"]))
+            lines.append("  xkb_layout {}".format(settings["keyboard-xkb-layout"]))
         if settings["keyboard-xkb-variant"]:
-            lines.append('  xkb_variant {}'.format(settings["keyboard-xkb-variant"]))
-        lines.append('  repeat_delay {}'.format(settings["keyboard-repeat-delay"]))
-        lines.append('  repeat_rate {}'.format(settings["keyboard-repeat-rate"]))
-        lines.append('  xkb_capslock {}'.format(settings["keyboard-xkb-capslock"]))
-        lines.append('  xkb_numlock {}'.format(settings["keyboard-xkb-numlock"]))
+            lines.append("  xkb_variant {}".format(settings["keyboard-xkb-variant"]))
+        lines.append("  repeat_delay {}".format(settings["keyboard-repeat-delay"]))
+        lines.append("  repeat_rate {}".format(settings["keyboard-repeat-rate"]))
+        lines.append("  xkb_capslock {}".format(settings["keyboard-xkb-capslock"]))
+        lines.append("  xkb_numlock {}".format(settings["keyboard-xkb-numlock"]))
         if settings["keyboard-custom-name"] and settings["keyboard-custom-value"]:
-            lines.append('  {} {}'.format(settings["keyboard-custom-name"], settings["keyboard-custom-value"]))
-        lines.append('}')
+            lines.append(
+                "  {} {}".format(
+                    settings["keyboard-custom-name"], settings["keyboard-custom-value"]
+                )
+            )
+        lines.append("}")
 
         save_list_to_text_file(lines, os.path.join(config_home, "sway/keyboard"))
     else:
@@ -589,14 +645,21 @@ def save_includes():
 
     # Export pointer device settings
     if settings["pointer-use-settings"]:
-        lines = ['input "type:pointer" {', '  accel_profile {}'.format(settings["pointer-accel-profile"]),
-                 '  pointer_accel {}'.format(settings["pointer-pointer-accel"]),
-                 '  natural_scroll {}'.format(settings["pointer-natural-scroll"]),
-                 '  scroll_factor {}'.format(settings["pointer-scroll-factor"]),
-                 '  left_handed {}'.format(settings["pointer-left-handed"])]
+        lines = [
+            'input "type:pointer" {',
+            "  accel_profile {}".format(settings["pointer-accel-profile"]),
+            "  pointer_accel {}".format(settings["pointer-pointer-accel"]),
+            "  natural_scroll {}".format(settings["pointer-natural-scroll"]),
+            "  scroll_factor {}".format(settings["pointer-scroll-factor"]),
+            "  left_handed {}".format(settings["pointer-left-handed"]),
+        ]
         if settings["pointer-custom-name"] and settings["pointer-custom-value"]:
-            lines.append('  {} {}'.format(settings["keyboard-custom-name"], settings["keyboard-custom-value"]))
-        lines.append('}')
+            lines.append(
+                "  {} {}".format(
+                    settings["keyboard-custom-name"], settings["keyboard-custom-value"]
+                )
+            )
+        lines.append("}")
 
         save_list_to_text_file(lines, os.path.join(config_home, "sway/pointer"))
     else:
@@ -604,20 +667,28 @@ def save_includes():
 
     # Export touchpad settings
     if settings["touchpad-use-settings"]:
-        lines = ['input "type:touchpad" {', '  accel_profile {}'.format(settings["touchpad-accel-profile"]),
-                 '  pointer_accel {}'.format(settings["touchpad-pointer-accel"]),
-                 '  natural_scroll {}'.format(settings["touchpad-natural-scroll"]),
-                 '  scroll_factor {}'.format(settings["touchpad-scroll-factor"]),
-                 '  scroll_method {}'.format(settings["touchpad-scroll-method"]),
-                 '  left_handed {}'.format(settings["touchpad-left-handed"]),
-                 '  tap {}'.format(settings["touchpad-tap"]),
-                 '  tap_button_map {}'.format(settings["touchpad-tap-button-map"]),
-                 '  drag {}'.format(settings["touchpad-drag"]), '  drag_lock {}'.format(settings["touchpad-drag-lock"]),
-                 '  dwt {}'.format(settings["touchpad-dwt"]),
-                 '  middle_emulation {}'.format(settings["touchpad-middle-emulation"])]
+        lines = [
+            'input "type:touchpad" {',
+            "  accel_profile {}".format(settings["touchpad-accel-profile"]),
+            "  pointer_accel {}".format(settings["touchpad-pointer-accel"]),
+            "  natural_scroll {}".format(settings["touchpad-natural-scroll"]),
+            "  scroll_factor {}".format(settings["touchpad-scroll-factor"]),
+            "  scroll_method {}".format(settings["touchpad-scroll-method"]),
+            "  left_handed {}".format(settings["touchpad-left-handed"]),
+            "  tap {}".format(settings["touchpad-tap"]),
+            "  tap_button_map {}".format(settings["touchpad-tap-button-map"]),
+            "  drag {}".format(settings["touchpad-drag"]),
+            "  drag_lock {}".format(settings["touchpad-drag-lock"]),
+            "  dwt {}".format(settings["touchpad-dwt"]),
+            "  middle_emulation {}".format(settings["touchpad-middle-emulation"]),
+        ]
         if settings["touchpad-custom-name"] and settings["touchpad-custom-value"]:
-            lines.append('  {} {}'.format(settings["touchpad-custom-name"], settings["touchpad-custom-value"]))
-        lines.append('}')
+            lines.append(
+                "  {} {}".format(
+                    settings["touchpad-custom-name"], settings["touchpad-custom-value"]
+                )
+            )
+        lines.append("}")
 
         save_list_to_text_file(lines, os.path.join(config_home, "sway/touchpad"))
     else:
@@ -627,19 +698,27 @@ def save_includes():
 
 
 def reload():
-    name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
+    name = (
+        settings["panel-preset"]
+        if not settings["panel-preset"] == "custom"
+        else "style"
+    )
     p = os.path.join(config_home, "swaync")
     swaync_daemon = "swaync -s {}/{}.css &".format(p, name)
 
-    for cmd in ["pkill -f nwg-autotiling",
-                "pkill -f nwg-drawer",
-                "pkill -f nwg-dock",
-                "pkill -f nwg-bar",
-                "pkill -f swaync",
-                swaync_daemon,
-                "swaync-client --reload-config",
-                "swaymsg reload"]:
-        subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+    for cmd in [
+        "pkill -f nwg-autotiling",
+        "pkill -f nwg-drawer",
+        "pkill -f nwg-dock",
+        "pkill -f nwg-bar",
+        "pkill -f swaync",
+        swaync_daemon,
+        "swaync-client --reload-config",
+        "swaymsg reload",
+    ]:
+        subprocess.call(
+            cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT
+        )
 
 
 def load_settings():
@@ -718,7 +797,7 @@ def load_settings():
         "help-keyboard": False,
         "gtklock-userinfo": False,
         "gtklock-powerbar": False,
-        "last-upgrade-check": 0
+        "last-upgrade-check": 0,
     }
     settings_file = os.path.join(data_dir, "settings")
     global settings
@@ -729,13 +808,24 @@ def load_settings():
         for key in defaults:
             if key not in settings:
                 settings[key] = defaults[key]
-                print("'{}' key missing from settings, adding '{}'".format(key, defaults[key]))
+                print(
+                    "'{}' key missing from settings, adding '{}'".format(
+                        key, defaults[key]
+                    )
+                )
                 missing += 1
         if missing > 0:
-            print("{} missing config key(s) substituted. Saving {}".format(missing, settings_file))
+            print(
+                "{} missing config key(s) substituted. Saving {}".format(
+                    missing, settings_file
+                )
+            )
             save_json(settings, settings_file)
     else:
-        print("ERROR: failed loading settings, creating {}".format(settings_file), file=sys.stderr)
+        print(
+            "ERROR: failed loading settings, creating {}".format(settings_file),
+            file=sys.stderr,
+        )
         save_json(defaults, settings_file)
 
 
@@ -785,7 +875,7 @@ def load_preset(file_name):
         "swaync-positionX": "right",
         "swaync-positionY": "top",
         "swaync-control-center-width": 500,
-        "swaync-notification-window-width": 500
+        "swaync-notification-window-width": 500,
     }
     preset_file = os.path.join(data_dir, file_name)
     if os.path.isfile(preset_file):
@@ -795,7 +885,11 @@ def load_preset(file_name):
         for key in defaults:
             if key not in preset:
                 preset[key] = defaults[key]
-                print("'{}' key missing from preset, adding '{}'".format(key, defaults[key]))
+                print(
+                    "'{}' key missing from preset, adding '{}'".format(
+                        key, defaults[key]
+                    )
+                )
                 missing += 1
             if missing > 0:
                 print("Saving {}".format(preset_file))
@@ -803,7 +897,10 @@ def load_preset(file_name):
 
         return preset
     else:
-        print("ERROR: failed loading preset, creating {}".format(preset_file), file=sys.stderr)
+        print(
+            "ERROR: failed loading preset, creating {}".format(preset_file),
+            file=sys.stderr,
+        )
         save_json(defaults, preset_file)
 
         return {}
@@ -856,7 +953,7 @@ def update_swaync_config(pos_x, pos_y, cc_width, window_width):
             "positionX": pos_x,
             "positionY": pos_y,
             "control-center-width": cc_width,
-            "notification-window-width": window_width
+            "notification-window-width": window_width,
         }
     print("Saving swaync settings to {}".format(settings_file))
     save_json(swaync_settings, settings_file)
@@ -864,21 +961,22 @@ def update_swaync_config(pos_x, pos_y, cc_width, window_width):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-v",
-                        "--version",
-                        action="version",
-                        version="%(prog)s version {}".format(__version__),
-                        help="display version information")
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="%(prog)s version {}".format(__version__),
+        help="display version information",
+    )
 
-    parser.add_argument("-r",
-                        "--restore",
-                        action="store_true",
-                        help="restore default presets")
+    parser.add_argument(
+        "-r", "--restore", action="store_true", help="restore default presets"
+    )
 
     parser.parse_args()
     args = parser.parse_args()
 
-    GLib.set_prgname('nwg-shell-config')
+    GLib.set_prgname("nwg-shell-config")
 
     global data_dir
     data_dir = get_data_dir()
@@ -917,14 +1015,21 @@ def main():
     screen = Gdk.Screen.get_default()
     provider = Gtk.CssProvider()
     style_context = Gtk.StyleContext()
-    style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+    style_context.add_provider_for_screen(
+        screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+    )
     css = b"""
             button#app-btn { padding: 6px; border: none }
             * { outline: none }
             """
     provider.load_from_data(css)
 
-    if not settings["terminal"] or not settings["file-manager"] or not settings["editor"] or not settings["browser"]:
+    if (
+        not settings["terminal"]
+        or not settings["file-manager"]
+        or not settings["editor"]
+        or not settings["browser"]
+    ):
         set_up_applications_tab(warn=True)
     else:
         set_up_screen_tab()
@@ -939,5 +1044,5 @@ def main():
     Gtk.main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

@@ -63,8 +63,9 @@ def init_files(src_dir, dst_dir, overwrite=False):
         if os.path.isfile(os.path.join(src_dir, file)):
             if overwrite or not os.path.isfile(os.path.join(dst_dir, file)):
                 copy2(os.path.join(src_dir, file), os.path.join(dst_dir, file))
-                print("Copying default file to '{}'".format(
-                    os.path.join(dst_dir, file)))
+                print(
+                    "Copying default file to '{}'".format(os.path.join(dst_dir, file))
+                )
 
 
 def list_outputs():
@@ -99,7 +100,10 @@ def get_lat_lon():
             lat = round(location.latitude, 5)
             lon = round(location.longitude, 5)
         except:
-            print("Geocoder unavailable. Do you have internet connection?", file=sys.stderr)
+            print(
+                "Geocoder unavailable. Do you have internet connection?",
+                file=sys.stderr,
+            )
 
     return tz, lat, lon
 
@@ -108,8 +112,7 @@ def is_command(cmd):
     cmd = cmd.split()[0]
     cmd = "command -v {}".format(cmd)
     try:
-        is_cmd = subprocess.check_output(
-            cmd, shell=True).decode("utf-8").strip()
+        is_cmd = subprocess.check_output(cmd, shell=True).decode("utf-8").strip()
         if is_cmd:
             return True
 
@@ -119,7 +122,7 @@ def is_command(cmd):
 
 def get_command_output(command):
     try:
-        return subprocess.check_output(command.split()).decode('utf-8').splitlines()
+        return subprocess.check_output(command.split()).decode("utf-8").splitlines()
     except Exception as e:
         print("get_command_output() {}".format(e), file=sys.stderr)
         return []
@@ -127,7 +130,7 @@ def get_command_output(command):
 
 def load_json(path):
     try:
-        with open(path, 'r') as f:
+        with open(path, "r") as f:
             return json.load(f)
     except Exception as e:
         print("Error loading json: {}".format(e))
@@ -135,13 +138,13 @@ def load_json(path):
 
 
 def save_json(src_dict, path):
-    with open(path, 'w') as f:
+    with open(path, "w") as f:
         json.dump(src_dict, f, indent=2)
 
 
 def load_text_file(path):
     try:
-        with open(path, 'r') as file:
+        with open(path, "r") as file:
             data = file.read()
             return data
     except Exception as e:
@@ -186,7 +189,11 @@ def list_background_dirs():
 
 
 def notify(summary, body, timeout=3000):
-    cmd = "notify-send '{}' '{}' -i /usr/share/pixmaps/nwg-shell-config.svg -t {}".format(summary, body, timeout)
+    cmd = (
+        "notify-send '{}' '{}' -i /usr/share/pixmaps/nwg-shell-config.svg -t {}".format(
+            summary, body, timeout
+        )
+    )
     subprocess.call(cmd, shell=True)
 
 
@@ -205,14 +212,15 @@ def eprint(*args, **kwargs):
 def load_shell_data():
     shell_data_file = os.path.join(get_shell_data_dir(), "data")
     shell_data = load_json(shell_data_file)
-    defaults = {
-        "installed-version": get_shell_version(),
-        "updates": []
-    }
+    defaults = {"installed-version": get_shell_version(), "updates": []}
     if not shell_data:
         shell_data = defaults
         save_json(shell_data, shell_data_file)
-        eprint("ERROR: '{}' file not found or corrupted. Initializing from defaults.".format(shell_data_file))
+        eprint(
+            "ERROR: '{}' file not found or corrupted. Initializing from defaults.".format(
+                shell_data_file
+            )
+        )
         eprint("The update history has been lost!")
 
     # Upgrade v0.2.5 -> v0.3.0
@@ -231,7 +239,7 @@ def load_shell_data():
 
 
 def get_shell_version():
-    lines = subprocess.check_output("nwg-shell -v".split()).decode('utf-8').splitlines()
+    lines = subprocess.check_output("nwg-shell -v".split()).decode("utf-8").splitlines()
     return lines[0].split()[2]
 
 
