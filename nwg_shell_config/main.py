@@ -745,13 +745,18 @@ def load_settings():
         "help-font-size": 12,
         "help-layer-shell": True,
         "help-keyboard": False,
-        "gtklock-userinfo": False,
-        "gtklock-powerbar": False,
         "gtklock-time-format": "%H:%M:%S",
         "gtklock-idle-timeout": 10,
+        "gtklock-userinfo": False,
+        "gtklock-powerbar": False,
+        "gtklock-playerctl": False,
+        "gtklock-userinfo-round-image": True,
+        "gtklock-userinfo-vertical-layout": True,
+        "gtklock-userinfo-under-clock": True,
+        "gtklock-powerbar-show-labels": true,
+        "gtklock-powerbar-linked-buttons": false,
         "gtklock-reboot-command": "systemctl reboot",
-        "gtklock-poweroff-command": "systemctl -i poweroff",
-        "last-upgrade-check": 0
+        "gtklock-poweroff-command": "systemctl -i poweroff"
     }
     settings_file = os.path.join(data_dir, "settings")
     global settings
