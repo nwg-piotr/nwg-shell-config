@@ -26,7 +26,6 @@ tmp_dir = temp_dir()
 settings = load_json(os.path.join(data_dir, "settings"))
 preset = load_json(
     os.path.join(data_dir, settings["panel-preset"])) if "panel-preset" in settings and "panel-preset" else {}
-print("preset = ", preset)
 
 pid = os.getpid()
 pctl = None
