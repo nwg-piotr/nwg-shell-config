@@ -324,8 +324,11 @@ def set_local_wallpaper():
 
 def gtklock_command():
     gtklock_cmd = "gtklock"
+
+    # userinfo module
     if settings["gtklock-userinfo"]:
         gtklock_cmd += " -m userinfo-module"
+
         # optional userinfo module arguments
         if not preset["gtklock-userinfo-round-image"]:
             gtklock_cmd += " --no-round-image"
@@ -334,8 +337,11 @@ def gtklock_command():
         if preset["gtklock-userinfo-under-clock"]:
             gtklock_cmd += " --under-clock"
 
+    # powerbar module
     if settings["gtklock-powerbar"]:
         gtklock_cmd += " -m powerbar-module"
+
+        # optional powerbar module arguments
         if preset["gtklock-powerbar-show-labels"]:
             gtklock_cmd += " --show-labels"
         if preset["gtklock-powerbar-linked-buttons"]:
@@ -344,6 +350,14 @@ def gtklock_command():
             gtklock_cmd += " --reboot-command '{}'".format(settings["gtklock-reboot-command"])
         if settings["gtklock-poweroff-command"]:
             gtklock_cmd += " --poweroff-command '{}'".format(settings["gtklock-poweroff-command"])
+
+    # playerctl module
+    if settings["gtklock-playerctl"]:
+        gtklock_cmd += " -m playerctl-module"
+
+        # optional playerctl module arguments
+        if "gtklock-playerctl-art-size" in preset:
+
 
     if settings["gtklock-time-format"]:
         gtklock_cmd += " --time-format '{}'".format(settings["gtklock-time-format"])
