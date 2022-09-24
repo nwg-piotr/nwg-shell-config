@@ -267,32 +267,7 @@ def set_remote_wallpaper():
             elif settings["lockscreen-locker"] == "gtklock":
                 subprocess.call("pkill -f gtklock", shell=True)
 
-                gtklock_cmd = "gtklock"
-                if settings["gtklock-userinfo"]:
-                    gtklock_cmd += " -m userinfo-module"
-                    # optional userinfo module arguments
-                    if not preset["gtklock-userinfo-round-image"]:
-                        gtklock_cmd += " --no-round-image"
-                    if not preset["gtklock-userinfo-vertical-layout"]:
-                        gtklock_cmd += " --horizontal-layout"
-                    if preset["gtklock-userinfo-under-clock"]:
-                        gtklock_cmd += " --under-clock"
-
-                if settings["gtklock-powerbar"]:
-                    gtklock_cmd += " -m powerbar-module"
-
-                if settings["gtklock-time-format"]:
-                    gtklock_cmd += " --time-format '{}'".format(settings["gtklock-time-format"])
-
-                # gtklock style sheets
-                if settings["panel-preset"]:
-                    gtklock_config_dir = os.path.join(config_home, "gtklock")
-                    css_file = os.path.join(gtklock_config_dir, "{}.css".format(settings["panel-preset"]))
-
-                    if os.path.isfile(css_file):
-                        gtklock_cmd += " -s {}".format(css_file)
-
-                subprocess.Popen('{} -S -H -T 10 -i -b {} && kill -n 15 {}'.format(gtklock_cmd, wallpaper, pid),
+                subprocess.Popen('{} -S -H -T 10 -i -b {} && kill -n 15 {}'.format(gtklock_command(), wallpaper, pid),
                                  shell=True)
 
             if pctl:
@@ -326,33 +301,8 @@ def set_local_wallpaper():
         elif settings["lockscreen-locker"] == "gtklock":
             subprocess.call("pkill -f gtklock", shell=True)
 
-            gtklock_cmd = "gtklock"
-            if settings["gtklock-userinfo"]:
-                gtklock_cmd += " -m userinfo-module"
-                # optional userinfo module arguments
-                if not preset["gtklock-userinfo-round-image"]:
-                    gtklock_cmd += " --no-round-image"
-                if not preset["gtklock-userinfo-vertical-layout"]:
-                    gtklock_cmd += " --horizontal-layout"
-                if preset["gtklock-userinfo-under-clock"]:
-                    gtklock_cmd += " --under-clock"
-
-            if settings["gtklock-powerbar"]:
-                gtklock_cmd += " -m powerbar-module"
-
-            if settings["gtklock-time-format"]:
-                gtklock_cmd += " --time-format '{}'".format(settings["gtklock-time-format"])
-
-            # gtklock style sheets
-            if settings["panel-preset"]:
-                gtklock_config_dir = os.path.join(config_home, "gtklock")
-                css_file = os.path.join(gtklock_config_dir, "{}.css".format(settings["panel-preset"]))
-
-                if os.path.isfile(css_file):
-                    gtklock_cmd += " -s {}".format(css_file)
-
             subprocess.Popen(
-                '{} -S -H -T {} -i -b {} && kill -n 15 {}'.format(gtklock_cmd, settings["gtklock-idle-timeout"], p,
+                '{} -S -H -T {} -i -b {} && kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"], p,
                                                                   pid), shell=True)
     else:
         print("No image paths found")
@@ -370,6 +320,43 @@ def set_local_wallpaper():
         Gtk.main()
 
     sys.exit(0)
+
+
+def gtklock_command():
+    gtklock_cmd = "gtklock"
+    if settings["gtklock-userinfo"]:
+        gtklock_cmd += " -m userinfo-module"
+        # optional userinfo module arguments
+        if not preset["gtklock-userinfo-round-image"]:
+            gtklock_cmd += " --no-round-image"
+        if not preset["gtklock-userinfo-vertical-layout"]:
+            gtklock_cmd += " --horizontal-layout"
+        if preset["gtklock-userinfo-under-clock"]:
+            gtklock_cmd += " --under-clock"
+
+    if settings["gtklock-powerbar"]:
+        gtklock_cmd += " -m powerbar-module"
+        if preset["gtklock-powerbar-show-labels"]:
+            gtklock_cmd += " --show-labels"
+        if preset["gtklock-powerbar-linked-buttons"]:
+            gtklock_cmd += " --linked-buttons"
+        if settings["gtklock-reboot-command"]:
+            gtklock_cmd += " --reboot-command '{}'".format(settings["gtklock-reboot-command"])
+        if settings["gtklock-poweroff-command"]:
+            gtklock_cmd += " --poweroff-command '{}'".format(settings["gtklock-poweroff-command"])
+
+    if settings["gtklock-time-format"]:
+        gtklock_cmd += " --time-format '{}'".format(settings["gtklock-time-format"])
+
+    # gtklock style sheets
+    if settings["panel-preset"]:
+        gtklock_config_dir = os.path.join(config_home, "gtklock")
+        css_file = os.path.join(gtklock_config_dir, "{}.css".format(settings["panel-preset"]))
+
+        if os.path.isfile(css_file):
+            gtklock_cmd += " -s {}".format(css_file)
+
+    return gtklock_cmd
 
 
 def main():
