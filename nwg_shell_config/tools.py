@@ -118,11 +118,14 @@ def is_command(cmd):
 
 
 def gtklock_module_installed(module_name):
-    # Turn off until the module is fixed
-    # paths = ["/usr/lib/gtklock/{}-module.so".format(module_name), "/usr/local/lib/gtklock/{}-module.so".format(module_name)]
-    # for p in paths:
-    #     if os.path.isfile(p):
-    #         return True
+    # delete when playerctl module is fixed
+    if module_name == "playerctl":
+        return False
+
+    paths = ["/usr/lib/gtklock/{}-module.so".format(module_name), "/usr/local/lib/gtklock/{}-module.so".format(module_name)]
+    for p in paths:
+        if os.path.isfile(p):
+            return True
 
     return False
 
