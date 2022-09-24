@@ -118,10 +118,11 @@ def is_command(cmd):
 
 
 def gtklock_module_installed(module_name):
-    paths = ["/usr/lib/gtklock/{}-module.so".format(module_name), "/usr/local/lib/gtklock/{}-module.so".format(module_name)]
-    for p in paths:
-        if os.path.isfile(p):
-            return True
+    # Turn off until the module is fixed
+    # paths = ["/usr/lib/gtklock/{}-module.so".format(module_name), "/usr/local/lib/gtklock/{}-module.so".format(module_name)]
+    # for p in paths:
+    #     if os.path.isfile(p):
+    #         return True
 
     return False
 
