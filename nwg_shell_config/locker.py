@@ -357,9 +357,9 @@ def gtklock_command():
 
         # optional playerctl module arguments
         if "gtklock-playerctl-art-size" in preset:
-            gtklock_cmd += " --art-size '{}'".format(settings["gtklock-playerctl-art-size"])
+            gtklock_cmd += " --art-size {}".format(preset["gtklock-playerctl-art-size"])
         if "gtklock-playerctl-position":
-            gtklock_cmd += " --position '{}'".format(settings["gtklock-playerctl-position"])
+            gtklock_cmd += " --position '{}'".format(preset["gtklock-playerctl-position"])
 
     if settings["gtklock-time-format"]:
         gtklock_cmd += " --time-format '{}'".format(settings["gtklock-time-format"])
