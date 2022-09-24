@@ -117,6 +117,15 @@ def is_command(cmd):
         return False
 
 
+def gtklock_module_installed(module_name):
+    paths = ["/usr/lib/gtklock/{}-module.so".format(module_name), "/usr/local/lib/gtklock/{}-module.so".format(module_name)]
+    for p in paths:
+        if os.path.isfile(p):
+            return True
+
+    return False
+
+
 def get_command_output(command):
     try:
         return subprocess.check_output(command.split()).decode('utf-8').splitlines()

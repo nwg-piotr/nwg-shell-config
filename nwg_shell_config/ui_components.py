@@ -4,7 +4,8 @@ import os
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, notify
+from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, \
+    gtklock_module_installed
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -1204,6 +1205,10 @@ def gtklock_tab(settings):
                                          "\nYou may use the `mugshot` or `SwaySettings` package."
                                          "\nYou also need the `gtklock-userinfo-module` package.")
     box.pack_start(cb_gtklock_userinfo, False, False, 0)
+    # Disable check button if module not installed
+    if not gtklock_module_installed("userinfo"):
+        cb_gtklock_userinfo.set_active(False)
+        cb_gtklock_userinfo.set_sensitive(False)
 
     cb_gtklock_powerbar = Gtk.CheckButton.new_with_label("powerbar")
     cb_gtklock_powerbar.set_active(settings["gtklock-powerbar"])
@@ -1211,11 +1216,19 @@ def gtklock_tab(settings):
     cb_gtklock_powerbar.set_tooltip_text("For this module to work, you need the `gtklock-powerbar-module` package.")
     box.pack_start(cb_gtklock_powerbar, False, False, 0)
 
+    if not gtklock_module_installed("powerbar"):
+        cb_gtklock_powerbar.set_active(False)
+        cb_gtklock_powerbar.set_sensitive(False)
+
     cb_gtklock_layerctl = Gtk.CheckButton.new_with_label("playerctl")
     cb_gtklock_layerctl.set_active(settings["gtklock-playerctl"])
     cb_gtklock_layerctl.connect("toggled", set_key_from_checkbox, settings, "gtklock-playerctl")
     cb_gtklock_layerctl.set_tooltip_text("For this module to work, you need the `gtklock-playerctl-module` package.")
     box.pack_start(cb_gtklock_layerctl, False, False, 0)
+
+    if not gtklock_module_installed("playerctl"):
+        cb_gtklock_layerctl.set_active(False)
+        cb_gtklock_layerctl.set_sensitive(False)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>Power menu</b>")
