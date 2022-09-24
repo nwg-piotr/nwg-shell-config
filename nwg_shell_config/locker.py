@@ -24,6 +24,9 @@ config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else 
 data_dir = get_data_dir()
 tmp_dir = temp_dir()
 settings = load_json(os.path.join(data_dir, "settings"))
+preset = load_json(
+    os.path.join(data_dir, settings["panel-preset"])) if "panel-preset" in settings and "panel-preset" else {}
+print("preset = ", preset)
 
 pid = os.getpid()
 pctl = None
@@ -54,6 +57,16 @@ defaults = {
     "gtklock-idle-timeout": 10,
     "gtklock-userinfo": False,
     "gtklock-powerbar": False
+}
+
+preset_defaults = {
+    "gtklock-userinfo-round-image": True,
+    "gtklock-userinfo-vertical-layout": False,
+    "gtklock-userinfo-under-clock": False,
+    "gtklock-powerbar-show-labels": False,
+    "gtklock-powerbar-linked-buttons": False,
+    "gtklock-playerctl-art-size": 64,
+    "gtklock-playerctl-position": "top-right"
 }
 
 
@@ -254,14 +267,30 @@ def set_remote_wallpaper():
             elif settings["lockscreen-locker"] == "gtklock":
                 subprocess.call("pkill -f gtklock", shell=True)
 
-                # This will need more code when new gtklock modules appear
                 gtklock_cmd = "gtklock"
                 if settings["gtklock-userinfo"]:
                     gtklock_cmd += " -m userinfo-module"
+                    # optional userinfo module arguments
+                    if not preset["gtklock-userinfo-round-image"]:
+                        gtklock_cmd += " --no-round-image"
+                    if not preset["gtklock-userinfo-vertical-layout"]:
+                        gtklock_cmd += " --horizontal-layout"
+                    if preset["gtklock-userinfo-under-clock"]:
+                        gtklock_cmd += " --under-clock"
+
                 if settings["gtklock-powerbar"]:
                     gtklock_cmd += " -m powerbar-module"
 
-                print(settings)
+                if settings["gtklock-time-format"]:
+                    gtklock_cmd += " --time-format '{}'".format(settings["gtklock-time-format"])
+
+                # gtklock style sheets
+                if settings["panel-preset"]:
+                    gtklock_config_dir = os.path.join(config_home, "gtklock")
+                    css_file = os.path.join(gtklock_config_dir, "{}.css".format(settings["panel-preset"]))
+
+                    if os.path.isfile(css_file):
+                        gtklock_cmd += " -s {}".format(css_file)
 
                 subprocess.Popen('{} -S -H -T 10 -i -b {} && kill -n 15 {}'.format(gtklock_cmd, wallpaper, pid),
                                  shell=True)
@@ -297,12 +326,20 @@ def set_local_wallpaper():
         elif settings["lockscreen-locker"] == "gtklock":
             subprocess.call("pkill -f gtklock", shell=True)
 
-            # This will need more code when we have a number of gtklock modules
             gtklock_cmd = "gtklock"
             if settings["gtklock-userinfo"]:
                 gtklock_cmd += " -m userinfo-module"
+                # optional userinfo module arguments
+                if not preset["gtklock-userinfo-round-image"]:
+                    gtklock_cmd += " --no-round-image"
+                if not preset["gtklock-userinfo-vertical-layout"]:
+                    gtklock_cmd += " --horizontal-layout"
+                if preset["gtklock-userinfo-under-clock"]:
+                    gtklock_cmd += " --under-clock"
+
             if settings["gtklock-powerbar"]:
                 gtklock_cmd += " -m powerbar-module"
+
             if settings["gtklock-time-format"]:
                 gtklock_cmd += " --time-format '{}'".format(settings["gtklock-time-format"])
 
@@ -340,6 +377,11 @@ def main():
     for key in defaults:
         if key not in settings:
             settings[key] = defaults[key]
+
+    global preset_defaults
+    for key in preset_defaults:
+        if key not in preset:
+            preset[key] = preset_defaults[key]
 
     catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
     for sig in catchable_sigs:

@@ -672,6 +672,7 @@ def reload():
 
 
 def load_settings():
+    settings_file = os.path.join(data_dir, "settings")
     defaults = {
         "keyboard-layout": "us",
         "autotiling-workspaces": "",
@@ -750,15 +751,9 @@ def load_settings():
         "gtklock-userinfo": False,
         "gtklock-powerbar": False,
         "gtklock-playerctl": False,
-        "gtklock-userinfo-round-image": True,
-        "gtklock-userinfo-vertical-layout": True,
-        "gtklock-userinfo-under-clock": True,
-        "gtklock-powerbar-show-labels": true,
-        "gtklock-powerbar-linked-buttons": false,
         "gtklock-reboot-command": "systemctl reboot",
         "gtklock-poweroff-command": "systemctl -i poweroff"
     }
-    settings_file = os.path.join(data_dir, "settings")
     global settings
     if os.path.isfile(settings_file):
         print("Loading settings from {}".format(settings_file))
@@ -829,7 +824,9 @@ def load_preset(file_name):
         "gtklock-userinfo-vertical-layout": True,
         "gtklock-userinfo-under-clock": False,
         "gtklock-powerbar-show-labels": True,
-        "gtklock-powerbar-linked-buttons": False
+        "gtklock-powerbar-linked-buttons": False,
+        "gtklock-playerctl-art-size": 64,
+        "gtklock-playerctl-position": "top-right"
     }
     preset_file = os.path.join(data_dir, file_name)
     if os.path.isfile(preset_file):

@@ -1587,8 +1587,9 @@ def gtklock_preset_tab(preset, preset_name):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
-    lbl = Gtk.Label.new("Userinfo module:")
-    lbl.set_property("halign", Gtk.Align.END)
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>Userinfo module</b>")
+    lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 1, 1, 1)
 
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
@@ -1610,8 +1611,9 @@ def gtklock_preset_tab(preset, preset_name):
     cb_userinfo_under_clock.connect("toggled", set_from_checkbutton, preset, "gtklock-userinfo-under-clock")
     box.pack_start(cb_userinfo_under_clock, False, False, 0)
 
-    lbl = Gtk.Label.new("Powerbar module:")
-    lbl.set_property("halign", Gtk.Align.END)
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>Powerbar module</b>")
+    lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 2, 1, 1)
 
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
@@ -1626,6 +1628,39 @@ def gtklock_preset_tab(preset, preset_name):
     cb_powerbar_linked_buttons.set_active(preset["gtklock-powerbar-linked-buttons"])
     cb_powerbar_linked_buttons.connect("toggled", set_from_checkbutton, preset, "gtklock-powerbar-linked-buttons")
     box.pack_start(cb_powerbar_linked_buttons, False, False, 0)
+
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>Playerctl module</b>")
+    lbl.set_property("halign", Gtk.Align.START)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    lbl = Gtk.Label.new("Art size:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+    grid.attach(box, 1, 4, 3, 1)
+
+    sb_gtklock_playerctl_art_size = Gtk.SpinButton.new_with_range(8, 256, 1)
+    sb_gtklock_playerctl_art_size.set_value(preset["gtklock-playerctl-art-size"])
+    sb_gtklock_playerctl_art_size.connect("value-changed", set_int_from_spinbutton, preset,
+                                          "gtklock-playerctl-art-size")
+    sb_gtklock_playerctl_art_size.set_tooltip_text("album cover size in pixels")
+    box.pack_start(sb_gtklock_playerctl_art_size, False, False, 0)
+
+    lbl = Gtk.Label.new("Position:")
+    lbl.set_property("halign", Gtk.Align.END)
+    box.pack_start(lbl, False, False, 6)
+
+    combo_gtklock_playerctl_position = Gtk.ComboBoxText()
+    combo_gtklock_playerctl_position.set_property("halign", Gtk.Align.START)
+    box.pack_start(combo_gtklock_playerctl_position, False, False, 0)
+    for item in ["top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right",
+                 "above-clock", "under-clock"]:
+        combo_gtklock_playerctl_position.append(item, item)
+    combo_gtklock_playerctl_position.set_active_id(preset["gtklock-playerctl-position"])
+    combo_gtklock_playerctl_position.connect("changed", set_dict_key_from_combo, preset, "gtklock-playerctl-position")
+    combo_gtklock_playerctl_position.set_tooltip_text("playerctl widget placement")
 
     frame.show_all()
 
