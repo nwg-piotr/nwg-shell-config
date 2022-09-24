@@ -1211,6 +1211,12 @@ def gtklock_tab(settings):
     cb_gtklock_powerbar.set_tooltip_text("For this module to work, you need the `gtklock-powerbar-module` package.")
     box.pack_start(cb_gtklock_powerbar, False, False, 0)
 
+    cb_gtklock_layerctl = Gtk.CheckButton.new_with_label("playerctl")
+    cb_gtklock_layerctl.set_active(settings["gtklock-playerctl"])
+    cb_gtklock_layerctl.connect("toggled", set_key_from_checkbox, settings, "gtklock-playerctl")
+    cb_gtklock_layerctl.set_tooltip_text("For this module to work, you need the `gtklock-playerctl-module` package.")
+    box.pack_start(cb_gtklock_layerctl, False, False, 0)
+
     lbl = Gtk.Label()
     lbl.set_markup("<b>Power menu</b>")
     lbl.set_property("halign", Gtk.Align.START)
