@@ -102,8 +102,15 @@ def get_player_metadata():
         if len(lines) > 1:
             output["title"] = lines[1]
         if len(lines) > 2:
-            # output["artUrl"] = lines[2]
-            output["artUrl"] = unquote(urlparse(lines[2]).path)
+            if lines[2].startswith("http"):
+                # download remote file (Epiphany) todo Needs to be async!
+                # output["artUrl"] needs to be replaced by a global variable
+                img_path = os.path.join(data_dir, "cover.jpg")
+                r = urllib.request.urlretrieve(lines[2], img_path)
+                output["artUrl"] = img_path
+            else:
+                # path to local file (Firefox)
+                output["artUrl"] = unquote(urlparse(lines[2]).path)
     except subprocess.CalledProcessError:
         pass
 
@@ -111,7 +118,7 @@ def get_player_metadata():
 
 
 def launch(button, cmd):
-    subprocess.Popen('exec {}'.format(cmd), shell=True)
+    subprocess.check_Popen('exec {}'.format(cmd), shell=True)
 
 
 class PlayerctlWindow(Gtk.Window):
