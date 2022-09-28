@@ -59,7 +59,8 @@ defaults = {
     "gtklock-time-format": "%H:%M:%S",
     "gtklock-idle-timeout": 10,
     "gtklock-userinfo": False,
-    "gtklock-powerbar": False
+    "gtklock-powerbar": False,
+    "gtklock-playerctl": False
 }
 
 preset_defaults = {
@@ -92,7 +93,8 @@ def get_player_status():
 def get_player_metadata():
     output = {"artist": "", "title": "", "artUrl": ""}
     try:
-        lines = subprocess.check_output("playerctl metadata --format '{{artist}}:#:{{title}}:#:{{mpris:artUrl}}'", shell=True).decode(
+        lines = subprocess.check_output("playerctl metadata --format '{{artist}}:#:{{title}}:#:{{mpris:artUrl}}'",
+                                        shell=True).decode(
             "utf-8").strip().split(":#:")
         if len(lines) > 0:
             output["artist"] = lines[0]
@@ -334,7 +336,8 @@ def set_local_wallpaper():
             subprocess.call("pkill -f gtklock", shell=True)
 
             subprocess.Popen(
-                '{} -S -H -T {} -i -b {} && kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"], p,
+                '{} -S -H -T {} -i -b {} && kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"],
+                                                                  p,
                                                                   pid), shell=True)
     else:
         print("No image paths found")
