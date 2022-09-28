@@ -14,8 +14,11 @@ import gi
 
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
+gi.require_version('GdkPixbuf', '2.0')
 gi.require_version('GtkLayerShell', '0.1')
-from gi.repository import Gtk, Gdk, GLib, GtkLayerShell
+from gi.repository import Gtk, Gdk, GLib, GdkPixbuf, GtkLayerShell
+
+from urllib.parse import unquote, urlparse
 
 from nwg_shell_config.tools import get_data_dir, temp_dir, load_json, load_text_file, save_string
 
@@ -29,6 +32,7 @@ preset = load_json(
 
 pid = os.getpid()
 pctl = None
+cover = None
 
 defaults = {
     "panel-preset": "preset-0",
@@ -86,11 +90,21 @@ def get_player_status():
 
 
 def get_player_metadata():
+    output = {"artist": "", "title": "", "artUrl": ""}
     try:
-        return subprocess.check_output("playerctl metadata --format '{{artist}}:#:{{title}}'", shell=True).decode(
+        lines = subprocess.check_output("playerctl metadata --format '{{artist}}:#:{{title}}:#:{{mpris:artUrl}}'", shell=True).decode(
             "utf-8").strip().split(":#:")
+        if len(lines) > 0:
+            output["artist"] = lines[0]
+        if len(lines) > 1:
+            output["title"] = lines[1]
+        if len(lines) > 2:
+            # output["artUrl"] = lines[2]
+            output["artUrl"] = unquote(urlparse(lines[2]).path)
     except subprocess.CalledProcessError:
-        return []
+        pass
+
+    return output
 
 
 def launch(button, cmd):
@@ -138,9 +152,15 @@ class PlayerctlWindow(Gtk.Window):
         GtkLayerShell.set_margin(self, GtkLayerShell.Edge.RIGHT, settings["lockscreen-playerctl-hmargin"])
         GtkLayerShell.set_margin(self, GtkLayerShell.Edge.LEFT, settings["lockscreen-playerctl-hmargin"])
 
+        ext_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+        self.add(ext_box)
+        global cover
+        cover = Gtk.Image.new_from_icon_name("image-missing", Gtk.IconSize.BUTTON)
+        ext_box.pack_start(cover, False, False, 6)
+
         vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 12)
         vbox.set_property("margin", 12)
-        self.add(vbox)
+        ext_box.pack_start(vbox, True, True, 0)
         hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         vbox.pack_start(hbox, True, True, 0)
         self.label = Gtk.Label()
@@ -187,17 +207,30 @@ class PlayerctlWindow(Gtk.Window):
             self.set_property("name", "")
             self.show_all()
 
-            output = []
-            for line in metadata:
-                if line:
-                    if len(line) < 40:
-                        output.append(line)
-                    else:
-                        output.append("{}…".format(line[:39]))
-            if len(output) > 1:
-                self.label.set_text("\n".join(output))
+            output = ""
+            if metadata["artist"]:
+                if len(metadata["artist"]) < 40:
+                    output += metadata["artist"]
+                else:
+                    output += metadata["artist"][:39]
+
+            if metadata["title"]:
+                if len(metadata["title"]) < 40:
+                    output += "\n{}".format(metadata["title"])
+                else:
+                    output += "\n{}".format(metadata["title"][:39])
+            self.label.set_text(output)
+
+            if metadata["artUrl"]:
+                try:
+                    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(metadata["artUrl"], 64, 64)
+                    cover.set_from_pixbuf(pixbuf)
+                    cover.show()
+                except Exception as e:
+                    print(e)
+                    cover.hide()
             else:
-                self.label.set_text(output[0])
+                cover.hide()
 
         else:
             # If the player has been stopped for some unknown reason (the screen is locked!), we can't restart it

@@ -1665,11 +1665,11 @@ def gtklock_preset_tab(preset, preset_name):
         box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         grid.attach(box, 1, 4, 3, 1)
 
-        sb_gtklock_playerctl_art_size = Gtk.SpinButton.new_with_range(8, 256, 1)
+        sb_gtklock_playerctl_art_size = Gtk.SpinButton.new_with_range(0, 256, 1)
         sb_gtklock_playerctl_art_size.set_value(preset["gtklock-playerctl-art-size"])
         sb_gtklock_playerctl_art_size.connect("value-changed", set_int_from_spinbutton, preset,
                                               "gtklock-playerctl-art-size")
-        sb_gtklock_playerctl_art_size.set_tooltip_text("album cover size in pixels")
+        sb_gtklock_playerctl_art_size.set_tooltip_text("album cover size in pixels; set 0 to hide")
         box.pack_start(sb_gtklock_playerctl_art_size, False, False, 0)
 
         lbl = Gtk.Label.new("Position:")
