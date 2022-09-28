@@ -33,6 +33,7 @@ preset = load_json(
 pid = os.getpid()
 pctl = None
 cover = None
+art_url = ""
 
 defaults = {
     "panel-preset": "preset-0",
@@ -158,10 +159,10 @@ class PlayerctlWindow(Gtk.Window):
         self.add(ext_box)
         global cover
         cover = Gtk.Image.new_from_icon_name("image-missing", Gtk.IconSize.BUTTON)
-        ext_box.pack_start(cover, False, False, 6)
+        ext_box.pack_start(cover, False, False, 12)
 
-        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 12)
-        vbox.set_property("margin", 12)
+        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 6)
+        vbox.set_property("margin", 6)
         ext_box.pack_start(vbox, True, True, 0)
         hbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         vbox.pack_start(hbox, True, True, 0)
@@ -191,21 +192,21 @@ class PlayerctlWindow(Gtk.Window):
             self.btn_forward.connect("clicked", launch, "playerctl -a next")
             ibox.pack_start(self.btn_forward, False, False, 0)
 
-        self.refresh()
         self.show_all()
+        cover.hide()
         self.set_size_request(self.get_allocated_height() * 4, 0)
 
     def refresh(self):
         status = get_player_status()
         metadata = get_player_metadata()
         if settings["lockscreen-locker"] == "gtklock":  # otherwise we have no buttons!
-            if status in ["Playing", "Paused"]:
+            if status in ["Playing", "Paused", "Stopped"]:
                 if status == "Playing":
                     self.btn_play_pause.set_image(self.img_pause)
                 else:
                     self.btn_play_pause.set_image(self.img_play)
 
-        if status in ["Playing", "Paused"]:
+        if status in ["Playing", "Paused", "Stopped"]:
             self.set_property("name", "")
             self.show_all()
 
@@ -224,10 +225,14 @@ class PlayerctlWindow(Gtk.Window):
             self.label.set_text(output)
 
             if metadata["artUrl"]:
+                global art_url
                 try:
-                    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(metadata["artUrl"], 64, 64)
-                    cover.set_from_pixbuf(pixbuf)
-                    cover.show()
+                    if art_url != metadata["artUrl"]:
+
+                        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(metadata["artUrl"], 64, 64)
+                        cover.set_from_pixbuf(pixbuf)
+                        cover.show()
+                        art_url = metadata["artUrl"]
                 except Exception as e:
                     print(e)
                     cover.hide()
@@ -253,7 +258,7 @@ class PlayerctlWindow(Gtk.Window):
             return True
 
         status = get_player_status()
-        if status not in ["Playing", "Paused"]:
+        if status not in ["Playing", "Paused", "Stopped"]:
             # wide widgets
             self.label.hide()
             if self.btn_backward:
@@ -317,7 +322,7 @@ def set_remote_wallpaper():
 def set_local_wallpaper():
     global pctl
     pctl = PlayerctlWindow() if settings["lockscreen-playerctl"] and get_player_status() in ["Playing",
-                                                                                             "Paused"] else None
+                                                                                             "Paused", "Stopped"] else None
 
     paths = []
     dirs = settings["background-dirs"].copy()
