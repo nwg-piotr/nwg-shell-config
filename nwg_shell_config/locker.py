@@ -10,6 +10,7 @@ import signal
 import sys
 import threading
 import urllib.request
+import requests
 
 import gi
 
@@ -33,15 +34,15 @@ preset = load_json(
 
 pid = os.getpid()
 pctl = None
-cover = None
+cover_img = None
 artist = ""
 title = ""
-art_img_path = ""
 request_in_progress = False
 art_url = ""
+old_art_url = ""
+path_to_save_img = ""
+art_img_path = ""
 old_art_img_path = ""
-dl_img_path = ""
-old_dl_img_path = ""
 
 defaults = {
     "panel-preset": "preset-0",
@@ -100,50 +101,33 @@ def get_player_status():
 
 
 def get_player_metadata():
-    global artist, title, art_img_path, request_in_progress
-    global art_url, dl_img_path, old_dl_img_path
+    global artist, title, art_url
     try:
         lines = subprocess.check_output("playerctl metadata --format '{{artist}}:#:{{title}}:#:{{mpris:artUrl}}'",
-                                        shell=True).decode(
-            "utf-8").strip().split(":#:")
+                                        shell=True).decode("utf-8").strip().split(":#:")
         if len(lines) > 0:
             artist = lines[0]
         if len(lines) > 1:
             title = lines[1]
         if len(lines) > 2:
-            if art_url != lines[2]:
-                if lines[2].startswith("http") and not request_in_progress:
-                    # download remote file (e.g. Epiphany)
-                    f_name = "album-cover-{}.jpg".format(lines[2].split("/")[-1])
-                    img_path = os.path.join(data_dir, f_name)
-                    if not os.path.isfile(img_path):
-                        for p in os.listdir(data_dir):
-                            if p.startswith("album-cover-"):
-                                os.remove(os.path.join(data_dir, p))
-                        request_in_progress = True
-                        print("DL remote file '{}'".format(lines[2]))
-                        print("Save as '{}'".format(f_name))
-                        r = urllib.request.urlretrieve(lines[2], img_path)
-                        print("Done")
-                        dl_img_path = img_path
-                        if dl_img_path != old_dl_img_path and os.path.isfile(old_dl_img_path):
-                            os.remove(old_dl_img_path)
-                        art_img_path = dl_img_path
-
-                        request_in_progress = False
-
-                else:
-                    # path to local file (e.g. Firefox)
-                    art_img_path = unquote(urlparse(lines[2]).path)
-
-                art_url = lines[2]
-
+            art_url = lines[2]
     except subprocess.CalledProcessError as e:
         print(e)
 
 
 def launch(button, cmd):
     subprocess.Popen('exec {}'.format(cmd), shell=True)
+
+
+def download_image():
+    global art_img_path, request_in_progress
+    print("DL remote file '{}'".format(art_url))
+    urllib.request.urlretrieve(art_url, path_to_save_img)
+    art_img_path = path_to_save_img
+    request_in_progress = False
+    print("Done")
+
+    # return False
 
 
 class PlayerctlWindow(Gtk.Window):
@@ -189,9 +173,9 @@ class PlayerctlWindow(Gtk.Window):
 
         ext_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         self.add(ext_box)
-        global cover
-        cover = Gtk.Image.new_from_icon_name("image-missing", Gtk.IconSize.BUTTON)
-        ext_box.pack_start(cover, False, False, 12)
+        global cover_img
+        cover_img = Gtk.Image.new_from_icon_name("image-missing", Gtk.IconSize.BUTTON)
+        ext_box.pack_start(cover_img, False, False, 12)
 
         vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 6)
         vbox.set_property("margin", 6)
@@ -225,18 +209,15 @@ class PlayerctlWindow(Gtk.Window):
             ibox.pack_start(self.btn_forward, False, False, 0)
 
         self.show_all()
-        cover.hide()
+        cover_img.hide()
         self.set_size_request(self.get_allocated_height() * 4, 0)
 
     def refresh(self):
-        thread = threading.Thread(target=self.get_output)
-        thread.daemon = True
-        thread.start()
-        return True
-
-    def get_output(self):
+        global art_url, old_art_url, path_to_save_img, request_in_progress, art_img_path, old_art_img_path
+        print("refresh")
         status = get_player_status()
         get_player_metadata()
+        print("aTu", artist, title, art_url)
         if settings["lockscreen-locker"] == "gtklock":  # otherwise we have no buttons!
             if status in ["Playing", "Paused", "Stopped"]:
                 if status == "Playing":
@@ -262,20 +243,45 @@ class PlayerctlWindow(Gtk.Window):
                     output += "\n{}".format(title[:39])
             self.label.set_text(output)
 
-            global art_img_path, old_art_img_path
-            print(">>>", art_img_path, old_art_img_path)
+            if art_url and art_url != old_art_url:
+                if art_url.startswith("http"):
+                    # download remote file (e.g. Epiphany)
+                    f_name = "album-cover-{}.jpg".format(art_url.split("/")[-1])
+                    path_to_save_img = os.path.join(data_dir, f_name)
+                    if not os.path.isfile(path_to_save_img):
+                        print("new path_to_save_img = ", path_to_save_img)
+                        for p in os.listdir(data_dir):
+                            if p.startswith("album-cover-"):
+                                os.remove(os.path.join(data_dir, p))
+
+                        if not request_in_progress:
+                            print(">>>>> dl remote")
+                            request_in_progress = True
+                            thread = threading.Thread(target=download_image)
+                            thread.daemon = True
+                            thread.start()
+                            # Gdk.threads_add_timeout_seconds(GLib.PRIORITY_HIGH, 0, download_image)
+                            # GLib.timeout_add(0, download_image)
+                    else:
+                        # use old image
+                        art_img_path = path_to_save_img
+                else:
+                    # path to local file (e.g. Firefox)
+                    art_img_path = unquote(urlparse(art_url).path)
+
             if art_img_path:
                 try:
                     if art_img_path != old_art_img_path:
+                        print("create pixbuf")
                         pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(art_img_path, 64, 64)
-                        cover.set_from_pixbuf(pixbuf)
-                        cover.show()
+                        cover_img.set_from_pixbuf(pixbuf)
+                        cover_img.show()
                         old_art_img_path = art_img_path
                 except Exception as e:
                     print(e)
-                    cover.hide()
+                    cover_img.hide()
             else:
-                cover.hide()
+                cover_img.hide()
 
         else:
             # If the player has been stopped for some unknown reason (the screen is locked!), we can't restart it
@@ -326,7 +332,7 @@ def terminate_old_instance_if_any():
 
 
 def set_remote_wallpaper():
-    if settings["lockscreen-playerctl"] and get_player_status() in ["Playing", "Paused"]:
+    if settings["lockscreen-playerctl"] and get_player_status() in ["Playing", "Paused", "Stopped"]:
         global pctl
         pctl = PlayerctlWindow()
     else:
@@ -349,7 +355,8 @@ def set_remote_wallpaper():
 
             if pctl:
                 terminate_old_instance_if_any()
-                Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
+                # Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
+                GLib.timeout_add_seconds(1, pctl.refresh)
                 Gtk.main()
 
     except Exception as e:
@@ -359,8 +366,8 @@ def set_remote_wallpaper():
 
 def set_local_wallpaper():
     global pctl
-    pctl = PlayerctlWindow() if settings["lockscreen-playerctl"] and get_player_status() in ["Playing",
-                                                                                             "Paused", "Stopped"] else None
+    pctl = PlayerctlWindow() if settings["lockscreen-playerctl"] and get_player_status() in ["Playing", "Paused",
+                                                                                             "Stopped"] else None
 
     paths = []
     dirs = settings["background-dirs"].copy()
@@ -394,7 +401,8 @@ def set_local_wallpaper():
 
     if pctl:
         terminate_old_instance_if_any()
-        Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
+        # Gdk.threads_add_timeout_seconds(GLib.PRIORITY_LOW, 1, pctl.refresh)
+        GLib.timeout_add_seconds(1, pctl.refresh)
         Gtk.main()
 
     sys.exit(0)
