@@ -8,6 +8,7 @@ import random
 import subprocess
 import signal
 import sys
+import threading
 import urllib.request
 
 import gi
@@ -33,7 +34,14 @@ preset = load_json(
 pid = os.getpid()
 pctl = None
 cover = None
+artist = ""
+title = ""
+art_img_path = ""
+request_in_progress = False
 art_url = ""
+old_art_img_path = ""
+dl_img_path = ""
+old_dl_img_path = ""
 
 defaults = {
     "panel-preset": "preset-0",
@@ -92,33 +100,50 @@ def get_player_status():
 
 
 def get_player_metadata():
-    output = {"artist": "", "title": "", "artUrl": ""}
+    global artist, title, art_img_path, request_in_progress
+    global art_url, dl_img_path, old_dl_img_path
     try:
         lines = subprocess.check_output("playerctl metadata --format '{{artist}}:#:{{title}}:#:{{mpris:artUrl}}'",
                                         shell=True).decode(
             "utf-8").strip().split(":#:")
         if len(lines) > 0:
-            output["artist"] = lines[0]
+            artist = lines[0]
         if len(lines) > 1:
-            output["title"] = lines[1]
+            title = lines[1]
         if len(lines) > 2:
-            if lines[2].startswith("http"):
-                # download remote file (Epiphany) todo Needs to be async!
-                # output["artUrl"] needs to be replaced by a global variable
-                img_path = os.path.join(data_dir, "cover.jpg")
-                r = urllib.request.urlretrieve(lines[2], img_path)
-                output["artUrl"] = img_path
-            else:
-                # path to local file (Firefox)
-                output["artUrl"] = unquote(urlparse(lines[2]).path)
-    except subprocess.CalledProcessError:
-        pass
+            if art_url != lines[2]:
+                if lines[2].startswith("http") and not request_in_progress:
+                    # download remote file (e.g. Epiphany)
+                    f_name = "album-cover-{}.jpg".format(lines[2].split("/")[-1])
+                    img_path = os.path.join(data_dir, f_name)
+                    if not os.path.isfile(img_path):
+                        for p in os.listdir(data_dir):
+                            if p.startswith("album-cover-"):
+                                os.remove(os.path.join(data_dir, p))
+                        request_in_progress = True
+                        print("DL remote file '{}'".format(lines[2]))
+                        print("Save as '{}'".format(f_name))
+                        r = urllib.request.urlretrieve(lines[2], img_path)
+                        print("Done")
+                        dl_img_path = img_path
+                        if dl_img_path != old_dl_img_path and os.path.isfile(old_dl_img_path):
+                            os.remove(old_dl_img_path)
+                        art_img_path = dl_img_path
 
-    return output
+                        request_in_progress = False
+
+                else:
+                    # path to local file (e.g. Firefox)
+                    art_img_path = unquote(urlparse(lines[2]).path)
+
+                art_url = lines[2]
+
+    except subprocess.CalledProcessError as e:
+        print(e)
 
 
 def launch(button, cmd):
-    subprocess.check_Popen('exec {}'.format(cmd), shell=True)
+    subprocess.Popen('exec {}'.format(cmd), shell=True)
 
 
 class PlayerctlWindow(Gtk.Window):
@@ -204,8 +229,14 @@ class PlayerctlWindow(Gtk.Window):
         self.set_size_request(self.get_allocated_height() * 4, 0)
 
     def refresh(self):
+        thread = threading.Thread(target=self.get_output)
+        thread.daemon = True
+        thread.start()
+        return True
+
+    def get_output(self):
         status = get_player_status()
-        metadata = get_player_metadata()
+        get_player_metadata()
         if settings["lockscreen-locker"] == "gtklock":  # otherwise we have no buttons!
             if status in ["Playing", "Paused", "Stopped"]:
                 if status == "Playing":
@@ -218,28 +249,28 @@ class PlayerctlWindow(Gtk.Window):
             self.show_all()
 
             output = ""
-            if metadata["artist"]:
-                if len(metadata["artist"]) < 40:
-                    output += metadata["artist"]
+            if artist:
+                if len(artist) < 40:
+                    output += artist
                 else:
-                    output += metadata["artist"][:39]
+                    output += artist[:39]
 
-            if metadata["title"]:
-                if len(metadata["title"]) < 40:
-                    output += "\n{}".format(metadata["title"])
+            if title:
+                if len(title) < 40:
+                    output += "\n{}".format(title)
                 else:
-                    output += "\n{}".format(metadata["title"][:39])
+                    output += "\n{}".format(title[:39])
             self.label.set_text(output)
 
-            if metadata["artUrl"]:
-                global art_url
+            global art_img_path, old_art_img_path
+            print(">>>", art_img_path, old_art_img_path)
+            if art_img_path:
                 try:
-                    if art_url != metadata["artUrl"]:
-
-                        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(metadata["artUrl"], 64, 64)
+                    if art_img_path != old_art_img_path:
+                        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(art_img_path, 64, 64)
                         cover.set_from_pixbuf(pixbuf)
                         cover.show()
-                        art_url = metadata["artUrl"]
+                        old_art_img_path = art_img_path
                 except Exception as e:
                     print(e)
                     cover.hide()
