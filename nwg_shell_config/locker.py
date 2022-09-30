@@ -63,7 +63,8 @@ preset_defaults = {
     "gtklock-powerbar-show-labels": False,
     "gtklock-powerbar-linked-buttons": False,
     "gtklock-playerctl-art-size": 64,
-    "gtklock-playerctl-position": "top-right"
+    "gtklock-playerctl-position": "top-right",
+    "gtklock-playerctl-show-hidden": True
 }
 
 
@@ -180,6 +181,8 @@ def gtklock_command():
         gtklock_cmd += " -m {}".format(gtklock_module_path("playerctl"))
 
         # optional playerctl module arguments
+        if preset["gtklock-playerctl-show-hidden"]:
+            gtklock_cmd += " --show-hidden"
         if "gtklock-playerctl-art-size" in preset:
             gtklock_cmd += " --art-size {}".format(preset["gtklock-playerctl-art-size"])
         if "gtklock-playerctl-position":
@@ -196,6 +199,7 @@ def gtklock_command():
         if os.path.isfile(css_file):
             gtklock_cmd += " -s {}".format(css_file)
 
+    print(gtklock_cmd)
     return gtklock_cmd
 
 

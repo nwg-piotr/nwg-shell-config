@@ -46,5 +46,6 @@
   "gtklock-reboot-command": "systemctl reboot",
   "gtklock-poweroff-command": "systemctl -i poweroff",
   "gtklock-playerctl-art-size": 64,
-  "gtklock-playerctl-position": "top-right"
+  "gtklock-playerctl-position": "top-right",
+  "gtklock-playerctl-show-hidden": true
 }

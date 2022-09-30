@@ -1649,8 +1649,15 @@ def gtklock_preset_tab(preset, preset_name):
                      "above-clock", "under-clock"]:
             combo_gtklock_playerctl_position.append(item, item)
         combo_gtklock_playerctl_position.set_active_id(preset["gtklock-playerctl-position"])
-        combo_gtklock_playerctl_position.connect("changed", set_dict_key_from_combo, preset, "gtklock-playerctl-position")
+        combo_gtklock_playerctl_position.connect("changed", set_dict_key_from_combo, preset,
+                                                 "gtklock-playerctl-position")
         combo_gtklock_playerctl_position.set_tooltip_text("playerctl widget placement")
+
+        cb_gtklock_playerctl_show_hidden = Gtk.CheckButton.new_with_label("always show")
+        cb_gtklock_playerctl_show_hidden.set_active(preset["gtklock-playerctl-show-hidden"])
+        cb_gtklock_playerctl_show_hidden.connect("toggled", set_from_checkbutton, preset,
+                                                 "gtklock-playerctl-show-hidden")
+        grid.attach(cb_gtklock_playerctl_show_hidden, 1, 5, 3, 1)
 
     frame.show_all()
 

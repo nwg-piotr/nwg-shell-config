@@ -823,7 +823,8 @@ def load_preset(file_name):
         "gtklock-powerbar-show-labels": True,
         "gtklock-powerbar-linked-buttons": False,
         "gtklock-playerctl-art-size": 64,
-        "gtklock-playerctl-position": "top-right"
+        "gtklock-playerctl-position": "top-right",
+        "gtklock-playerctl-show-hidden": True
     }
     preset_file = os.path.join(data_dir, file_name)
     if os.path.isfile(preset_file):
