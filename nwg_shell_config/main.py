@@ -728,10 +728,6 @@ def load_settings():
         "lockscreen-background-source": "local",  # unsplash | local
         "lockscreen-custom-cmd": "",
         "lockscreen-timeout": 1200,
-        "lockscreen-playerctl": True,
-        "lockscreen-playerctl-position": "bottom-right",
-        "lockscreen-playerctl-hmargin": 60,
-        "lockscreen-playerctl-vmargin": 40,
         "sleep-cmd": 'swaymsg "output * dpms off"',
         "sleep-timeout": 1800,
         "resume-cmd": 'swaymsg "output * dpms on"',
@@ -748,6 +744,7 @@ def load_settings():
         "help-keyboard": False,
         "gtklock-time-format": "%H:%M:%S",
         "gtklock-idle-timeout": 10,
+        "gtklock-disable-input-inhibitor": False,
         "gtklock-userinfo": False,
         "gtklock-powerbar": False,
         "gtklock-playerctl": False,

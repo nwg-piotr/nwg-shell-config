@@ -33,6 +33,7 @@
   "swaync-notification-window-width": 500,
   "gtklock-time-format": "%H:%M:%S",
   "gtklock-idle-timeout": 10,
+  "gtklock-disable-input-inhibitor": false,
   "gtklock-userinfo": false,
   "gtklock-powerbar": false,
   "gtklock-playerctl": false,

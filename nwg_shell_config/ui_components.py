@@ -1043,13 +1043,13 @@ def lockscreen_tab(settings):
     lbl = Gtk.Label()
     lbl.set_markup("<b>Local background sources</b>")
     lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 2, 0, 4, 1)
+    grid.attach(lbl, 2, 1, 4, 1)
 
     bcg_window = Gtk.ScrolledWindow.new(None, None)
     bcg_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS)
     bcg_window.set_propagate_natural_width(True)
 
-    grid.attach(bcg_window, 2, 1, 4, 2)
+    grid.attach(bcg_window, 2, 2, 4, 4)
     bcg_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
     bcg_window.add(bcg_box)
 
@@ -1066,7 +1066,7 @@ def lockscreen_tab(settings):
         bcg_box.pack_start(cb, False, False, 0)
 
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
-    grid.attach(box, 2, 3, 3, 1)
+    grid.attach(box, 2, 6, 3, 1)
 
     cb_custom_path = Gtk.CheckButton.new_with_label("own path")
     cb_custom_path.set_active(settings["backgrounds-use-custom-path"])
@@ -1087,25 +1087,25 @@ def lockscreen_tab(settings):
     lbl.set_markup("<b>Unsplash random image</b>")
     lbl.set_property("halign", Gtk.Align.START)
     lbl.set_property("margin-top", 6)
-    grid.attach(lbl, 2, 4, 4, 1)
+    grid.attach(lbl, 2, 8, 4, 1)
 
     sb_us_width = Gtk.SpinButton.new_with_range(640, 7680, 1)
     sb_us_width.set_value(settings["unsplash-width"])
     sb_us_width.connect("value-changed", set_int_from_spinbutton, settings, "unsplash-width")
     sb_us_width.set_tooltip_text("desired wallpaper width")
-    grid.attach(sb_us_width, 2, 5, 1, 1)
+    grid.attach(sb_us_width, 2, 9, 1, 1)
 
     lbl = Gtk.Label.new("x")
-    grid.attach(lbl, 3, 5, 1, 1)
+    grid.attach(lbl, 3, 9, 1, 1)
 
     sb_us_width = Gtk.SpinButton.new_with_range(480, 4320, 1)
     sb_us_width.set_value(settings["unsplash-height"])
     sb_us_width.connect("value-changed", set_int_from_spinbutton, settings, "unsplash-height")
     sb_us_width.set_tooltip_text("desired wallpaper height")
-    grid.attach(sb_us_width, 4, 5, 1, 1)
+    grid.attach(sb_us_width, 4, 9, 1, 1)
 
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
-    grid.attach(box, 2, 6, 3, 1)
+    grid.attach(box, 2, 10, 3, 1)
     lbl = Gtk.Label.new("Keywords:")
     lbl.set_property("halign", Gtk.Align.START)
     box.pack_start(lbl, False, False, 0)
@@ -1115,46 +1115,6 @@ def lockscreen_tab(settings):
     entry_us_keywords.set_text(",".join(settings["unsplash-keywords"]))
     entry_us_keywords.connect("changed", set_keywords_from_entry, settings)
     box.pack_start(entry_us_keywords, True, True, 0)
-
-    lbl = Gtk.Label()
-    lbl.set_markup("<b>Media player control</b>")
-    lbl.set_property("halign", Gtk.Align.START)
-    lbl.set_property("margin-top", 6)
-    grid.attach(lbl, 2, 7, 2, 1)
-
-    cb_playerctl = Gtk.CheckButton.new_with_label("On")
-    cb_playerctl.set_active(settings["lockscreen-playerctl"])
-    cb_playerctl.connect("toggled", set_key_from_checkbox, settings, "lockscreen-playerctl")
-    grid.attach(cb_playerctl, 4, 7, 1, 1)
-
-    lbl = Gtk.Label.new("Position:")
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 8, 1, 1)
-
-    combo_playerctl_pos = Gtk.ComboBoxText()
-    for item in ["top-left", "top", "top-right", "bottom-left", "bottom", "bottom-right"]:
-        combo_playerctl_pos.append(item, item)
-    combo_playerctl_pos.set_active_id(settings["lockscreen-playerctl-position"])
-    combo_playerctl_pos.connect("changed", set_dict_key_from_combo, settings, "lockscreen-playerctl-position")
-    grid.attach(combo_playerctl_pos, 3, 8, 2, 1)
-
-    lbl = Gtk.Label.new("Horizontal margin:")
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 9, 1, 1)
-
-    sb_playerctl_hmargin = Gtk.SpinButton.new_with_range(0, 3840, 1)
-    sb_playerctl_hmargin.set_value(settings["lockscreen-playerctl-hmargin"])
-    sb_playerctl_hmargin.connect("value-changed", set_int_from_spinbutton, settings, "lockscreen-playerctl-hmargin")
-    grid.attach(sb_playerctl_hmargin, 3, 9, 2, 1)
-
-    lbl = Gtk.Label.new("Vertical margin:")
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 10, 1, 1)
-
-    sb_playerctl_vmargin = Gtk.SpinButton.new_with_range(0, 2160, 1)
-    sb_playerctl_vmargin.set_value(settings["lockscreen-playerctl-vmargin"])
-    sb_playerctl_vmargin.connect("value-changed", set_int_from_spinbutton, settings, "lockscreen-playerctl-vmargin")
-    grid.attach(sb_playerctl_vmargin, 3, 10, 2, 1)
 
     # WARNING about 'swayidle' in sway config
     config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
@@ -1240,7 +1200,7 @@ def gtklock_tab(settings):
     grid.attach(lbl, 0, 4, 1, 1)
 
     entry_layout = Gtk.Entry()
-    entry_layout.set_tooltip_text("Command to reboot the computer")
+    entry_layout.set_tooltip_text("command to reboot the computer")
     entry_layout.set_text(settings["gtklock-reboot-command"])
     entry_layout.connect("changed", set_from_entry, settings, "gtklock-reboot-command")
     grid.attach(entry_layout, 1, 4, 1, 1)
@@ -1250,7 +1210,7 @@ def gtklock_tab(settings):
     grid.attach(lbl, 0, 5, 1, 1)
 
     entry_gtklock_poweroff_command = Gtk.Entry()
-    entry_gtklock_poweroff_command.set_tooltip_text("Command to power off the computer")
+    entry_gtklock_poweroff_command.set_tooltip_text("command to power off the computer")
     entry_gtklock_poweroff_command.set_text(settings["gtklock-poweroff-command"])
     entry_gtklock_poweroff_command.connect("changed", set_from_entry, settings, "gtklock-poweroff-command")
     grid.attach(entry_gtklock_poweroff_command, 1, 5, 1, 1)
@@ -1265,7 +1225,7 @@ def gtklock_tab(settings):
     grid.attach(lbl, 0, 7, 1, 1)
 
     entry_time_format = Gtk.Entry()
-    entry_time_format.set_tooltip_text("See 'man date' for format details")
+    entry_time_format.set_tooltip_text("See 'man date' for format details.")
     entry_time_format.set_text(settings["gtklock-time-format"])
     entry_time_format.connect("changed", set_from_entry, settings, "gtklock-time-format")
     grid.attach(entry_time_format, 1, 7, 1, 1)
@@ -1277,8 +1237,14 @@ def gtklock_tab(settings):
     sb_gtklock_idle_timeout = Gtk.SpinButton.new_with_range(5, 3600, 1)
     sb_gtklock_idle_timeout.set_value(settings["gtklock-idle-timeout"])
     sb_gtklock_idle_timeout.connect("value-changed", set_int_from_spinbutton, settings, "gtklock-idle-timeout")
-    sb_gtklock_idle_timeout.set_tooltip_text("Idle timeout in seconds")
+    sb_gtklock_idle_timeout.set_tooltip_text("idle timeout in seconds")
     grid.attach(sb_gtklock_idle_timeout, 1, 8, 1, 1)
+
+    cb_disable_input_inhibitor = Gtk.CheckButton.new_with_label("Disable input inhibitor")
+    cb_disable_input_inhibitor.set_active(settings["gtklock-disable-input-inhibitor"])
+    cb_disable_input_inhibitor.connect("toggled", set_key_from_checkbox, settings, "gtklock-disable-input-inhibitor")
+    cb_disable_input_inhibitor.set_tooltip_text("allows input events on the lock screen")
+    grid.attach(cb_disable_input_inhibitor, 1, 9, 1, 1)
 
     frame.show_all()
 
