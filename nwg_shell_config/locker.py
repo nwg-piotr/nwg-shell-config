@@ -8,9 +8,7 @@ import random
 import subprocess
 import signal
 import sys
-import threading
 import urllib.request
-import requests
 
 import gi
 
@@ -18,11 +16,9 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 gi.require_version('GdkPixbuf', '2.0')
 gi.require_version('GtkLayerShell', '0.1')
-from gi.repository import Gtk, Gdk, GLib, GdkPixbuf, GtkLayerShell
 
-from urllib.parse import unquote, urlparse
-
-from nwg_shell_config.tools import get_data_dir, temp_dir, load_json, load_text_file, save_string
+from nwg_shell_config.tools import get_data_dir, temp_dir, load_json, load_text_file, save_string, gtklock_module_path, \
+    playerctl_status
 
 config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(os.getenv("HOME"),
                                                                                              ".config/")
@@ -33,15 +29,6 @@ preset = load_json(
     os.path.join(data_dir, settings["panel-preset"])) if "panel-preset" in settings and "panel-preset" else {}
 
 pid = os.getpid()
-cover_img = None
-artist = ""
-title = ""
-request_in_progress = False
-art_url = ""
-old_art_url = ""
-path_to_save_img = ""
-art_img_path = ""
-old_art_img_path = ""
 
 defaults = {
     "panel-preset": "preset-0",
@@ -162,7 +149,7 @@ def gtklock_command():
 
     # userinfo module
     if settings["gtklock-userinfo"]:
-        gtklock_cmd += " -m userinfo-module"
+        gtklock_cmd += " -m {}".format(gtklock_module_path("userinfo"))
 
         # optional userinfo module arguments
         if not preset["gtklock-userinfo-round-image"]:
@@ -174,7 +161,7 @@ def gtklock_command():
 
     # powerbar module
     if settings["gtklock-powerbar"]:
-        gtklock_cmd += " -m powerbar-module"
+        gtklock_cmd += " -m {}".format(gtklock_module_path("powerbar"))
 
         # optional powerbar module arguments
         if preset["gtklock-powerbar-show-labels"]:
@@ -187,8 +174,10 @@ def gtklock_command():
             gtklock_cmd += " --poweroff-command '{}'".format(settings["gtklock-poweroff-command"])
 
     # playerctl module
-    if settings["gtklock-playerctl"]:
-        gtklock_cmd += " -m playerctl-module"
+    # Don't show if playerctl_status() == "No players found"
+    # https://github.com/jovanlanik/gtklock-playerctl-module/issues/4
+    if settings["gtklock-playerctl"] and playerctl_status():
+        gtklock_cmd += " -m {}".format(gtklock_module_path("playerctl"))
 
         # optional playerctl module arguments
         if "gtklock-playerctl-art-size" in preset:

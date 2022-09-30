@@ -117,17 +117,13 @@ def is_command(cmd):
         return False
 
 
-def gtklock_module_installed(module_name):
-    # delete when playerctl module is fixed
-    # if module_name == "playerctl":
-    #     return False
-
+def gtklock_module_path(module_name):
     paths = ["/usr/lib/gtklock/{}-module.so".format(module_name), "/usr/local/lib/gtklock/{}-module.so".format(module_name)]
     for p in paths:
         if os.path.isfile(p):
-            return True
+            return p
 
-    return False
+    return ""
 
 
 def get_command_output(command):
@@ -246,6 +242,13 @@ def load_shell_data():
 def get_shell_version():
     lines = subprocess.check_output("nwg-shell -v".split()).decode('utf-8').splitlines()
     return lines[0].split()[2]
+
+
+def playerctl_status():
+    try:
+        return subprocess.check_output("playerctl status 2>&1", shell=True).decode("utf-8").strip()
+    except subprocess.CalledProcessError:
+        return ""
 
 
 def is_newer(string_new, string_existing):

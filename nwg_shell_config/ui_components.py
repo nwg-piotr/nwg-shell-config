@@ -5,7 +5,7 @@ import os
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, \
-    gtklock_module_installed
+    gtklock_module_path
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -1166,7 +1166,7 @@ def gtklock_tab(settings):
                                          "\nYou also need the `gtklock-userinfo-module` package.")
     box.pack_start(cb_gtklock_userinfo, False, False, 0)
     # Disable check button if module not installed
-    if not gtklock_module_installed("userinfo"):
+    if not gtklock_module_path("userinfo"):
         cb_gtklock_userinfo.set_active(False)
         cb_gtklock_userinfo.set_sensitive(False)
 
@@ -1176,7 +1176,7 @@ def gtklock_tab(settings):
     cb_gtklock_powerbar.set_tooltip_text("For this module to work, you need the `gtklock-powerbar-module` package.")
     box.pack_start(cb_gtklock_powerbar, False, False, 0)
 
-    if not gtklock_module_installed("powerbar"):
+    if not gtklock_module_path("powerbar"):
         cb_gtklock_powerbar.set_active(False)
         cb_gtklock_powerbar.set_sensitive(False)
 
@@ -1186,7 +1186,7 @@ def gtklock_tab(settings):
     cb_gtklock_layerctl.set_tooltip_text("For this module to work, you need the `gtklock-playerctl-module` package.")
     box.pack_start(cb_gtklock_layerctl, False, False, 0)
 
-    if not gtklock_module_installed("playerctl"):
+    if not gtklock_module_path("playerctl"):
         cb_gtklock_layerctl.set_active(False)
         cb_gtklock_layerctl.set_sensitive(False)
 
@@ -1572,7 +1572,7 @@ def gtklock_preset_tab(preset, preset_name):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
-    if gtklock_module_installed("userinfo"):
+    if gtklock_module_path("userinfo"):
         lbl = Gtk.Label()
         lbl.set_markup("<b>Userinfo module</b>")
         lbl.set_property("halign", Gtk.Align.START)
@@ -1599,7 +1599,7 @@ def gtklock_preset_tab(preset, preset_name):
         cb_userinfo_under_clock.set_tooltip_text("user avatar and name below the clock")
         box.pack_start(cb_userinfo_under_clock, False, False, 0)
 
-    if gtklock_module_installed("powerbar"):
+    if gtklock_module_path("powerbar"):
         lbl = Gtk.Label()
         lbl.set_markup("<b>Powerbar module</b>")
         lbl.set_property("halign", Gtk.Align.START)
@@ -1618,7 +1618,7 @@ def gtklock_preset_tab(preset, preset_name):
         cb_powerbar_linked_buttons.connect("toggled", set_from_checkbutton, preset, "gtklock-powerbar-linked-buttons")
         box.pack_start(cb_powerbar_linked_buttons, False, False, 0)
 
-    if gtklock_module_installed("playerctl"):
+    if gtklock_module_path("playerctl"):
         lbl = Gtk.Label()
         lbl.set_markup("<b>Playerctl module</b>")
         lbl.set_property("halign", Gtk.Align.START)
