@@ -73,7 +73,10 @@
   "help-font-size": 14,
   "help-layer-shell": true,
   "help-keyboard": false,
+  "gtklock-time-format": "'%H:%M:%S",
+  "gtklock-idle-timeout": 10,
   "gtklock-userinfo": false,
   "gtklock-powerbar": false,
-  "last-upgrade-check": 0
+  "gtklock-reboot-command": "systemctl reboot",
+  "gtklock-poweroff-command": "systemctl -i poweroff"
 }

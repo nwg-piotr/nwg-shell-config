@@ -18,10 +18,8 @@ gi.require_version('Gtk', '3.0')
 dir_name = os.path.dirname(__file__)
 
 shell_data = load_shell_data()
-print(shell_data)
 pending_updates = 0
 update_btn = Gtk.Button()
-
 
 data_dir = ""
 config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
@@ -125,6 +123,10 @@ def side_menu():
     row.eb.connect("button-press-event", set_up_lockscreen_tab)
     list_box.add(row)
 
+    row = SideMenuRow("Gtklock")
+    row.eb.connect("button-press-event", set_up_gtklock_tab)
+    list_box.add(row)
+
     row = SideMenuRow("Applications")
     row.eb.connect("button-press-event", set_up_applications_tab)
     list_box.add(row)
@@ -213,6 +215,10 @@ def preset_menu(preset_id):
     row.eb.connect("button-press-event", set_up_notification_tab, preset, preset_name)
     list_box.add(row)
 
+    row = SideMenuRow("Gtklock", margin_start=18)
+    row.eb.connect("button-press-event", set_up_gtklock_preset_tab, preset, preset_name)
+    list_box.add(row)
+
     if preset_id == "c":
         row = SideMenuRow("Panel & css", margin_start=18)
         row.eb.connect("button-press-event", set_up_panel_styling_tab, preset, preset_name)
@@ -291,6 +297,14 @@ def set_up_lockscreen_tab(*args):
     grid.attach(content, 1, 0, 1, 1)
 
 
+def set_up_gtklock_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = gtklock_tab(settings)
+    grid.attach(content, 1, 0, 1, 1)
+
+
 def set_up_drawer_tab(event_box, event_button, preset, preset_name):
     hide_submenus()
     global content
@@ -323,6 +337,14 @@ def set_up_notification_tab(event_box, event_button, preset, preset_name):
     grid.attach(content, 1, 0, 1, 1)
 
 
+def set_up_gtklock_preset_tab(event_box, event_button, preset, preset_name):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = gtklock_preset_tab(preset, preset_name)
+    grid.attach(content, 1, 0, 1, 1)
+
+
 def set_up_panel_styling_tab(event_box, event_button, preset, preset_name):
     hide_submenus()
     global content
@@ -344,7 +366,8 @@ def on_apply_btn(b):
     update_swaync_config(preset["swaync-positionX"],
                          preset["swaync-positionY"],
                          preset["swaync-control-center-width"],
-                         preset["swaync-notification-window-width"])
+                         preset["swaync-notification-window-width"],
+                         preset["swaync-mpris"])
 
     save_includes()
     f = os.path.join(data_dir, "settings")
@@ -364,8 +387,13 @@ class GUI(object):
         global grid
         grid = builder.get_object("grid")
 
+        scrolled_window = Gtk.ScrolledWindow.new(None, None)
+        scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scrolled_window.set_propagate_natural_height(True)
+        grid.attach(scrolled_window, 0, 0, 1, 1)
+
         self.menu = side_menu()
-        grid.attach(self.menu, 0, 0, 1, 1)
+        scrolled_window.add(self.menu)
 
         self.version = builder.get_object("version-label")
         self.version.set_text("v{}".format(__version__))
@@ -555,7 +583,7 @@ def save_includes():
             "before-sleep"] else ""
 
         cmd_idle = "exec swayidle timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
-                                                                          c_sleep, c_resume, c_before_sleep)
+                                                                       c_sleep, c_resume, c_before_sleep)
 
         print("Idle command:", cmd_idle)
         autostart.append(cmd_idle)
@@ -643,6 +671,7 @@ def reload():
 
 
 def load_settings():
+    settings_file = os.path.join(data_dir, "settings")
     defaults = {
         "keyboard-layout": "us",
         "autotiling-workspaces": "",
@@ -698,10 +727,6 @@ def load_settings():
         "lockscreen-background-source": "local",  # unsplash | local
         "lockscreen-custom-cmd": "",
         "lockscreen-timeout": 1200,
-        "lockscreen-playerctl": True,
-        "lockscreen-playerctl-position": "bottom-right",
-        "lockscreen-playerctl-hmargin": 60,
-        "lockscreen-playerctl-vmargin": 40,
         "sleep-cmd": 'swaymsg "output * dpms off"',
         "sleep-timeout": 1800,
         "resume-cmd": 'swaymsg "output * dpms on"',
@@ -716,11 +741,15 @@ def load_settings():
         "help-font-size": 12,
         "help-layer-shell": True,
         "help-keyboard": False,
+        "gtklock-time-format": "%H:%M:%S",
+        "gtklock-idle-timeout": 10,
+        "gtklock-disable-input-inhibitor": False,
         "gtklock-userinfo": False,
         "gtklock-powerbar": False,
-        "last-upgrade-check": 0
+        "gtklock-playerctl": False,
+        "gtklock-reboot-command": "systemctl reboot",
+        "gtklock-poweroff-command": "systemctl -i poweroff"
     }
-    settings_file = os.path.join(data_dir, "settings")
     global settings
     if os.path.isfile(settings_file):
         print("Loading settings from {}".format(settings_file))
@@ -785,7 +814,16 @@ def load_preset(file_name):
         "swaync-positionX": "right",
         "swaync-positionY": "top",
         "swaync-control-center-width": 500,
-        "swaync-notification-window-width": 500
+        "swaync-notification-window-width": 500,
+        "swaync-mpris": False,
+        "gtklock-userinfo-round-image": True,
+        "gtklock-userinfo-vertical-layout": True,
+        "gtklock-userinfo-under-clock": False,
+        "gtklock-powerbar-show-labels": True,
+        "gtklock-powerbar-linked-buttons": False,
+        "gtklock-playerctl-art-size": 64,
+        "gtklock-playerctl-position": "top-right",
+        "gtklock-playerctl-show-hidden": True
     }
     preset_file = os.path.join(data_dir, file_name)
     if os.path.isfile(preset_file):
@@ -833,7 +871,7 @@ def save_presets():
     save_json(preset_custom, f)
 
 
-def update_swaync_config(pos_x, pos_y, cc_width, window_width):
+def update_swaync_config(pos_x, pos_y, cc_width, window_width, mpris):
     settings_file = os.path.join(config_home, "swaync/config.json")
     if os.path.isfile(settings_file):
         print("Loading swaync settings from {}".format(settings_file))
@@ -841,7 +879,6 @@ def update_swaync_config(pos_x, pos_y, cc_width, window_width):
 
         # Check if some new keys appeared
         defaults = load_json("/etc/xdg/swaync/config.json")
-        print(defaults)
 
         for key in defaults:
             if key not in swaync_settings:
@@ -858,6 +895,14 @@ def update_swaync_config(pos_x, pos_y, cc_width, window_width):
             "control-center-width": cc_width,
             "notification-window-width": window_width
         }
+
+    if mpris:
+        if "mpris" not in swaync_settings["widgets"]:
+            swaync_settings["widgets"].append("mpris")
+    else:
+        if "mpris" in swaync_settings["widgets"]:
+            swaync_settings["widgets"].remove("mpris")
+
     print("Saving swaync settings to {}".format(settings_file))
     save_json(swaync_settings, settings_file)
 
