@@ -18,7 +18,6 @@ gi.require_version('Gtk', '3.0')
 dir_name = os.path.dirname(__file__)
 
 shell_data = load_shell_data()
-print(shell_data)
 pending_updates = 0
 update_btn = Gtk.Button()
 
@@ -880,7 +879,6 @@ def update_swaync_config(pos_x, pos_y, cc_width, window_width, mpris):
 
         # Check if some new keys appeared
         defaults = load_json("/etc/xdg/swaync/config.json")
-        print(defaults)
 
         for key in defaults:
             if key not in swaync_settings:
