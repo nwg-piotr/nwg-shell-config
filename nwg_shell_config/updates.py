@@ -2,7 +2,7 @@
 
 import os
 
-from nwg_shell_config.tools import load_text_file, log_line, save_list_to_text_file
+from nwg_shell_config.tools import load_text_file, log_line, save_list_to_text_file, get_command_output
 
 
 def update_version(version, log_file, label, config_home, shell_data):
@@ -26,5 +26,9 @@ def update_version(version, log_file, label, config_home, shell_data):
 
     if version == "0.3.0":
         log_line(log_file, label, "\nNo change needed.\n\n")
+
+    if version == "0.3.4":
+        o = get_command_output("nwg-shell-installer -r")
+        log_line(log_file, label, "\n".join(o))
 
     shell_data["updates"].append(version)
