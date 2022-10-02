@@ -244,9 +244,9 @@ def get_shell_version():
     return lines[0].split()[2]
 
 
-def playerctl_status():
+def playerctl_metadata():
     try:
-        return subprocess.check_output("playerctl status 2>&1", shell=True).decode("utf-8").strip()
+        return subprocess.check_output("playerctl metadata 2>&1", shell=True).decode("utf-8").strip()
     except subprocess.CalledProcessError:
         return ""
 

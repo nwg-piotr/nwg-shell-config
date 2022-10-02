@@ -18,7 +18,7 @@ gi.require_version('GdkPixbuf', '2.0')
 gi.require_version('GtkLayerShell', '0.1')
 
 from nwg_shell_config.tools import get_data_dir, temp_dir, load_json, load_text_file, save_string, gtklock_module_path, \
-    playerctl_status
+    playerctl_metadata
 
 config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(os.getenv("HOME"),
                                                                                              ".config/")
@@ -175,9 +175,9 @@ def gtklock_command():
             gtklock_cmd += " --poweroff-command '{}'".format(settings["gtklock-poweroff-command"])
 
     # playerctl module
-    # Don't show if playerctl_status() == "No players found"
+    # Don't show if playerctl_metadata() == "No player could handle this command"
     # https://github.com/jovanlanik/gtklock-playerctl-module/issues/4
-    if settings["gtklock-playerctl"] and playerctl_status():
+    if settings["gtklock-playerctl"] and playerctl_metadata():
         gtklock_cmd += " -m {}".format(gtklock_module_path("playerctl"))
 
         # optional playerctl module arguments
