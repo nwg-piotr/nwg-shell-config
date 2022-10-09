@@ -141,9 +141,9 @@ class SideMenuRow(Gtk.ListBoxRow):
         self.eb.add(lbl)
 
 
-def screen_tab(settings, pending_updates):
+def screen_tab(settings, voc, pending_updates):
     frame = Gtk.Frame()
-    frame.set_label("  Common: Screen settings  ")
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["screen-settings"]))
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
@@ -164,7 +164,7 @@ def screen_tab(settings, pending_updates):
     btn.set_image_position(Gtk.PositionType.TOP)
     img = Gtk.Image.new_from_icon_name("nwg-displays", Gtk.IconSize.DIALOG)
     btn.set_image(img)
-    btn.set_label("Displays")
+    btn.set_label(voc["displays"])
     btn.connect("clicked", launch, "nwg-displays")
     box.pack_start(btn, False, True, 0)
 
@@ -174,7 +174,7 @@ def screen_tab(settings, pending_updates):
     btn.set_image_position(Gtk.PositionType.TOP)
     img = Gtk.Image.new_from_icon_name("azote", Gtk.IconSize.DIALOG)
     btn.set_image(img)
-    btn.set_label("Wallpapers")
+    btn.set_label(voc["wallpapers"])
     btn.connect("clicked", launch, "azote")
     box.pack_start(btn, False, True, 0)
 
@@ -184,7 +184,7 @@ def screen_tab(settings, pending_updates):
     btn.set_image_position(Gtk.PositionType.TOP)
     img = Gtk.Image.new_from_icon_name("nwg-look", Gtk.IconSize.DIALOG)
     btn.set_image(img)
-    btn.set_label("Look & feel")
+    btn.set_label(voc["look-feel"])
     btn.connect("clicked", launch, "nwg-look")
     box.pack_start(btn, False, True, 0)
 
@@ -194,7 +194,7 @@ def screen_tab(settings, pending_updates):
     btn.set_image_position(Gtk.PositionType.TOP)
     img = Gtk.Image.new_from_icon_name("nwg-panel", Gtk.IconSize.DIALOG)
     btn.set_image(img)
-    btn.set_label("Panel settings")
+    btn.set_label(voc["panel-settings"])
     btn.connect("clicked", launch, "nwg-panel-config")
     box.pack_start(btn, False, True, 0)
 
@@ -203,7 +203,7 @@ def screen_tab(settings, pending_updates):
     update_btn.set_always_show_image(True)
     update_btn.set_image_position(Gtk.PositionType.TOP)
     if pending_updates == 0:
-        update_btn.set_label("Updates")
+        update_btn.set_label(voc["updates"])
         img = Gtk.Image.new_from_icon_name("nwg-shell", Gtk.IconSize.DIALOG)
     else:
         update_btn.set_label("Updates ({})".format(pending_updates))
@@ -213,8 +213,8 @@ def screen_tab(settings, pending_updates):
     box.pack_start(update_btn, False, True, 0)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Desktop style</b>")
-    lbl.set_property("halign", Gtk.Align.END)
+    lbl.set_markup("<b>{}</b>".format(voc["desktop-style"]))
+    lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 1, 1, 1)
 
     combo = Gtk.ComboBoxText()
@@ -227,19 +227,19 @@ def screen_tab(settings, pending_updates):
     combo.set_tooltip_text("Switches current desktop preset.")
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Autotiling</b>")
+    lbl.set_markup("<b>{}</b>".format(voc["autotiling"]))
     lbl.set_property("margin-top", 6)
     lbl.set_property("margin-bottom", 6)
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 2, 1, 1)
 
-    cb_autotiling_on = Gtk.CheckButton.new_with_label("on")
+    cb_autotiling_on = Gtk.CheckButton.new_with_label(voc["on"])
     cb_autotiling_on.set_active(settings["autotiling-on"])
     cb_autotiling_on.connect("toggled", set_from_checkbutton, settings, "autotiling-on")
     cb_autotiling_on.set_tooltip_text("Automates changing the horizontal/vertical\nwindow split orientation.")
     grid.attach(cb_autotiling_on, 1, 2, 1, 1)
 
-    lbl = Gtk.Label.new("Workspaces:")
+    lbl = Gtk.Label.new("{}:".format(voc["workspaces"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 3, 1, 1)
 
@@ -251,19 +251,19 @@ def screen_tab(settings, pending_updates):
     grid.attach(entry, 1, 3, 1, 1)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Night light</b>")
+    lbl.set_markup("<b>{}</b>".format(voc["night-light"]))
     lbl.set_property("margin-top", 6)
     lbl.set_property("margin-bottom", 6)
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 4, 1, 1)
 
-    cb_night_light_on = Gtk.CheckButton.new_with_label("on")
+    cb_night_light_on = Gtk.CheckButton.new_with_label(voc["on"])
     cb_night_light_on.set_active(settings["night-on"])
     cb_night_light_on.connect("toggled", set_from_checkbutton, settings, "night-on")
     cb_night_light_on.set_tooltip_text("Determines if to use `wlsunset'.")
     grid.attach(cb_night_light_on, 1, 4, 1, 1)
 
-    lbl = Gtk.Label.new("Latitude:")
+    lbl = Gtk.Label.new("{}:".format(voc["latitude"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 2, 5, 1, 1)
 
@@ -274,7 +274,7 @@ def screen_tab(settings, pending_updates):
     sb_lat.connect("value-changed", set_from_spinbutton, settings, "night-lat", 4)
     grid.attach(sb_lat, 3, 5, 1, 1)
 
-    lbl = Gtk.Label.new("Temp low:")
+    lbl = Gtk.Label.new("{}:".format(voc["temp-low"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 5, 1, 1)
 
@@ -284,7 +284,7 @@ def screen_tab(settings, pending_updates):
     sb_temp_low.connect("value-changed", set_int_from_spinbutton, settings, "night-temp-low")
     grid.attach(sb_temp_low, 1, 5, 1, 1)
 
-    lbl = Gtk.Label.new("Longitude:")
+    lbl = Gtk.Label.new("{}:".format(voc["longitude"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 2, 6, 1, 1)
 
@@ -299,7 +299,7 @@ def screen_tab(settings, pending_updates):
             or (sb_lat.get_value() == 0.0 and sb_lon.get_value() == 0.0):
         update_lat_lon(None, sb_lat, sb_lon)
 
-    lbl = Gtk.Label.new("Temp high:")
+    lbl = Gtk.Label.new("{}:".format(voc["temp-high"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 6, 1, 1)
 
@@ -309,11 +309,11 @@ def screen_tab(settings, pending_updates):
     sb_temp_high.connect("value-changed", set_int_from_spinbutton, settings, "night-temp-high")
     grid.attach(sb_temp_high, 1, 6, 1, 1)
 
-    lbl = Gtk.Label.new("Gamma:")
+    lbl = Gtk.Label.new("{}:".format(voc["gamma"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 7, 1, 1)
 
-    btn = Gtk.Button.new_with_label("Calculate Lat/Long")
+    btn = Gtk.Button.new_with_label(voc["calculate-lat-long"])
     btn.set_tooltip_text("If you were online during the first run, the Lat/Long"
                          "\nvalues should already reflect your timezone settings.\n"
                          "Push the button if something went wrong\nAND if you're online now.")
@@ -327,36 +327,38 @@ def screen_tab(settings, pending_updates):
     grid.attach(sb_gamma, 1, 7, 1, 1)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Help window</b>")
-    lbl.set_property("halign", Gtk.Align.END)
+    lbl.set_markup("<b>{}</b>".format(voc["help-window"]))
+    lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 8, 1, 1)
 
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
-    grid.attach(box, 1, 8, 1, 1)
+    grid.attach(box, 1, 8, 3, 1)
 
-    cb_help_overlay = Gtk.CheckButton.new_with_label("Overlay")
+    cb_help_overlay = Gtk.CheckButton.new_with_label(voc["overlay"])
     cb_help_overlay.set_active(settings["help-layer-shell"])
     cb_help_overlay.connect("toggled", set_from_checkbutton, settings, "help-layer-shell")
     cb_help_overlay.set_tooltip_text(
         "Determines if to display the help window\non the overlay layer, or as a regular window.")
     box.pack_start(cb_help_overlay, False, False, 0)
 
-    cb_help_keyboard = Gtk.CheckButton.new_with_label("Keyboard")
+    cb_help_keyboard = Gtk.CheckButton.new_with_label(voc["keyboard"])
     cb_help_keyboard.set_active(settings["help-keyboard"])
     cb_help_keyboard.connect("toggled", set_from_checkbutton, settings, "help-keyboard")
     cb_help_keyboard.set_tooltip_text(
         "Determines if the help window\nshould intercept the keyboard input.")
     box.pack_start(cb_help_keyboard, False, False, 0)
 
-    lbl = Gtk.Label.new("Font size:")
+    lbl = Gtk.Label.new("{}:".format(voc["font-size"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 8, 1, 1)
+    box.pack_start(lbl, False, False, 6)
+    # grid.attach(lbl, 2, 8, 1, 1)
 
     sb_help_font_size = Gtk.SpinButton.new_with_range(6, 48, 1)
     sb_help_font_size.set_tooltip_text("Help text font size")
     sb_help_font_size.set_value(settings["help-font-size"])
     sb_help_font_size.connect("value-changed", set_int_from_spinbutton, settings, "help-font-size")
-    grid.attach(sb_help_font_size, 3, 8, 1, 1)
+    box.pack_start(sb_help_font_size, False, False, 0)
+    # grid.attach(sb_help_font_size, 3, 8, 1, 1)
 
     frame.show_all()
 

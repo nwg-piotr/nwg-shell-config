@@ -3,6 +3,7 @@
 # Dependencies: python-geopy i3ipc
 
 import argparse
+import os
 import signal
 
 from nwg_shell_config.tools import *
@@ -27,6 +28,8 @@ config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else 
 
 data_home = os.getenv('XDG_DATA_HOME') if os.getenv('XDG_DATA_HOME') else os.path.join(
     os.getenv("HOME"), ".local/share")
+
+voc = {}
 
 outputs = []
 settings = {}
@@ -97,37 +100,37 @@ def side_menu():
     row.set_selectable(False)
     lbl = Gtk.Label()
     lbl.set_property("halign", Gtk.Align.START)
-    lbl.set_markup("<b>Common</b>")
+    lbl.set_markup("<b>{}</b>".format(voc["common"]))
     lbl.set_property("margin-top", 3)
     lbl.set_property("margin-start", 3)
     row.add(lbl)
     list_box.add(row)
 
-    row = SideMenuRow("Screen settings")
+    row = SideMenuRow(voc["screen-settings"])
     row.eb.connect("button-press-event", set_up_screen_tab)
     list_box.add(row)
 
-    row = SideMenuRow("Keyboard")
+    row = SideMenuRow(voc["keyboard"])
     row.eb.connect("button-press-event", set_up_keyboard_tab)
     list_box.add(row)
 
-    row = SideMenuRow("Pointer device")
+    row = SideMenuRow(voc["pointer-device"])
     row.eb.connect("button-press-event", set_up_pointer_tab)
     list_box.add(row)
 
-    row = SideMenuRow("Touchpad")
+    row = SideMenuRow(voc["touchpad"])
     row.eb.connect("button-press-event", set_up_touchpad_tab)
     list_box.add(row)
 
-    row = SideMenuRow("Idle & Lock screen")
+    row = SideMenuRow(voc["idle-lock-screen"])
     row.eb.connect("button-press-event", set_up_lockscreen_tab)
     list_box.add(row)
 
-    row = SideMenuRow("Gtklock")
+    row = SideMenuRow(voc["gtklock"])
     row.eb.connect("button-press-event", set_up_gtklock_tab)
     list_box.add(row)
 
-    row = SideMenuRow("Applications")
+    row = SideMenuRow(voc["applications"])
     row.eb.connect("button-press-event", set_up_applications_tab)
     list_box.add(row)
 
@@ -136,40 +139,40 @@ def side_menu():
     lbl = Gtk.Label()
     lbl.set_property("halign", Gtk.Align.START)
     lbl.set_property("margin-top", 6)
-    lbl.set_markup("<b>Desktop styles</b>")
+    lbl.set_markup("<b>{}</b>".format(voc["desktop-styles"]))
     lbl.set_property("margin-start", 3)
     row.add(lbl)
     list_box.add(row)
 
-    row = SideMenuRow("Preset 0")
+    row = SideMenuRow("{} 0".format(voc["preset"]))
     list_box.add(row)
 
     submenu_0 = preset_menu(0)
     list_box.add(submenu_0)
     row.eb.connect("button-press-event", toggle_submenu, submenu_0)
 
-    row = SideMenuRow("Preset 1")
+    row = SideMenuRow("{} 1".format(voc["preset"]))
     list_box.add(row)
 
     submenu_1 = preset_menu(1)
     list_box.add(submenu_1)
     row.eb.connect("button-press-event", toggle_submenu, submenu_1)
 
-    row = SideMenuRow("Preset 2")
+    row = SideMenuRow("{} 2".format(voc["preset"]))
     list_box.add(row)
 
     submenu_2 = preset_menu(2)
     list_box.add(submenu_2)
     row.eb.connect("button-press-event", toggle_submenu, submenu_2)
 
-    row = SideMenuRow("Preset 3")
+    row = SideMenuRow("{} 3".format(voc["preset"]))
     list_box.add(row)
 
     submenu_3 = preset_menu(3)
     list_box.add(submenu_3)
     row.eb.connect("button-press-event", toggle_submenu, submenu_3)
 
-    row = SideMenuRow("Custom preset")
+    row = SideMenuRow(voc["custom-preset"])
     list_box.add(row)
 
     submenu_c = preset_menu("c")
@@ -183,44 +186,44 @@ def side_menu():
 def preset_menu(preset_id):
     if preset_id == 0:
         preset = preset_0
-        preset_name = "Preset 0"
+        preset_name = "{} 0".format(voc["preset"])
     elif preset_id == 1:
         preset = preset_1
-        preset_name = "Preset 1"
+        preset_name = "{} 1".format(voc["preset"])
     elif preset_id == 2:
         preset = preset_2
-        preset_name = "Preset 2"
+        preset_name = "{} 2".format(voc["preset"])
     elif preset_id == 3:
         preset = preset_3
-        preset_name = "Preset 3"
+        preset_name = "{} 3".format(voc["preset"])
     else:
         preset = preset_custom
         preset_name = "Custom preset"
 
     list_box = Gtk.ListBox()
 
-    row = SideMenuRow("App drawer", margin_start=18)
+    row = SideMenuRow(voc["app-drawer"], margin_start=18)
     row.eb.connect("button-press-event", set_up_drawer_tab, preset, preset_name)
     list_box.add(row)
 
-    row = SideMenuRow("Dock", margin_start=18)
+    row = SideMenuRow(voc["dock"], margin_start=18)
     row.eb.connect("button-press-event", set_up_dock_tab, preset, preset_name)
     list_box.add(row)
 
-    row = SideMenuRow("Exit menu", margin_start=18)
+    row = SideMenuRow(voc["exit-menu"], margin_start=18)
     row.eb.connect("button-press-event", set_up_bar_tab, preset, preset_name)
     list_box.add(row)
 
-    row = SideMenuRow("Notifications", margin_start=18)
+    row = SideMenuRow(voc["notifications"], margin_start=18)
     row.eb.connect("button-press-event", set_up_notification_tab, preset, preset_name)
     list_box.add(row)
 
-    row = SideMenuRow("Gtklock", margin_start=18)
+    row = SideMenuRow(voc["gtklock"], margin_start=18)
     row.eb.connect("button-press-event", set_up_gtklock_preset_tab, preset, preset_name)
     list_box.add(row)
 
     if preset_id == "c":
-        row = SideMenuRow("Panel & css", margin_start=18)
+        row = SideMenuRow(voc["panel-css"], margin_start=18)
         row.eb.connect("button-press-event", set_up_panel_styling_tab, preset, preset_name)
         list_box.add(row)
 
@@ -253,7 +256,7 @@ def set_up_screen_tab(*args):
     global content
     content.destroy()
     global update_btn
-    content, update_btn = screen_tab(settings, pending_updates)
+    content, update_btn = screen_tab(settings, voc, pending_updates)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -403,14 +406,17 @@ class GUI(object):
 
         cb_show = builder.get_object("show-on-startup")
         cb_show.set_active(settings["show-on-startup"])
+        cb_show.set_label(voc["show-on-startup"])
         cb_show.connect("toggled", set_from_checkbutton, settings, "show-on-startup")
 
         btn_close = builder.get_object("btn-close")
+        btn_close.set_label(voc["close"])
         btn_close.connect("clicked", Gtk.main_quit)
         btn_close.grab_focus()
 
         global btn_apply
         btn_apply = builder.get_object("btn-apply")
+        btn_apply.set_label(voc["apply"])
         btn_apply.connect("clicked", on_apply_btn)
 
         self.tz, self.lat, self.long = get_lat_lon()
@@ -909,6 +915,10 @@ def update_swaync_config(pos_x, pos_y, cc_width, window_width, mpris):
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("-l",
+                        "--lang",
+                        type=str,
+                        help="force a Locale")
     parser.add_argument("-v",
                         "--version",
                         action="version",
@@ -942,6 +952,17 @@ def main():
     else:
         # initialize missing own data files
         init_files(os.path.join(dir_name, "shell"), data_dir)
+
+    global voc
+    # basic vocabulary
+    voc = load_json(os.path.join(dir_name, "langs", "en_US.json"))
+    lang = os.getenv("LANG").split(".")[0] if not args.lang else args.lang
+    loc_file = os.path.join(dir_name, "langs", "{}.json".format(lang))
+    if os.path.isfile(loc_file):
+        # localized vocabulary
+        loc = load_json(loc_file)
+        for key in loc:
+            voc[key] = loc[key]
 
     check_updates()
 
