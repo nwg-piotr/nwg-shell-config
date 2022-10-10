@@ -271,7 +271,7 @@ def set_up_keyboard_tab(*args):
     hide_submenus()
     global content
     content.destroy()
-    content = keyboard_tab(settings)
+    content = keyboard_tab(settings, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 

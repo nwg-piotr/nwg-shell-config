@@ -488,9 +488,9 @@ def get_browsers():
     return result
 
 
-def keyboard_tab(settings):
+def keyboard_tab(settings, voc):
     frame = Gtk.Frame()
-    frame.set_label("  Common: Keyboard  ")
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["keyboard"]))
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
@@ -499,53 +499,52 @@ def keyboard_tab(settings):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
-    cb_keyboard_use_settings = Gtk.CheckButton.new_with_label("Use these settings")
+    cb_keyboard_use_settings = Gtk.CheckButton.new_with_label(voc["use-these-settings"])
     cb_keyboard_use_settings.set_property("halign", Gtk.Align.START)
     cb_keyboard_use_settings.set_property("margin-bottom", 6)
-    cb_keyboard_use_settings.set_tooltip_text("Determines if to export the 'keyboard' config include.")
+    cb_keyboard_use_settings.set_tooltip_text(voc["keyboard-include-tooltip"])
     cb_keyboard_use_settings.set_active(settings["keyboard-use-settings"])
     cb_keyboard_use_settings.connect("toggled", set_from_checkbutton, settings, "keyboard-use-settings")
     grid.attach(cb_keyboard_use_settings, 0, 0, 2, 1)
 
-    lbl = Gtk.Label.new("Layout:")
+    lbl = Gtk.Label.new("{}:".format(voc["keyboard-layout"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 1, 1, 1)
 
     entry_layout = Gtk.Entry()
-    entry_layout.set_tooltip_text("Layout of the keyboard like 'us' or 'de'.\nMultiple layouts can be specified\n"
-                                  "by separating them with commas.")
+    entry_layout.set_tooltip_text(voc["keyboard-layout-tooltip"])
     entry_layout.set_text(settings["keyboard-xkb-layout"])
     entry_layout.connect("changed", set_from_entry, settings, "keyboard-xkb-layout")
     grid.attach(entry_layout, 1, 1, 1, 1)
 
-    lbl = Gtk.Label.new("Variant:")
+    lbl = Gtk.Label.new("{}:".format(voc["keyboard-variant"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 2, 1, 1)
 
     entry_variant = Gtk.Entry()
-    entry_variant.set_tooltip_text("Variant of the keyboard like 'dvorak' or 'colemak'.")
+    entry_variant.set_tooltip_text(voc["keyboard-variant-tooltip"])
     entry_variant.set_text(settings["keyboard-xkb-variant"])
     entry_variant.connect("changed", set_from_entry, settings, "keyboard-xkb-variant")
     grid.attach(entry_variant, 1, 2, 1, 1)
 
-    lbl = Gtk.Label.new("Repeat delay:")
+    lbl = Gtk.Label.new("{}:".format(voc["keyboard-repeat-delay"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 3, 1, 1)
 
     sb_repeat_delay = Gtk.SpinButton.new_with_range(1, 6000, 1)
     sb_repeat_delay.set_value(settings["keyboard-repeat-delay"])
     sb_repeat_delay.connect("value-changed", set_int_from_spinbutton, settings, "keyboard-repeat-delay")
-    sb_repeat_delay.set_tooltip_text("Amount of time a key must be held before it starts repeating.")
+    sb_repeat_delay.set_tooltip_text(voc["keyboard-repeat-delay-tooltip"])
     grid.attach(sb_repeat_delay, 1, 3, 1, 1)
 
-    lbl = Gtk.Label.new("Repeat rate:")
+    lbl = Gtk.Label.new("{}:".format(voc["keyboard-repeat-rate"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 4, 1, 1)
 
     sb_repeat_rate = Gtk.SpinButton.new_with_range(1, 4000, 1)
     sb_repeat_rate.set_value(settings["keyboard-repeat-rate"])
     sb_repeat_rate.connect("value-changed", set_int_from_spinbutton, settings, "keyboard-repeat-rate")
-    sb_repeat_rate.set_tooltip_text("Frequency of key repeats once the repeat_delay has passed.")
+    sb_repeat_rate.set_tooltip_text(voc["keyboard-repeat-rate-tooltip"])
     grid.attach(sb_repeat_rate, 1, 4, 1, 1)
 
     lbl = Gtk.Label.new("CapsLock:")
@@ -554,9 +553,9 @@ def keyboard_tab(settings):
 
     combo_caps = Gtk.ComboBoxText()
     combo_caps.set_property("halign", Gtk.Align.START)
-    combo_caps.set_tooltip_text("Initially enables or disables CapsLock on startup.")
+    combo_caps.set_tooltip_text(voc["capslock-tooltip"])
     for item in ["disabled", "enabled"]:
-        combo_caps.append(item, item)
+        combo_caps.append(item, voc[item])
     combo_caps.set_active_id(settings["keyboard-xkb-capslock"])
     combo_caps.connect("changed", set_dict_key_from_combo, settings, "keyboard-xkb-capslock")
     grid.attach(combo_caps, 1, 5, 1, 1)
@@ -567,29 +566,27 @@ def keyboard_tab(settings):
 
     combo_num = Gtk.ComboBoxText()
     combo_num.set_property("halign", Gtk.Align.START)
-    combo_num.set_tooltip_text("Initially enables or disables NumLock on startup.")
+    combo_num.set_tooltip_text(voc["numlock-tooltip"])
     for item in ["disabled", "enabled"]:
-        combo_num.append(item, item)
+        combo_num.append(item, voc[item])
     combo_num.set_active_id(settings["keyboard-xkb-numlock"])
     combo_num.connect("changed", set_dict_key_from_combo, settings, "keyboard-xkb-numlock")
     grid.attach(combo_num, 1, 6, 1, 1)
 
-    lbl = Gtk.Label.new("Custom field:")
+    lbl = Gtk.Label.new("{}:".format(voc["custom-field"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 7, 1, 1)
 
     entry_cname = Gtk.Entry()
-    entry_cname.set_tooltip_text("User defined field that you need, but it's missing\nfrom the the form above. "
-                                 "Enter field name here.\nThink twice before you use it.")
-    entry_cname.set_placeholder_text("name")
+    entry_cname.set_tooltip_text(voc["custom-field-name-tooltip"])
+    entry_cname.set_placeholder_text(voc["name"])
     entry_cname.set_text(settings["keyboard-custom-name"])
     entry_cname.connect("changed", set_from_entry, settings, "keyboard-custom-name")
     grid.attach(entry_cname, 1, 7, 1, 1)
 
     entry_cname = Gtk.Entry()
-    entry_cname.set_tooltip_text("User defined field that you need, but it's missing\nfrom the the form above. "
-                                 "Enter field value here.\nThink twice before you use it.")
-    entry_cname.set_placeholder_text("value")
+    entry_cname.set_tooltip_text(voc["custom-field-value-tooltip"])
+    entry_cname.set_placeholder_text(voc["value"])
     entry_cname.set_text(settings["keyboard-custom-value"])
     entry_cname.connect("changed", set_from_entry, settings, "keyboard-custom-value")
     grid.attach(entry_cname, 2, 7, 1, 1)
