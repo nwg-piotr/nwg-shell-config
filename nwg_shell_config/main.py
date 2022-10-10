@@ -279,7 +279,7 @@ def set_up_pointer_tab(*args):
     hide_submenus()
     global content
     content.destroy()
-    content = pointer_tab(settings)
+    content = pointer_tab(settings, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 

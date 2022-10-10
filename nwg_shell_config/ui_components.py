@@ -596,9 +596,9 @@ def keyboard_tab(settings, voc):
     return frame
 
 
-def pointer_tab(settings):
+def pointer_tab(settings, voc):
     frame = Gtk.Frame()
-    frame.set_label("  Common: Pointer device  ")
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["pointer-device"]))
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
@@ -607,46 +607,46 @@ def pointer_tab(settings):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
-    cb_pointer_use_settings = Gtk.CheckButton.new_with_label("Use these settings")
+    cb_pointer_use_settings = Gtk.CheckButton.new_with_label(voc["use-these-settings"])
     cb_pointer_use_settings.set_property("halign", Gtk.Align.START)
     cb_pointer_use_settings.set_property("margin-bottom", 6)
-    cb_pointer_use_settings.set_tooltip_text("Determines if to export the 'pointer' config include.")
+    cb_pointer_use_settings.set_tooltip_text(voc["pointer-device-include-tooltip"])
     cb_pointer_use_settings.set_active(settings["pointer-use-settings"])
     cb_pointer_use_settings.connect("toggled", set_from_checkbutton, settings, "pointer-use-settings")
     grid.attach(cb_pointer_use_settings, 0, 0, 2, 1)
 
-    lbl = Gtk.Label.new("Acceleration profile:")
+    lbl = Gtk.Label.new("{}:".format(voc["acceleration-profile"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 1, 1, 1)
 
     combo_aprofile = Gtk.ComboBoxText()
     combo_aprofile.set_property("halign", Gtk.Align.START)
-    combo_aprofile.set_tooltip_text("Sets the pointer acceleration profile.")
+    combo_aprofile.set_tooltip_text(voc["acceleration-profile-tooltip"])
     for item in ["flat", "adaptive"]:
-        combo_aprofile.append(item, item)
+        combo_aprofile.append(item, voc[item])
     combo_aprofile.set_active_id(settings["pointer-accel-profile"])
     combo_aprofile.connect("changed", set_dict_key_from_combo, settings, "pointer-accel-profile")
     grid.attach(combo_aprofile, 1, 1, 1, 1)
 
-    lbl = Gtk.Label.new("Acceleration:")
+    lbl = Gtk.Label.new("{}:".format(voc["acceleration"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 2, 1, 1)
 
     sb_acceleration = Gtk.SpinButton.new_with_range(-1, 1, 0.1)
     sb_acceleration.set_value(settings["pointer-pointer-accel"])
     sb_acceleration.connect("value-changed", set_from_spinbutton, settings, "pointer-pointer-accel", 1)
-    sb_acceleration.set_tooltip_text("Changes the pointer acceleration. [<-1|1>]")
+    sb_acceleration.set_tooltip_text(voc["acceleration-tooltip"])
     grid.attach(sb_acceleration, 1, 2, 1, 1)
 
-    lbl = Gtk.Label.new("Natural scroll:")
+    lbl = Gtk.Label.new("{}:".format(voc["natural-scroll"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 3, 1, 1)
 
     combo_nscroll = Gtk.ComboBoxText()
     combo_nscroll.set_property("halign", Gtk.Align.START)
-    combo_nscroll.set_tooltip_text("Enables or disables natural (inverted) scrolling.")
+    combo_nscroll.set_tooltip_text(voc["natural-scroll-tooltip"])
     for item in ["disabled", "enabled"]:
-        combo_nscroll.append(item, item)
+        combo_nscroll.append(item, voc[item])
     combo_nscroll.set_active_id(settings["pointer-natural-scroll"])
     combo_nscroll.connect("changed", set_dict_key_from_combo, settings, "pointer-natural-scroll")
     grid.attach(combo_nscroll, 1, 3, 1, 1)
