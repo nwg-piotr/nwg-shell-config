@@ -216,7 +216,8 @@ def load_shell_data():
     shell_data = load_json(shell_data_file)
     defaults = {
         "installed-version": get_shell_version(),
-        "updates": []
+        "updates": [],
+        "interface-locale": ""
     }
     if not shell_data:
         shell_data = defaults

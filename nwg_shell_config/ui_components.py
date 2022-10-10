@@ -224,7 +224,7 @@ def screen_tab(settings, voc, pending_updates):
         combo.append(p, p)
     combo.set_active_id(settings["panel-preset"])
     combo.connect("changed", set_dict_key_from_combo, settings, "panel-preset")
-    combo.set_tooltip_text("Switches current desktop preset.")
+    combo.set_tooltip_text(voc["preset-tooltip"])
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>{}</b>".format(voc["autotiling"]))
@@ -236,7 +236,7 @@ def screen_tab(settings, voc, pending_updates):
     cb_autotiling_on = Gtk.CheckButton.new_with_label(voc["on"])
     cb_autotiling_on.set_active(settings["autotiling-on"])
     cb_autotiling_on.connect("toggled", set_from_checkbutton, settings, "autotiling-on")
-    cb_autotiling_on.set_tooltip_text("Automates changing the horizontal/vertical\nwindow split orientation.")
+    cb_autotiling_on.set_tooltip_text(voc["autotiling-tooltip"])
     grid.attach(cb_autotiling_on, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["workspaces"]))
@@ -246,7 +246,7 @@ def screen_tab(settings, voc, pending_updates):
     entry = Gtk.Entry()
     entry.set_placeholder_text("1 2 3 4 5 6 7 8")
     entry.set_text(settings["autotiling-workspaces"])
-    entry.set_tooltip_text("Defines which workspaces to use autotiling on.\nSee 'autotiling -h`.")
+    entry.set_tooltip_text(voc["workspaces-tooltip"])
     entry.connect("changed", set_from_workspaces, settings)
     grid.attach(entry, 1, 3, 1, 1)
 
@@ -260,7 +260,7 @@ def screen_tab(settings, voc, pending_updates):
     cb_night_light_on = Gtk.CheckButton.new_with_label(voc["on"])
     cb_night_light_on.set_active(settings["night-on"])
     cb_night_light_on.connect("toggled", set_from_checkbutton, settings, "night-on")
-    cb_night_light_on.set_tooltip_text("Determines if to use `wlsunset'.")
+    cb_night_light_on.set_tooltip_text(voc["night-light-tooltip"])
     grid.attach(cb_night_light_on, 1, 4, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["latitude"]))
@@ -268,7 +268,7 @@ def screen_tab(settings, voc, pending_updates):
     grid.attach(lbl, 2, 5, 1, 1)
 
     sb_lat = Gtk.SpinButton.new_with_range(-90.0, 90.0, 0.1)
-    sb_lat.set_tooltip_text("Your location latitude.\n'wlsunset -l'")
+    sb_lat.set_tooltip_text(voc["latitude-tooltip"])
     sb_lat.set_digits(4)
     sb_lat.set_value(settings["night-lat"])
     sb_lat.connect("value-changed", set_from_spinbutton, settings, "night-lat", 4)
@@ -279,7 +279,7 @@ def screen_tab(settings, voc, pending_updates):
     grid.attach(lbl, 0, 5, 1, 1)
 
     sb_temp_low = Gtk.SpinButton.new_with_range(1000, 10000, 100)
-    sb_temp_low.set_tooltip_text("Night light color temperature.\n'wlsunset -t'")
+    sb_temp_low.set_tooltip_text(voc["night-light-night-tooltip"])
     sb_temp_low.set_value(settings["night-temp-low"])
     sb_temp_low.connect("value-changed", set_int_from_spinbutton, settings, "night-temp-low")
     grid.attach(sb_temp_low, 1, 5, 1, 1)
@@ -289,7 +289,7 @@ def screen_tab(settings, voc, pending_updates):
     grid.attach(lbl, 2, 6, 1, 1)
 
     sb_lon = Gtk.SpinButton.new_with_range(-180, 180, 0.1)
-    sb_lon.set_tooltip_text("Your location longitude.\n'wlsunset -L'")
+    sb_lon.set_tooltip_text(voc["longitude-tooltip"])
     sb_lon.set_value(settings["night-long"])
     sb_lon.connect("value-changed", set_from_spinbutton, settings, "night-long", 4)
     sb_lon.set_digits(4)
@@ -304,7 +304,7 @@ def screen_tab(settings, voc, pending_updates):
     grid.attach(lbl, 0, 6, 1, 1)
 
     sb_temp_high = Gtk.SpinButton.new_with_range(1000, 10000, 100)
-    sb_temp_high.set_tooltip_text("Day light color temperature.\n'wlsunset -T'")
+    sb_temp_high.set_tooltip_text(voc["night-light-day-tooltip"])
     sb_temp_high.set_value(settings["night-temp-high"])
     sb_temp_high.connect("value-changed", set_int_from_spinbutton, settings, "night-temp-high")
     grid.attach(sb_temp_high, 1, 6, 1, 1)
@@ -314,16 +314,14 @@ def screen_tab(settings, voc, pending_updates):
     grid.attach(lbl, 0, 7, 1, 1)
 
     btn = Gtk.Button.new_with_label(voc["calculate-lat-long"])
-    btn.set_tooltip_text("If you were online during the first run, the Lat/Long"
-                         "\nvalues should already reflect your timezone settings.\n"
-                         "Push the button if something went wrong\nAND if you're online now.")
+    btn.set_tooltip_text(voc["calculate-lat-long-tooltip"])
     btn.connect("clicked", update_lat_lon, sb_lat, sb_lon)
     grid.attach(btn, 3, 7, 1, 1)
 
     sb_gamma = Gtk.SpinButton.new_with_range(0.1, 10.0, 0.1)
     sb_gamma.set_value(settings["night-gamma"])
     sb_gamma.connect("value-changed", set_from_spinbutton, settings, "night-gamma", 1)
-    sb_gamma.set_tooltip_text("Monitor gamma.\n'wlsunset -g'")
+    sb_gamma.set_tooltip_text(voc["gamma-tooltip"])
     grid.attach(sb_gamma, 1, 7, 1, 1)
 
     lbl = Gtk.Label()
@@ -337,28 +335,23 @@ def screen_tab(settings, voc, pending_updates):
     cb_help_overlay = Gtk.CheckButton.new_with_label(voc["overlay"])
     cb_help_overlay.set_active(settings["help-layer-shell"])
     cb_help_overlay.connect("toggled", set_from_checkbutton, settings, "help-layer-shell")
-    cb_help_overlay.set_tooltip_text(
-        "Determines if to display the help window\non the overlay layer, or as a regular window.")
+    cb_help_overlay.set_tooltip_text(voc["overlay-tooltip"])
     box.pack_start(cb_help_overlay, False, False, 0)
 
     cb_help_keyboard = Gtk.CheckButton.new_with_label(voc["keyboard"])
     cb_help_keyboard.set_active(settings["help-keyboard"])
     cb_help_keyboard.connect("toggled", set_from_checkbutton, settings, "help-keyboard")
-    cb_help_keyboard.set_tooltip_text(
-        "Determines if the help window\nshould intercept the keyboard input.")
+    cb_help_keyboard.set_tooltip_text(voc["keyboard-tooltip"])
     box.pack_start(cb_help_keyboard, False, False, 0)
 
     lbl = Gtk.Label.new("{}:".format(voc["font-size"]))
     lbl.set_property("halign", Gtk.Align.END)
     box.pack_start(lbl, False, False, 6)
-    # grid.attach(lbl, 2, 8, 1, 1)
 
     sb_help_font_size = Gtk.SpinButton.new_with_range(6, 48, 1)
-    sb_help_font_size.set_tooltip_text("Help text font size")
     sb_help_font_size.set_value(settings["help-font-size"])
     sb_help_font_size.connect("value-changed", set_int_from_spinbutton, settings, "help-font-size")
     box.pack_start(sb_help_font_size, False, False, 0)
-    # grid.attach(sb_help_font_size, 3, 8, 1, 1)
 
     frame.show_all()
 

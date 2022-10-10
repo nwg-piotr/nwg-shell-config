@@ -3,7 +3,6 @@
 # Dependencies: python-geopy i3ipc
 
 import argparse
-import os
 import signal
 
 from nwg_shell_config.tools import *
@@ -407,7 +406,24 @@ class GUI(object):
         cb_show = builder.get_object("show-on-startup")
         cb_show.set_active(settings["show-on-startup"])
         cb_show.set_label(voc["show-on-startup"])
+        cb_show.set_tooltip_text(voc["show-on-startup-tooltip"])
         cb_show.connect("toggled", set_from_checkbutton, settings, "show-on-startup")
+
+        label_interface_locale = builder.get_object("interface-locale")
+        label_interface_locale.set_text("{}:".format(voc["interface-locale"]))
+
+        combo_interface_locale = builder.get_object("combo-interface-locale")
+        combo_interface_locale.append("auto", "auto")
+        combo_interface_locale.set_tooltip_text(voc["interface-locale-tooltip"])
+        locale_dir = os.path.join(dir_name, "langs")
+        for entry in os.listdir(locale_dir):
+            loc = entry.split(".")[0]
+            combo_interface_locale.append(loc, loc)
+        if shell_data["interface-locale"]:
+            combo_interface_locale.set_active_id(shell_data["interface-locale"])
+        else:
+            combo_interface_locale.set_active_id("auto")
+        combo_interface_locale.connect("changed", set_interface_locale)
 
         btn_close = builder.get_object("btn-close")
         btn_close.set_label(voc["close"])
@@ -420,6 +436,14 @@ class GUI(object):
         btn_apply.connect("clicked", on_apply_btn)
 
         self.tz, self.lat, self.long = get_lat_lon()
+
+
+def set_interface_locale(combo):
+    if combo.get_active_id() and combo.get_active_id() != "auto":
+        shell_data["interface-locale"] = combo.get_active_id()
+    else:
+        shell_data["interface-locale"] = ""
+    save_json(shell_data, os.path.join(get_shell_data_dir(), "data"))
 
 
 def save_includes():
@@ -915,10 +939,6 @@ def update_swaync_config(pos_x, pos_y, cc_width, window_width, mpris):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-l",
-                        "--lang",
-                        type=str,
-                        help="force a Locale")
     parser.add_argument("-v",
                         "--version",
                         action="version",
@@ -956,13 +976,19 @@ def main():
     global voc
     # basic vocabulary
     voc = load_json(os.path.join(dir_name, "langs", "en_US.json"))
-    lang = os.getenv("LANG").split(".")[0] if not args.lang else args.lang
+    if not voc:
+        eprint("Failed loading vocabulary")
+        sys.exit(1)
+    lang = os.getenv("LANG").split(".")[0] if not shell_data["interface-locale"] else shell_data["interface-locale"]
     loc_file = os.path.join(dir_name, "langs", "{}.json".format(lang))
     if os.path.isfile(loc_file):
         # localized vocabulary
         loc = load_json(loc_file)
-        for key in loc:
-            voc[key] = loc[key]
+        if not loc:
+            eprint("Failed loading translation into '{}'".format(lang))
+        else:
+            for key in loc:
+                voc[key] = loc[key]
 
     check_updates()
 
