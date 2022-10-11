@@ -264,7 +264,7 @@ def set_up_applications_tab(*args, warn=False):
     hide_submenus()
     global content
     content.destroy()
-    content = applications_tab(settings, warn)
+    content = applications_tab(settings, voc, warn)
     grid.attach(content, 1, 0, 1, 1)
 
 

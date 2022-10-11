@@ -358,7 +358,7 @@ def screen_tab(settings, voc, pending_updates):
     return frame, update_btn
 
 
-def applications_tab(settings, warn):
+def applications_tab(settings, voc, warn):
     frame = Gtk.Frame()
     frame.set_label("  Common: Applications  ")
     frame.set_label_align(0.5, 0.5)
@@ -369,12 +369,12 @@ def applications_tab(settings, warn):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
-    lbl = Gtk.Label.new("Terminal:")
+    lbl = Gtk.Label.new("{}:".format(voc["terminal"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 0, 1, 1)
 
     entry_terminal = Gtk.Entry.new()
-    entry_terminal.set_tooltip_text("Command to run terminal emulator.")
+    entry_terminal.set_tooltip_text(voc["terminal-tooltip"])
     entry_terminal.set_property("halign", Gtk.Align.START)
     entry_terminal.connect("changed", set_from_entry, settings, "terminal")
     if not settings["terminal"]:
@@ -388,12 +388,12 @@ def applications_tab(settings, warn):
 
     grid.attach(entry_terminal, 1, 0, 1, 1)
 
-    lbl = Gtk.Label.new("File manager:")
+    lbl = Gtk.Label.new("{}:".format(voc["file-manager"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 1, 1, 1)
 
     entry_fm = Gtk.Entry()
-    entry_fm.set_tooltip_text("Command to run file manager.")
+    entry_fm.set_tooltip_text(voc["file-manager-tooltip"])
     entry_fm.set_property("halign", Gtk.Align.START)
 
     entry_fm.connect("changed", set_from_entry, settings, "file-manager")
@@ -407,12 +407,12 @@ def applications_tab(settings, warn):
 
     grid.attach(entry_fm, 1, 1, 1, 1)
 
-    lbl = Gtk.Label.new("Text editor:")
+    lbl = Gtk.Label.new("{}:".format(voc["text-editor"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 2, 1, 1)
 
     entry_te = Gtk.Entry()
-    entry_te.set_tooltip_text("Command to run text editor.")
+    entry_te.set_tooltip_text(voc["text-editor-tooltip"])
     entry_te.set_property("halign", Gtk.Align.START)
 
     entry_te.connect("changed", set_from_entry, settings, "editor")
@@ -426,12 +426,12 @@ def applications_tab(settings, warn):
 
     grid.attach(entry_te, 1, 2, 1, 1)
 
-    lbl = Gtk.Label.new("Web browser:")
+    lbl = Gtk.Label.new("{}:".format(voc["web-browser"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 3, 1, 1)
 
     entry_browser = Gtk.Entry.new()
-    entry_browser.set_tooltip_text("Command to run web browser.")
+    entry_browser.set_tooltip_text(voc["web-browser-tooltip"])
     entry_browser.set_property("hexpand", True)
 
     entry_browser.set_text(settings["browser"])
@@ -441,7 +441,7 @@ def applications_tab(settings, warn):
 
     combo = Gtk.ComboBoxText()
     combo.set_property("halign", Gtk.Align.START)
-    combo.set_tooltip_text("Select from known predefined commands\nfor installed browsers.")
+    combo.set_tooltip_text(voc["web-browser-combo-tooltip"])
     grid.attach(combo, 1, 4, 1, 1)
     browsers = get_browsers()
     for key in browsers:
