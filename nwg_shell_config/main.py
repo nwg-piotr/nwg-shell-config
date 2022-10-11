@@ -336,7 +336,7 @@ def set_up_notification_tab(event_box, event_button, preset, preset_name):
     hide_submenus()
     global content
     content.destroy()
-    content = notification_tab(preset, preset_name)
+    content = notification_tab(preset, preset_name, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 

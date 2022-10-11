@@ -1483,7 +1483,7 @@ def bar_tab(preset, preset_name, voc):
     return frame
 
 
-def notification_tab(preset, preset_name):
+def notification_tab(preset, preset_name, voc):
     frame = Gtk.Frame()
     frame.set_label("  {}: Notification center  ".format(preset_name))
     frame.set_label_align(0.5, 0.5)
@@ -1494,7 +1494,7 @@ def notification_tab(preset, preset_name):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
-    lbl = Gtk.Label.new("Horizontal alignment:")
+    lbl = Gtk.Label.new("{}:".format(voc["horizontal-alignment"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 1, 1, 1)
 
@@ -1502,11 +1502,11 @@ def notification_tab(preset, preset_name):
     combo_position_x.set_property("halign", Gtk.Align.START)
     grid.attach(combo_position_x, 1, 1, 1, 1)
     for item in ["left", "right", "center"]:
-        combo_position_x.append(item, item)
+        combo_position_x.append(item, voc[item])
     combo_position_x.set_active_id(preset["swaync-positionX"])
     combo_position_x.connect("changed", set_dict_key_from_combo, preset, "swaync-positionX")
 
-    lbl = Gtk.Label.new("Vertical alignment:")
+    lbl = Gtk.Label.new("{}:".format(voc["vertical-alignment"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 2, 1, 1)
 
@@ -1514,11 +1514,11 @@ def notification_tab(preset, preset_name):
     combo_position_x.set_property("halign", Gtk.Align.START)
     grid.attach(combo_position_x, 1, 2, 1, 1)
     for item in ["top", "bottom"]:
-        combo_position_x.append(item, item)
+        combo_position_x.append(item, voc[item])
     combo_position_x.set_active_id(preset["swaync-positionY"])
     combo_position_x.connect("changed", set_dict_key_from_combo, preset, "swaync-positionY")
 
-    lbl = Gtk.Label.new("Control center width:")
+    lbl = Gtk.Label.new("{}:".format(voc["notification-center-width"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 3, 1, 1)
 
@@ -1527,7 +1527,7 @@ def notification_tab(preset, preset_name):
     sb_cc_width.connect("value-changed", set_int_from_spinbutton, preset, "swaync-control-center-width")
     grid.attach(sb_cc_width, 1, 3, 1, 1)
 
-    lbl = Gtk.Label.new("Notification window width:")
+    lbl = Gtk.Label.new("{}:".format(voc["notification-window-width"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 4, 1, 1)
 
@@ -1536,11 +1536,11 @@ def notification_tab(preset, preset_name):
     sb_window_width.connect("value-changed", set_int_from_spinbutton, preset, "swaync-notification-window-width")
     grid.attach(sb_window_width, 1, 4, 1, 1)
 
-    cb_swaync_mpris = Gtk.CheckButton.new_with_label("MPRIS widget")
+    cb_swaync_mpris = Gtk.CheckButton.new_with_label("{}".format(voc["enable-mpris-widget"]))
     cb_swaync_mpris.set_active(preset["swaync-mpris"])
     cb_swaync_mpris.connect("toggled", set_from_checkbutton, preset, "swaync-mpris")
-    cb_swaync_mpris.set_tooltip_text("Show MPRIS media player control widget")
-    grid.attach(cb_swaync_mpris, 1, 5, 1, 1)
+    cb_swaync_mpris.set_tooltip_text(voc["enable-mpris-widget-tooltip"])
+    grid.attach(cb_swaync_mpris, 0, 5, 1, 1)
 
     frame.show_all()
 
