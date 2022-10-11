@@ -651,45 +651,43 @@ def pointer_tab(settings, voc):
     combo_nscroll.connect("changed", set_dict_key_from_combo, settings, "pointer-natural-scroll")
     grid.attach(combo_nscroll, 1, 3, 1, 1)
 
-    lbl = Gtk.Label.new("Scroll factor:")
+    lbl = Gtk.Label.new("{}:".format(voc["scroll-factor"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 4, 1, 1)
 
     sb_sfactor = Gtk.SpinButton.new_with_range(0.1, 10, 0.1)
     sb_sfactor.set_value(settings["pointer-scroll-factor"])
     sb_sfactor.connect("value-changed", set_from_spinbutton, settings, "pointer-scroll-factor", 1)
-    sb_sfactor.set_tooltip_text("Scroll speed will be scaled by the given value.")
+    sb_sfactor.set_tooltip_text(voc["scroll-factor-tooltip"])
     grid.attach(sb_sfactor, 1, 4, 1, 1)
 
-    lbl = Gtk.Label.new("Left handed:")
+    lbl = Gtk.Label.new("{}:".format(voc["left-handed"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 5, 1, 1)
 
     combo_left_handed = Gtk.ComboBoxText()
     combo_left_handed.set_property("halign", Gtk.Align.START)
-    combo_left_handed.set_tooltip_text("Enables or disables left handed mode.")
+    combo_left_handed.set_tooltip_text(voc["left-handed-tooltip"])
     for item in ["disabled", "enabled"]:
-        combo_left_handed.append(item, item)
+        combo_left_handed.append(item, voc[item])
     combo_left_handed.set_active_id(settings["pointer-left-handed"])
     combo_left_handed.connect("changed", set_dict_key_from_combo, settings, "pointer-left-handed")
     grid.attach(combo_left_handed, 1, 5, 1, 1)
 
-    lbl = Gtk.Label.new("Custom field:")
+    lbl = Gtk.Label.new("{}:".format(voc["custom-field"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 6, 1, 1)
 
     entry_cname = Gtk.Entry()
-    entry_cname.set_tooltip_text("User defined field that you need, but it's missing\nfrom the the form above. "
-                                 "Enter field name here.\nThink twice before you use it.")
-    entry_cname.set_placeholder_text("name")
+    entry_cname.set_tooltip_text(voc["custom-field-name-tooltip"])
+    entry_cname.set_placeholder_text(voc["name"])
     entry_cname.set_text(settings["pointer-custom-name"])
     entry_cname.connect("changed", set_from_entry, settings, "pointer-custom-name")
     grid.attach(entry_cname, 1, 6, 1, 1)
 
     entry_cname = Gtk.Entry()
-    entry_cname.set_tooltip_text("User defined field that you need, but it's missing\nfrom the the form above. "
-                                 "Enter field value here.\nThink twice before you use it.")
-    entry_cname.set_placeholder_text("value")
+    entry_cname.set_tooltip_text(voc["custom-field-value-tooltip"])
+    entry_cname.set_placeholder_text(voc["value"])
     entry_cname.set_text(settings["pointer-custom-value"])
     entry_cname.connect("changed", set_from_entry, settings, "pointer-custom-value")
     grid.attach(entry_cname, 2, 6, 1, 1)
@@ -699,9 +697,9 @@ def pointer_tab(settings, voc):
     return frame
 
 
-def touchpad_tab(settings):
+def touchpad_tab(settings, voc):
     frame = Gtk.Frame()
-    frame.set_label("  Common: Touchpad  ")
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["touchpad"]))
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
@@ -710,183 +708,179 @@ def touchpad_tab(settings):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
-    cb_touchpad_use_settings = Gtk.CheckButton.new_with_label("Use these settings")
+    cb_touchpad_use_settings = Gtk.CheckButton.new_with_label(voc["use-these-settings"])
     cb_touchpad_use_settings.set_property("halign", Gtk.Align.START)
     cb_touchpad_use_settings.set_property("margin-bottom", 6)
-    cb_touchpad_use_settings.set_tooltip_text("Determines if to export the 'touchpad' config include.")
+    cb_touchpad_use_settings.set_tooltip_text(voc["touchpad-device-include-tooltip"])
     cb_touchpad_use_settings.set_active(settings["touchpad-use-settings"])
     cb_touchpad_use_settings.connect("toggled", set_from_checkbutton, settings, "touchpad-use-settings")
     grid.attach(cb_touchpad_use_settings, 0, 0, 2, 1)
 
-    lbl = Gtk.Label.new("Accel. profile:")
+    lbl = Gtk.Label.new("{}:".format(voc["acceleration-profile"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 1, 1, 1)
 
     combo_aprofile = Gtk.ComboBoxText()
     combo_aprofile.set_property("halign", Gtk.Align.START)
-    combo_aprofile.set_tooltip_text("Sets the pointer acceleration profile.")
+    combo_aprofile.set_tooltip_text(voc["acceleration-profile-tooltip"])
     for item in ["flat", "adaptive"]:
-        combo_aprofile.append(item, item)
+        combo_aprofile.append(item, voc[item])
     combo_aprofile.set_active_id(settings["touchpad-accel-profile"])
     combo_aprofile.connect("changed", set_dict_key_from_combo, settings, "touchpad-accel-profile")
     grid.attach(combo_aprofile, 1, 1, 1, 1)
 
-    lbl = Gtk.Label.new("Acceleration:")
+    lbl = Gtk.Label.new("{}:".format(voc["acceleration"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 2, 1, 1)
 
     sb_acceleration = Gtk.SpinButton.new_with_range(-1, 1, 0.1)
     sb_acceleration.set_value(settings["touchpad-pointer-accel"])
     sb_acceleration.connect("value-changed", set_from_spinbutton, settings, "touchpad-pointer-accel", 1)
-    sb_acceleration.set_tooltip_text("Changes the pointer acceleration. [<-1|1>]")
+    sb_acceleration.set_tooltip_text(voc["acceleration-tooltip"])
     grid.attach(sb_acceleration, 1, 2, 1, 1)
 
-    lbl = Gtk.Label.new("Natural scroll:")
+    lbl = Gtk.Label.new("{}:".format(voc["natural-scroll"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 3, 1, 1)
 
     combo_nscroll = Gtk.ComboBoxText()
     combo_nscroll.set_property("halign", Gtk.Align.START)
-    combo_nscroll.set_tooltip_text("Enables or disables natural (inverted) scrolling.")
+    combo_nscroll.set_tooltip_text(voc["natural-scroll-tooltip"])
     for item in ["disabled", "enabled"]:
-        combo_nscroll.append(item, item)
+        combo_nscroll.append(item, voc[item])
     combo_nscroll.set_active_id(settings["touchpad-natural-scroll"])
     combo_nscroll.connect("changed", set_dict_key_from_combo, settings, "touchpad-natural-scroll")
     grid.attach(combo_nscroll, 1, 3, 1, 1)
 
-    lbl = Gtk.Label.new("Scroll factor:")
+    lbl = Gtk.Label.new("{}:".format(voc["scroll-factor"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 4, 1, 1)
 
     sb_sfactor = Gtk.SpinButton.new_with_range(0.1, 10, 0.1)
     sb_sfactor.set_value(settings["touchpad-scroll-factor"])
     sb_sfactor.connect("value-changed", set_from_spinbutton, settings, "touchpad-scroll-factor", 1)
-    sb_sfactor.set_tooltip_text("Scroll speed will be scaled by the given value.")
+    sb_sfactor.set_tooltip_text(voc["scroll-factor-tooltip"])
     grid.attach(sb_sfactor, 1, 4, 1, 1)
 
-    lbl = Gtk.Label.new("Scroll method:")
+    lbl = Gtk.Label.new("{}:".format(voc["scroll-method"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 5, 1, 1)
 
     combo_scroll_method = Gtk.ComboBoxText()
     combo_scroll_method.set_property("halign", Gtk.Align.START)
-    combo_scroll_method.set_tooltip_text("Changes the scroll method.")
-    for item in [("two_finger", "Two finger"), ("edge", "Edge"), ("on_button_down", "On button down"),
+    combo_scroll_method.set_tooltip_text(voc["scroll-method-tooltip"])
+    for item in [("two_finger", voc["two_finger"]), ("edge", voc["edge"]), ("on_button_down", voc["on_button_down"]),
                  ("none", "None")]:
         combo_scroll_method.append(item[0], item[1])
     combo_scroll_method.set_active_id(settings["touchpad-scroll-method"])
     combo_scroll_method.connect("changed", set_dict_key_from_combo, settings, "touchpad-scroll-method")
     grid.attach(combo_scroll_method, 1, 5, 1, 1)
 
-    lbl = Gtk.Label.new("Left handed:")
+    lbl = Gtk.Label.new("{}:".format(voc["left-handed"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 6, 1, 1)
 
     combo_left_handed = Gtk.ComboBoxText()
     combo_left_handed.set_property("halign", Gtk.Align.START)
-    combo_left_handed.set_tooltip_text("Enables or disables left handed mode.")
+    combo_left_handed.set_tooltip_text(voc["left-handed-tooltip"])
     for item in ["disabled", "enabled"]:
-        combo_left_handed.append(item, item)
+        combo_left_handed.append(item, voc[item])
     combo_left_handed.set_active_id(settings["touchpad-left-handed"])
     combo_left_handed.connect("changed", set_dict_key_from_combo, settings, "touchpad-left-handed")
     grid.attach(combo_left_handed, 1, 6, 1, 1)
 
-    lbl = Gtk.Label.new("Tap:")
+    lbl = Gtk.Label.new("{}:".format(voc["tap"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 2, 1, 1, 1)
 
     combo_tap = Gtk.ComboBoxText()
     combo_tap.set_property("halign", Gtk.Align.START)
-    combo_tap.set_tooltip_text("Enables or disables tap.")
+    combo_tap.set_tooltip_text(voc["tap-tooltip"])
     for item in ["enabled", "disabled"]:
-        combo_tap.append(item, item)
+        combo_tap.append(item, voc[item])
     combo_tap.set_active_id(settings["touchpad-tap"])
     combo_tap.connect("changed", set_dict_key_from_combo, settings, "touchpad-tap")
     grid.attach(combo_tap, 3, 1, 1, 1)
 
-    lbl = Gtk.Label.new("Tap button map:")
+    lbl = Gtk.Label.new("{}:".format(voc["tap-button-map"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 2, 2, 1, 1)
 
     combo_tap_btn_map = Gtk.ComboBoxText()
     combo_tap_btn_map.set_property("halign", Gtk.Align.START)
-    combo_tap_btn_map.set_tooltip_text("'lrm' treats 1 finger as left click, 2 fingers as right click, "
-                                       "and 3 fingers as middle click.\n'lmr' treats 1 finger as left click, "
-                                       "2 fingers as middle click, and 3 fingers as right click.")
+    combo_tap_btn_map.set_tooltip_text(voc["tap-button-map-tooltip"])
     for item in ["lrm", "lmr"]:
         combo_tap_btn_map.append(item, item)
     combo_tap_btn_map.set_active_id(settings["touchpad-tap-button-map"])
     combo_tap_btn_map.connect("changed", set_dict_key_from_combo, settings, "touchpad-tap-button-map")
     grid.attach(combo_tap_btn_map, 3, 2, 1, 1)
 
-    lbl = Gtk.Label.new("Middle emulation:")
+    lbl = Gtk.Label.new("{}:".format(voc["middle-emulation"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 2, 3, 1, 1)
 
     combo_memulation = Gtk.ComboBoxText()
     combo_memulation.set_property("halign", Gtk.Align.START)
-    combo_memulation.set_tooltip_text("Enables or disables middle click emulation.")
-    for item in ["enabled", "disable"]:
-        combo_memulation.append(item, item)
+    combo_memulation.set_tooltip_text(voc["middle-emulation-tooltip"])
+    for item in ["enabled", "disabled"]:
+        combo_memulation.append(item, voc[item])
     combo_memulation.set_active_id(settings["touchpad-middle-emulation"])
     combo_memulation.connect("changed", set_dict_key_from_combo, settings, "touchpad-middle-emulation")
     grid.attach(combo_memulation, 3, 3, 1, 1)
 
-    lbl = Gtk.Label.new("Drag:")
+    lbl = Gtk.Label.new("{}:".format(voc["drag"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 2, 4, 1, 1)
 
     combo_drag = Gtk.ComboBoxText()
     combo_drag.set_property("halign", Gtk.Align.START)
-    combo_drag.set_tooltip_text("Enables or disables tap-and-drag.")
+    combo_drag.set_tooltip_text(voc["drag-tooltip"])
     for item in ["enabled", "disabled"]:
-        combo_drag.append(item, item)
+        combo_drag.append(item, voc[item])
     combo_drag.set_active_id(settings["touchpad-drag"])
     combo_drag.connect("changed", set_dict_key_from_combo, settings, "touchpad-drag")
     grid.attach(combo_drag, 3, 4, 1, 1)
 
-    lbl = Gtk.Label.new("Drag lock:")
+    lbl = Gtk.Label.new("{}:".format(voc["drag-lock"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 2, 5, 1, 1)
 
     combo_drag_lock = Gtk.ComboBoxText()
     combo_drag_lock.set_property("halign", Gtk.Align.START)
-    combo_drag_lock.set_tooltip_text("Enables or disables drag lock.")
+    combo_drag_lock.set_tooltip_text(voc["drag-lock-tooltip"])
     for item in ["disabled", "enabled"]:
-        combo_drag_lock.append(item, item)
+        combo_drag_lock.append(item, voc[item])
     combo_drag_lock.set_active_id(settings["touchpad-drag-lock"])
     combo_drag_lock.connect("changed", set_dict_key_from_combo, settings, "touchpad-drag-lock")
     grid.attach(combo_drag_lock, 3, 5, 1, 1)
 
-    lbl = Gtk.Label.new("DWT:")
+    lbl = Gtk.Label.new("{}:".format(voc["dwt"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 2, 6, 1, 1)
 
     combo_dwt = Gtk.ComboBoxText()
     combo_dwt.set_property("halign", Gtk.Align.START)
-    combo_dwt.set_tooltip_text("Enables or disables disable-while-typing.")
-    for item in ["enabled", "disable"]:
-        combo_dwt.append(item, item)
+    combo_dwt.set_tooltip_text(voc["dwt-tooltip"])
+    for item in ["enabled", "disabled"]:
+        combo_dwt.append(item, voc[item])
     combo_dwt.set_active_id(settings["touchpad-dwt"])
     combo_dwt.connect("changed", set_dict_key_from_combo, settings, "touchpad-dwt")
     grid.attach(combo_dwt, 3, 6, 1, 1)
 
-    lbl = Gtk.Label.new("Custom field:")
+    lbl = Gtk.Label.new("{}:".format(voc["custom-field"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 7, 1, 1)
 
     entry_cname = Gtk.Entry()
-    entry_cname.set_tooltip_text("User defined field that you need, but it's missing\nfrom the the form above. "
-                                 "Enter field name here.\nThink twice before you use it.")
-    entry_cname.set_placeholder_text("name")
+    entry_cname.set_tooltip_text(voc["custom-field-name-tooltip"])
+    entry_cname.set_placeholder_text(voc["name"])
     entry_cname.set_text(settings["touchpad-custom-name"])
     entry_cname.connect("changed", set_from_entry, settings, "touchpad-custom-name")
     grid.attach(entry_cname, 1, 7, 1, 1)
 
     entry_cname = Gtk.Entry()
-    entry_cname.set_tooltip_text("User defined field that you need, but it's missing\nfrom the the form above. "
-                                 "Enter field value here.\nThink twice before you use it.")
-    entry_cname.set_placeholder_text("value")
+    entry_cname.set_tooltip_text(voc["custom-field-value-tooltip"])
+    entry_cname.set_placeholder_text(voc["value"])
     entry_cname.set_text(settings["touchpad-custom-value"])
     entry_cname.connect("changed", set_from_entry, settings, "touchpad-custom-value")
     grid.attach(entry_cname, 2, 7, 2, 1)
@@ -896,9 +890,9 @@ def touchpad_tab(settings):
     return frame
 
 
-def lockscreen_tab(settings):
+def lockscreen_tab(settings, voc):
     frame = Gtk.Frame()
-    frame.set_label("  Common: Idle & Lock screen  ")
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["idle-lock-screen"]))
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
@@ -907,62 +901,62 @@ def lockscreen_tab(settings):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
-    cb_lockscreen_use_settings = Gtk.CheckButton.new_with_label("Use these settings")
+    cb_lockscreen_use_settings = Gtk.CheckButton.new_with_label(voc["use-these-settings"])
     cb_lockscreen_use_settings.set_property("halign", Gtk.Align.START)
     cb_lockscreen_use_settings.set_property("margin-bottom", 2)
-    cb_lockscreen_use_settings.set_tooltip_text("Determines if to add these settings to 'autostart' include.")
+    cb_lockscreen_use_settings.set_tooltip_text(voc["lock-screen-include-tooltip"])
     cb_lockscreen_use_settings.set_active(settings["lockscreen-use-settings"])
     cb_lockscreen_use_settings.connect("toggled", set_idle_use_from_checkbutton, settings)
     grid.attach(cb_lockscreen_use_settings, 0, 0, 2, 1)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Lock screen</b>")
+    lbl.set_markup("<b>{}</b>".format(voc["lock-screen"]))
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 1, 2, 1)
 
-    lbl = Gtk.Label.new("Locker:")
+    lbl = Gtk.Label.new("{}:".format(voc["locker"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 2, 1, 1)
 
     combo_locker = Gtk.ComboBoxText()
-    combo_locker.set_tooltip_text("screen locker to use")
+    combo_locker.set_tooltip_text(voc["locker-tooltip"])
     combo_locker.append("gtklock", "gtklock")
     if is_command("swaylock"):
         combo_locker.append("swaylock", "swaylock")
     else:
-        combo_locker.set_tooltip_text("You may choose from gtklock and swaylock, if both installed.")
+        combo_locker.set_tooltip_text(voc["locker-tooltip2"])
     combo_locker.set_active_id(settings["lockscreen-locker"])
     combo_locker.connect("changed", set_dict_key_from_combo, settings, "lockscreen-locker")
     grid.attach(combo_locker, 1, 2, 1, 1)
 
-    lbl = Gtk.Label.new("Background:")
+    lbl = Gtk.Label.new("{}:".format(voc["backgrounds"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 3, 1, 1)
 
     combo_background = Gtk.ComboBoxText()
-    combo_background.set_tooltip_text("random wallpaper source")
-    combo_background.append("unsplash", "unsplash.com")
-    combo_background.append("local", "local backgrounds")
+    combo_background.set_tooltip_text(voc["random-wallpaper-source"])
+    combo_background.append("unsplash", voc["unsplash"])
+    combo_background.append("local", voc["local"])
     combo_background.set_active_id(settings["lockscreen-background-source"])
     combo_background.connect("changed", set_dict_key_from_combo, settings, "lockscreen-background-source")
     grid.attach(combo_background, 1, 3, 1, 1)
 
-    lbl = Gtk.Label.new("Own command:")
+    lbl = Gtk.Label.new("{}:".format(voc["own-command"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 4, 1, 1)
 
     entry_lock_cmd = Gtk.Entry()
-    entry_lock_cmd.set_placeholder_text("leave blank to use the above")
+    entry_lock_cmd.set_placeholder_text(voc["leave-blank-to-use-above"])
     lbl.set_property("valign", Gtk.Align.CENTER)
     lbl.set_property("vexpand", False)
     entry_lock_cmd.set_width_chars(24)
     entry_lock_cmd.set_text(settings["lockscreen-custom-cmd"])
-    entry_lock_cmd.set_tooltip_text("You may enter your own command here,\nto replace the settings above.")
+    entry_lock_cmd.set_tooltip_text(voc["own-command-tooltip"])
     grid.attach(entry_lock_cmd, 1, 4, 1, 1)
     entry_lock_cmd.connect("changed", set_custom_cmd_from_entry, settings, "lockscreen-custom-cmd",
                            [combo_locker, combo_background])
 
-    lbl = Gtk.Label.new("Timeout:")
+    lbl = Gtk.Label.new("{}:".format(voc["timeout"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 5, 1, 1)
 
@@ -970,16 +964,16 @@ def lockscreen_tab(settings):
     sb_lock_timeout.set_property("halign", Gtk.Align.START)
     sb_lock_timeout.set_value(settings["lockscreen-timeout"])
     # We need to validate this, and `sb_sleep_timeout` as well, so let's connect both when both already defined
-    sb_lock_timeout.set_tooltip_text("lock screen timeout in seconds")
+    sb_lock_timeout.set_tooltip_text(voc["timeout-tooltip"])
     grid.attach(sb_lock_timeout, 1, 5, 1, 1)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Idle settings</b>")
+    lbl.set_markup("<b>{}</b>".format(voc["idle-settings"]))
     lbl.set_property("halign", Gtk.Align.START)
     lbl.set_property("margin-top", 6)
     grid.attach(lbl, 0, 6, 2, 1)
 
-    lbl = Gtk.Label.new("Command:")
+    lbl = Gtk.Label.new("{}:".format(voc["sleep-command"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 7, 1, 1)
 
@@ -989,7 +983,7 @@ def lockscreen_tab(settings):
     grid.attach(entry_sleep_cmd, 1, 7, 1, 1)
     entry_sleep_cmd.connect("changed", set_from_entry, settings, "sleep-cmd")
 
-    lbl = Gtk.Label.new("Timeout:")
+    lbl = Gtk.Label.new("{}:".format(voc["timeout"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 8, 1, 1)
 
@@ -1001,10 +995,10 @@ def lockscreen_tab(settings):
     sb_sleep_timeout.connect("value-changed", set_sleep_timeout, sb_lock_timeout, settings, "sleep-timeout")
     sb_lock_timeout.connect("value-changed", set_timeouts, sb_sleep_timeout, settings, "lockscreen-timeout")
 
-    sb_sleep_timeout.set_tooltip_text("sleep timeout in seconds, must be longer than Lock screen timeout")
+    sb_sleep_timeout.set_tooltip_text(voc["sleep-timeout-tooltip"])
     grid.attach(sb_sleep_timeout, 1, 8, 1, 1)
 
-    lbl = Gtk.Label.new("Resume:")
+    lbl = Gtk.Label.new("{}:".format(voc["resume-command"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 9, 1, 1)
 
@@ -1013,27 +1007,27 @@ def lockscreen_tab(settings):
     grid.attach(entry_resume_cmd, 1, 9, 1, 1)
     entry_resume_cmd.connect("changed", set_from_entry, settings, "resume-cmd")
 
-    defaults_btn = Gtk.Button.new_with_label("Restore defaults")
+    defaults_btn = Gtk.Button.new_with_label(voc["restore-defaults"])
     defaults_btn.set_property("margin-top", 6)
     defaults_btn.set_property("halign", Gtk.Align.START)
-    defaults_btn.set_tooltip_text("restore default idle commands")
+    defaults_btn.set_tooltip_text(voc["restore-defaults-tooltip"])
     defaults_btn.connect("clicked", restore_defaults, {entry_sleep_cmd: 'swaymsg "output * dpms off"',
                                                        entry_resume_cmd: 'swaymsg "output * dpms on"'})
     grid.attach(defaults_btn, 1, 6, 1, 1)
 
-    lbl = Gtk.Label.new("Before sleep:")
+    lbl = Gtk.Label.new("{}:".format(voc["before-sleep"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 10, 1, 1)
 
     entry_b4_sleep = Gtk.Entry()
     entry_b4_sleep.set_width_chars(24)
     entry_b4_sleep.set_text(settings["before-sleep"])
-    entry_b4_sleep.set_tooltip_text("command to execute before systemd puts the computer to sleep")
+    entry_b4_sleep.set_tooltip_text(voc["before-sleep-tooltip"])
     grid.attach(entry_b4_sleep, 1, 10, 1, 1)
     entry_b4_sleep.connect("changed", set_from_entry, settings, "before-sleep")
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Local background sources</b>")
+    lbl.set_markup("<b>{}</b>".format(voc["local-background-paths"]))
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 2, 1, 4, 1)
 
@@ -1060,13 +1054,13 @@ def lockscreen_tab(settings):
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
     grid.attach(box, 2, 6, 3, 1)
 
-    cb_custom_path = Gtk.CheckButton.new_with_label("own path")
+    cb_custom_path = Gtk.CheckButton.new_with_label(voc["own-path"])
     cb_custom_path.set_active(settings["backgrounds-use-custom-path"])
     cb_custom_path.connect("toggled", set_key_from_checkbox, settings, "backgrounds-use-custom-path")
     box.pack_start(cb_custom_path, False, False, 0)
 
-    fc_btn = Gtk.FileChooserButton.new("Select folder", Gtk.FileChooserAction.SELECT_FOLDER)
-    fc_btn.set_tooltip_text("Select your own path here")
+    fc_btn = Gtk.FileChooserButton.new(voc["select-folder"], Gtk.FileChooserAction.SELECT_FOLDER)
+    fc_btn.set_tooltip_text(voc["select-folder-tooltip"])
     if settings["backgrounds-custom-path"]:
         fc_btn.set_current_folder(settings["backgrounds-custom-path"])
     fc_btn.connect("file-set", on_custom_folder_selected, cb_custom_path, settings)
@@ -1076,7 +1070,7 @@ def lockscreen_tab(settings):
         cb_custom_path.set_sensitive(False)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Unsplash random image</b>")
+    lbl.set_markup("<b>{}</b>".format(voc["unsplash-random-image"]))
     lbl.set_property("halign", Gtk.Align.START)
     lbl.set_property("margin-top", 6)
     grid.attach(lbl, 2, 8, 4, 1)
@@ -1084,7 +1078,7 @@ def lockscreen_tab(settings):
     sb_us_width = Gtk.SpinButton.new_with_range(640, 7680, 1)
     sb_us_width.set_value(settings["unsplash-width"])
     sb_us_width.connect("value-changed", set_int_from_spinbutton, settings, "unsplash-width")
-    sb_us_width.set_tooltip_text("desired wallpaper width")
+    sb_us_width.set_tooltip_text(voc["desired-wallpaper-width"])
     grid.attach(sb_us_width, 2, 9, 1, 1)
 
     lbl = Gtk.Label.new("x")
@@ -1093,17 +1087,17 @@ def lockscreen_tab(settings):
     sb_us_width = Gtk.SpinButton.new_with_range(480, 4320, 1)
     sb_us_width.set_value(settings["unsplash-height"])
     sb_us_width.connect("value-changed", set_int_from_spinbutton, settings, "unsplash-height")
-    sb_us_width.set_tooltip_text("desired wallpaper height")
+    sb_us_width.set_tooltip_text(voc["desired-wallpaper-height"])
     grid.attach(sb_us_width, 4, 9, 1, 1)
 
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
     grid.attach(box, 2, 10, 3, 1)
-    lbl = Gtk.Label.new("Keywords:")
+    lbl = Gtk.Label.new("{}:".format(voc["keywords"]))
     lbl.set_property("halign", Gtk.Align.START)
     box.pack_start(lbl, False, False, 0)
 
     entry_us_keywords = Gtk.Entry()
-    entry_us_keywords.set_tooltip_text("comma-separated list of keywords")
+    entry_us_keywords.set_tooltip_text(voc["keywords-tooltip"])
     entry_us_keywords.set_text(",".join(settings["unsplash-keywords"]))
     entry_us_keywords.connect("changed", set_keywords_from_entry, settings)
     box.pack_start(entry_us_keywords, True, True, 0)

@@ -287,7 +287,7 @@ def set_up_touchpad_tab(*args):
     hide_submenus()
     global content
     content.destroy()
-    content = touchpad_tab(settings)
+    content = touchpad_tab(settings, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -295,7 +295,7 @@ def set_up_lockscreen_tab(*args):
     hide_submenus()
     global content
     content.destroy()
-    content = lockscreen_tab(settings)
+    content = lockscreen_tab(settings, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
