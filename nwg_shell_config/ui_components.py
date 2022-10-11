@@ -1126,9 +1126,9 @@ def lockscreen_tab(settings, voc):
     return frame
 
 
-def gtklock_tab(settings):
+def gtklock_tab(settings, voc):
     frame = Gtk.Frame()
-    frame.set_label("  Common: gtklock  ")
+    frame.set_label("  {}: Gtklock  ".format(voc["common"]))
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
@@ -1138,7 +1138,7 @@ def gtklock_tab(settings):
     grid.set_row_spacing(6)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Modules</b>")
+    lbl.set_markup("<b>{}</b>".format(voc["modules"]))
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 2, 1, 1)
 
@@ -1147,9 +1147,7 @@ def gtklock_tab(settings):
     cb_gtklock_userinfo = Gtk.CheckButton.new_with_label("userinfo")
     cb_gtklock_userinfo.set_active(settings["gtklock-userinfo"])
     cb_gtklock_userinfo.connect("toggled", set_key_from_checkbox, settings, "gtklock-userinfo")
-    cb_gtklock_userinfo.set_tooltip_text("For this module to work, you need to set the user info first."
-                                         "\nYou may use the `mugshot` or `SwaySettings` package."
-                                         "\nYou also need the `gtklock-userinfo-module` package.")
+    cb_gtklock_userinfo.set_tooltip_text(voc["userinfo-tooltip"])
     box.pack_start(cb_gtklock_userinfo, False, False, 0)
     # Disable check button if module not installed
     if not gtklock_module_path("userinfo"):
@@ -1159,7 +1157,7 @@ def gtklock_tab(settings):
     cb_gtklock_powerbar = Gtk.CheckButton.new_with_label("powerbar")
     cb_gtklock_powerbar.set_active(settings["gtklock-powerbar"])
     cb_gtklock_powerbar.connect("toggled", set_key_from_checkbox, settings, "gtklock-powerbar")
-    cb_gtklock_powerbar.set_tooltip_text("For this module to work, you need the `gtklock-powerbar-module` package.")
+    cb_gtklock_powerbar.set_tooltip_text(voc["powerbar-tooltip"])
     box.pack_start(cb_gtklock_powerbar, False, False, 0)
 
     if not gtklock_module_path("powerbar"):
@@ -1169,7 +1167,7 @@ def gtklock_tab(settings):
     cb_gtklock_layerctl = Gtk.CheckButton.new_with_label("playerctl")
     cb_gtklock_layerctl.set_active(settings["gtklock-playerctl"])
     cb_gtklock_layerctl.connect("toggled", set_key_from_checkbox, settings, "gtklock-playerctl")
-    cb_gtklock_layerctl.set_tooltip_text("For this module to work, you need the `gtklock-playerctl-module` package.")
+    cb_gtklock_layerctl.set_tooltip_text(voc["playerctl-tooltip"])
     box.pack_start(cb_gtklock_layerctl, False, False, 0)
 
     if not gtklock_module_path("playerctl"):
@@ -1177,59 +1175,59 @@ def gtklock_tab(settings):
         cb_gtklock_layerctl.set_sensitive(False)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Power menu</b>")
+    lbl.set_markup("<b>{}</b>".format(voc["powerbar"]))
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 3, 1, 1)
 
-    lbl = Gtk.Label.new("Reboot:")
+    lbl = Gtk.Label.new("{}:".format(voc["reboot"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 4, 1, 1)
 
     entry_layout = Gtk.Entry()
-    entry_layout.set_tooltip_text("command to reboot the computer")
+    entry_layout.set_tooltip_text(voc["reboot-tooltip"])
     entry_layout.set_text(settings["gtklock-reboot-command"])
     entry_layout.connect("changed", set_from_entry, settings, "gtklock-reboot-command")
     grid.attach(entry_layout, 1, 4, 1, 1)
 
-    lbl = Gtk.Label.new("Power off:")
+    lbl = Gtk.Label.new("{}:".format(voc["power-off"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 5, 1, 1)
 
     entry_gtklock_poweroff_command = Gtk.Entry()
-    entry_gtklock_poweroff_command.set_tooltip_text("command to power off the computer")
+    entry_gtklock_poweroff_command.set_tooltip_text(voc["power-off-tooltip"])
     entry_gtklock_poweroff_command.set_text(settings["gtklock-poweroff-command"])
     entry_gtklock_poweroff_command.connect("changed", set_from_entry, settings, "gtklock-poweroff-command")
     grid.attach(entry_gtklock_poweroff_command, 1, 5, 1, 1)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>Other</b>")
+    lbl.set_markup("<b>{}</b>".format(voc["other"]))
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 6, 1, 1)
 
-    lbl = Gtk.Label.new("Time format:")
+    lbl = Gtk.Label.new("{}:".format(voc["time-format"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 7, 1, 1)
 
     entry_time_format = Gtk.Entry()
-    entry_time_format.set_tooltip_text("See 'man date' for format details.")
+    entry_time_format.set_tooltip_text(voc["time-format-tooltip"])
     entry_time_format.set_text(settings["gtklock-time-format"])
     entry_time_format.connect("changed", set_from_entry, settings, "gtklock-time-format")
     grid.attach(entry_time_format, 1, 7, 1, 1)
 
-    lbl = Gtk.Label.new("Idle timeout:")
+    lbl = Gtk.Label.new("{}:".format(voc["idle-timeout"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 8, 1, 1)
 
     sb_gtklock_idle_timeout = Gtk.SpinButton.new_with_range(5, 3600, 1)
     sb_gtklock_idle_timeout.set_value(settings["gtklock-idle-timeout"])
     sb_gtklock_idle_timeout.connect("value-changed", set_int_from_spinbutton, settings, "gtklock-idle-timeout")
-    sb_gtklock_idle_timeout.set_tooltip_text("idle timeout in seconds")
+    sb_gtklock_idle_timeout.set_tooltip_text(voc["idle-timeout-tooltip"])
     grid.attach(sb_gtklock_idle_timeout, 1, 8, 1, 1)
 
-    cb_disable_input_inhibitor = Gtk.CheckButton.new_with_label("Disable input inhibitor")
+    cb_disable_input_inhibitor = Gtk.CheckButton.new_with_label(voc["disable-input-inhibitor"])
     cb_disable_input_inhibitor.set_active(settings["gtklock-disable-input-inhibitor"])
     cb_disable_input_inhibitor.connect("toggled", set_key_from_checkbox, settings, "gtklock-disable-input-inhibitor")
-    cb_disable_input_inhibitor.set_tooltip_text("allows input events on the lock screen")
+    cb_disable_input_inhibitor.set_tooltip_text(voc["disable-input-inhibitor-tooltip"])
     grid.attach(cb_disable_input_inhibitor, 1, 9, 1, 1)
 
     frame.show_all()

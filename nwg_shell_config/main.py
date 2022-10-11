@@ -304,7 +304,7 @@ def set_up_gtklock_tab(*args):
     hide_submenus()
     global content
     content.destroy()
-    content = gtklock_tab(settings)
+    content = gtklock_tab(settings, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
