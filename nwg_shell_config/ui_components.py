@@ -1547,7 +1547,7 @@ def notification_tab(preset, preset_name, voc):
     return frame
 
 
-def gtklock_preset_tab(preset, preset_name):
+def gtklock_preset_tab(preset, preset_name, voc):
     frame = Gtk.Frame()
     frame.set_label("  {}: gtklock  ".format(preset_name))
     frame.set_label_align(0.5, 0.5)
@@ -1560,26 +1560,26 @@ def gtklock_preset_tab(preset, preset_name):
 
     if gtklock_module_path("userinfo"):
         lbl = Gtk.Label()
-        lbl.set_markup("<b>Userinfo module</b>")
+        lbl.set_markup("<b>{}</b>".format(voc["userinfo-module"]))
         lbl.set_property("halign", Gtk.Align.START)
         grid.attach(lbl, 0, 1, 1, 1)
 
         box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         grid.attach(box, 1, 1, 3, 1)
 
-        cb_userinfo_round_image = Gtk.CheckButton.new_with_label("round image")
+        cb_userinfo_round_image = Gtk.CheckButton.new_with_label(voc["round-image"])
         cb_userinfo_round_image.set_active(preset["gtklock-userinfo-round-image"])
         cb_userinfo_round_image.connect("toggled", set_from_checkbutton, preset, "gtklock-userinfo-round-image")
         cb_userinfo_round_image.set_tooltip_text("user avatar shape")
         box.pack_start(cb_userinfo_round_image, False, False, 0)
 
-        cb_userinfo_vertical_layout = Gtk.CheckButton.new_with_label("vertical layout")
+        cb_userinfo_vertical_layout = Gtk.CheckButton.new_with_label(voc["vertical-layout"])
         cb_userinfo_vertical_layout.set_active(preset["gtklock-userinfo-vertical-layout"])
         cb_userinfo_vertical_layout.connect("toggled", set_from_checkbutton, preset, "gtklock-userinfo-vertical-layout")
         cb_userinfo_vertical_layout.set_tooltip_text("user name next to the avatar")
         box.pack_start(cb_userinfo_vertical_layout, False, False, 0)
 
-        cb_userinfo_under_clock = Gtk.CheckButton.new_with_label("under clock")
+        cb_userinfo_under_clock = Gtk.CheckButton.new_with_label(voc["under-clock"])
         cb_userinfo_under_clock.set_active(preset["gtklock-userinfo-under-clock"])
         cb_userinfo_under_clock.connect("toggled", set_from_checkbutton, preset, "gtklock-userinfo-under-clock")
         cb_userinfo_under_clock.set_tooltip_text("user avatar and name below the clock")
@@ -1587,30 +1587,30 @@ def gtklock_preset_tab(preset, preset_name):
 
     if gtklock_module_path("powerbar"):
         lbl = Gtk.Label()
-        lbl.set_markup("<b>Powerbar module</b>")
+        lbl.set_markup("<b>{}</b>".format(voc["powerbar-module"]))
         lbl.set_property("halign", Gtk.Align.START)
         grid.attach(lbl, 0, 2, 1, 1)
 
         box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
         grid.attach(box, 1, 2, 3, 1)
 
-        cb_powerbar_show_labels = Gtk.CheckButton.new_with_label("show labels")
+        cb_powerbar_show_labels = Gtk.CheckButton.new_with_label(voc["show-labels"])
         cb_powerbar_show_labels.set_active(preset["gtklock-powerbar-show-labels"])
         cb_powerbar_show_labels.connect("toggled", set_from_checkbutton, preset, "gtklock-powerbar-show-labels")
         box.pack_start(cb_powerbar_show_labels, False, False, 0)
 
-        cb_powerbar_linked_buttons = Gtk.CheckButton.new_with_label("linked buttons")
+        cb_powerbar_linked_buttons = Gtk.CheckButton.new_with_label(voc["linked-buttons"])
         cb_powerbar_linked_buttons.set_active(preset["gtklock-powerbar-linked-buttons"])
         cb_powerbar_linked_buttons.connect("toggled", set_from_checkbutton, preset, "gtklock-powerbar-linked-buttons")
         box.pack_start(cb_powerbar_linked_buttons, False, False, 0)
 
     if gtklock_module_path("playerctl"):
         lbl = Gtk.Label()
-        lbl.set_markup("<b>Playerctl module</b>")
+        lbl.set_markup("<b>{}</b>".format(voc["playerctl-module"]))
         lbl.set_property("halign", Gtk.Align.START)
         grid.attach(lbl, 0, 3, 1, 1)
 
-        lbl = Gtk.Label.new("Art size:")
+        lbl = Gtk.Label.new("{}:".format(voc["album-cover-size"]))
         lbl.set_property("halign", Gtk.Align.END)
         grid.attach(lbl, 0, 4, 1, 1)
 
@@ -1621,10 +1621,10 @@ def gtklock_preset_tab(preset, preset_name):
         sb_gtklock_playerctl_art_size.set_value(preset["gtklock-playerctl-art-size"])
         sb_gtklock_playerctl_art_size.connect("value-changed", set_int_from_spinbutton, preset,
                                               "gtklock-playerctl-art-size")
-        sb_gtklock_playerctl_art_size.set_tooltip_text("album cover size in pixels; set 0 to hide")
+        sb_gtklock_playerctl_art_size.set_tooltip_text(voc["album-cover-size-tooltip"])
         box.pack_start(sb_gtklock_playerctl_art_size, False, False, 0)
 
-        lbl = Gtk.Label.new("Position:")
+        lbl = Gtk.Label.new("{}:".format(voc["position"]))
         lbl.set_property("halign", Gtk.Align.END)
         box.pack_start(lbl, False, False, 6)
 
@@ -1639,7 +1639,7 @@ def gtklock_preset_tab(preset, preset_name):
                                                  "gtklock-playerctl-position")
         combo_gtklock_playerctl_position.set_tooltip_text("playerctl widget placement")
 
-        cb_gtklock_playerctl_show_hidden = Gtk.CheckButton.new_with_label("always show")
+        cb_gtklock_playerctl_show_hidden = Gtk.CheckButton.new_with_label(voc["always-show"])
         cb_gtklock_playerctl_show_hidden.set_active(preset["gtklock-playerctl-show-hidden"])
         cb_gtklock_playerctl_show_hidden.connect("toggled", set_from_checkbutton, preset,
                                                  "gtklock-playerctl-show-hidden")
