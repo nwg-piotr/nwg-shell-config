@@ -1235,7 +1235,7 @@ def gtklock_tab(settings, voc):
     return frame
 
 
-def drawer_tab(preset, preset_name):
+def drawer_tab(preset, preset_name, voc):
     frame = Gtk.Frame()
     frame.set_label("  {}: Application drawer  ".format(preset_name))
     frame.set_label_align(0.5, 0.5)
@@ -1246,60 +1246,60 @@ def drawer_tab(preset, preset_name):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
-    cb_drawer_on = Gtk.CheckButton.new_with_label("Drawer on")
+    cb_drawer_on = Gtk.CheckButton.new_with_label(voc["app-drawer-on"])
     cb_drawer_on.set_active(preset["launcher-on"])
     cb_drawer_on.connect("toggled", set_from_checkbutton, preset, "launcher-on")
     grid.attach(cb_drawer_on, 0, 0, 1, 1)
 
-    lbl = Gtk.Label.new("Columns:")
+    lbl = Gtk.Label.new("{}:".format(voc["columns"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 1, 1, 1)
 
     sb_columns = Gtk.SpinButton.new_with_range(1, 9, 1)
     sb_columns.set_value(preset["launcher-columns"])
     sb_columns.connect("value-changed", set_int_from_spinbutton, preset, "launcher-columns")
-    sb_columns.set_tooltip_text("Number of columns to show icons in.")
+    sb_columns.set_tooltip_text(voc["app-drawer-columns-tooltip"])
     grid.attach(sb_columns, 1, 1, 1, 1)
 
-    lbl = Gtk.Label.new("Icon size:")
+    lbl = Gtk.Label.new("{}:".format(voc["icon-size"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 2, 1, 1)
 
     sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
     sb_icon_size.set_value(preset["launcher-icon-size"])
     sb_icon_size.connect("value-changed", set_int_from_spinbutton, preset, "launcher-icon-size")
-    sb_icon_size.set_tooltip_text("Application icon size.")
+    sb_icon_size.set_tooltip_text(voc["app-drawer-icons-tooltip"])
     grid.attach(sb_icon_size, 1, 2, 1, 1)
 
-    lbl = Gtk.Label.new("File search columns:")
+    lbl = Gtk.Label.new("{}:".format(voc["file-search-columns"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 3, 1, 1)
 
     sb_fs_columns = Gtk.SpinButton.new_with_range(1, 9, 1)
     sb_fs_columns.set_value(preset["launcher-file-search-columns"])
     sb_fs_columns.connect("value-changed", set_int_from_spinbutton, preset, "launcher-file-search-columns")
-    sb_fs_columns.set_tooltip_text("Number of columns to show file search result in.")
+    sb_fs_columns.set_tooltip_text(voc["file-search-columns-tooltip"])
     grid.attach(sb_fs_columns, 1, 3, 1, 1)
 
-    cb_search_files = Gtk.CheckButton.new_with_label("search files")
+    cb_search_files = Gtk.CheckButton.new_with_label(voc["search-files"])
     cb_search_files.set_active(preset["launcher-search-files"])
     cb_search_files.connect("toggled", set_from_checkbutton, preset, "launcher-search-files")
     grid.attach(cb_search_files, 2, 3, 1, 1)
 
-    cb_categories = Gtk.CheckButton.new_with_label("Show category menu")
-    cb_categories.set_tooltip_text("Show categories menu (icons) on top.")
+    cb_categories = Gtk.CheckButton.new_with_label(voc["show-category-buttons"])
+    cb_categories.set_tooltip_text(voc["show-category-buttons-tooltip"])
     cb_categories.set_active(preset["launcher-categories"])
     cb_categories.connect("toggled", set_from_checkbutton, preset, "launcher-categories")
     grid.attach(cb_categories, 0, 4, 1, 1)
 
-    cb_resident = Gtk.CheckButton.new_with_label("Keep resident")
-    cb_resident.set_tooltip_text("Keep drawer running in the background.")
+    cb_resident = Gtk.CheckButton.new_with_label(voc["keep-resident"])
+    cb_resident.set_tooltip_text(voc["keep-resident-tooltip"])
     cb_resident.set_active(preset["launcher-resident"])
     cb_resident.connect("toggled", set_from_checkbutton, preset, "launcher-resident")
     grid.attach(cb_resident, 0, 5, 1, 1)
 
-    cb_overlay = Gtk.CheckButton.new_with_label("Open on overlay")
-    cb_overlay.set_tooltip_text("Open drawer on the overlay layer.")
+    cb_overlay = Gtk.CheckButton.new_with_label(voc["open-on-overlay"])
+    cb_overlay.set_tooltip_text(voc["open-on-overlay-tooltip"])
     cb_overlay.set_active(preset["launcher-overlay"])
     cb_overlay.connect("toggled", set_from_checkbutton, preset, "launcher-overlay")
     grid.attach(cb_overlay, 0, 6, 1, 1)
