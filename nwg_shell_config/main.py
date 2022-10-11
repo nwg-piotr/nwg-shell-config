@@ -380,6 +380,7 @@ def on_apply_btn(b):
 
 class GUI(object):
     def __init__(self):
+        self.label_interface_locale = None
         self.scrolled_window = None
         self.menu = None
         builder = Gtk.Builder()
@@ -392,11 +393,6 @@ class GUI(object):
         global grid
         grid = builder.get_object("grid")
 
-        self.scrolled_window = Gtk.ScrolledWindow.new(None, None)
-        self.scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        self.scrolled_window.set_propagate_natural_height(True)
-        grid.attach(self.scrolled_window, 0, 0, 1, 1)
-
         self.build_side_menu()
 
         self.version = builder.get_object("version-label")
@@ -405,32 +401,32 @@ class GUI(object):
         github = builder.get_object("github")
         github.set_markup('<a href="https://github.com/nwg-piotr/nwg-shell-config">GitHub</a>')
 
-        cb_show = builder.get_object("show-on-startup")
-        cb_show.set_active(settings["show-on-startup"])
-        cb_show.set_label(voc["show-on-startup"])
-        cb_show.set_tooltip_text(voc["show-on-startup-tooltip"])
-        cb_show.connect("toggled", set_from_checkbutton, settings, "show-on-startup")
+        self.cb_show = builder.get_object("show-on-startup")
+        self.cb_show.set_active(settings["show-on-startup"])
+        self.cb_show.set_label(voc["show-on-startup"])
+        self.cb_show.set_tooltip_text(voc["show-on-startup-tooltip"])
+        self.cb_show.connect("toggled", set_from_checkbutton, settings, "show-on-startup")
 
-        label_interface_locale = builder.get_object("interface-locale")
-        label_interface_locale.set_text("{}:".format(voc["interface-locale"]))
+        self.label_interface_locale = builder.get_object("interface-locale")
+        self.label_interface_locale.set_text("{}:".format(voc["interface-locale"]))
 
-        combo_interface_locale = builder.get_object("combo-interface-locale")
-        combo_interface_locale.append("auto", "auto")
-        combo_interface_locale.set_tooltip_text(voc["interface-locale-tooltip"])
+        self.combo_interface_locale = builder.get_object("combo-interface-locale")
+        self.combo_interface_locale.append("auto", "auto")
+        self.combo_interface_locale.set_tooltip_text(voc["interface-locale-tooltip"])
         locale_dir = os.path.join(dir_name, "langs")
         for entry in os.listdir(locale_dir):
             loc = entry.split(".")[0]
-            combo_interface_locale.append(loc, loc)
+            self.combo_interface_locale.append(loc, loc)
         if shell_data["interface-locale"]:
-            combo_interface_locale.set_active_id(shell_data["interface-locale"])
+            self.combo_interface_locale.set_active_id(shell_data["interface-locale"])
         else:
-            combo_interface_locale.set_active_id("auto")
-        combo_interface_locale.connect("changed", set_interface_locale)
+            self.combo_interface_locale.set_active_id("auto")
+        self.combo_interface_locale.connect("changed", set_interface_locale)
 
-        btn_close = builder.get_object("btn-close")
-        btn_close.set_label(voc["close"])
-        btn_close.connect("clicked", Gtk.main_quit)
-        btn_close.grab_focus()
+        self.btn_close = builder.get_object("btn-close")
+        self.btn_close.set_label(voc["close"])
+        self.btn_close.connect("clicked", Gtk.main_quit)
+        self.btn_close.grab_focus()
 
         global btn_apply
         btn_apply = builder.get_object("btn-apply")
@@ -439,12 +435,29 @@ class GUI(object):
 
         self.tz, self.lat, self.long = get_lat_lon()
 
+    def refresh_bottom_menu_locale(self):
+        self.label_interface_locale.set_text("{}:".format(voc["interface-locale"]))
+        self.cb_show.set_label(voc["show-on-startup"])
+        self.cb_show.set_tooltip_text(voc["show-on-startup-tooltip"])
+        self.combo_interface_locale.set_tooltip_text(voc["interface-locale-tooltip"])
+        btn_apply.set_label(voc["apply"])
+        self.btn_close.set_label(voc["close"])
+
     def build_side_menu(self):
+        if self.scrolled_window:
+            self.scrolled_window.destroy()
+        self.scrolled_window = Gtk.ScrolledWindow.new(None, None)
+        self.scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        self.scrolled_window.set_propagate_natural_height(True)
+        grid.attach(self.scrolled_window, 0, 0, 1, 1)
+
         self.menu = side_menu()
-        self.scrolled_window.add_with_viewport(self.menu)
+        self.scrolled_window.add(self.menu)
+        self.scrolled_window.show_all()
 
 
 def set_interface_locale(combo):
+    # selected locale will affect all the nwg-shell components... one day. Let's save it globally.
     if combo.get_active_id() and combo.get_active_id() != "auto":
         shell_data["interface-locale"] = combo.get_active_id()
     else:
@@ -452,6 +465,15 @@ def set_interface_locale(combo):
     save_json(shell_data, os.path.join(get_shell_data_dir(), "data"))
 
     load_vocabulary()
+
+    # refresh UI on language changed
+    global ui
+    if ui:
+        ui.build_side_menu()
+        ui.refresh_bottom_menu_locale()
+    # kinda shortcut, but let's just get to the screen tab, instead of remembering which one we were in
+    set_up_screen_tab()
+
 
 
 def save_includes():
