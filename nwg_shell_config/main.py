@@ -328,7 +328,7 @@ def set_up_bar_tab(event_box, event_button, preset, preset_name):
     hide_submenus()
     global content
     content.destroy()
-    content = bar_tab(preset, preset_name)
+    content = bar_tab(preset, preset_name, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
