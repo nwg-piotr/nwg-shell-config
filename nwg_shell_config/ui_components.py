@@ -274,7 +274,7 @@ def screen_tab(settings, voc, pending_updates):
     sb_lat.connect("value-changed", set_from_spinbutton, settings, "night-lat", 4)
     grid.attach(sb_lat, 3, 5, 1, 1)
 
-    lbl = Gtk.Label.new("{}:".format(voc["temp-low"]))
+    lbl = Gtk.Label.new("{}:".format(voc["temp-night"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 5, 1, 1)
 
@@ -299,7 +299,7 @@ def screen_tab(settings, voc, pending_updates):
             or (sb_lat.get_value() == 0.0 and sb_lon.get_value() == 0.0):
         update_lat_lon(None, sb_lat, sb_lon)
 
-    lbl = Gtk.Label.new("{}:".format(voc["temp-high"]))
+    lbl = Gtk.Label.new("{}:".format(voc["temp-day"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 6, 1, 1)
 

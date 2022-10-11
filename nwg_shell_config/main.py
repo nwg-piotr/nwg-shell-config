@@ -29,6 +29,7 @@ data_home = os.getenv('XDG_DATA_HOME') if os.getenv('XDG_DATA_HOME') else os.pat
     os.getenv("HOME"), ".local/share")
 
 voc = {}
+ui = None
 
 outputs = []
 settings = {}
@@ -379,6 +380,8 @@ def on_apply_btn(b):
 
 class GUI(object):
     def __init__(self):
+        self.scrolled_window = None
+        self.menu = None
         builder = Gtk.Builder()
         builder.add_from_file(os.path.join(dir_name, "glade/form.glade"))
 
@@ -389,13 +392,12 @@ class GUI(object):
         global grid
         grid = builder.get_object("grid")
 
-        scrolled_window = Gtk.ScrolledWindow.new(None, None)
-        scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        scrolled_window.set_propagate_natural_height(True)
-        grid.attach(scrolled_window, 0, 0, 1, 1)
+        self.scrolled_window = Gtk.ScrolledWindow.new(None, None)
+        self.scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        self.scrolled_window.set_propagate_natural_height(True)
+        grid.attach(self.scrolled_window, 0, 0, 1, 1)
 
-        self.menu = side_menu()
-        scrolled_window.add(self.menu)
+        self.build_side_menu()
 
         self.version = builder.get_object("version-label")
         self.version.set_text("v{}".format(__version__))
@@ -437,6 +439,10 @@ class GUI(object):
 
         self.tz, self.lat, self.long = get_lat_lon()
 
+    def build_side_menu(self):
+        self.menu = side_menu()
+        self.scrolled_window.add_with_viewport(self.menu)
+
 
 def set_interface_locale(combo):
     if combo.get_active_id() and combo.get_active_id() != "auto":
@@ -444,6 +450,8 @@ def set_interface_locale(combo):
     else:
         shell_data["interface-locale"] = ""
     save_json(shell_data, os.path.join(get_shell_data_dir(), "data"))
+
+    load_vocabulary()
 
 
 def save_includes():
@@ -937,6 +945,28 @@ def update_swaync_config(pos_x, pos_y, cc_width, window_width, mpris):
     save_json(swaync_settings, settings_file)
 
 
+def load_vocabulary():
+    global voc
+    # basic vocabulary (for en_US)
+    voc = load_json(os.path.join(dir_name, "langs", "en_US.json"))
+    if not voc:
+        eprint("Failed loading vocabulary")
+        sys.exit(1)
+
+    lang = os.getenv("LANG").split(".")[0] if not shell_data["interface-locale"] else shell_data["interface-locale"]
+    # translate if necessary
+    if lang != "en_US":
+        loc_file = os.path.join(dir_name, "langs", "{}.json".format(lang))
+        if os.path.isfile(loc_file):
+            # localized vocabulary
+            loc = load_json(loc_file)
+            if not loc:
+                eprint("Failed loading translation into '{}'".format(lang))
+            else:
+                for key in loc:
+                    voc[key] = loc[key]
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v",
@@ -973,22 +1003,7 @@ def main():
         # initialize missing own data files
         init_files(os.path.join(dir_name, "shell"), data_dir)
 
-    global voc
-    # basic vocabulary
-    voc = load_json(os.path.join(dir_name, "langs", "en_US.json"))
-    if not voc:
-        eprint("Failed loading vocabulary")
-        sys.exit(1)
-    lang = os.getenv("LANG").split(".")[0] if not shell_data["interface-locale"] else shell_data["interface-locale"]
-    loc_file = os.path.join(dir_name, "langs", "{}.json".format(lang))
-    if os.path.isfile(loc_file):
-        # localized vocabulary
-        loc = load_json(loc_file)
-        if not loc:
-            eprint("Failed loading translation into '{}'".format(lang))
-        else:
-            for key in loc:
-                voc[key] = loc[key]
+    load_vocabulary()
 
     check_updates()
 
@@ -1004,6 +1019,7 @@ def main():
 
     load_presets()
 
+    global ui
     ui = GUI()
 
     screen = Gdk.Screen.get_default()
