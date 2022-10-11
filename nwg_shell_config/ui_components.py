@@ -1237,7 +1237,7 @@ def gtklock_tab(settings, voc):
 
 def drawer_tab(preset, preset_name, voc):
     frame = Gtk.Frame()
-    frame.set_label("  {}: Application drawer  ".format(preset_name))
+    frame.set_label("  {}: {}  ".format(preset_name, voc["app-drawer"]))
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
@@ -1268,7 +1268,7 @@ def drawer_tab(preset, preset_name, voc):
     sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
     sb_icon_size.set_value(preset["launcher-icon-size"])
     sb_icon_size.connect("value-changed", set_int_from_spinbutton, preset, "launcher-icon-size")
-    sb_icon_size.set_tooltip_text(voc["app-drawer-icons-tooltip"])
+    sb_icon_size.set_tooltip_text(voc["app-icon-size-tooltip"])
     grid.attach(sb_icon_size, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["file-search-columns"]))
@@ -1309,9 +1309,9 @@ def drawer_tab(preset, preset_name, voc):
     return frame
 
 
-def dock_tab(preset, preset_name, outputs):
+def dock_tab(preset, preset_name, outputs, voc):
     frame = Gtk.Frame()
-    frame.set_label("  {}: Dock  ".format(preset_name))
+    frame.set_label("  {}: {}  ".format(preset_name, voc["dock"]))
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
@@ -1320,12 +1320,12 @@ def dock_tab(preset, preset_name, outputs):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
-    cb_dock_on = Gtk.CheckButton.new_with_label("Dock on")
+    cb_dock_on = Gtk.CheckButton.new_with_label(voc["dock-on"])
     cb_dock_on.set_active(preset["dock-on"])
     cb_dock_on.connect("toggled", set_from_checkbutton, preset, "dock-on")
     grid.attach(cb_dock_on, 0, 0, 1, 1)
 
-    lbl = Gtk.Label.new("Position:")
+    lbl = Gtk.Label.new("{}:".format(voc["position"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 1, 1, 1)
 
@@ -1333,11 +1333,11 @@ def dock_tab(preset, preset_name, outputs):
     combo_position.set_property("halign", Gtk.Align.START)
     grid.attach(combo_position, 1, 1, 1, 1)
     for item in ["bottom", "top", "left"]:
-        combo_position.append(item, item)
+        combo_position.append(item, voc[item])
     combo_position.set_active_id(preset["dock-position"])
     combo_position.connect("changed", set_dict_key_from_combo, preset, "dock-position")
 
-    lbl = Gtk.Label.new("Alignment:")
+    lbl = Gtk.Label.new("{}:".format(voc["alignment"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 2, 1, 1)
 
@@ -1345,64 +1345,65 @@ def dock_tab(preset, preset_name, outputs):
     combo_alignment.set_property("halign", Gtk.Align.START)
     grid.attach(combo_alignment, 1, 2, 1, 1)
     for item in ["center", "start", "end"]:
-        combo_alignment.append(item, item)
+        combo_alignment.append(item, voc[item])
     combo_alignment.set_active_id(preset["dock-alignment"])
     combo_alignment.connect("changed", set_dict_key_from_combo, preset, "dock-alignment")
 
-    lbl = Gtk.Label.new("Icon size:")
+    lbl = Gtk.Label.new("{}:".format(voc["icon-size"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 3, 1, 1)
 
     sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
     sb_icon_size.set_value(preset["dock-icon-size"])
     sb_icon_size.connect("value-changed", set_int_from_spinbutton, preset, "dock-icon-size")
-    sb_icon_size.set_tooltip_text("Application icon size.")
+    sb_icon_size.set_tooltip_text(voc["app-icon-size-tooltip"])
     grid.attach(sb_icon_size, 1, 3, 1, 1)
 
-    lbl = Gtk.Label.new("Margin:")
+    lbl = Gtk.Label.new("{}:".format(voc["margin"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 4, 1, 1)
 
     sb_margin = Gtk.SpinButton.new_with_range(0, 256, 1)
     sb_margin.set_value(preset["dock-margin"])
     sb_margin.connect("value-changed", set_int_from_spinbutton, preset, "dock-margin")
+    sb_margin.set_tooltip_text(voc["margin-tooltip"])
     grid.attach(sb_margin, 1, 4, 1, 1)
 
-    lbl = Gtk.Label.new("Output:")
+    lbl = Gtk.Label.new("{}:".format(voc["output"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 5, 1, 1)
 
     combo_outputs = Gtk.ComboBoxText()
     combo_outputs.set_property("halign", Gtk.Align.START)
     grid.attach(combo_outputs, 1, 5, 1, 1)
-    combo_outputs.append("Any", "Any")
+    combo_outputs.append("Any", voc["any"])
     for item in outputs:
         combo_outputs.append(item, item)
     combo_outputs.set_active_id(preset["dock-output"])
     combo_outputs.connect("changed", set_dict_key_from_combo, preset, "dock-output")
 
-    cb_permanent = Gtk.CheckButton.new_with_label("Permanent")
+    cb_permanent = Gtk.CheckButton.new_with_label(voc["permanent"])
     cb_permanent.set_active(preset["dock-permanent"])
     cb_permanent.connect("toggled", set_from_checkbutton, preset, "dock-permanent")
-    cb_permanent.set_tooltip_text("Leave the dock resident, but w/o the hotspot.")
-    grid.attach(cb_permanent, 0, 6, 1, 1)
+    cb_permanent.set_tooltip_text(voc["permanent-tooltip"])
+    grid.attach(cb_permanent, 0, 6, 2, 1)
 
-    cb_full = Gtk.CheckButton.new_with_label("Full width/height")
+    cb_full = Gtk.CheckButton.new_with_label(voc["full-width-height"])
     cb_full.set_active(preset["dock-full"])
     cb_full.connect("toggled", set_from_checkbutton, preset, "dock-full")
-    cb_full.set_tooltip_text("Take full screen width/height.")
-    grid.attach(cb_full, 0, 7, 1, 1)
+    cb_full.set_tooltip_text(voc["full-width-height-tooltip"])
+    grid.attach(cb_full, 0, 7, 2, 1)
 
-    cb_autohide = Gtk.CheckButton.new_with_label("Auto-show/hide")
+    cb_autohide = Gtk.CheckButton.new_with_label(voc["auto-show-hide"])
     cb_autohide.set_active(preset["dock-autohide"])
     cb_autohide.connect("toggled", set_from_checkbutton, preset, "dock-autohide")
-    cb_autohide.set_tooltip_text("Auto-hide dock, show on hotspot pointed.")
-    grid.attach(cb_autohide, 0, 8, 1, 1)
+    cb_autohide.set_tooltip_text(voc["auto-show-hide-tooltip"])
+    grid.attach(cb_autohide, 0, 8, 2, 1)
 
-    cb_exclusive = Gtk.CheckButton.new_with_label("Exclusive zone")
+    cb_exclusive = Gtk.CheckButton.new_with_label(voc["exclusive-zone"])
     cb_exclusive.set_active(preset["dock-exclusive"])
     cb_exclusive.connect("toggled", set_from_checkbutton, preset, "dock-exclusive")
-    cb_exclusive.set_tooltip_text("Move other windows away.")
+    cb_exclusive.set_tooltip_text(voc["exclusive-zone-tooltip"])
     grid.attach(cb_exclusive, 0, 9, 1, 1)
 
     frame.show_all()
