@@ -352,7 +352,7 @@ def set_up_panel_styling_tab(event_box, event_button, preset, preset_name):
     hide_submenus()
     global content
     content.destroy()
-    content = panel_styling_tab(settings, preset, preset_name)
+    content = panel_styling_tab(settings, preset, preset_name, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
