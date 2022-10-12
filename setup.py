@@ -9,12 +9,12 @@ def read(f_name):
 
 setup(
     name='nwg-shell-config',
-    version='0.3.15',
+    version='0.4.0',
     description='nwg-shell configuration utility',
     packages=find_packages(),
     include_package_data=True,
     package_data={
-        "": ["glade/*", "shell/*", "updates/*"]
+        "": ["glade/*", "langs/*", "shell/*", "updates/*"]
     },
     url='https://github.com/nwg-piotr/nwg-shell-config',
     license='MIT',
