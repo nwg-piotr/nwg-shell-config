@@ -199,7 +199,6 @@ def gtklock_command():
         if os.path.isfile(css_file):
             gtklock_cmd += " -s {}".format(css_file)
 
-    print(gtklock_cmd)
     return gtklock_cmd
 
 
