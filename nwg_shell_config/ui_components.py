@@ -152,10 +152,10 @@ def screen_tab(settings, voc, pending_updates):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
-    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
+    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 2)
     box.set_homogeneous(True)
-    box.set_property("margin-left", 12)
-    box.set_property("margin-bottom", 12)
+    box.set_property("margin-left", 0)
+    box.set_property("margin-bottom", 4)
     grid.attach(box, 0, 0, 6, 1)
 
     btn = Gtk.Button()

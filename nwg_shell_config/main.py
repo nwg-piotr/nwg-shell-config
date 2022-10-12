@@ -1049,7 +1049,7 @@ def main():
     style_context = Gtk.StyleContext()
     style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
     css = b"""
-            button#app-btn { padding: 6px; border: none }
+            button#app-btn { padding: 6px 2px 6px 2px; border: none }
             * { outline: none }
             """
     provider.load_from_data(css)
