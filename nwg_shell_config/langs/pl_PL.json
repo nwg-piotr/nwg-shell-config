@@ -35,6 +35,7 @@
   "close": "Zamknij",
   "columns": "Kolumny",
   "common": "Wspólne",
+  "current-version": "Bieżąca wersja",
   "custom-field": "Własne pole",
   "custom-field-name-tooltip": "Własne pole którego potrzebujesz, a brak go w formularzu powyżej.\nWprowadź tu nazwę pola. Pomyśl dwa razy, nim to zrobisz.",
   "custom-field-value-tooltip": "Własne pole którego potrzebujesz, a brak go w formularzu powyżej.\nWprowadź tu wartość pola. Pomyśl dwa razy, nim to zrobisz.",
@@ -74,6 +75,7 @@
   "file-manager-tooltip": "Komenda uruchamiająca menadżera plików",
   "file-search-columns": "Kolumny plików",
   "file-search-columns-tooltip": "W ilu kolumnach wyświetlać wyniki wyszukiwania plików",
+  "first-installed-version": "Pierwsza zainstalowana wersja",
   "flat": "płaski",
   "font-size": "Wielkość czcionki",
   "full-width-height": "Cała szerokość/wysokość",
@@ -158,6 +160,7 @@
   "panel-css-name": "Arkusz stylów panelu",
   "panel-css-name-tooltip": "Nazwa pliku css z arkuszem stylów panelu",
   "panel-settings": "Ustawienia panelu",
+  "pending-updates": "Oczekujące aktualizacje",
   "permanent": "Stały",
   "permanent-tooltip": "Trzymaj dok w pamięci, ale bez hotspota.",
   "playerctl-module": "Moduł playerctl",
@@ -220,7 +223,9 @@
   "under-clock": "Pod Zegarem",
   "unsplash": "unsplash.com",
   "unsplash-random-image": "Losowa tapeta z unsplash.com",
+  "update": "Aktualizuj",
   "updates": "Aktualizacje",
+  "updates-page": "Strona aktualizacji",
   "use-these-settings": "Używaj tych ustawień",
   "userinfo-module": "Moduł userinfo",
   "userinfo-tooltip": "Ten moduł potrzebuje informacji o użytkowniku. \nMożesz użyć pakietu `mugshot` lub `SwaySettings`. \nMusisz też zainstalować pakiet `gtklock-userinfo-module`.",
@@ -232,5 +237,6 @@
   "web-browser-combo-tooltip": "Wybierz z predefiniowanych komend\nznanych dla zainstalowanych przeglądarek.",
   "web-browser-tooltip": "Komenda uruchamiająca przeglądarkę internetową\n(prawdopodobnie z argumentami dla Wayland)",
   "workspaces": "Obszary robocze",
-  "workspaces-tooltip": "Określa w których obszarach roboczych włączyć autotiling: `autotiling -w`."
+  "workspaces-tooltip": "Określa w których obszarach roboczych włączyć autotiling: `autotiling -w`.",
+  "you-are-up-to-date": "Jesteś na bieżąco :)"
 }

@@ -35,6 +35,7 @@
   "close": "Close",
   "columns": "Columns",
   "common": "Common",
+  "current-version": "Current version",
   "custom-field": "Custom field",
   "custom-field-name-tooltip": "User defined field that you need, but it's missing from the the form above.\nEnter field name here. Think twice before you use it.",
   "custom-field-value-tooltip": "User defined field that you need, but it's missing\nfrom the the form above.\nEnter field value here. Think twice before you use it.",
@@ -74,6 +75,7 @@
   "file-manager-tooltip": "Command to run file manager",
   "file-search-columns": "File search columns",
   "file-search-columns-tooltip": "Number of columns to show file search result in",
+  "first-installed-version": "First installed version",
   "flat": "flat",
   "font-size": "Font size",
   "full-width-height": "Full width/height",
@@ -158,6 +160,7 @@
   "panel-css-name": "Panel style name",
   "panel-css-name-tooltip": "Panel css style sheet file name",
   "panel-settings": "Panel settings",
+  "pending-updates": "Pending updates",
   "permanent": "Permanent",
   "permanent-tooltip": "Keeps the dock resident, but w/o the hotspot.",
   "playerctl-module": "Playerctl module",
@@ -220,7 +223,9 @@
   "under-clock": "Under Clock",
   "unsplash": "unsplash.com",
   "unsplash-random-image": "Random image from unsplash.com",
+  "update": "Update",
   "updates": "Updates",
+  "updates-page": "Updates page",
   "use-these-settings": "Use these settings",
   "userinfo-module": "Userinfo module",
   "userinfo-tooltip": "For this module to work, you need to set the user info first. \nYou may use the `mugshot` or `SwaySettings` package. \nYou also need the `gtklock-userinfo-module` package.",
@@ -232,5 +237,6 @@
   "web-browser-combo-tooltip": "Select from predefined commands\nknown for installed browsers.",
   "web-browser-tooltip": "Command to run web browser\n(probably w/ Wayland-specific arguments)",
   "workspaces": "Workspaces",
-  "workspaces-tooltip": "Defines which workspaces to use autotiling on: `autotiling -w`."
+  "workspaces-tooltip": "Defines which workspaces to use autotiling on: `autotiling -w`.",
+  "you-are-up-to-date": "You are up to date :)"
 }

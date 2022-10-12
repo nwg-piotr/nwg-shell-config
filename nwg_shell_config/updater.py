@@ -27,11 +27,12 @@ from nwg_shell_config.__about__ import __need_update__
 from gi.repository import Gtk, Gdk
 
 from nwg_shell_config.tools import temp_dir, get_data_dir, get_shell_data_dir, save_string, get_shell_version, \
-    is_newer, load_shell_data, is_command, save_json
+    is_newer, load_shell_data, is_command, save_json, load_json, eprint
 
 from nwg_shell_config.updates import *
 
 data_dir = get_data_dir()
+voc = {}
 
 # pango-formatted descriptions
 updates_dir = os.path.join(dir_name, "updates")
@@ -66,6 +67,28 @@ def handle_keyboard(win, event):
         terminate()
 
 
+def load_vocabulary():
+    global voc
+    # basic vocabulary (for en_US)
+    voc = load_json(os.path.join(dir_name, "langs", "en_US.json"))
+    if not voc:
+        eprint("Failed loading vocabulary")
+        sys.exit(1)
+
+    lang = os.getenv("LANG").split(".")[0] if not shell_data["interface-locale"] else shell_data["interface-locale"]
+    # translate if necessary
+    if lang != "en_US":
+        loc_file = os.path.join(dir_name, "langs", "{}.json".format(lang))
+        if os.path.isfile(loc_file):
+            # localized vocabulary
+            loc = load_json(loc_file)
+            if not loc:
+                eprint("Failed loading translation into '{}'".format(lang))
+            else:
+                for key in loc:
+                    voc[key] = loc[key]
+
+
 def main():
     current_shell_version = get_shell_version()
     global lock_file
@@ -79,8 +102,10 @@ def main():
             pass
     save_string(str(os.getpid()), lock_file)
 
-    print("First installed version: {}".format(shell_data["installed-version"]))
-    print("Current version: {}".format(current_shell_version))
+    load_vocabulary()
+
+    print("{}: {}".format(voc["first-installed-version"], shell_data["installed-version"]))
+    print("{}: {}".format(voc["current-version"], current_shell_version))
     pending_updates = []
     version_descriptions = []
     # If shell not just installed, let's check updates
@@ -93,12 +118,12 @@ def main():
         content = '\n'.join(version_descriptions)
 
         if len(pending_updates) == 0:
-            content = '<span font-size="large">You are up to date :)</span>'
+            content = '<span font-size="large">{}</span>'.format(voc["you-are-up-to-date"])
             btn_update.set_sensitive(False)
-            print("You are up to date :)")
+            print(voc["you-are-up-to-date"])
     else:
         # Just installed, no check needed
-        content = '<span font-size="large">You are up to date :)</span>'
+        content = '<span font-size="large">{}</span>'.format(voc["you-are-up-to-date"])
         btn_update.set_sensitive(False)
         print("Just installed, nothing to do.")
 
@@ -112,7 +137,7 @@ def main():
     box.set_property("hexpand", True)
     window.add(box)
 
-    frame = Gtk.Frame.new(" Pending updates ")
+    frame = Gtk.Frame.new(" {} ".format(voc["pending-updates"]))
     frame.set_label_align(0.5, 0.5)
     box.pack_start(frame, True, True, 0)
 
@@ -137,15 +162,16 @@ def main():
     img = Gtk.Image.new_from_icon_name("nwg-shell", Gtk.IconSize.BUTTON)
     h_box.pack_start(img, False, False, 0)
     lbl = Gtk.Label()
-    lbl.set_markup('nwg-shell-updater  <a href="https://nwg-piotr.github.io/nwg-shell/updates">Updates page</a>')
+    lbl.set_markup(
+        'nwg-shell-updater  <a href="https://nwg-piotr.github.io/nwg-shell/updates">{}</a>'.format(voc["updates-page"]))
     h_box.pack_start(lbl, False, False, 0)
 
-    btn_update.set_label("Update")
+    btn_update.set_label(voc["update"])
     h_box.pack_end(btn_update, False, False, 0)
     btn_update.connect("clicked", do_update, frame, label, pending_updates)
 
     btn_close = Gtk.Button.new()
-    btn_close.set_label("Close")
+    btn_close.set_label(voc["close"])
     btn_close.connect("clicked", terminate)
     h_box.pack_end(btn_close, False, False, 6)
 
