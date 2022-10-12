@@ -414,7 +414,9 @@ class GUI(object):
         self.combo_interface_locale.append("auto", "auto")
         self.combo_interface_locale.set_tooltip_text(voc["interface-locale-tooltip"])
         locale_dir = os.path.join(dir_name, "langs")
-        for entry in os.listdir(locale_dir):
+        entries = os.listdir(locale_dir)
+        entries.sort()
+        for entry in entries:
             loc = entry.split(".")[0]
             self.combo_interface_locale.append(loc, loc)
         if shell_data["interface-locale"]:
