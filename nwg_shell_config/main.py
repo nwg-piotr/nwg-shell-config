@@ -73,7 +73,7 @@ def signal_handler(sig, frame):
     elif sig == 10:
         print("SIGUSR1 received, checking updates")
         check_updates()
-    else:
+    elif sig != 17:
         print("signal {} received".format(sig))
 
 
