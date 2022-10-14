@@ -73,7 +73,7 @@
   "help-font-size": 14,
   "help-layer-shell": true,
   "help-keyboard": false,
-  "gtklock-time-format": "'%H:%M:%S",
+  "gtklock-time-format": "%H:%M:%S",
   "gtklock-idle-timeout": 10,
   "gtklock-userinfo": false,
   "gtklock-powerbar": false,
