@@ -427,12 +427,14 @@ class GUI(object):
 
         self.btn_close = builder.get_object("btn-close")
         self.btn_close.set_label(voc["close"])
+        self.btn_close.set_tooltip_text(voc["close-tooltip"])
         self.btn_close.connect("clicked", Gtk.main_quit)
         self.btn_close.grab_focus()
 
         global btn_apply
         btn_apply = builder.get_object("btn-apply")
         btn_apply.set_label(voc["apply"])
+        btn_apply.set_tooltip_text(voc["apply-tooltip"])
         btn_apply.connect("clicked", on_apply_btn)
 
         self.tz, self.lat, self.long = get_lat_lon()
@@ -443,7 +445,10 @@ class GUI(object):
         self.cb_show.set_tooltip_text(voc["show-on-startup-tooltip"])
         self.combo_interface_locale.set_tooltip_text(voc["interface-locale-tooltip"])
         btn_apply.set_label(voc["apply"])
+        btn_apply.set_tooltip_text(voc["apply-tooltip"])
+
         self.btn_close.set_label(voc["close"])
+        self.btn_close.set_tooltip_text(voc["close-tooltip"])
 
     def build_side_menu(self):
         if self.scrolled_window:
