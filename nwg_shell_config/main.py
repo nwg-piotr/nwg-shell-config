@@ -417,8 +417,9 @@ class GUI(object):
         entries = os.listdir(locale_dir)
         entries.sort()
         for entry in entries:
-            loc = entry.split(".")[0]
-            self.combo_interface_locale.append(loc, loc)
+            if entry.endswith(".json"):
+                loc = entry.split(".")[0]
+                self.combo_interface_locale.append(loc, loc)
         if shell_data["interface-locale"]:
             self.combo_interface_locale.set_active_id(shell_data["interface-locale"])
         else:
