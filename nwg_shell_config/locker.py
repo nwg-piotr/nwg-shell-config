@@ -18,7 +18,7 @@ gi.require_version('GdkPixbuf', '2.0')
 gi.require_version('GtkLayerShell', '0.1')
 
 from nwg_shell_config.tools import get_data_dir, temp_dir, load_json, load_text_file, save_string, gtklock_module_path, \
-    playerctl_metadata
+    playerctl_metadata, eprint
 
 config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(os.getenv("HOME"),
                                                                                              ".config/")
@@ -97,11 +97,12 @@ def set_remote_wallpaper():
         if r[1]["Content-Type"] in ["image/jpeg", "image/png"]:
             if settings["lockscreen-locker"] == "swaylock":
                 subprocess.call("pkill -f swaylock", shell=True)
-                subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(wallpaper, pid), shell=True)
+                subprocess.Popen('swaylock -i {} ; kill -n 15 {}'.format(wallpaper, pid), shell=True)
             elif settings["lockscreen-locker"] == "gtklock":
                 subprocess.call("pkill -f gtklock", shell=True)
 
-                subprocess.Popen('{} -S -H -T 10 -b {} && kill -n 15 {}'.format(gtklock_command(), wallpaper, pid),
+                eprint('{} -S -H -T 10 -b {} ; kill -n 15 {}'.format(gtklock_command(), wallpaper, pid))
+                subprocess.Popen('{} -S -H -T 10 -b {} ; kill -n 15 {}'.format(gtklock_command(), wallpaper, pid),
                                  shell=True)
 
     except Exception as e:
@@ -122,12 +123,15 @@ def set_local_wallpaper():
         p = paths[random.randrange(len(paths))]
         if settings["lockscreen-locker"] == "swaylock":
             subprocess.call("pkill -f swaylock", shell=True)
-            subprocess.Popen('swaylock -i {} && kill -n 15 {}'.format(p, pid), shell=True)
+            subprocess.Popen('swaylock -i {} ; kill -n 15 {}'.format(p, pid), shell=True)
         elif settings["lockscreen-locker"] == "gtklock":
             subprocess.call("pkill -f gtklock", shell=True)
 
+            eprint(
+                '{} -S -H -T {} -b {} ; kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"], p,
+                                                               pid))
             subprocess.Popen(
-                '{} -S -H -T {} -b {} && kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"],
+                '{} -S -H -T {} -b {} ; kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"],
                                                                p, pid), shell=True)
     else:
         print("No image paths found")
@@ -169,15 +173,24 @@ def gtklock_command():
             gtklock_cmd += " --show-labels"
         if preset["gtklock-powerbar-linked-buttons"]:
             gtklock_cmd += " --linked-buttons"
+        # It seems a bit counter-intuitive, but to turn one of gtklock poweroff module commands off,
+        # we need to pass the empty string, like `--suspend-command`.
+        # See: https://github.com/jovanlanik/gtklock-powerbar-module/issues/1#issuecomment-1287509956
         if settings["gtklock-reboot-command"]:
             gtklock_cmd += " --reboot-command '{}'".format(settings["gtklock-reboot-command"])
+        else:
+            gtklock_cmd += " --reboot-command ''"
         if settings["gtklock-poweroff-command"]:
             gtklock_cmd += " --poweroff-command '{}'".format(settings["gtklock-poweroff-command"])
+        else:
+            gtklock_cmd += " --poweroff-command ''"
         if settings["gtklock-suspend-command"]:
             gtklock_cmd += " --suspend-command '{}'".format(settings["gtklock-suspend-command"])
+        else:
+            gtklock_cmd += " --suspend-command ''"
 
     # playerctl module
-    # Don't show if playerctl_metadata() == "No player could handle this command"
+    # Don't show if playerctl_metadata() empty.
     # https://github.com/jovanlanik/gtklock-playerctl-module/issues/4
     if settings["gtklock-playerctl"] and playerctl_metadata():
         gtklock_cmd += " -m {}".format(gtklock_module_path("playerctl"))
