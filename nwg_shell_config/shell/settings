@@ -73,11 +73,15 @@
   "help-font-size": 14,
   "help-layer-shell": true,
   "help-keyboard": false,
-  "gtklock-time-format": "%H:%M:%S",
+  "gtklock-disable-input-inhibitor": false,
   "gtklock-idle-timeout": 10,
-  "gtklock-userinfo": false,
-  "gtklock-powerbar": false,
+  "gtklock-logout-command": "swaymsg exit",
   "gtklock-playerctl": false,
+  "gtklock-powerbar": false,
+  "gtklock-poweroff-command": "systemctl -i poweroff",
   "gtklock-reboot-command": "systemctl reboot",
-  "gtklock-poweroff-command": "systemctl -i poweroff"
+  "gtklock-suspend-command": "systemctl suspend",
+  "gtklock-time-format": "%H:%M:%S",
+  "gtklock-userinfo": false,
+  "gtklock-userswitch-command": ""
 }

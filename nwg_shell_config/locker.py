@@ -48,12 +48,17 @@ defaults = {
     "unsplash-width": 1920,
     "unsplash-height": 1080,
     "unsplash-keywords": ["nature", "water", "landscape"],
-    "gtklock-time-format": "%H:%M:%S",
-    "gtklock-idle-timeout": 10,
     "gtklock-disable-input-inhibitor": False,
-    "gtklock-userinfo": False,
+    "gtklock-idle-timeout": 10,
+    "gtklock-logout-command": "swaymsg exit",
+    "gtklock-playerctl": False,
     "gtklock-powerbar": False,
-    "gtklock-playerctl": False
+    "gtklock-poweroff-command": "systemctl -i poweroff",
+    "gtklock-reboot-command": "systemctl reboot",
+    "gtklock-suspend-command": "systemctl suspend",
+    "gtklock-time-format": "%H:%M:%S",
+    "gtklock-userinfo": False,
+    "gtklock-userswitch-command": ""
 }
 
 preset_defaults = {
@@ -188,6 +193,16 @@ def gtklock_command():
             gtklock_cmd += " --suspend-command '{}'".format(settings["gtklock-suspend-command"])
         else:
             gtklock_cmd += " --suspend-command ''"
+
+        if settings["gtklock-logout-command"]:
+            gtklock_cmd += " --logout-command '{}'".format(settings["gtklock-logout-command"])
+        else:
+            gtklock_cmd += " --logout-command ''"
+
+        if settings["gtklock-userswitch-command"]:
+            gtklock_cmd += " --userswitch-command '{}'".format(settings["gtklock-userswitch-command"])
+        else:
+            gtklock_cmd += " --userswitch-command ''"
 
     # playerctl module
     # Don't show if playerctl_metadata() empty.

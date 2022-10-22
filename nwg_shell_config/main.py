@@ -809,15 +809,17 @@ def load_settings():
         "help-font-size": 12,
         "help-layer-shell": True,
         "help-keyboard": False,
-        "gtklock-time-format": "%H:%M:%S",
-        "gtklock-idle-timeout": 10,
         "gtklock-disable-input-inhibitor": False,
-        "gtklock-userinfo": False,
-        "gtklock-powerbar": False,
+        "gtklock-idle-timeout": 10,
+        "gtklock-logout-command": "swaymsg exit",
         "gtklock-playerctl": False,
+        "gtklock-powerbar": False,
+        "gtklock-poweroff-command": "systemctl -i poweroff",
         "gtklock-reboot-command": "systemctl reboot",
         "gtklock-suspend-command": "systemctl suspend",
-        "gtklock-poweroff-command": "systemctl -i poweroff"
+        "gtklock-time-format": "%H:%M:%S",
+        "gtklock-userinfo": False,
+        "gtklock-userswitch-command": ""
     }
     global settings
     if os.path.isfile(settings_file):
