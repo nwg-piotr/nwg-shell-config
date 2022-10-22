@@ -1199,36 +1199,46 @@ def gtklock_tab(settings, voc):
     entry_gtklock_poweroff_command.connect("changed", set_from_entry, settings, "gtklock-poweroff-command")
     grid.attach(entry_gtklock_poweroff_command, 1, 5, 1, 1)
 
+    lbl = Gtk.Label.new("{}:".format(voc["suspend"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 6, 1, 1)
+
+    entry_gtklock_suspend_command = Gtk.Entry()
+    entry_gtklock_suspend_command.set_tooltip_text(voc["suspend-tooltip"])
+    entry_gtklock_suspend_command.set_text(settings["gtklock-suspend-command"])
+    entry_gtklock_suspend_command.connect("changed", set_from_entry, settings, "gtklock-suspend-command")
+    grid.attach(entry_gtklock_suspend_command, 1, 6, 1, 1)
+
     lbl = Gtk.Label()
     lbl.set_markup("<b>{}</b>".format(voc["other"]))
     lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 0, 6, 1, 1)
+    grid.attach(lbl, 0, 7, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["time-format"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 7, 1, 1)
+    grid.attach(lbl, 0, 8, 1, 1)
 
     entry_time_format = Gtk.Entry()
     entry_time_format.set_tooltip_text(voc["time-format-tooltip"])
     entry_time_format.set_text(settings["gtklock-time-format"])
     entry_time_format.connect("changed", set_from_entry, settings, "gtklock-time-format")
-    grid.attach(entry_time_format, 1, 7, 1, 1)
+    grid.attach(entry_time_format, 1, 8, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["idle-timeout"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 8, 1, 1)
+    grid.attach(lbl, 0, 9, 1, 1)
 
     sb_gtklock_idle_timeout = Gtk.SpinButton.new_with_range(5, 3600, 1)
     sb_gtklock_idle_timeout.set_value(settings["gtklock-idle-timeout"])
     sb_gtklock_idle_timeout.connect("value-changed", set_int_from_spinbutton, settings, "gtklock-idle-timeout")
     sb_gtklock_idle_timeout.set_tooltip_text(voc["idle-timeout-tooltip"])
-    grid.attach(sb_gtklock_idle_timeout, 1, 8, 1, 1)
+    grid.attach(sb_gtklock_idle_timeout, 1, 9, 1, 1)
 
     cb_disable_input_inhibitor = Gtk.CheckButton.new_with_label(voc["disable-input-inhibitor"])
     cb_disable_input_inhibitor.set_active(settings["gtklock-disable-input-inhibitor"])
     cb_disable_input_inhibitor.connect("toggled", set_key_from_checkbox, settings, "gtklock-disable-input-inhibitor")
     cb_disable_input_inhibitor.set_tooltip_text(voc["disable-input-inhibitor-tooltip"])
-    grid.attach(cb_disable_input_inhibitor, 1, 9, 1, 1)
+    grid.attach(cb_disable_input_inhibitor, 1, 10, 1, 1)
 
     frame.show_all()
 

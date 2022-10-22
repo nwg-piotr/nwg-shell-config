@@ -173,6 +173,8 @@ def gtklock_command():
             gtklock_cmd += " --reboot-command '{}'".format(settings["gtklock-reboot-command"])
         if settings["gtklock-poweroff-command"]:
             gtklock_cmd += " --poweroff-command '{}'".format(settings["gtklock-poweroff-command"])
+        if settings["gtklock-suspend-command"]:
+            gtklock_cmd += " --suspend-command '{}'".format(settings["gtklock-suspend-command"])
 
     # playerctl module
     # Don't show if playerctl_metadata() == "No player could handle this command"

@@ -31,6 +31,7 @@
   "swaync-positionY": "bottom",
   "swaync-control-center-width": 400,
   "swaync-notification-window-width": 400,
+  "swaync-mpris": false,
   "gtklock-time-format": "%H:%M:%S",
   "gtklock-idle-timeout": 10,
   "gtklock-disable-input-inhibitor": false,
@@ -44,6 +45,7 @@
   "gtklock-powerbar-linked-buttons": false,
   "gtklock-reboot-command": "systemctl reboot",
   "gtklock-poweroff-command": "systemctl -i poweroff",
+  "gtklock-suspend-command": "systemctl suspend",
   "gtklock-playerctl-art-size": 64,
   "gtklock-playerctl-position": "top-right",
   "gtklock-playerctl-show-hidden": true

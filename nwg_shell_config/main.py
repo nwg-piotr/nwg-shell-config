@@ -816,6 +816,7 @@ def load_settings():
         "gtklock-powerbar": False,
         "gtklock-playerctl": False,
         "gtklock-reboot-command": "systemctl reboot",
+        "gtklock-suspend-command": "systemctl suspend",
         "gtklock-poweroff-command": "systemctl -i poweroff"
     }
     global settings
