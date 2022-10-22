@@ -43,11 +43,6 @@
   "gtklock-userinfo-under-clock": false,
   "gtklock-powerbar-show-labels": true,
   "gtklock-powerbar-linked-buttons": false,
-  "gtklock-reboot-command": "systemctl reboot",
-  "gtklock-poweroff-command": "systemctl -i poweroff",
-  "gtklock-suspend-command": "systemctl suspend",
-  "gtklock-logout-command": "swaymsg exit",
-  "gtklock-userswitch-command": "",
   "gtklock-playerctl-art-size": 64,
   "gtklock-playerctl-position": "top-right",
   "gtklock-playerctl-show-hidden": true
