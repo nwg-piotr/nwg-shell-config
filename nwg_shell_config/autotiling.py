@@ -56,7 +56,7 @@ def save_string(string, file):
         print(e)
 
 
-def switch_splitting(i3, e, debug, workspaces):
+def switch_splitting(i3, e, debug, workspaces, depth_limit):
     try:
         con = i3.get_tree().find_focused()
         if con and not workspaces or (str(con.workspace().num) in workspaces):
@@ -67,6 +67,23 @@ def switch_splitting(i3, e, debug, workspaces):
             else:
                 # We are on sway
                 is_floating = con.type == "floating_con"
+
+            # dontributed by @Syphdias
+            if depth_limit:
+                # Assume we reached the depth limit, unless we can find a workspace
+                depth_limit_reached = True
+                current_con = con
+                for _ in range(depth_limit):
+                    # Check if parent of the current con is a workspace
+                    current_con = current_con.parent
+                    if current_con.type == "workspace":
+                        # Found the workspace within the depth limitation
+                        depth_limit_reached = False
+
+                if depth_limit_reached:
+                    if debug:
+                        print("Debug: Depth limit reached")
+                    return
 
             is_full_screen = con.fullscreen_mode == 1
             is_stacked = con.parent.layout == "stacked"
@@ -117,6 +134,11 @@ def main():
                         nargs="*",
                         type=str,
                         default=[], )
+    parser.add_argument("-l",
+                        "--limit",
+                        help="limit how often autotiling will split a container; default: 0 (no limit)",
+                        type=int,
+                        default=0, )
     """
     Changing event subscription has already been the objective of several pull request. To avoid doing this again
     and again, let's allow to specify them in the `--events` argument.
@@ -158,7 +180,7 @@ def main():
         print("No events specified", file=sys.stderr)
         sys.exit(1)
 
-    handler = partial(switch_splitting, debug=args.debug, workspaces=args.workspaces)
+    handler = partial(switch_splitting, debug=args.debug, workspaces=args.workspaces, depth_limit=args.limit)
     i3 = Connection()
     for e in args.events:
         try:
