@@ -2,6 +2,7 @@
   "keyboard-layout": "us",
   "autotiling-workspaces": "",
   "autotiling-on": true,
+  "autotiling-limit": false,
   "appindicator": true,
   "night-lat": -1,
   "night-long": -1,
