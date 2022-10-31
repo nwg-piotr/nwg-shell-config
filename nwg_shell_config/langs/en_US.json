@@ -23,7 +23,7 @@
   "autotiling": "Autotiling",
   "autotiling-tooltip": "Automates changing the horizontal/vertical window split orientation.",
   "autotiling-limit": "Limit",
-  "autotiling-limit-tooltip": "Limits autotiling depth to 2 levels, to mimic (to some degree) master/stack layout.",
+  "autotiling-limit-tooltip": "Limits autotiling depth to 2 levels,\nto mimic (to some degree) master/stack layout.",
   "backgrounds": "Backgrounds",
   "before-sleep": "Before sleep",
   "before-sleep-tooltip": "Command to execute before systemd puts the computer to sleep.",
