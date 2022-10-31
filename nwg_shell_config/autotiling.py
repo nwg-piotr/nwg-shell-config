@@ -17,8 +17,7 @@ as it's quite widely used outside the project. All the arguments remain the same
 
 Additions:
 - killing existing *autotiling* process instances on startup;
-- gentle SIGINT & SIGTERM handler;
-- clearing used workspaces info ('/tmp/autotiling' file) if started w/o the -- workspaces argument.
+- gentle SIGINT & SIGTERM handler.
 """
 import argparse
 import os
@@ -68,7 +67,7 @@ def switch_splitting(i3, e, debug, workspaces, depth_limit):
                 # We are on sway
                 is_floating = con.type == "floating_con"
 
-            # contributed by @Syphdias
+            # `depth_limit` contributed by @Syphdias to original autotiling script
             if depth_limit:
                 # Assume we reached the depth limit, unless we can find a workspace
                 depth_limit_reached = True
@@ -145,7 +144,8 @@ def main():
                         default=[], )
     parser.add_argument("-l",
                         "--limit",
-                        help="limit how often autotiling will split a container; default: 0 (no limit)",
+                        help='limit how often autotiling will split a container; '
+                             'try "2", if you like master-stack layouts; default: 0 (no limit)',
                         type=int,
                         default=0, )
     """
