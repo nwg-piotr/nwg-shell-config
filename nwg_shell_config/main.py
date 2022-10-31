@@ -617,8 +617,13 @@ def save_includes():
 
     if settings["autotiling-on"]:
         cmd_autotiling = "exec_always nwg-autotiling"
+
         if settings["autotiling-workspaces"]:
             cmd_autotiling += " -w {}".format(settings["autotiling-workspaces"])
+
+        if settings["autotiling-limit"]:
+            cmd_autotiling += " -l 2"
+
         autostart.append(cmd_autotiling)
 
     if cmd_launcher_autostart:
@@ -744,6 +749,7 @@ def load_settings():
         "keyboard-layout": "us",
         "autotiling-workspaces": "",
         "autotiling-on": True,
+        "autotiling-limit": False,
         "appindicator": True,
         "night-lat": -1,
         "night-long": -1,

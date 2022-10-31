@@ -22,6 +22,8 @@
   "auto-show-hide-tooltip": "Automatycznie ukrywaj, wyświetl po wskazaniu hotspota myszą.",
   "autotiling": "Autotiling",
   "autotiling-tooltip": "Automatyzuje zmianę poziom/pion orientacji podziału okna.",
+  "autotiling-depth-limit": "Limit głębokości",
+  "autotiling-depth-limit-tooltip": "Ogranicza autotiling do 2 poziomów, udając\n(do pewnego stopnia) układ master/stack.",
   "backgrounds": "Tapety",
   "before-sleep": "Przed uśpieniem",
   "before-sleep-tooltip": "Komenda do wykonania zanim `systemd` uśpi komputer.",

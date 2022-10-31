@@ -17,8 +17,7 @@ as it's quite widely used outside the project. All the arguments remain the same
 
 Additions:
 - killing existing *autotiling* process instances on startup;
-- gentle SIGINT & SIGTERM handler;
-- clearing used workspaces info ('/tmp/autotiling' file) if started w/o the -- workspaces argument.
+- gentle SIGINT & SIGTERM handler.
 """
 import argparse
 import os
@@ -56,7 +55,7 @@ def save_string(string, file):
         print(e)
 
 
-def switch_splitting(i3, e, debug, workspaces):
+def switch_splitting(i3, e, debug, workspaces, depth_limit):
     try:
         con = i3.get_tree().find_focused()
         if con and not workspaces or (str(con.workspace().num) in workspaces):
@@ -67,6 +66,32 @@ def switch_splitting(i3, e, debug, workspaces):
             else:
                 # We are on sway
                 is_floating = con.type == "floating_con"
+
+            # `depth_limit` contributed by @Syphdias to original autotiling script
+            if depth_limit:
+                # Assume we reached the depth limit, unless we can find a workspace
+                depth_limit_reached = True
+                current_con = con
+                current_depth = 0
+                while current_depth < depth_limit:
+                    # Check if we found the workspace of the current container
+                    if current_con.type == "workspace":
+                        # Found the workspace within the depth limitation
+                        depth_limit_reached = False
+                        break
+
+                    # Look at the parent for next iteration
+                    current_con = current_con.parent
+
+                    # Only count up the depth, if the container has more than
+                    # one container as child
+                    if len(current_con.nodes) > 1:
+                        current_depth += 1
+
+                if depth_limit_reached:
+                    if debug:
+                        print("Debug: Depth limit reached")
+                    return
 
             is_full_screen = con.fullscreen_mode == 1
             is_stacked = con.parent.layout == "stacked"
@@ -117,6 +142,12 @@ def main():
                         nargs="*",
                         type=str,
                         default=[], )
+    parser.add_argument("-l",
+                        "--limit",
+                        help='limit how often autotiling will split a container; '
+                             'try "2", if you like master-stack layouts; default: 0 (no limit)',
+                        type=int,
+                        default=0, )
     """
     Changing event subscription has already been the objective of several pull request. To avoid doing this again
     and again, let's allow to specify them in the `--events` argument.
@@ -158,7 +189,7 @@ def main():
         print("No events specified", file=sys.stderr)
         sys.exit(1)
 
-    handler = partial(switch_splitting, debug=args.debug, workspaces=args.workspaces)
+    handler = partial(switch_splitting, debug=args.debug, workspaces=args.workspaces, depth_limit=args.limit)
     i3 = Connection()
     for e in args.events:
         try:

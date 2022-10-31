@@ -22,6 +22,8 @@
   "auto-show-hide-tooltip": "Auto-hide dock, show on hotspot pointed.",
   "autotiling": "Autotiling",
   "autotiling-tooltip": "Automates changing the horizontal/vertical window split orientation.",
+  "autotiling-depth-limit": "Depth limit",
+  "autotiling-depth-limit-tooltip": "Limits autotiling depth to 2 levels, to mimic\n(to some degree) the master/stack layout.",
   "backgrounds": "Backgrounds",
   "before-sleep": "Before sleep",
   "before-sleep-tooltip": "Command to execute before systemd puts the computer to sleep.",

@@ -250,6 +250,12 @@ def screen_tab(settings, voc, pending_updates):
     entry.connect("changed", set_from_workspaces, settings)
     grid.attach(entry, 1, 3, 1, 1)
 
+    cb_autotiling_limit = Gtk.CheckButton.new_with_label(voc["autotiling-depth-limit"])
+    cb_autotiling_limit.set_active(settings["autotiling-limit"])
+    cb_autotiling_limit.connect("toggled", set_from_checkbutton, settings, "autotiling-limit")
+    cb_autotiling_limit.set_tooltip_text(voc["autotiling-depth-limit-tooltip"])
+    grid.attach(cb_autotiling_limit, 2, 3, 2, 1)
+
     lbl = Gtk.Label()
     lbl.set_markup("<b>{}</b>".format(voc["night-light"]))
     lbl.set_property("margin-top", 6)
