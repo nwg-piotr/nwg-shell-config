@@ -237,8 +237,7 @@ def screen_tab(settings, voc, pending_updates):
     cb_autotiling_on.set_active(settings["autotiling-on"])
     cb_autotiling_on.connect("toggled", set_from_checkbutton, settings, "autotiling-on")
     cb_autotiling_on.set_tooltip_text(voc["autotiling-tooltip"])
-    grid.attach(cb_autotiling_on, 1, 2, 2, 1)
-    box.pack_start(cb_autotiling_on, False, False, 0)
+    grid.attach(cb_autotiling_on, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["workspaces"]))
     lbl.set_property("halign", Gtk.Align.END)
@@ -251,11 +250,11 @@ def screen_tab(settings, voc, pending_updates):
     entry.connect("changed", set_from_workspaces, settings)
     grid.attach(entry, 1, 3, 1, 1)
 
-    cb_autotiling_limit = Gtk.CheckButton.new_with_label(voc["autotiling-limit"])
+    cb_autotiling_limit = Gtk.CheckButton.new_with_label(voc["autotiling-depth-limit"])
     cb_autotiling_limit.set_active(settings["autotiling-limit"])
     cb_autotiling_limit.connect("toggled", set_from_checkbutton, settings, "autotiling-limit")
-    cb_autotiling_limit.set_tooltip_text(voc["autotiling-limit-tooltip"])
-    grid.attach(cb_autotiling_limit, 2, 3, 1, 1)
+    cb_autotiling_limit.set_tooltip_text(voc["autotiling-depth-limit-tooltip"])
+    grid.attach(cb_autotiling_limit, 2, 3, 2, 1)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>{}</b>".format(voc["night-light"]))
