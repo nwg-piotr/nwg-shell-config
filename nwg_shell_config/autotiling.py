@@ -62,8 +62,6 @@ def find_output_name(con):
         else:
             return find_output_name(p)
 
-    return None
-
 
 def switch_splitting(i3, e, debug, workspaces):
     try:
