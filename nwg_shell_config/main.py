@@ -633,9 +633,6 @@ def save_includes():
         if settings["autotiling-workspaces"]:
             cmd_autotiling += " -w {}".format(settings["autotiling-workspaces"])
 
-        if settings["autotiling-limit"]:
-            cmd_autotiling += " -l 2"
-
         autostart.append(cmd_autotiling)
 
     if cmd_launcher_autostart:
