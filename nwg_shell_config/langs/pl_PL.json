@@ -23,7 +23,7 @@
   "autotiling": "Autotiling",
   "autotiling-tooltip": "Automatyzuje zmianę poziom/pion orientacji podziału okna.",
   "autotiling-depth-limit": "Limit głębokości",
-  "autotiling-depth-limit-tooltip": "Ogranicza autotiling do 2 poziomów, udając\n(do pewnego stopnia) układ master/stack.",
+  "autotiling-depth-limit-tooltip": "Określa do ilu poziomów ograniczyć głębokość autotilingu na tym wyjściu.",
   "backgrounds": "Tapety",
   "before-sleep": "Przed uśpieniem",
   "before-sleep-tooltip": "Komenda do wykonania zanim `systemd` uśpi komputer.",

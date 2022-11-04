@@ -39,7 +39,7 @@ from nwg_shell_config.tools import temp_dir, get_data_dir, load_json, check_key
 # e.g. like this: "autotiling-output-limits": {"DP-1": 3, "HDMI-A-1": 2, "eDP-1": 2}
 settings = load_json(os.path.join(get_data_dir(), "settings"))
 # Set None if it does not. It's also the value to turn limits off.
-check_key(settings, "autotiling-output-limits", None)
+check_key(settings, "autotiling-output-limits", {})
 
 
 def save_string(string, file):

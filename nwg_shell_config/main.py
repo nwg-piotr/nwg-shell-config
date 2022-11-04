@@ -110,6 +110,10 @@ def side_menu():
     row.eb.connect("button-press-event", set_up_screen_tab)
     list_box.add(row)
 
+    row = SideMenuRow(voc["autotiling"])
+    row.eb.connect("button-press-event", set_up_autotiling_tab)
+    list_box.add(row)
+
     row = SideMenuRow(voc["keyboard"])
     row.eb.connect("button-press-event", set_up_keyboard_tab)
     list_box.add(row)
@@ -265,6 +269,14 @@ def set_up_applications_tab(*args, warn=False):
     global content
     content.destroy()
     content = applications_tab(settings, voc, warn)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_autotiling_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = autotiling_tab(settings, outputs, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -750,6 +762,7 @@ def load_settings():
         "autotiling-workspaces": "",
         "autotiling-on": True,
         "autotiling-limit": False,
+        "autotiling-output-limits": {},
         "appindicator": True,
         "night-lat": -1,
         "night-long": -1,

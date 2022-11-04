@@ -26,6 +26,10 @@ def set_int_from_spinbutton(cb, settings, key):
     settings[key] = int(cb.get_value())
 
 
+def set_limit_per_output(cb, settings, output_name):
+    settings["autotiling-output-limits"][output_name] = int(cb.get_value())
+
+
 def set_keywords_from_entry(entry, settings):
     txt = entry.get_text()
     # Sanitize
@@ -492,6 +496,65 @@ def get_browsers():
             result[key] = browsers[key]
 
     return result
+
+
+def autotiling_tab(settings, outputs, voc):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["autotiling"]))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_autotiling_use_settings = Gtk.CheckButton.new_with_label(voc["use-these-settings"])
+    cb_autotiling_use_settings.set_property("halign", Gtk.Align.START)
+    cb_autotiling_use_settings.set_property("margin-bottom", 6)
+    cb_autotiling_use_settings.set_tooltip_text(voc["autotiling-tooltip"])
+    cb_autotiling_use_settings.set_active(settings["autotiling-on"])
+    cb_autotiling_use_settings.connect("toggled", set_from_checkbutton, settings, "autotiling-on")
+    grid.attach(cb_autotiling_use_settings, 0, 0, 2, 1)
+
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>{}</b>".format(voc["workspaces"]))
+    lbl.set_property("halign", Gtk.Align.START)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    entry = Gtk.Entry()
+    entry.set_placeholder_text("1 2 3 4 5 6 7 8")
+    entry.set_text(settings["autotiling-workspaces"])
+    entry.set_tooltip_text(voc["workspaces-tooltip"])
+    entry.connect("changed", set_from_workspaces, settings)
+    grid.attach(entry, 1, 1, 1, 1)
+
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>{}</b>".format(voc["workspaces"]))
+    lbl.set_property("halign", Gtk.Align.START)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>{}</b>".format(voc["autotiling-depth-limit"]))
+    lbl.set_property("halign", Gtk.Align.START)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    for i in range(len(outputs)):
+        o_name = outputs[i]
+        lbl = Gtk.Label.new("{}:".format(o_name))
+        lbl.set_property("halign", Gtk.Align.END)
+        grid.attach(lbl, 0, 3 + i, 1, 1)
+
+        limit = settings["autotiling-output-limits"][o_name] if o_name in settings["autotiling-output-limits"] else 0
+        sb = Gtk.SpinButton.new_with_range(0, 256, 1)
+        sb.set_value(limit)
+        sb.connect("value-changed", set_limit_per_output, settings, o_name)
+        sb.set_tooltip_text(voc["autotiling-depth-limit-tooltip"])
+        grid.attach(sb, 1, 3 + i, 1, 1)
+
+    frame.show_all()
+
+    return frame
 
 
 def keyboard_tab(settings, voc):
