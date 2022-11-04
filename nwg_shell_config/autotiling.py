@@ -154,12 +154,6 @@ def main():
                         nargs="*",
                         type=str,
                         default=[], )
-    parser.add_argument("-l",
-                        "--limit",
-                        help='limit how often autotiling will split a container; '
-                             'try "2", if you like master-stack layouts; default: 0 (no limit)',
-                        type=int,
-                        default=0, )
     """
     Changing event subscription has already been the objective of several pull request. To avoid doing this again
     and again, let's allow to specify them in the `--events` argument.
