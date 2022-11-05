@@ -369,6 +369,10 @@ def set_up_panel_styling_tab(event_box, event_button, preset, preset_name):
 
 
 def on_apply_btn(b):
+    f = os.path.join(data_dir, "settings")
+    print("Saving {}".format(f))
+    save_json(settings, f)
+
     save_presets()
     presets = {
         "preset-0": preset_0,
@@ -385,9 +389,7 @@ def on_apply_btn(b):
                          preset["swaync-mpris"])
 
     save_includes()
-    f = os.path.join(data_dir, "settings")
-    print("Saving {}".format(f))
-    save_json(settings, f)
+
 
 
 class GUI(object):
