@@ -549,16 +549,12 @@ def autotiling_tab(settings, outputs, voc):
         sb = Gtk.SpinButton.new_with_range(0, 256, 1)
         sb.set_value(limit)
         sb.connect("value-changed", set_limit_per_output, settings, o_name)
-        sb.set_tooltip_text(voc["autotiling-depth-limit-tooltip"])
+        # sb.set_tooltip_text(voc["autotiling-depth-limit-tooltip"])
         grid.attach(sb, 1, 3 + i, 1, 1)
 
     lbl = Gtk.Label()
     lbl.set_line_wrap(True)
-    lbl.set_markup("Depth limit determines how deep will autotiling work. "
-                   "The '2' value allows to mimic the master/stack layout on horizontal displays. "
-                   "On vertical displays you may like the '3' value. Use '0' for no limit. "
-                   "Beyond the limit, tabbed and stacking layouts will work back again. "
-                   "The '1' value is not recommended, as it will spoil autotiling.")
+    lbl.set_text(voc["autotiling-depth-limit-tooltip"])
     grid.attach(lbl, 2, 3, 1, 3)
 
     frame.show_all()
