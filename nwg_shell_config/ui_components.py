@@ -222,8 +222,8 @@ def screen_tab(settings, voc, pending_updates):
     grid.attach(lbl, 0, 1, 1, 1)
 
     combo = Gtk.ComboBoxText()
-    combo.set_property("halign", Gtk.Align.START)
-    grid.attach(combo, 1, 1, 1, 1)
+    # combo.set_property("halign", Gtk.Align.START)
+    grid.attach(combo, 1, 1, 3, 1)
     for p in ["preset-0", "preset-1", "preset-2", "preset-3", "custom"]:
         combo.append(p, p)
     combo.set_active_id(settings["panel-preset"])
@@ -231,79 +231,49 @@ def screen_tab(settings, voc, pending_updates):
     combo.set_tooltip_text(voc["preset-tooltip"])
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>{}</b>".format(voc["autotiling"]))
+    lbl.set_markup("<b>{}</b>".format(voc["night-light"]))
     lbl.set_property("margin-top", 6)
     lbl.set_property("margin-bottom", 6)
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 2, 1, 1)
 
-    cb_autotiling_on = Gtk.CheckButton.new_with_label(voc["on"])
-    cb_autotiling_on.set_active(settings["autotiling-on"])
-    cb_autotiling_on.connect("toggled", set_from_checkbutton, settings, "autotiling-on")
-    cb_autotiling_on.set_tooltip_text(voc["autotiling-tooltip"])
-    grid.attach(cb_autotiling_on, 1, 2, 1, 1)
-
-    lbl = Gtk.Label.new("{}:".format(voc["workspaces"]))
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 3, 1, 1)
-
-    entry = Gtk.Entry()
-    entry.set_placeholder_text("1 2 3 4 5 6 7 8")
-    entry.set_text(settings["autotiling-workspaces"])
-    entry.set_tooltip_text(voc["workspaces-tooltip"])
-    entry.connect("changed", set_from_workspaces, settings)
-    grid.attach(entry, 1, 3, 1, 1)
-
-    cb_autotiling_limit = Gtk.CheckButton.new_with_label(voc["autotiling-depth-limit"])
-    cb_autotiling_limit.set_active(settings["autotiling-limit"])
-    cb_autotiling_limit.connect("toggled", set_from_checkbutton, settings, "autotiling-limit")
-    cb_autotiling_limit.set_tooltip_text(voc["autotiling-depth-limit-tooltip"])
-    grid.attach(cb_autotiling_limit, 2, 3, 2, 1)
-
-    lbl = Gtk.Label()
-    lbl.set_markup("<b>{}</b>".format(voc["night-light"]))
-    lbl.set_property("margin-top", 6)
-    lbl.set_property("margin-bottom", 6)
-    lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 0, 4, 1, 1)
-
     cb_night_light_on = Gtk.CheckButton.new_with_label(voc["on"])
     cb_night_light_on.set_active(settings["night-on"])
     cb_night_light_on.connect("toggled", set_from_checkbutton, settings, "night-on")
     cb_night_light_on.set_tooltip_text(voc["night-light-tooltip"])
-    grid.attach(cb_night_light_on, 1, 4, 1, 1)
+    grid.attach(cb_night_light_on, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["latitude"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 5, 1, 1)
+    grid.attach(lbl, 2, 3, 1, 1)
 
     sb_lat = Gtk.SpinButton.new_with_range(-90.0, 90.0, 0.1)
     sb_lat.set_tooltip_text(voc["latitude-tooltip"])
     sb_lat.set_digits(4)
     sb_lat.set_value(settings["night-lat"])
     sb_lat.connect("value-changed", set_from_spinbutton, settings, "night-lat", 4)
-    grid.attach(sb_lat, 3, 5, 1, 1)
+    grid.attach(sb_lat, 3, 3, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["temp-night"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 5, 1, 1)
+    grid.attach(lbl, 0, 3, 1, 1)
 
     sb_temp_low = Gtk.SpinButton.new_with_range(1000, 10000, 100)
     sb_temp_low.set_tooltip_text(voc["night-light-night-tooltip"])
     sb_temp_low.set_value(settings["night-temp-low"])
     sb_temp_low.connect("value-changed", set_int_from_spinbutton, settings, "night-temp-low")
-    grid.attach(sb_temp_low, 1, 5, 1, 1)
+    grid.attach(sb_temp_low, 1, 3, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["longitude"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 6, 1, 1)
+    grid.attach(lbl, 2, 4, 1, 1)
 
     sb_lon = Gtk.SpinButton.new_with_range(-180, 180, 0.1)
     sb_lon.set_tooltip_text(voc["longitude-tooltip"])
     sb_lon.set_value(settings["night-long"])
     sb_lon.connect("value-changed", set_from_spinbutton, settings, "night-long", 4)
     sb_lon.set_digits(4)
-    grid.attach(sb_lon, 3, 6, 1, 1)
+    grid.attach(sb_lon, 3, 4, 1, 1)
 
     if (sb_lat.get_value() == -1.0 and sb_lon.get_value()) == -1.0 \
             or (sb_lat.get_value() == 0.0 and sb_lon.get_value() == 0.0):
@@ -311,36 +281,36 @@ def screen_tab(settings, voc, pending_updates):
 
     lbl = Gtk.Label.new("{}:".format(voc["temp-day"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 6, 1, 1)
+    grid.attach(lbl, 0, 4, 1, 1)
 
     sb_temp_high = Gtk.SpinButton.new_with_range(1000, 10000, 100)
     sb_temp_high.set_tooltip_text(voc["night-light-day-tooltip"])
     sb_temp_high.set_value(settings["night-temp-high"])
     sb_temp_high.connect("value-changed", set_int_from_spinbutton, settings, "night-temp-high")
-    grid.attach(sb_temp_high, 1, 6, 1, 1)
+    grid.attach(sb_temp_high, 1, 4, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["gamma"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 7, 1, 1)
+    grid.attach(lbl, 0, 5, 1, 1)
 
     btn = Gtk.Button.new_with_label(voc["calculate-lat-long"])
     btn.set_tooltip_text(voc["calculate-lat-long-tooltip"])
     btn.connect("clicked", update_lat_lon, sb_lat, sb_lon)
-    grid.attach(btn, 3, 7, 1, 1)
+    grid.attach(btn, 3, 5, 1, 1)
 
     sb_gamma = Gtk.SpinButton.new_with_range(0.1, 10.0, 0.1)
     sb_gamma.set_value(settings["night-gamma"])
     sb_gamma.connect("value-changed", set_from_spinbutton, settings, "night-gamma", 1)
     sb_gamma.set_tooltip_text(voc["gamma-tooltip"])
-    grid.attach(sb_gamma, 1, 7, 1, 1)
+    grid.attach(sb_gamma, 1, 5, 1, 1)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>{}</b>".format(voc["help-window"]))
     lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 0, 8, 1, 1)
+    grid.attach(lbl, 0, 6, 1, 1)
 
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
-    grid.attach(box, 1, 8, 3, 1)
+    grid.attach(box, 1, 6, 3, 1)
 
     cb_help_overlay = Gtk.CheckButton.new_with_label(voc["overlay"])
     cb_help_overlay.set_active(settings["help-layer-shell"])
