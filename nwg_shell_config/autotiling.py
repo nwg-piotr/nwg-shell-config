@@ -33,7 +33,7 @@ try:
 except ImportError:
     __version__ = "unknown"
 
-from nwg_shell_config.tools import temp_dir, get_data_dir, load_json, check_key
+from nwg_shell_config.tools import temp_dir, get_data_dir, load_json, check_key, notify
 
 # The `~/.local/share/nwg-shell-config/settings` json file should contain the "autotiling-output-limits" key,
 # e.g. like this: "autotiling-output-limits": {"DP-1": 3, "HDMI-A-1": 2, "eDP-1": 2}
@@ -143,6 +143,7 @@ def main():
     settings = load_json(os.path.join(get_data_dir(), "settings"))
     # Set None if it does not. It's also the value to turn limits off.
     check_key(settings, "autotiling-output-limits", {})
+    notify("autotiling", settings["autotiling-output-limits"])
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-d",
