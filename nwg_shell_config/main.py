@@ -741,8 +741,7 @@ def reload():
     p = os.path.join(config_home, "swaync")
     swaync_daemon = "swaync -s {}/{}.css &".format(p, name)
 
-    for cmd in ["pkill -f nwg-autotiling",
-                "pkill -f nwg-drawer",
+    for cmd in ["pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
                 "pkill -f swaync",
