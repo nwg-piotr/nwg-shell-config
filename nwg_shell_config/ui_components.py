@@ -494,6 +494,7 @@ def autotiling_tab(settings, outputs, voc):
 
     entry = Gtk.Entry()
     entry.set_placeholder_text("1 2 3 4 5 6 7 8")
+    entry.set_property("halign", Gtk.Align.START)
     entry.set_text(settings["autotiling-workspaces"])
     entry.set_tooltip_text(voc["workspaces-tooltip"])
     entry.connect("changed", set_from_workspaces, settings)
@@ -509,6 +510,7 @@ def autotiling_tab(settings, outputs, voc):
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 2, 1, 1)
 
+    i = 0
     for i in range(len(outputs)):
         o_name = outputs[i]
         lbl = Gtk.Label.new("{}:".format(o_name))
@@ -517,6 +519,7 @@ def autotiling_tab(settings, outputs, voc):
 
         limit = settings["autotiling-output-limits"][o_name] if o_name in settings["autotiling-output-limits"] else 0
         sb = Gtk.SpinButton.new_with_range(0, 256, 1)
+        sb.set_property("halign", Gtk.Align.START)
         sb.set_value(limit)
         sb.connect("value-changed", set_limit_per_output, settings, o_name)
         # sb.set_tooltip_text(voc["autotiling-depth-limit-tooltip"])
@@ -525,7 +528,7 @@ def autotiling_tab(settings, outputs, voc):
     lbl = Gtk.Label()
     lbl.set_line_wrap(True)
     lbl.set_text(voc["autotiling-depth-limit-tooltip"])
-    grid.attach(lbl, 2, 3, 1, 3)
+    grid.attach(lbl, 1, 4 + i, 2, 3)
 
     frame.show_all()
 
