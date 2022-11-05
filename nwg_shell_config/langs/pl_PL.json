@@ -23,7 +23,7 @@
   "autotiling": "Autotiling",
   "autotiling-tooltip": "Automatyzuje zmianę poziom/pion orientacji podziału okna.",
   "autotiling-depth-limit": "Limit głębokości",
-  "autotiling-depth-limit-tooltip": "Ogranicza autotiling do 2 poziomów, udając\n(do pewnego stopnia) układ master/stack.",
+  "autotiling-depth-limit-tooltip": "Limit głębokości określa jak głęboko ma działać autotiling. Wartość '2' naśladuje układ master/stack na wyświetlaczach poziomych. Na pionowych może Ci się spodobać wartość '3'. Użyj '0' by wyłączyć limit. Poza limitem układ tabbed i stacking będą ponownie działać. Nie polecana jest wartość '1', która zepsuje autotiling.",
   "backgrounds": "Tapety",
   "before-sleep": "Przed uśpieniem",
   "before-sleep-tooltip": "Komenda do wykonania zanim `systemd` uśpi komputer.",

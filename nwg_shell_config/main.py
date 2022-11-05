@@ -110,6 +110,10 @@ def side_menu():
     row.eb.connect("button-press-event", set_up_screen_tab)
     list_box.add(row)
 
+    row = SideMenuRow(voc["autotiling"])
+    row.eb.connect("button-press-event", set_up_autotiling_tab)
+    list_box.add(row)
+
     row = SideMenuRow(voc["keyboard"])
     row.eb.connect("button-press-event", set_up_keyboard_tab)
     list_box.add(row)
@@ -268,6 +272,14 @@ def set_up_applications_tab(*args, warn=False):
     grid.attach(content, 1, 0, 1, 1)
 
 
+def set_up_autotiling_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = autotiling_tab(settings, outputs, voc)
+    grid.attach(content, 1, 0, 1, 1)
+
+
 def set_up_keyboard_tab(*args):
     hide_submenus()
     global content
@@ -357,6 +369,10 @@ def set_up_panel_styling_tab(event_box, event_button, preset, preset_name):
 
 
 def on_apply_btn(b):
+    f = os.path.join(data_dir, "settings")
+    print("Saving {}".format(f))
+    save_json(settings, f)
+
     save_presets()
     presets = {
         "preset-0": preset_0,
@@ -373,9 +389,7 @@ def on_apply_btn(b):
                          preset["swaync-mpris"])
 
     save_includes()
-    f = os.path.join(data_dir, "settings")
-    print("Saving {}".format(f))
-    save_json(settings, f)
+
 
 
 class GUI(object):
@@ -621,9 +635,6 @@ def save_includes():
         if settings["autotiling-workspaces"]:
             cmd_autotiling += " -w {}".format(settings["autotiling-workspaces"])
 
-        if settings["autotiling-limit"]:
-            cmd_autotiling += " -l 2"
-
         autostart.append(cmd_autotiling)
 
     if cmd_launcher_autostart:
@@ -732,8 +743,7 @@ def reload():
     p = os.path.join(config_home, "swaync")
     swaync_daemon = "swaync -s {}/{}.css &".format(p, name)
 
-    for cmd in ["pkill -f nwg-autotiling",
-                "pkill -f nwg-drawer",
+    for cmd in ["pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
                 "pkill -f swaync",
@@ -750,6 +760,7 @@ def load_settings():
         "autotiling-workspaces": "",
         "autotiling-on": True,
         "autotiling-limit": False,
+        "autotiling-output-limits": {},
         "appindicator": True,
         "night-lat": -1,
         "night-long": -1,

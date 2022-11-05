@@ -28,22 +28,18 @@ from functools import partial
 from psutil import process_iter
 from i3ipc import Connection, Event
 
-
 try:
     from .__about__ import __version__
 except ImportError:
     __version__ = "unknown"
 
+from nwg_shell_config.tools import temp_dir, get_data_dir, load_json, check_key
 
-def temp_dir():
-    if os.getenv("TMPDIR"):
-        return os.getenv("TMPDIR")
-    elif os.getenv("TEMP"):
-        return os.getenv("TEMP")
-    elif os.getenv("TMP"):
-        return os.getenv("TMP")
-
-    return "/tmp"
+# The `~/.local/share/nwg-shell-config/settings` json file should contain the "autotiling-output-limits" key,
+# e.g. like this: "autotiling-output-limits": {"DP-1": 3, "HDMI-A-1": 2, "eDP-1": 2}
+settings = load_json(os.path.join(get_data_dir(), "settings"))
+# Set None if it does not. It's also the value to turn limits off.
+check_key(settings, "autotiling-output-limits", {})
 
 
 def save_string(string, file):
@@ -55,7 +51,19 @@ def save_string(string, file):
         print(e)
 
 
-def switch_splitting(i3, e, debug, workspaces, depth_limit):
+def find_output_name(con):
+    if con.type == "root":
+        return None
+
+    p = con.parent
+    if p:
+        if p.type == "output":
+            return p.name
+        else:
+            return find_output_name(p)
+
+
+def switch_splitting(i3, e, debug, workspaces):
     try:
         con = i3.get_tree().find_focused()
         if con and not workspaces or (str(con.workspace().num) in workspaces):
@@ -67,13 +75,18 @@ def switch_splitting(i3, e, debug, workspaces, depth_limit):
                 # We are on sway
                 is_floating = con.type == "floating_con"
 
-            # `depth_limit` contributed by @Syphdias to original autotiling script
-            if depth_limit:
+            # depth_limit contributed by @Syphdias to original autotiling script
+            # We only use per-output depth limits (the original depth_limit argument has been abandoned).
+            if settings["autotiling-output-limits"]:
+                output_name = find_output_name(con)
+                output_depth_limit = settings["autotiling-output-limits"][output_name] if output_name in settings[
+                    "autotiling-output-limits"] else 0
+
                 # Assume we reached the depth limit, unless we can find a workspace
                 depth_limit_reached = True
                 current_con = con
                 current_depth = 0
-                while current_depth < depth_limit:
+                while current_depth < output_depth_limit:
                     # Check if we found the workspace of the current container
                     if current_con.type == "workspace":
                         # Found the workspace within the depth limitation
@@ -83,8 +96,7 @@ def switch_splitting(i3, e, debug, workspaces, depth_limit):
                     # Look at the parent for next iteration
                     current_con = current_con.parent
 
-                    # Only count up the depth, if the container has more than
-                    # one container as child
+                    # Only count up the depth, if the container has more than one container as child
                     if len(current_con.nodes) > 1:
                         current_depth += 1
 
@@ -142,12 +154,6 @@ def main():
                         nargs="*",
                         type=str,
                         default=[], )
-    parser.add_argument("-l",
-                        "--limit",
-                        help='limit how often autotiling will split a container; '
-                             'try "2", if you like master-stack layouts; default: 0 (no limit)',
-                        type=int,
-                        default=0, )
     """
     Changing event subscription has already been the objective of several pull request. To avoid doing this again
     and again, let's allow to specify them in the `--events` argument.
@@ -175,7 +181,10 @@ def main():
         signal.signal(sig, signal_handler)
 
     if args.debug and args.workspaces:
-        print("autotiling is only active on workspaces:", ','.join(args.workspaces))
+        print("Debug: autotiling is only active on workspaces:", ','.join(args.workspaces))
+
+    if args.debug and settings["autotiling-output-limits"]:
+        print("Debug: autotiling per-output limits: {}".format(settings["autotiling-output-limits"]))
 
     # For use w/ nwg-panel
     ws_file = os.path.join(temp_dir(), "autotiling")
@@ -189,7 +198,7 @@ def main():
         print("No events specified", file=sys.stderr)
         sys.exit(1)
 
-    handler = partial(switch_splitting, debug=args.debug, workspaces=args.workspaces, depth_limit=args.limit)
+    handler = partial(switch_splitting, debug=args.debug, workspaces=args.workspaces)
     i3 = Connection()
     for e in args.events:
         try:

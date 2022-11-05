@@ -3,6 +3,7 @@
   "autotiling-workspaces": "",
   "autotiling-on": true,
   "autotiling-limit": false,
+  "autotiling-output-limits": {},
   "appindicator": true,
   "night-lat": -1,
   "night-long": -1,
