@@ -760,6 +760,8 @@ def load_settings():
         "autotiling-on": True,
         "autotiling-limit": False,
         "autotiling-output-limits": {},
+        "autotiling-output-splitwidths": {},
+        "autotiling-output-splitheights": {},
         "appindicator": True,
         "night-lat": -1,
         "night-long": -1,

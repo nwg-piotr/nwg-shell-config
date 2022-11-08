@@ -167,6 +167,7 @@
   "panel-css-name-tooltip": "Nazwa pliku css z arkuszem stylów panelu",
   "panel-settings": "Ustawienia panelu",
   "pending-updates": "Oczekujące aktualizacje",
+  "per-output": "Na wyjście",
   "permanent": "Stały",
   "permanent-tooltip": "Trzymaj dok w pamięci, ale bez hotspota.",
   "playerctl-module": "Moduł playerctl",
