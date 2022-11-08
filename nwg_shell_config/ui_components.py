@@ -543,7 +543,7 @@ def autotiling_tab(settings, outputs, voc):
 
         split_width = settings["autotiling-output-splitwidths"][o_name] if o_name in settings[
             "autotiling-output-splitwidths"] else 1.0
-        sb = Gtk.SpinButton.new_with_range(0.5, 1.9, 0.01)
+        sb = Gtk.SpinButton.new_with_range(0.2, 1.9, 0.01)
         sb.set_property("halign", Gtk.Align.START)
         sb.set_value(split_width)
         sb.set_tooltip_text(voc["autotiling-split-tooltip"])
@@ -552,7 +552,7 @@ def autotiling_tab(settings, outputs, voc):
 
         split_height = settings["autotiling-output-splitheights"][o_name] if o_name in settings[
             "autotiling-output-splitheights"] else 1.0
-        sb = Gtk.SpinButton.new_with_range(0.5, 1.9, 0.01)
+        sb = Gtk.SpinButton.new_with_range(0.2, 1.9, 0.01)
         sb.set_property("halign", Gtk.Align.START)
         sb.set_value(split_height)
         sb.set_tooltip_text(voc["autotiling-split-tooltip"])
