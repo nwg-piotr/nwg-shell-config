@@ -31,7 +31,7 @@ def set_limit_per_output(cb, settings, output_name):
 
 
 def set_split_per_output(cb, settings, key, output_name):
-    settings[key][output_name] = cb.get_value()
+    settings[key][output_name] = round(cb.get_value(), 2)
 
 
 def set_keywords_from_entry(entry, settings):
@@ -502,7 +502,7 @@ def autotiling_tab(settings, outputs, voc):
     entry.set_text(settings["autotiling-workspaces"])
     entry.set_tooltip_text(voc["workspaces-tooltip"])
     entry.connect("changed", set_from_workspaces, settings)
-    grid.attach(entry, 1, 1, 1, 1)
+    grid.attach(entry, 1, 1, 2, 1)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>{}</b>".format(voc["workspaces"]))
@@ -537,29 +537,27 @@ def autotiling_tab(settings, outputs, voc):
         sb = Gtk.SpinButton.new_with_range(0, 256, 1)
         sb.set_property("halign", Gtk.Align.START)
         sb.set_value(limit)
+        sb.set_tooltip_text(voc["autotiling-depth-limit-tooltip"])
         sb.connect("value-changed", set_limit_per_output, settings, o_name)
         grid.attach(sb, 1, 3 + i, 1, 1)
 
         split_width = settings["autotiling-output-splitwidths"][o_name] if o_name in settings[
-            "autotiling-output-splitwidths"] else 0
+            "autotiling-output-splitwidths"] else 1.0
         sb = Gtk.SpinButton.new_with_range(0.5, 1.9, 0.01)
         sb.set_property("halign", Gtk.Align.START)
         sb.set_value(split_width)
+        sb.set_tooltip_text(voc["autotiling-split-tooltip"])
         sb.connect("value-changed", set_split_per_output, settings, "autotiling-output-splitwidths", o_name)
         grid.attach(sb, 2, 3 + i, 1, 1)
 
         split_height = settings["autotiling-output-splitheights"][o_name] if o_name in settings[
-            "autotiling-output-splitheights"] else 0
+            "autotiling-output-splitheights"] else 1.0
         sb = Gtk.SpinButton.new_with_range(0.5, 1.9, 0.01)
         sb.set_property("halign", Gtk.Align.START)
         sb.set_value(split_height)
+        sb.set_tooltip_text(voc["autotiling-split-tooltip"])
         sb.connect("value-changed", set_split_per_output, settings, "autotiling-output-splitheights", o_name)
         grid.attach(sb, 3, 3 + i, 1, 1)
-
-    lbl = Gtk.Label()
-    lbl.set_line_wrap(True)
-    lbl.set_text(voc["autotiling-depth-limit-tooltip"])
-    grid.attach(lbl, 0, 4 + i, 4, 1)
 
     frame.show_all()
 
