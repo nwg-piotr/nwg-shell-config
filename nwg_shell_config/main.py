@@ -391,7 +391,6 @@ def on_apply_btn(b):
     save_includes()
 
 
-
 class GUI(object):
     def __init__(self):
         self.label_interface_locale = None
@@ -495,7 +494,6 @@ def set_interface_locale(combo):
         ui.refresh_bottom_menu_locale()
     # kinda shortcut, but let's just get to the screen tab, instead of remembering which one we were in
     set_up_screen_tab()
-
 
 
 def save_includes():
@@ -743,7 +741,8 @@ def reload():
     p = os.path.join(config_home, "swaync")
     swaync_daemon = "swaync -s {}/{}.css &".format(p, name)
 
-    for cmd in ["pkill -f nwg-drawer",
+    for cmd in ["pkill -f autotiling",
+                "pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
                 "pkill -f swaync",
