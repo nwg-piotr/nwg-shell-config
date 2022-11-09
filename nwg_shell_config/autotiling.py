@@ -125,7 +125,7 @@ def switch_splitting(i3, e, debug):
                         print("Error: Switch failed with err {}".format(result[0].error), file=sys.stderr, )
 
                 # splitwidth & splitheight contributed by @JoseConseco to original autotiling script
-                if e.change == "new" and con.percent:
+                if e.change in ["new", "move"] and con.percent:
                     if con.parent.layout == "splitv":  # top / bottom
                         if output_name in settings["autotiling-output-splitheights"]:
                             i3.command("resize set height {} ppt".format(
@@ -191,7 +191,7 @@ def main():
 
     handler = partial(switch_splitting, debug=args.debug)
     i3 = Connection()
-    for e in ["WINDOW", "MODE"]:
+    for e in ["WINDOW", "MODE", "WINDOW_FOCUS"]:
         try:
             i3.on(Event[e], handler)
             print("{} subscribed".format(Event[e]))
