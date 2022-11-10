@@ -128,11 +128,13 @@ def switch_splitting(i3, e, debug):
                 # splitwidth & splitheight contributed by @JoseConseco to original autotiling script
                 if e.change in ["new", "move"] and con.percent:
                     if con.parent.layout == "splitv":  # top / bottom
-                        if output_name in settings["autotiling-output-splitheights"]:
+                        if output_name in settings["autotiling-output-splitheights"] and \
+                                settings["autotiling-output-splitheights"][output_name] != 1.0:
                             i3.command("resize set height {} ppt".format(
                                 int(con.percent * settings["autotiling-output-splitheights"][output_name] * 100)))
                     else:  # left / right
-                        if output_name in settings["autotiling-output-splitwidths"]:
+                        if output_name in settings["autotiling-output-splitwidths"] and \
+                                settings["autotiling-output-splitwidths"][output_name] != 1.0:
                             i3.command("resize set width {} ppt".format(
                                 int(con.percent * settings["autotiling-output-splitwidths"][output_name] * 100)))
 
