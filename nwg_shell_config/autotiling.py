@@ -82,28 +82,29 @@ def switch_splitting(i3, e, debug):
                 output_depth_limit = settings["autotiling-output-limits"][output_name] if output_name in settings[
                     "autotiling-output-limits"] else 0
 
-                # Assume we reached the depth limit, unless we can find a workspace
-                depth_limit_reached = True
-                current_con = con
-                current_depth = 0
-                while current_depth < output_depth_limit:
-                    # Check if we found the workspace of the current container
-                    if current_con.type == "workspace":
-                        # Found the workspace within the depth limitation
-                        depth_limit_reached = False
-                        break
+                if output_depth_limit:
+                    # Assume we reached the depth limit, unless we can find a workspace
+                    depth_limit_reached = True
+                    current_con = con
+                    current_depth = 0
+                    while current_depth < output_depth_limit:
+                        # Check if we found the workspace of the current container
+                        if current_con.type == "workspace":
+                            # Found the workspace within the depth limitation
+                            depth_limit_reached = False
+                            break
 
-                    # Look at the parent for next iteration
-                    current_con = current_con.parent
+                        # Look at the parent for next iteration
+                        current_con = current_con.parent
 
-                    # Only count up the depth, if the container has more than one container as child
-                    if len(current_con.nodes) > 1:
-                        current_depth += 1
+                        # Only count up the depth, if the container has more than one container as child
+                        if len(current_con.nodes) > 1:
+                            current_depth += 1
 
-                if depth_limit_reached:
-                    if debug:
-                        print("Debug: Depth limit reached")
-                    return
+                    if depth_limit_reached:
+                        if debug:
+                            print("Debug: Depth limit reached")
+                        return
 
             is_full_screen = con.fullscreen_mode == 1
             is_stacked = con.parent.layout == "stacked"
@@ -191,7 +192,7 @@ def main():
 
     handler = partial(switch_splitting, debug=args.debug)
     i3 = Connection()
-    for e in ["WINDOW", "MODE", "WINDOW_FOCUS"]:
+    for e in ["WINDOW", "MODE"]:
         try:
             i3.on(Event[e], handler)
             print("{} subscribed".format(Event[e]))
