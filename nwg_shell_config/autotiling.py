@@ -103,7 +103,7 @@ def switch_splitting(i3, e, debug):
 
                     if depth_limit_reached:
                         if debug:
-                            print("Debug: Depth limit reached")
+                            print("Debug: Depth limit reached", file=sys.stderr)
                         return
 
             is_full_screen = con.fullscreen_mode == 1
@@ -132,11 +132,17 @@ def switch_splitting(i3, e, debug):
                                 settings["autotiling-output-splitheights"][output_name] != 1.0:
                             i3.command("resize set height {} ppt".format(
                                 int(con.percent * settings["autotiling-output-splitheights"][output_name] * 100)))
+                            if debug:
+                                print("Debug: Scaling height x {}".format(
+                                    settings["autotiling-output-splitheights"][output_name]), file=sys.stderr)
                     else:  # left / right
                         if output_name in settings["autotiling-output-splitwidths"] and \
                                 settings["autotiling-output-splitwidths"][output_name] != 1.0:
                             i3.command("resize set width {} ppt".format(
                                 int(con.percent * settings["autotiling-output-splitwidths"][output_name] * 100)))
+                            if debug:
+                                print("Debug: Scaling width x {}".format(
+                                    settings["autotiling-output-splitwidths"][output_name]), file=sys.stderr)
 
         elif debug:
             print("Debug: No focused container found or autotiling on the workspace turned off", file=sys.stderr)
@@ -176,13 +182,13 @@ def main():
 
     if args.debug:
         if settings["autotiling-workspaces"]:
-            print("Debug: autotiling is only active on workspaces:", settings["autotiling-workspaces"])
+            print("Debug: autotiling is only active on workspaces:", settings["autotiling-workspaces"], file=sys.stderr)
         if settings["autotiling-output-limits"]:
-            print("Debug: per-output limits: {}".format(settings["autotiling-output-limits"]))
+            print("Debug: per-output limits: {}".format(settings["autotiling-output-limits"]), file=sys.stderr)
         if settings["autotiling-output-splitwidths"]:
-            print("Debug: per-output split widths: {}".format(settings["autotiling-output-splitwidths"]))
+            print("Debug: per-output split widths: {}".format(settings["autotiling-output-splitwidths"]), file=sys.stderr)
         if settings["autotiling-output-splitheights"]:
-            print("Debug: per-output split heights: {}".format(settings["autotiling-output-splitheights"]))
+            print("Debug: per-output split heights: {}".format(settings["autotiling-output-splitheights"]), file=sys.stderr)
 
     # For use w/ nwg-panel
     ws_file = os.path.join(temp_dir(), "autotiling")
