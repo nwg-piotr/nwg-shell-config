@@ -591,8 +591,7 @@ def save_includes():
     if preset["dock-icon-size"]:
         cmd_dock += " -i {}".format(preset["dock-icon-size"])
 
-    if preset["dock-hotspot-delay"]:
-        cmd_dock += " -hd {}".format(preset["dock-hotspot-delay"])
+    cmd_dock += " -hd {}".format(preset["dock-hotspot-delay"])
 
     if preset["dock-exclusive"]:
         cmd_dock += " -x"
