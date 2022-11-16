@@ -501,6 +501,13 @@ def autotiling_tab(settings, outputs, voc):
     grid.attach(cb_autotiling_use_settings, 0, 0, 2, 1)
 
     lbl = Gtk.Label()
+    lbl.set_markup(
+        '<a href="https://nwg-piotr.github.io/nwg-shell/utilities-and-scripts#workflow-autotiling">{}</a>'.format(
+            voc["more-info"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 3, 0, 2, 1)
+
+    lbl = Gtk.Label()
     lbl.set_markup("<b>{}</b>".format(voc["workspaces"]))
     lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 1, 1, 1)

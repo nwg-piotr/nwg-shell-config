@@ -142,6 +142,7 @@
   "middle-emulation": "Middle emulation",
   "middle-emulation-tooltip": "Enables or disables middle click emulation",
   "modules": "Modules",
+  "more-info": "More info",
   "name": "name",
   "natural-scroll": "Natural scroll",
   "natural-scroll-tooltip": "Enables or disables natural (inverted) scrolling.",
