@@ -1509,29 +1509,39 @@ def dock_tab(preset, preset_name, outputs, voc):
     combo_outputs.set_active_id(preset["dock-output"])
     combo_outputs.connect("changed", set_dict_key_from_combo, preset, "dock-output")
 
+    lbl = Gtk.Label.new("{}:".format(voc["hotspot-delay"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 6, 1, 1)
+
+    sb_hotspot_delay = Gtk.SpinButton.new_with_range(0, 10000, 1)
+    sb_hotspot_delay.set_value(preset["dock-hotspot-delay"])
+    sb_hotspot_delay.connect("value-changed", set_int_from_spinbutton, preset, "dock-hotspot-delay")
+    sb_hotspot_delay.set_tooltip_text(voc["hotspot-delay-tooltip"])
+    grid.attach(sb_hotspot_delay, 1, 6, 1, 1)
+
     cb_permanent = Gtk.CheckButton.new_with_label(voc["permanent"])
     cb_permanent.set_active(preset["dock-permanent"])
     cb_permanent.connect("toggled", set_from_checkbutton, preset, "dock-permanent")
     cb_permanent.set_tooltip_text(voc["permanent-tooltip"])
-    grid.attach(cb_permanent, 0, 6, 2, 1)
+    grid.attach(cb_permanent, 0, 7, 2, 1)
 
     cb_full = Gtk.CheckButton.new_with_label(voc["full-width-height"])
     cb_full.set_active(preset["dock-full"])
     cb_full.connect("toggled", set_from_checkbutton, preset, "dock-full")
     cb_full.set_tooltip_text(voc["full-width-height-tooltip"])
-    grid.attach(cb_full, 0, 7, 2, 1)
+    grid.attach(cb_full, 0, 8, 2, 1)
 
     cb_autohide = Gtk.CheckButton.new_with_label(voc["auto-show-hide"])
     cb_autohide.set_active(preset["dock-autohide"])
     cb_autohide.connect("toggled", set_from_checkbutton, preset, "dock-autohide")
     cb_autohide.set_tooltip_text(voc["auto-show-hide-tooltip"])
-    grid.attach(cb_autohide, 0, 8, 2, 1)
+    grid.attach(cb_autohide, 0, 9, 2, 1)
 
     cb_exclusive = Gtk.CheckButton.new_with_label(voc["exclusive-zone"])
     cb_exclusive.set_active(preset["dock-exclusive"])
     cb_exclusive.connect("toggled", set_from_checkbutton, preset, "dock-exclusive")
     cb_exclusive.set_tooltip_text(voc["exclusive-zone-tooltip"])
-    grid.attach(cb_exclusive, 0, 9, 1, 1)
+    grid.attach(cb_exclusive, 0, 10, 1, 1)
 
     frame.show_all()
 

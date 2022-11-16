@@ -92,6 +92,8 @@
   "gtklock": "Gtklock",
   "help-window": "Okno pomocy",
   "horizontal-alignment": "Wyrównywanie w poziomie",
+  "hotspot-delay": "Opóźnienie hotspota",
+  "hotspot-delay-tooltip": "Opóźnienie hotspota w milisekundach: im mniejsze, tym szybciej\nmysz musi być wprowadzona nad gorący punkt, by dok się pojawił.\nUstaw 0 by wyłączyć tę funkcję (domyślnie 20).",
   "icon-size": "Wielkość ikony",
   "idle-lock-screen": "Bezczynność i blokada",
   "idle-settings": "Bezczynność",

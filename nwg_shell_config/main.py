@@ -591,6 +591,9 @@ def save_includes():
     if preset["dock-icon-size"]:
         cmd_dock += " -i {}".format(preset["dock-icon-size"])
 
+    if preset["dock-hotspot-delay"]:
+        cmd_dock += " -hd {}".format(preset["dock-hotspot-delay"])
+
     if preset["dock-exclusive"]:
         cmd_dock += " -x"
 
@@ -898,6 +901,7 @@ def load_preset(file_name):
         "dock-alignment": "center",
         "dock-margin": 0,
         "dock-icon-size": 48,
+        "dock-hotspot-delay": 20,
         "dock-css": "",
         "dock-on": False,
         "swaync-positionX": "right",
