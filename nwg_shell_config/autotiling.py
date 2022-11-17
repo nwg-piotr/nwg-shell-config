@@ -35,11 +35,11 @@ except ImportError:
 
 from nwg_shell_config.tools import temp_dir, get_data_dir, load_json, check_key
 
-# The `~/.local/share/nwg-shell-config/settings` json file should contain the "autotiling-output-limits" key,
-# e.g. like this: "autotiling-output-limits": {"DP-1": 3, "HDMI-A-1": 2, "eDP-1": 2}
 settings = load_json(os.path.join(get_data_dir(), "settings"))
-# Set None if it does not. It's also the value to turn limits off.
+check_key(settings, "autotiling-workspaces", "")
 check_key(settings, "autotiling-output-limits", {})
+check_key(settings, "autotiling-output-splitwidths", {})
+check_key(settings, "autotiling-output-splitheights", {})
 
 
 def save_string(string, file):
@@ -63,10 +63,11 @@ def find_output_name(con):
             return find_output_name(p)
 
 
-def switch_splitting(i3, e, debug, workspaces):
+def switch_splitting(i3, e, debug):
     try:
         con = i3.get_tree().find_focused()
-        if con and not workspaces or (str(con.workspace().num) in workspaces):
+        if con and not settings["autotiling-workspaces"] or (
+                str(con.workspace().num) in settings["autotiling-workspaces"]):
             if con.floating:
                 # We're on i3: on sway it would be None
                 # May be 'auto_on' or 'user_on'
@@ -75,35 +76,35 @@ def switch_splitting(i3, e, debug, workspaces):
                 # We are on sway
                 is_floating = con.type == "floating_con"
 
-            # depth_limit contributed by @Syphdias to original autotiling script
-            # We only use per-output depth limits (the original depth_limit argument has been abandoned).
+            # Depth_limit contributed by @Syphdias to original autotiling script
+            output_name = find_output_name(con)
             if settings["autotiling-output-limits"]:
-                output_name = find_output_name(con)
                 output_depth_limit = settings["autotiling-output-limits"][output_name] if output_name in settings[
                     "autotiling-output-limits"] else 0
 
-                # Assume we reached the depth limit, unless we can find a workspace
-                depth_limit_reached = True
-                current_con = con
-                current_depth = 0
-                while current_depth < output_depth_limit:
-                    # Check if we found the workspace of the current container
-                    if current_con.type == "workspace":
-                        # Found the workspace within the depth limitation
-                        depth_limit_reached = False
-                        break
+                if output_depth_limit:
+                    # Assume we reached the depth limit, unless we can find a workspace
+                    depth_limit_reached = True
+                    current_con = con
+                    current_depth = 0
+                    while current_depth < output_depth_limit:
+                        # Check if we found the workspace of the current container
+                        if current_con.type == "workspace":
+                            # Found the workspace within the depth limitation
+                            depth_limit_reached = False
+                            break
 
-                    # Look at the parent for next iteration
-                    current_con = current_con.parent
+                        # Look at the parent for next iteration
+                        current_con = current_con.parent
 
-                    # Only count up the depth, if the container has more than one container as child
-                    if len(current_con.nodes) > 1:
-                        current_depth += 1
+                        # Only count up the depth, if the container has more than one container as child
+                        if len(current_con.nodes) > 1:
+                            current_depth += 1
 
-                if depth_limit_reached:
-                    if debug:
-                        print("Debug: Depth limit reached")
-                    return
+                    if depth_limit_reached:
+                        if debug:
+                            print("Debug: Depth limit reached", file=sys.stderr)
+                        return
 
             is_full_screen = con.fullscreen_mode == 1
             is_stacked = con.parent.layout == "stacked"
@@ -114,6 +115,7 @@ def switch_splitting(i3, e, debug, workspaces):
                     and not is_stacked
                     and not is_tabbed
                     and not is_full_screen):
+
                 new_layout = "splitv" if con.rect.height > con.rect.width else "splith"
 
                 if new_layout != con.parent.layout:
@@ -122,6 +124,25 @@ def switch_splitting(i3, e, debug, workspaces):
                         print("Debug: Switched to {}".format(new_layout), file=sys.stderr)
                     elif debug:
                         print("Error: Switch failed with err {}".format(result[0].error), file=sys.stderr, )
+
+                # splitwidth & splitheight contributed by @JoseConseco to original autotiling script
+                if e.change in ["new", "move"] and con.percent:
+                    if con.parent.layout == "splitv":  # top / bottom
+                        if output_name in settings["autotiling-output-splitheights"] and \
+                                settings["autotiling-output-splitheights"][output_name] != 1.0:
+                            i3.command("resize set height {} ppt".format(
+                                int(con.percent * settings["autotiling-output-splitheights"][output_name] * 100)))
+                            if debug:
+                                print("Debug: Scaling height x {}".format(
+                                    settings["autotiling-output-splitheights"][output_name]), file=sys.stderr)
+                    else:  # left / right
+                        if output_name in settings["autotiling-output-splitwidths"] and \
+                                settings["autotiling-output-splitwidths"][output_name] != 1.0:
+                            i3.command("resize set width {} ppt".format(
+                                int(con.percent * settings["autotiling-output-splitwidths"][output_name] * 100)))
+                            if debug:
+                                print("Debug: Scaling width x {}".format(
+                                    settings["autotiling-output-splitwidths"][output_name]), file=sys.stderr)
 
         elif debug:
             print("Debug: No focused container found or autotiling on the workspace turned off", file=sys.stderr)
@@ -143,27 +164,6 @@ def main():
                         "--debug",
                         action="store_true",
                         help="print debug messages to stderr")
-    parser.add_argument("-v",
-                        "--version",
-                        action="version",
-                        version="%(prog)s {}, Python {}".format(__version__, sys.version),
-                        help="display version information", )
-    parser.add_argument("-w",
-                        "--workspaces",
-                        help="restricts autotiling to certain workspaces; example: autotiling --workspaces 8 9",
-                        nargs="*",
-                        type=str,
-                        default=[], )
-    """
-    Changing event subscription has already been the objective of several pull request. To avoid doing this again
-    and again, let's allow to specify them in the `--events` argument.
-    """
-    parser.add_argument("-e",
-                        "--events",
-                        help="list of events to trigger switching split orientation; default: WINDOW MODE",
-                        nargs="*",
-                        type=str,
-                        default=["WINDOW", "MODE"])
 
     args = parser.parse_args()
 
@@ -180,27 +180,27 @@ def main():
     for sig in catchable_sigs:
         signal.signal(sig, signal_handler)
 
-    if args.debug and args.workspaces:
-        print("Debug: autotiling is only active on workspaces:", ','.join(args.workspaces))
-
-    if args.debug and settings["autotiling-output-limits"]:
-        print("Debug: autotiling per-output limits: {}".format(settings["autotiling-output-limits"]))
+    if args.debug:
+        if settings["autotiling-workspaces"]:
+            print("Debug: autotiling is only active on workspaces:", settings["autotiling-workspaces"], file=sys.stderr)
+        if settings["autotiling-output-limits"]:
+            print("Debug: per-output limits: {}".format(settings["autotiling-output-limits"]), file=sys.stderr)
+        if settings["autotiling-output-splitwidths"]:
+            print("Debug: per-output split widths: {}".format(settings["autotiling-output-splitwidths"]), file=sys.stderr)
+        if settings["autotiling-output-splitheights"]:
+            print("Debug: per-output split heights: {}".format(settings["autotiling-output-splitheights"]), file=sys.stderr)
 
     # For use w/ nwg-panel
     ws_file = os.path.join(temp_dir(), "autotiling")
-    if args.workspaces:
-        save_string(','.join(args.workspaces), ws_file)
+    if settings["autotiling-workspaces"]:
+        save_string(settings["autotiling-workspaces"], ws_file)
     else:
         if os.path.isfile(ws_file):
             os.remove(ws_file)
 
-    if not args.events:
-        print("No events specified", file=sys.stderr)
-        sys.exit(1)
-
-    handler = partial(switch_splitting, debug=args.debug, workspaces=args.workspaces)
+    handler = partial(switch_splitting, debug=args.debug)
     i3 = Connection()
-    for e in args.events:
+    for e in ["WINDOW", "MODE"]:
         try:
             i3.on(Event[e], handler)
             print("{} subscribed".format(Event[e]))

@@ -591,6 +591,8 @@ def save_includes():
     if preset["dock-icon-size"]:
         cmd_dock += " -i {}".format(preset["dock-icon-size"])
 
+    cmd_dock += " -hd {}".format(preset["dock-hotspot-delay"])
+
     if preset["dock-exclusive"]:
         cmd_dock += " -x"
 
@@ -760,6 +762,8 @@ def load_settings():
         "autotiling-on": True,
         "autotiling-limit": False,
         "autotiling-output-limits": {},
+        "autotiling-output-splitwidths": {},
+        "autotiling-output-splitheights": {},
         "appindicator": True,
         "night-lat": -1,
         "night-long": -1,
@@ -896,6 +900,7 @@ def load_preset(file_name):
         "dock-alignment": "center",
         "dock-margin": 0,
         "dock-icon-size": 48,
+        "dock-hotspot-delay": 20,
         "dock-css": "",
         "dock-on": False,
         "swaync-positionX": "right",
