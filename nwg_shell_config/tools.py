@@ -287,3 +287,15 @@ def major_minor_path(string):
 def log_line(file, label, line):
     label.set_markup(label.get_text() + line)
     file.write(line)
+
+
+def do_backup(config_home, data_home, backup_configs, backup_data):
+    for key in backup_configs:
+        for name in backup_configs[key]:
+            from_dir = os.path.join(config_home, key, name)
+            print(from_dir)
+
+    for key in backup_data:
+        for name in backup_data[key]:
+            from_dir = os.path.join(data_home, key, name)
+            print(from_dir)

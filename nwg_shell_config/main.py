@@ -125,6 +125,8 @@ backup_data = {
     ],
 }
 
+do_backup(config_home, data_home, backup_configs, backup_data)
+
 
 def check_updates():
     global shell_data
