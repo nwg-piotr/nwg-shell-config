@@ -2,10 +2,12 @@ import subprocess
 import gi
 import os
 
+from datetime import datetime
+
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, \
-    gtklock_module_path
+    gtklock_module_path, do_backup
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -353,7 +355,7 @@ def screen_tab(settings, voc, pending_updates):
 
 def applications_tab(settings, voc, warn):
     frame = Gtk.Frame()
-    frame.set_label("  Common: Applications  ")
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["applications"]))
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
@@ -479,6 +481,40 @@ def get_browsers():
             result[key] = browsers[key]
 
     return result
+
+
+def backup_tab(config_home, data_home, backup_configs, backup_data, voc):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["backup"]))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    lbl = Gtk.Label()
+    lbl.set_property("halign", Gtk.Align.START)
+    lbl.set_markup("<b>{}</b>".format(voc["backup-desc"]))
+    grid.attach(lbl, 0, 0, 3, 1)
+
+    entry_backup = Gtk.Entry()
+    entry_backup.set_width_chars(45)
+    entry_backup.set_placeholder_text(voc["backup-path"])
+    time = datetime.now()
+    entry_backup.set_text(
+        os.path.join("{}".format(os.getenv("HOME")), time.strftime("nwg-shell-backup-%Y%m%d-%H%M%S.tar.gz")))
+    grid.attach(entry_backup, 0, 1, 2, 1)
+
+    btn = Gtk.Button()
+    btn.set_label(voc["create"])
+    btn.connect("clicked", do_backup, config_home, data_home, backup_configs, backup_data, entry_backup.get_text(), voc)
+    grid.attach(btn, 2, 1, 1, 1)
+
+    frame.show_all()
+
+    return frame
 
 
 def autotiling_tab(settings, outputs, voc):

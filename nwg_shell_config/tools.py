@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 import sys
+import tarfile
 from shutil import copy2
 
 from geopy.geocoders import Nominatim
@@ -289,13 +290,22 @@ def log_line(file, label, line):
     file.write(line)
 
 
-def do_backup(config_home, data_home, backup_configs, backup_data):
-    for key in backup_configs:
-        for name in backup_configs[key]:
-            from_dir = os.path.join(config_home, key, name)
-            print(from_dir)
+def do_backup(btn, config_home_dir, data_home_dir, backup_configs, backup_data, dest_file, voc):
+    if dest_file:
+        try:
+            tar = tarfile.open(dest_file, "w:gz")
+            for key in backup_configs:
+                for name in backup_configs[key]:
+                    scr_path = os.path.join(config_home_dir, key, name)
+                    print(scr_path)
+                    tar.add(scr_path)
 
-    for key in backup_data:
-        for name in backup_data[key]:
-            from_dir = os.path.join(data_home, key, name)
-            print(from_dir)
+            for key in backup_data:
+                for name in backup_data[key]:
+                    scr_path = os.path.join(data_home_dir, key, name)
+                    print(scr_path)
+                    tar.add(scr_path)
+            tar.close()
+            notify(voc["backup"], "{}".format(dest_file))
+        except Exception as e:
+            notify(voc["backup"], e)

@@ -125,7 +125,7 @@ backup_data = {
     ],
 }
 
-do_backup(config_home, data_home, backup_configs, backup_data)
+# do_backup(config_home, data_home, backup_configs, backup_data)
 
 
 def check_updates():
@@ -218,6 +218,10 @@ def side_menu():
 
     row = SideMenuRow(voc["applications"])
     row.eb.connect("button-press-event", set_up_applications_tab)
+    list_box.add(row)
+
+    row = SideMenuRow(voc["backup"])
+    row.eb.connect("button-press-event", set_up_backup_tab, config_home, data_home, backup_configs, backup_data)
     list_box.add(row)
 
     row = Gtk.ListBoxRow()
@@ -351,6 +355,14 @@ def set_up_applications_tab(*args, warn=False):
     global content
     content.destroy()
     content = applications_tab(settings, voc, warn)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_backup_tab(btn, event, config_home, data_home, backup_configs, backup_data):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = backup_tab(config_home, data_home, backup_configs, backup_data, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
