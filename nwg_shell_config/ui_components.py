@@ -7,7 +7,7 @@ from datetime import datetime
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, \
-    gtklock_module_path, do_backup
+    gtklock_module_path, do_backup, unpack_to_tmp
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -511,6 +511,17 @@ def backup_tab(config_home, data_home, backup_configs, backup_data, voc):
     btn.set_label(voc["create"])
     btn.connect("clicked", do_backup, config_home, data_home, backup_configs, backup_data, entry_backup.get_text(), voc)
     grid.attach(btn, 2, 1, 1, 1)
+
+    lbl = Gtk.Label()
+    lbl.set_property("halign", Gtk.Align.START)
+    lbl.set_property("margin-top", 12)
+    lbl.set_markup("<b>{}</b>".format(voc["backup-restore"]))
+    grid.attach(lbl, 0, 2, 3, 1)
+
+    fcb = Gtk.FileChooserButton.new("Select file", Gtk.FileChooserAction.OPEN)
+    fcb.set_current_folder(os.getenv("HOME"))
+    fcb.connect("file-set", unpack_to_tmp)
+    grid.attach(fcb, 0, 3, 3, 1)
 
     frame.show_all()
 

@@ -30,6 +30,7 @@
   "backup": "Backup",
   "backup-desc": "Back up configs and data files to a .tar.gz file",
   "backup-path": "backup path",
+  "backup-restore": "Restore configs and data files from a .tar.gz file",
   "backgrounds": "Backgrounds",
   "before-sleep": "Before sleep",
   "before-sleep-tooltip": "Command to execute before systemd puts the computer to sleep.",

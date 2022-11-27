@@ -30,6 +30,7 @@
   "backup": "Kopia zapasowa",
   "backup-desc": "Utwórz kopię zapasową plików konfiguracyjnych i danych w archiwum .tar.gz",
   "backup-path": "ścieżka kopii zapasowej",
+  "backup-restore": "Odtwórz pliki konfiguracyjne i dane z archiwum .tar.gz",
   "backgrounds": "Tapety",
   "before-sleep": "Przed uśpieniem",
   "before-sleep-tooltip": "Komenda do wykonania zanim `systemd` uśpi komputer.",
