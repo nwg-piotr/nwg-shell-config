@@ -504,26 +504,36 @@ def backup_tab(config_home, data_home, backup_configs, backup_data, voc):
     entry_backup.set_placeholder_text(voc["backup-path"])
     time = datetime.now()
     entry_backup.set_text(
-        os.path.join("{}".format(os.getenv("HOME")), time.strftime("nwg-shell-backup-%Y%m%d-%H%M%S.tar.gz")))
+        os.path.join("{}".format(os.getenv("HOME")), time.strftime("nwg-shell-backup-%Y%m%d-%H%M%S")))
     grid.attach(entry_backup, 0, 1, 2, 1)
 
     btn = Gtk.Button()
     btn.set_label(voc["create"])
-    btn.connect("clicked", do_backup, config_home, data_home, backup_configs, backup_data, entry_backup.get_text(), voc)
+    btn.connect("clicked", do_backup, config_home, data_home, backup_configs, backup_data, entry_backup, voc)
     grid.attach(btn, 2, 1, 1, 1)
 
     lbl = Gtk.Label()
     lbl.set_property("halign", Gtk.Align.START)
     lbl.set_property("margin-top", 12)
-    lbl.set_markup("<b>{}</b>".format(voc["backup-restore"]))
+    lbl.set_markup("<b>{}</b>".format(voc["backup-restore-desc"]))
     grid.attach(lbl, 0, 2, 3, 1)
+
+    restore_btn = Gtk.Button()
 
     fcb = Gtk.FileChooserButton.new("Select file", Gtk.FileChooserAction.OPEN)
     fcb.set_current_folder(os.getenv("HOME"))
-    fcb.connect("file-set", unpack_to_tmp)
+    f_filter = Gtk.FileFilter()
+    f_filter.set_name(".tar.gz files")
+    f_filter.add_pattern("*.tar.gz")
+    fcb.add_filter(f_filter)
+    fcb.connect("file-set", unpack_to_tmp, restore_btn, voc)
     grid.attach(fcb, 0, 3, 3, 1)
 
+    restore_btn.set_label(voc["backup-restore"])
+    grid.attach(restore_btn, 2, 4, 1, 1)
+
     frame.show_all()
+    restore_btn.hide()
 
     return frame
 

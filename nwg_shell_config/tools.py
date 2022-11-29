@@ -4,7 +4,6 @@ import shutil
 import subprocess
 import sys
 import tarfile
-import time
 from shutil import copy2
 
 from geopy.geocoders import Nominatim
@@ -292,10 +291,11 @@ def log_line(file, label, line):
     file.write(line)
 
 
-def do_backup(btn, config_home_dir, data_home_dir, backup_configs, backup_data, dest_file, voc):
+def do_backup(btn, config_home_dir, data_home_dir, backup_configs, backup_data, entry_backup, voc):
+    dest_file = entry_backup.get_text() + ".tar.gz"
     if dest_file:
-        id_file = os.path.join(temp_dir(), "nwg-shell-backup-time")
-        save_string(time.strftime("%Y-%m-%d %H:%M:%S"), id_file)
+        id_file = os.path.join(temp_dir(), "nwg-shell-backup-id")
+        save_string(dest_file.split("/")[-1], id_file)
         try:
             tar = tarfile.open(dest_file, "w:gz")
             tar.add(id_file)
@@ -314,7 +314,7 @@ def do_backup(btn, config_home_dir, data_home_dir, backup_configs, backup_data, 
             notify(voc["backup"], e)
 
 
-def unpack_to_tmp(fcb):
+def unpack_to_tmp(fcb, restore_btn, voc):
     unpack_to = os.path.join(temp_dir(), "nwg-shell-backup")
     if os.path.isdir(unpack_to):
         shutil.rmtree(unpack_to)
@@ -323,11 +323,17 @@ def unpack_to_tmp(fcb):
     try:
         file = tarfile.open(backup)
         file.extractall(unpack_to)
-        id_file = os.path.join(unpack_to, "tmp", "nwg-shell-backup-time")
+        id_file = os.path.join(unpack_to, "tmp", "nwg-shell-backup-id")
         if os.path.isfile(id_file):
             print("Unpacked backup from {}".format(load_text_file(id_file)))
+            restore_btn.show()
         else:
             eprint("'{}' file is not a valid nwg-shell backup".format(backup))
+            restore_btn.hide()
+            notify(voc["backup"], "{} {}".format(backup, voc["backup-invalid-file"]), 3000)
     except Exception as e:
         eprint("'{}'".format(backup), e)
     return False
+
+
+# def restore_from_tmp(btn):
