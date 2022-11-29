@@ -298,7 +298,7 @@ def do_backup(btn, config_home_dir, data_home_dir, backup_configs, backup_data, 
         save_string(dest_file.split("/")[-1], id_file)
         try:
             tar = tarfile.open(dest_file, "w:gz")
-            tar.add(id_file)
+            tar.add(id_file, "nwg-shell-backup-id")
             for key in backup_configs:
                 for name in backup_configs[key]:
                     scr_path = os.path.join(config_home_dir, key, name)
@@ -323,9 +323,9 @@ def unpack_to_tmp(fcb, restore_btn, restore_warn, voc):
     try:
         file = tarfile.open(backup)
         file.extractall(unpack_to)
-        id_file = os.path.join(unpack_to, "tmp", "nwg-shell-backup-id")
+        id_file = os.path.join(unpack_to, "nwg-shell-backup-id")
         if os.path.isfile(id_file):
-            print("Unpacked backup from {}".format(load_text_file(id_file)))
+            print("Unpacked backup from '{}'".format(load_text_file(id_file)))
             restore_btn.show()
             restore_warn.show()
         else:
