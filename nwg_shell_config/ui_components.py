@@ -534,7 +534,7 @@ def backup_tab(config_home, data_home, backup_configs, backup_data, voc):
     grid.attach(fcb, 0, 3, 3, 1)
 
     restore_btn.set_label(voc["backup-restore"])
-    restore_btn.connect("clicked", restore_from_tmp)
+    restore_btn.connect("clicked", restore_from_tmp, restore_warning, voc)
     grid.attach(restore_btn, 2, 4, 1, 1)
 
     frame.show_all()

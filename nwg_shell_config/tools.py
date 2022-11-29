@@ -9,6 +9,18 @@ from shutil import copy2
 from geopy.geocoders import Nominatim
 
 
+def get_config_home():
+    config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
+        os.getenv("HOME"), ".config/")
+    return config_home
+
+
+def get_data_home():
+    d_home = os.getenv('XDG_DATA_HOME') if os.getenv('XDG_DATA_HOME') else os.path.join(
+        os.getenv("HOME"), ".local/share")
+    return d_home
+
+
 def get_data_dir():
     data_dir = ""
     home = os.getenv("HOME")
@@ -338,10 +350,14 @@ def unpack_to_tmp(fcb, restore_btn, restore_warn, voc):
     return False
 
 
-def restore_from_tmp(btn):
+def restore_from_tmp(btn, restore_warning_label, voc):
     # The source and destination $HOME paths may be different, if we're restoring on another machine or user
     parent_dir = os.path.join(temp_dir(), "nwg-shell-backup", "home")
     src_dir = os.path.join(parent_dir, os.listdir(parent_dir)[0])
-    print(src_dir, os.listdir(src_dir))
-
-
+    try:
+        shutil.copytree(src_dir, os.getenv("HOME"), dirs_exist_ok=True)
+        btn.hide()
+        restore_warning_label.hide()
+        notify("{}".format(voc["backup"]), voc["backup-restore-success"])
+    except Exception as e:
+        notify(voc["backup"], "{}".format(e))

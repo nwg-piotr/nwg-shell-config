@@ -22,11 +22,9 @@ pending_updates = 0
 update_btn = Gtk.Button()
 
 data_dir = ""
-config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
-    os.getenv("HOME"), ".config/")
+config_home = get_config_home()
 
-data_home = os.getenv('XDG_DATA_HOME') if os.getenv('XDG_DATA_HOME') else os.path.join(
-    os.getenv("HOME"), ".local/share")
+data_home = get_data_home()
 
 voc = {}
 ui = None

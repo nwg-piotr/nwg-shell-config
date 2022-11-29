@@ -33,6 +33,7 @@
   "backup-path": "ścieżka kopii zapasowej",
   "backup-restore": "Przywróć",
   "backup-restore-desc": "Odtwórz pliki konfiguracyjne i dane z archiwum .tar.gz",
+  "backup-restore-success": "Pliki konfiguracyjne i dane odtworzone z kopii zapasowej.",
   "backup-restore-warning": "Ostrożnie, tej akcji nie można cofnąć!",
   "backgrounds": "Tapety",
   "before-sleep": "Przed uśpieniem",
