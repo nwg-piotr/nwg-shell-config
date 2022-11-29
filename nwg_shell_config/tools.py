@@ -314,7 +314,7 @@ def do_backup(btn, config_home_dir, data_home_dir, backup_configs, backup_data, 
             notify(voc["backup"], e)
 
 
-def unpack_to_tmp(fcb, restore_btn, voc):
+def unpack_to_tmp(fcb, restore_btn, restore_warn, voc):
     unpack_to = os.path.join(temp_dir(), "nwg-shell-backup")
     if os.path.isdir(unpack_to):
         shutil.rmtree(unpack_to)
@@ -327,13 +327,21 @@ def unpack_to_tmp(fcb, restore_btn, voc):
         if os.path.isfile(id_file):
             print("Unpacked backup from {}".format(load_text_file(id_file)))
             restore_btn.show()
+            restore_warn.show()
         else:
             eprint("'{}' file is not a valid nwg-shell backup".format(backup))
             restore_btn.hide()
+            restore_warn.hide()
             notify(voc["backup"], "{} {}".format(backup, voc["backup-invalid-file"]), 3000)
     except Exception as e:
         eprint("'{}'".format(backup), e)
     return False
 
 
-# def restore_from_tmp(btn):
+def restore_from_tmp(btn):
+    # The source and destination $HOME paths may be different, if we're restoring on another machine or user
+    parent_dir = os.path.join(temp_dir(), "nwg-shell-backup", "home")
+    src_dir = os.path.join(parent_dir, os.listdir(parent_dir)[0])
+    print(src_dir, os.listdir(src_dir))
+
+
