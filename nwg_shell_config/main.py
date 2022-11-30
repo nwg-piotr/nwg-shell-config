@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 
-# Dependencies: python-geopy i3ipc
+"""
+nwg-shell config utility
+Repository: https://github.com/nwg-piotr/nwg-panel
+Project site: https://nwg-piotr.github.io/nwg-shell
+Author's email: nwg.piotr@gmail.com
+Copyright (c) 2021-2022 Piotr Miller & Contributors
+License: MIT
+"""
 
 import argparse
 import signal
