@@ -43,87 +43,10 @@ current_submenu = None
 btn_apply = Gtk.Button()
 grid = Gtk.Grid()
 
-backup_configs = {
-    "azote": ["azoterc"],
-    "foot": ["foot.ini"],
-    "gtklock": [
-        "preset-0.css",
-        "preset-1.css",
-        "preset-2.css",
-        "preset-3.css"
-    ],
-    "nwg-bar": [
-        "bar.json",
-        "preset-0.css",
-        "preset-1.css",
-        "preset-2.css",
-        "preset-3.css"
-    ],
-    "nwg-displays": [
-        "config"
-    ],
-    "nwg-dock": [
-        "preset-0.css",
-        "preset-1.css",
-        "preset-2.css",
-        "preset-3.css",
-        "style.css"
-    ],
-    "nwg-drawer": [
-        "drawer.css",
-        "preset-0.css",
-        "preset-1.css",
-        "preset-2.css",
-        "preset-3.css"
-    ],
-    "nwg-look": ["config"],
-    "nwg-panel": [
-        "config",
-        "menu-start.css",
-        "preset-0",
-        "preset-0.css",
-        "preset-1",
-        "preset-1.css",
-        "preset-2",
-        "preset-2.css",
-        "preset-3",
-        "preset-3.css",
-        "style.css"
-    ],
-    "sway": [
-        "autostart",
-        "config",
-        "keyboard",
-        "outputs",
-        "pointer",
-        "touchpad",
-        "variables",
-        "workspaces"
-    ],
-    "swaync": [
-        "config.json",
-        "preset-0.css",
-        "preset-1.css",
-        "preset-2.css",
-        "preset-3.css",
-        "style.css"
-    ]
-}
+backup_configs = ["azote", "foot", "gtklock", "nwg-bar", "nwg-displays", "nwg-dock", "nwg-drawer", "nwg-look",
+                  "nwg-panel", "sway", "swaync"]
 
-backup_data = {
-    "nwg-look": ["gsettings"],
-    "nwg-panel": ["executors.json"],
-    "nwg-shell-config": [
-        "custom",
-        "preset-0",
-        "preset-1",
-        "preset-2",
-        "preset-3",
-        "settings"
-    ],
-}
-
-# do_backup(config_home, data_home, backup_configs, backup_data)
+backup_data = ["nwg-look", "nwg-panel", "nwg-shell-config"]
 
 
 def check_updates():

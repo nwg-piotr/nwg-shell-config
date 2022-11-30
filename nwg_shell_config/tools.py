@@ -311,15 +311,13 @@ def do_backup(btn, config_home_dir, data_home_dir, backup_configs, backup_data, 
         try:
             tar = tarfile.open(dest_file, "w:gz")
             tar.add(id_file, "nwg-shell-backup-id")
-            for key in backup_configs:
-                for name in backup_configs[key]:
-                    scr_path = os.path.join(config_home_dir, key, name)
-                    tar.add(scr_path)
+            for item in backup_configs:
+                for name in os.listdir(os.path.join(config_home_dir, item)):
+                    tar.add(os.path.join(config_home_dir, item, name))
 
-            for key in backup_data:
-                for name in backup_data[key]:
-                    scr_path = os.path.join(data_home_dir, key, name)
-                    tar.add(scr_path)
+            for item in backup_data:
+                for name in os.listdir(os.path.join(data_home_dir, item)):
+                    tar.add(os.path.join(data_home_dir, item, name))
             tar.close()
             notify(voc["backup"], "{}".format(dest_file))
         except Exception as e:
