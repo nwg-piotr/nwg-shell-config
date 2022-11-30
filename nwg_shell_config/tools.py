@@ -344,7 +344,7 @@ def unpack_to_tmp(fcb, restore_btn, restore_warn, voc):
             eprint("'{}' file is not a valid nwg-shell backup".format(backup))
             restore_btn.hide()
             restore_warn.hide()
-            notify(voc["backup"], "{} {}".format(backup, voc["backup-invalid-file"]), 3000)
+            notify(voc["backup"], "{} {}".format(backup.split("/")[-1], voc["backup-invalid-file"]), 3000)
     except Exception as e:
         eprint("'{}'".format(backup), e)
     return False
@@ -358,6 +358,6 @@ def restore_from_tmp(btn, restore_warning_label, voc):
         shutil.copytree(src_dir, os.getenv("HOME"), dirs_exist_ok=True)
         btn.hide()
         restore_warning_label.hide()
-        notify("{}".format(voc["backup"]), voc["backup-restore-success"])
+        notify("{}".format(voc["backup"]), voc["backup-restore-success"], 10000)
     except Exception as e:
         notify(voc["backup"], "{}".format(e))

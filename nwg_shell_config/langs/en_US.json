@@ -33,7 +33,7 @@
   "backup-path": "backup path",
   "backup-restore": "Restore",
   "backup-restore-desc": "Restore configs and data files from a .tar.gz file",
-  "backup-restore-success": "Configs and data restored from backup.",
+  "backup-restore-success": "Configs and data restored from backup.\nPress the 'Apply' button to changes to take effect.",
   "backup-restore-warning": "Be careful, this action cannot be undone!",
   "backgrounds": "Backgrounds",
   "before-sleep": "Before sleep",
