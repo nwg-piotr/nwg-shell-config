@@ -2,10 +2,12 @@ import subprocess
 import gi
 import os
 
+from datetime import datetime
+
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, \
-    gtklock_module_path
+    gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -353,7 +355,7 @@ def screen_tab(settings, voc, pending_updates):
 
 def applications_tab(settings, voc, warn):
     frame = Gtk.Frame()
-    frame.set_label("  Common: Applications  ")
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["applications"]))
     frame.set_label_align(0.5, 0.5)
     frame.set_property("hexpand", True)
     grid = Gtk.Grid()
@@ -479,6 +481,67 @@ def get_browsers():
             result[key] = browsers[key]
 
     return result
+
+
+def backup_tab(config_home, data_home, backup_configs, backup_data, voc):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["backup"]))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    lbl = Gtk.Label()
+    lbl.set_property("halign", Gtk.Align.START)
+    lbl.set_markup("<b>{}</b>".format(voc["backup-desc"]))
+    grid.attach(lbl, 0, 0, 3, 1)
+
+    entry_backup = Gtk.Entry()
+    entry_backup.set_width_chars(45)
+    entry_backup.set_placeholder_text(voc["backup-path"])
+    time = datetime.now()
+    entry_backup.set_text(
+        os.path.join("{}".format(os.getenv("HOME")), time.strftime("nwg-shell-backup-%Y%m%d-%H%M%S")))
+    grid.attach(entry_backup, 0, 1, 2, 1)
+
+    btn = Gtk.Button()
+    btn.set_label(voc["create"])
+    btn.connect("clicked", do_backup, config_home, data_home, backup_configs, backup_data, entry_backup, voc)
+    grid.attach(btn, 2, 1, 1, 1)
+
+    lbl = Gtk.Label()
+    lbl.set_property("halign", Gtk.Align.START)
+    lbl.set_property("margin-top", 12)
+    lbl.set_markup("<b>{}</b>".format(voc["backup-restore-desc"]))
+    grid.attach(lbl, 0, 2, 3, 1)
+
+    restore_warning = Gtk.Label()
+    restore_warning.set_markup('<b>{}</b>'.format(voc["backup-restore-warning"]))
+    grid.attach(restore_warning, 0, 4, 2, 1)
+
+    restore_btn = Gtk.Button()
+
+    fcb = Gtk.FileChooserButton.new("Select file", Gtk.FileChooserAction.OPEN)
+    fcb.set_current_folder(os.getenv("HOME"))
+    f_filter = Gtk.FileFilter()
+    f_filter.set_name(".tar.gz files")
+    f_filter.add_pattern("*.tar.gz")
+    fcb.add_filter(f_filter)
+    fcb.connect("file-set", unpack_to_tmp, restore_btn, restore_warning, voc)
+    grid.attach(fcb, 0, 3, 3, 1)
+
+    restore_btn.set_label(voc["backup-restore"])
+    restore_btn.connect("clicked", restore_from_tmp, restore_warning, voc)
+    grid.attach(restore_btn, 2, 4, 1, 1)
+
+    frame.show_all()
+    restore_btn.hide()
+    restore_warning.hide()
+
+    return frame
 
 
 def autotiling_tab(settings, outputs, voc):

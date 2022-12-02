@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 
-# Dependencies: python-geopy i3ipc
+"""
+nwg-shell config utility
+Repository: https://github.com/nwg-piotr/nwg-panel
+Project site: https://nwg-piotr.github.io/nwg-shell
+Author's email: nwg.piotr@gmail.com
+Copyright (c) 2021-2022 Piotr Miller & Contributors
+License: MIT
+"""
 
 import argparse
 import signal
@@ -22,11 +29,9 @@ pending_updates = 0
 update_btn = Gtk.Button()
 
 data_dir = ""
-config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
-    os.getenv("HOME"), ".config/")
+config_home = get_config_home()
 
-data_home = os.getenv('XDG_DATA_HOME') if os.getenv('XDG_DATA_HOME') else os.path.join(
-    os.getenv("HOME"), ".local/share")
+data_home = get_data_home()
 
 voc = {}
 ui = None
@@ -44,6 +49,11 @@ submenus = []
 current_submenu = None
 btn_apply = Gtk.Button()
 grid = Gtk.Grid()
+
+backup_configs = ["azote", "foot", "gtklock", "nwg-bar", "nwg-displays", "nwg-dock", "nwg-drawer", "nwg-look",
+                  "nwg-panel", "sway", "swaync"]
+
+backup_data = ["nwg-look", "nwg-panel", "nwg-shell-config"]
 
 
 def check_updates():
@@ -136,6 +146,10 @@ def side_menu():
 
     row = SideMenuRow(voc["applications"])
     row.eb.connect("button-press-event", set_up_applications_tab)
+    list_box.add(row)
+
+    row = SideMenuRow(voc["backup"])
+    row.eb.connect("button-press-event", set_up_backup_tab, config_home, data_home, backup_configs, backup_data)
     list_box.add(row)
 
     row = Gtk.ListBoxRow()
@@ -269,6 +283,14 @@ def set_up_applications_tab(*args, warn=False):
     global content
     content.destroy()
     content = applications_tab(settings, voc, warn)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_backup_tab(btn, event, config_home, data_home, backup_configs, backup_data):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = backup_tab(config_home, data_home, backup_configs, backup_data, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 

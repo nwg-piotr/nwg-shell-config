@@ -1,10 +1,24 @@
 import json
 import os
+import shutil
 import subprocess
 import sys
+import tarfile
 from shutil import copy2
 
 from geopy.geocoders import Nominatim
+
+
+def get_config_home():
+    config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(
+        os.getenv("HOME"), ".config/")
+    return config_home
+
+
+def get_data_home():
+    d_home = os.getenv('XDG_DATA_HOME') if os.getenv('XDG_DATA_HOME') else os.path.join(
+        os.getenv("HOME"), ".local/share")
+    return d_home
 
 
 def get_data_dir():
@@ -287,3 +301,61 @@ def major_minor_path(string):
 def log_line(file, label, line):
     label.set_markup(label.get_text() + line)
     file.write(line)
+
+
+def do_backup(btn, config_home_dir, data_home_dir, backup_configs, backup_data, entry_backup, voc):
+    dest_file = entry_backup.get_text() + ".tar.gz"
+    if dest_file:
+        id_file = os.path.join(temp_dir(), "nwg-shell-backup-id")
+        save_string(dest_file.split("/")[-1], id_file)
+        try:
+            tar = tarfile.open(dest_file, "w:gz")
+            tar.add(id_file, "nwg-shell-backup-id")
+            for item in backup_configs:
+                for name in os.listdir(os.path.join(config_home_dir, item)):
+                    tar.add(os.path.join(config_home_dir, item, name))
+
+            for item in backup_data:
+                for name in os.listdir(os.path.join(data_home_dir, item)):
+                    tar.add(os.path.join(data_home_dir, item, name))
+            tar.close()
+            notify(voc["backup"], "{}".format(dest_file))
+        except Exception as e:
+            notify(voc["backup"], e)
+
+
+def unpack_to_tmp(fcb, restore_btn, restore_warn, voc):
+    unpack_to = os.path.join(temp_dir(), "nwg-shell-backup")
+    if os.path.isdir(unpack_to):
+        shutil.rmtree(unpack_to)
+    os.mkdir(unpack_to)
+    backup = fcb.get_file().get_path()
+    try:
+        file = tarfile.open(backup)
+        file.extractall(unpack_to)
+        id_file = os.path.join(unpack_to, "nwg-shell-backup-id")
+        if os.path.isfile(id_file):
+            print("Unpacked backup from '{}'".format(load_text_file(id_file)))
+            restore_btn.show()
+            restore_warn.show()
+        else:
+            eprint("'{}' file is not a valid nwg-shell backup".format(backup))
+            restore_btn.hide()
+            restore_warn.hide()
+            notify(voc["backup"], "{} {}".format(backup.split("/")[-1], voc["backup-invalid-file"]), 3000)
+    except Exception as e:
+        eprint("'{}'".format(backup), e)
+    return False
+
+
+def restore_from_tmp(btn, restore_warning_label, voc):
+    # The source and destination $HOME paths may be different, if we're restoring on another machine or user
+    parent_dir = os.path.join(temp_dir(), "nwg-shell-backup", "home")
+    src_dir = os.path.join(parent_dir, os.listdir(parent_dir)[0])
+    try:
+        shutil.copytree(src_dir, os.getenv("HOME"), dirs_exist_ok=True)
+        btn.hide()
+        restore_warning_label.hide()
+        notify("{}".format(voc["backup"]), voc["backup-restore-success"], 10000)
+    except Exception as e:
+        notify(voc["backup"], "{}".format(e))
