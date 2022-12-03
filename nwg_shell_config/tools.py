@@ -345,17 +345,38 @@ def unpack_to_tmp(fcb, restore_btn, restore_warn, voc):
             notify(voc["backup"], "{} {}".format(backup.split("/")[-1], voc["backup-invalid-file"]), 3000)
     except Exception as e:
         eprint("'{}'".format(backup), e)
-    return False
+
+
+def unpack_from_path(b_path):
+    unpack_to = os.path.join(temp_dir(), "nwg-shell-backup")
+    if os.path.isdir(unpack_to):
+        shutil.rmtree(unpack_to)
+    os.mkdir(unpack_to)
+    try:
+        file = tarfile.open(b_path)
+        file.extractall(unpack_to)
+        id_file = os.path.join(unpack_to, "nwg-shell-backup-id")
+        if os.path.isfile(id_file):
+            print("Unpacked backup from '{}'".format(load_text_file(id_file)))
+        else:
+            eprint("'{}' file is not a valid nwg-shell backup".format(b_path))
+    except Exception as e:
+        eprint("'{}'".format(b_path), e)
 
 
 def restore_from_tmp(btn, restore_warning_label, voc):
     # The source and destination $HOME paths may be different, if we're restoring on another machine or user
+    # The function may be called from outside GUI (-b argument); `btn` and `restore_warning_label` will be None, if so.
     parent_dir = os.path.join(temp_dir(), "nwg-shell-backup", "home")
     src_dir = os.path.join(parent_dir, os.listdir(parent_dir)[0])
     try:
         shutil.copytree(src_dir, os.getenv("HOME"), dirs_exist_ok=True)
-        btn.hide()
-        restore_warning_label.hide()
+        if btn:
+            btn.hide()
+        if restore_warning_label:
+            restore_warning_label.hide()
         notify("{}".format(voc["backup"]), voc["backup-restore-success"], 10000)
+        print("Configs and data restored.")
     except Exception as e:
         notify(voc["backup"], "{}".format(e))
+        eprint("Error restoring data {}".format(e))
