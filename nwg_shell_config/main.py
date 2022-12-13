@@ -10,6 +10,7 @@ License: MIT
 """
 
 import argparse
+import os
 import signal
 
 from nwg_shell_config.tools import *
@@ -1043,6 +1044,13 @@ def load_vocabulary():
                     voc[key] = loc[key]
 
 
+def restore_backup(b_path, voc):
+    if b_path.startswith("~/"):
+        b_path = os.path.join(os.getenv("HOME"), b_path[2:])
+    unpack_from_path(b_path)
+    restore_from_tmp(None, None, voc)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v",
@@ -1055,6 +1063,12 @@ def main():
                         "--restore",
                         action="store_true",
                         help="restore default presets")
+
+    parser.add_argument("-b",
+                        "--restore_backup",
+                        type=str,
+                        default="",
+                        help="restore all configs from a backup file (given path)")
 
     parser.parse_args()
     args = parser.parse_args()
@@ -1071,15 +1085,18 @@ def main():
     print("Data dir: {}".format(data_dir))
     print("Config home: {}".format(config_home))
 
+    load_vocabulary()
+
     if args.restore:
         if input("\nRestore default presets? y/N ").upper() == "Y":
             init_files(os.path.join(dir_name, "shell"), data_dir, overwrite=True)
             sys.exit(0)
+    elif args.restore_backup:
+        restore_backup(args.restore_backup, voc)
+        sys.exit(0)
     else:
         # initialize missing own data files
         init_files(os.path.join(dir_name, "shell"), data_dir)
-
-    load_vocabulary()
 
     check_updates()
 
