@@ -10,7 +10,6 @@ License: MIT
 """
 
 import argparse
-import os
 import signal
 
 from nwg_shell_config.tools import *
@@ -761,7 +760,7 @@ def save_includes():
     else:
         save_list_to_text_file([""], os.path.join(config_home, "sway/touchpad"))
 
-        reload()
+    reload()
 
 
 def reload():
