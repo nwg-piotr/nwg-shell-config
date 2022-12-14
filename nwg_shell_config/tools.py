@@ -98,6 +98,23 @@ def list_outputs():
     return outputs
 
 
+def list_inputs_by_type(input_type="keyboard"):
+    inputs = []
+    try:
+        from i3ipc import Connection
+    except ModuleNotFoundError:
+        print("'python-i3ipc' package required on sway, terminating")
+        sys.exit(1)
+
+    i3 = Connection()
+    all_inputs = i3.get_inputs()
+    for i in all_inputs:
+        if i.type == input_type or not input_type:
+            inputs.append(i.identifier)
+
+    return inputs
+
+
 def get_lat_lon():
     # Placeholder in case something goes wrong
     tz, lat, lon = "Europe/Warsaw", 52.2322, 20.9841

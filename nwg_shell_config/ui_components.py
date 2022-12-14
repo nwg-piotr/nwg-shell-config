@@ -7,7 +7,7 @@ from datetime import datetime
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, \
-    gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp
+    list_inputs_by_type, gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -674,49 +674,64 @@ def keyboard_tab(settings, voc):
     cb_keyboard_use_settings.connect("toggled", set_from_checkbutton, settings, "keyboard-use-settings")
     grid.attach(cb_keyboard_use_settings, 0, 0, 2, 1)
 
-    lbl = Gtk.Label.new("{}:".format(voc["keyboard-layout"]))
+    lbl = Gtk.Label.new("{}:".format(voc["device"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 1, 1, 1)
+
+    combo_device = Gtk.ComboBoxText()
+    combo_device.set_property("halign", Gtk.Align.START)
+    combo_device.set_tooltip_text(voc["device-tooltip"])
+    combo_device.append("", voc["all-devices-of-type"])
+    keyboards = list_inputs_by_type(input_type="keyboard")
+    for item in keyboards:
+        combo_device.append(item, item)
+    combo_device.set_active_id(settings["keyboard-identifier"])
+    combo_device.connect("changed", set_dict_key_from_combo, settings, "keyboard-identifier")
+    grid.attach(combo_device, 1, 1, 2, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["keyboard-layout"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
 
     entry_layout = Gtk.Entry()
     entry_layout.set_tooltip_text(voc["keyboard-layout-tooltip"])
     entry_layout.set_text(settings["keyboard-xkb-layout"])
     entry_layout.connect("changed", set_from_entry, settings, "keyboard-xkb-layout")
-    grid.attach(entry_layout, 1, 1, 1, 1)
+    grid.attach(entry_layout, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["keyboard-variant"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 2, 1, 1)
+    grid.attach(lbl, 0, 3, 1, 1)
 
     entry_variant = Gtk.Entry()
     entry_variant.set_tooltip_text(voc["keyboard-variant-tooltip"])
     entry_variant.set_text(settings["keyboard-xkb-variant"])
     entry_variant.connect("changed", set_from_entry, settings, "keyboard-xkb-variant")
-    grid.attach(entry_variant, 1, 2, 1, 1)
+    grid.attach(entry_variant, 1, 3, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["keyboard-repeat-delay"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 3, 1, 1)
+    grid.attach(lbl, 0, 4, 1, 1)
 
     sb_repeat_delay = Gtk.SpinButton.new_with_range(1, 6000, 1)
     sb_repeat_delay.set_value(settings["keyboard-repeat-delay"])
     sb_repeat_delay.connect("value-changed", set_int_from_spinbutton, settings, "keyboard-repeat-delay")
     sb_repeat_delay.set_tooltip_text(voc["keyboard-repeat-delay-tooltip"])
-    grid.attach(sb_repeat_delay, 1, 3, 1, 1)
+    grid.attach(sb_repeat_delay, 1, 4, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["keyboard-repeat-rate"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 4, 1, 1)
+    grid.attach(lbl, 0, 5, 1, 1)
 
     sb_repeat_rate = Gtk.SpinButton.new_with_range(1, 4000, 1)
     sb_repeat_rate.set_value(settings["keyboard-repeat-rate"])
     sb_repeat_rate.connect("value-changed", set_int_from_spinbutton, settings, "keyboard-repeat-rate")
     sb_repeat_rate.set_tooltip_text(voc["keyboard-repeat-rate-tooltip"])
-    grid.attach(sb_repeat_rate, 1, 4, 1, 1)
+    grid.attach(sb_repeat_rate, 1, 5, 1, 1)
 
     lbl = Gtk.Label.new("CapsLock:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 5, 1, 1)
+    grid.attach(lbl, 0, 6, 1, 1)
 
     combo_caps = Gtk.ComboBoxText()
     combo_caps.set_property("halign", Gtk.Align.START)
@@ -725,11 +740,11 @@ def keyboard_tab(settings, voc):
         combo_caps.append(item, voc[item])
     combo_caps.set_active_id(settings["keyboard-xkb-capslock"])
     combo_caps.connect("changed", set_dict_key_from_combo, settings, "keyboard-xkb-capslock")
-    grid.attach(combo_caps, 1, 5, 1, 1)
+    grid.attach(combo_caps, 1, 6, 1, 1)
 
     lbl = Gtk.Label.new("NumLock:")
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 6, 1, 1)
+    grid.attach(lbl, 0, 7, 1, 1)
 
     combo_num = Gtk.ComboBoxText()
     combo_num.set_property("halign", Gtk.Align.START)
@@ -738,25 +753,25 @@ def keyboard_tab(settings, voc):
         combo_num.append(item, voc[item])
     combo_num.set_active_id(settings["keyboard-xkb-numlock"])
     combo_num.connect("changed", set_dict_key_from_combo, settings, "keyboard-xkb-numlock")
-    grid.attach(combo_num, 1, 6, 1, 1)
+    grid.attach(combo_num, 1, 7, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["custom-field"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 7, 1, 1)
+    grid.attach(lbl, 0, 8, 1, 1)
 
     entry_cname = Gtk.Entry()
     entry_cname.set_tooltip_text(voc["custom-field-name-tooltip"])
     entry_cname.set_placeholder_text(voc["name"])
     entry_cname.set_text(settings["keyboard-custom-name"])
     entry_cname.connect("changed", set_from_entry, settings, "keyboard-custom-name")
-    grid.attach(entry_cname, 1, 7, 1, 1)
+    grid.attach(entry_cname, 1, 8, 1, 1)
 
     entry_cname = Gtk.Entry()
     entry_cname.set_tooltip_text(voc["custom-field-value-tooltip"])
     entry_cname.set_placeholder_text(voc["value"])
     entry_cname.set_text(settings["keyboard-custom-value"])
     entry_cname.connect("changed", set_from_entry, settings, "keyboard-custom-value")
-    grid.attach(entry_cname, 2, 7, 1, 1)
+    grid.attach(entry_cname, 2, 8, 1, 1)
 
     frame.show_all()
 

@@ -705,7 +705,8 @@ def save_includes():
 
     # Export keyboard settings
     if settings["keyboard-use-settings"]:
-        lines = ['input "type:keyboard" {']
+        lines = ['input "type:keyboard" {'] if not settings["keyboard-identifier"] else [
+            'input "%s" {' % settings["keyboard-identifier"]]
         if settings["keyboard-xkb-layout"]:
             lines.append('  xkb_layout {}'.format(settings["keyboard-xkb-layout"]))
         if settings["keyboard-xkb-variant"]:
@@ -802,6 +803,7 @@ def load_settings():
         "panel-custom": "",
         "show-on-startup": True,
         "keyboard-use-settings": True,
+        "keyboard-identifier": "",
         "keyboard-xkb-layout": "us",
         "keyboard-xkb-variant": "",
         "keyboard-repeat-delay": 300,
