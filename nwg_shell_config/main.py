@@ -725,11 +725,11 @@ def save_includes():
 
     # Export pointer device settings
     if settings["pointer-use-settings"]:
-        lines = ['input "type:pointer" {', '  accel_profile {}'.format(settings["pointer-accel-profile"]),
-                 '  pointer_accel {}'.format(settings["pointer-pointer-accel"]),
-                 '  natural_scroll {}'.format(settings["pointer-natural-scroll"]),
-                 '  scroll_factor {}'.format(settings["pointer-scroll-factor"]),
-                 '  left_handed {}'.format(settings["pointer-left-handed"])]
+        lines = ['input "type:pointer" {'] if not settings["pointer-identifier"] else [
+            'input "%s" {' % settings["pointer-identifier"]]
+        lines.append('  natural_scroll {}'.format(settings["pointer-natural-scroll"]))
+        lines.append('  scroll_factor {}'.format(settings["pointer-scroll-factor"]))
+        lines.append('  left_handed {}'.format(settings["pointer-left-handed"]))
         if settings["pointer-custom-name"] and settings["pointer-custom-value"]:
             lines.append('  {} {}'.format(settings["keyboard-custom-name"], settings["keyboard-custom-value"]))
         lines.append('}')
@@ -813,6 +813,7 @@ def load_settings():
         "keyboard-custom-name": "",
         "keyboard-custom-value": "",
         "pointer-use-settings": True,
+        "pointer-identifier": "",
         "pointer-accel-profile": "flat",
         "pointer-pointer-accel": 0.0,
         "pointer-natural-scroll": "disabled",

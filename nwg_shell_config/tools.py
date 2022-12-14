@@ -98,7 +98,7 @@ def list_outputs():
     return outputs
 
 
-def list_inputs_by_type(input_type="keyboard"):
+def list_inputs_by_type(input_type=""):
     inputs = []
     try:
         from i3ipc import Connection

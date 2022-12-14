@@ -8,7 +8,7 @@
   "album-cover-size": "Cover size",
   "album-cover-size-tooltip": "Album cover size in pixels; set 0 to hide",
   "alignment": "Alignment",
-  "all-devices-of-type": "All devices of this type",
+  "all-of-type": "All of this type",
   "always-show": "Always show",
   "always-show-gtklock-tooltip": "Show on idle lock screen",
   "any": "Any",

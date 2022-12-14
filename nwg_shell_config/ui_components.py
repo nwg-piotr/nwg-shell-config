@@ -681,7 +681,7 @@ def keyboard_tab(settings, voc):
     combo_device = Gtk.ComboBoxText()
     combo_device.set_property("halign", Gtk.Align.START)
     combo_device.set_tooltip_text(voc["device-tooltip"])
-    combo_device.append("", voc["all-devices-of-type"])
+    combo_device.append("", voc["all-of-type"])
     keyboards = list_inputs_by_type(input_type="keyboard")
     for item in keyboards:
         combo_device.append(item, item)
@@ -797,9 +797,24 @@ def pointer_tab(settings, voc):
     cb_pointer_use_settings.connect("toggled", set_from_checkbutton, settings, "pointer-use-settings")
     grid.attach(cb_pointer_use_settings, 0, 0, 2, 1)
 
-    lbl = Gtk.Label.new("{}:".format(voc["acceleration-profile"]))
+    lbl = Gtk.Label.new("{}:".format(voc["device"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 1, 1, 1)
+
+    combo_device = Gtk.ComboBoxText()
+    combo_device.set_property("halign", Gtk.Align.START)
+    combo_device.set_tooltip_text(voc["device-tooltip"])
+    combo_device.append("", voc["all-of-type"])
+    keyboards = list_inputs_by_type(input_type="pointer")
+    for item in keyboards:
+        combo_device.append(item, item)
+    combo_device.set_active_id(settings["pointer-identifier"])
+    combo_device.connect("changed", set_dict_key_from_combo, settings, "pointer-identifier")
+    grid.attach(combo_device, 1, 1, 2, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["acceleration-profile"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
 
     combo_aprofile = Gtk.ComboBoxText()
     combo_aprofile.set_property("halign", Gtk.Align.START)
@@ -808,21 +823,21 @@ def pointer_tab(settings, voc):
         combo_aprofile.append(item, voc[item])
     combo_aprofile.set_active_id(settings["pointer-accel-profile"])
     combo_aprofile.connect("changed", set_dict_key_from_combo, settings, "pointer-accel-profile")
-    grid.attach(combo_aprofile, 1, 1, 1, 1)
+    grid.attach(combo_aprofile, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["acceleration"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 2, 1, 1)
+    grid.attach(lbl, 0, 3, 1, 1)
 
     sb_acceleration = Gtk.SpinButton.new_with_range(-1, 1, 0.1)
     sb_acceleration.set_value(settings["pointer-pointer-accel"])
     sb_acceleration.connect("value-changed", set_from_spinbutton, settings, "pointer-pointer-accel", 1)
     sb_acceleration.set_tooltip_text(voc["acceleration-tooltip"])
-    grid.attach(sb_acceleration, 1, 2, 1, 1)
+    grid.attach(sb_acceleration, 1, 3, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["natural-scroll"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 3, 1, 1)
+    grid.attach(lbl, 0, 4, 1, 1)
 
     combo_nscroll = Gtk.ComboBoxText()
     combo_nscroll.set_property("halign", Gtk.Align.START)
@@ -831,21 +846,21 @@ def pointer_tab(settings, voc):
         combo_nscroll.append(item, voc[item])
     combo_nscroll.set_active_id(settings["pointer-natural-scroll"])
     combo_nscroll.connect("changed", set_dict_key_from_combo, settings, "pointer-natural-scroll")
-    grid.attach(combo_nscroll, 1, 3, 1, 1)
+    grid.attach(combo_nscroll, 1, 4, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["scroll-factor"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 4, 1, 1)
+    grid.attach(lbl, 0, 5, 1, 1)
 
     sb_sfactor = Gtk.SpinButton.new_with_range(0.1, 10, 0.1)
     sb_sfactor.set_value(settings["pointer-scroll-factor"])
     sb_sfactor.connect("value-changed", set_from_spinbutton, settings, "pointer-scroll-factor", 1)
     sb_sfactor.set_tooltip_text(voc["scroll-factor-tooltip"])
-    grid.attach(sb_sfactor, 1, 4, 1, 1)
+    grid.attach(sb_sfactor, 1, 5, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["left-handed"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 5, 1, 1)
+    grid.attach(lbl, 0, 6, 1, 1)
 
     combo_left_handed = Gtk.ComboBoxText()
     combo_left_handed.set_property("halign", Gtk.Align.START)
@@ -854,25 +869,25 @@ def pointer_tab(settings, voc):
         combo_left_handed.append(item, voc[item])
     combo_left_handed.set_active_id(settings["pointer-left-handed"])
     combo_left_handed.connect("changed", set_dict_key_from_combo, settings, "pointer-left-handed")
-    grid.attach(combo_left_handed, 1, 5, 1, 1)
+    grid.attach(combo_left_handed, 1, 6, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["custom-field"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 6, 1, 1)
+    grid.attach(lbl, 0, 7, 1, 1)
 
     entry_cname = Gtk.Entry()
     entry_cname.set_tooltip_text(voc["custom-field-name-tooltip"])
     entry_cname.set_placeholder_text(voc["name"])
     entry_cname.set_text(settings["pointer-custom-name"])
     entry_cname.connect("changed", set_from_entry, settings, "pointer-custom-name")
-    grid.attach(entry_cname, 1, 6, 1, 1)
+    grid.attach(entry_cname, 1, 7, 1, 1)
 
     entry_cname = Gtk.Entry()
     entry_cname.set_tooltip_text(voc["custom-field-value-tooltip"])
     entry_cname.set_placeholder_text(voc["value"])
     entry_cname.set_text(settings["pointer-custom-value"])
     entry_cname.connect("changed", set_from_entry, settings, "pointer-custom-value")
-    grid.attach(entry_cname, 2, 6, 1, 1)
+    grid.attach(entry_cname, 2, 7, 1, 1)
 
     frame.show_all()
 

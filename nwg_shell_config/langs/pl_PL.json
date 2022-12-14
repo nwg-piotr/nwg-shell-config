@@ -8,7 +8,7 @@
   "album-cover-size": "Rozmiar okładki",
   "album-cover-size-tooltip": "Rozmiar okładki albumu w pikselach; ustaw 0 by ukryć.",
   "alignment": "Wyrównywanie",
-  "all-devices-of-type": "Wszystkie urządzenia tego typu",
+  "all-of-type": "Wszystkie tego typu",
   "always-show": "Zawsze wyświetlaj",
   "always-show-gtklock-tooltip": "Wyświetlaj na bezczynnym ekranie blokady",
   "any": "Dowolne",
