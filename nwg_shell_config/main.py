@@ -740,17 +740,19 @@ def save_includes():
 
     # Export touchpad settings
     if settings["touchpad-use-settings"]:
-        lines = ['input "type:touchpad" {', '  accel_profile {}'.format(settings["touchpad-accel-profile"]),
-                 '  pointer_accel {}'.format(settings["touchpad-pointer-accel"]),
-                 '  natural_scroll {}'.format(settings["touchpad-natural-scroll"]),
-                 '  scroll_factor {}'.format(settings["touchpad-scroll-factor"]),
-                 '  scroll_method {}'.format(settings["touchpad-scroll-method"]),
-                 '  left_handed {}'.format(settings["touchpad-left-handed"]),
-                 '  tap {}'.format(settings["touchpad-tap"]),
-                 '  tap_button_map {}'.format(settings["touchpad-tap-button-map"]),
-                 '  drag {}'.format(settings["touchpad-drag"]), '  drag_lock {}'.format(settings["touchpad-drag-lock"]),
-                 '  dwt {}'.format(settings["touchpad-dwt"]),
-                 '  middle_emulation {}'.format(settings["touchpad-middle-emulation"])]
+        lines = ['input "type:touchpad" {'] if not settings["touchpad-identifier"] else [
+            'input "%s" {' % settings["touchpad-identifier"]]
+        lines.append('  pointer_accel {}'.format(settings["touchpad-pointer-accel"]))
+        lines.append('  natural_scroll {}'.format(settings["touchpad-natural-scroll"]))
+        lines.append('  scroll_factor {}'.format(settings["touchpad-scroll-factor"]))
+        lines.append('  scroll_method {}'.format(settings["touchpad-scroll-method"]))
+        lines.append('  left_handed {}'.format(settings["touchpad-left-handed"]))
+        lines.append('  tap {}'.format(settings["touchpad-tap"]))
+        lines.append('  tap_button_map {}'.format(settings["touchpad-tap-button-map"]))
+        lines.append('  drag {}'.format(settings["touchpad-drag"]))
+        lines.append('  drag_lock {}'.format(settings["touchpad-drag-lock"]))
+        lines.append('  dwt {}'.format(settings["touchpad-dwt"]))
+        lines.append('  middle_emulation {}'.format(settings["touchpad-middle-emulation"]))
         if settings["touchpad-custom-name"] and settings["touchpad-custom-value"]:
             lines.append('  {} {}'.format(settings["touchpad-custom-name"], settings["touchpad-custom-value"]))
         lines.append('}')
@@ -759,7 +761,7 @@ def save_includes():
     else:
         save_list_to_text_file([""], os.path.join(config_home, "sway/touchpad"))
 
-    reload()
+        reload()
 
 
 def reload():
@@ -822,6 +824,7 @@ def load_settings():
         "pointer-custom-name": "",
         "pointer-custom-value": "",
         "touchpad-use-settings": True,
+        "touchpad-identifier": "",
         "touchpad-accel-profile": "flat",
         "touchpad-pointer-accel": 0.0,
         "touchpad-natural-scroll": "disabled",
