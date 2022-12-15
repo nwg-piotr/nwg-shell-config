@@ -926,7 +926,7 @@ def touchpad_tab(settings, voc):
         combo_device.append(item, item)
     combo_device.set_active_id(settings["touchpad-identifier"])
     combo_device.connect("changed", set_dict_key_from_combo, settings, "touchpad-identifier")
-    grid.attach(combo_device, 1, 1, 2, 1)
+    grid.attach(combo_device, 1, 1, 3, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["acceleration-profile"]))
     lbl.set_property("halign", Gtk.Align.END)
