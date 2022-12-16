@@ -23,8 +23,10 @@ def handle_keyboard(win, event):
 class Row(Gtk.Box):
     def __init__(self, key, voc_en_us, voc_user):
         super().__init__()
-        self.set_orientation(Gtk.Orientation.VERTICAL)
-        self.set_spacing(3)
+        self.set_orientation(Gtk.Orientation.HORIZONTAL)
+        self.set_spacing(6)
+        vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        self.pack_start(vbox, True, True, 0)
         self.key = key
         self.voc_en_us = voc_en_us
         self.voc_user = voc_user
@@ -32,24 +34,71 @@ class Row(Gtk.Box):
         lbl = Gtk.Label()
         lbl.set_markup('<b>"{}"</b>'.format(self.key))
         lbl.set_property("halign", Gtk.Align.START)
-        self.pack_start(lbl, False, False, 0)
+        vbox.pack_start(lbl, False, False, 0)
 
         lbl = Gtk.Label.new(self.voc_en_us[self.key])
         lbl.set_property("name", "original-text")
         lbl.set_line_wrap(True)
         lbl.set_property("halign", Gtk.Align.START)
-        self.pack_start(lbl, False, False, 0)
+        vbox.pack_start(lbl, False, False, 0)
 
         text_view = Gtk.TextView()
         text_view.set_property("name", "translation")
         self.text_buffer = text_view.get_buffer()
         translation = self.voc_user[self.key] if self.key in voc_user else ""
         self.text_buffer.set_text(translation)
-        text_view.set_editable(True)
         text_view.set_wrap_mode(Gtk.WrapMode.WORD)
-        self.pack_start(text_view, False, False, 0)
+        vbox.pack_start(text_view, False, False, 0)
 
         self.set_highlight()
+
+        btn_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 6)
+        self.pack_start(btn_box, False, False, 0)
+
+        self.btn_apply = Gtk.Button.new_from_icon_name("object-select", Gtk.IconSize.BUTTON)
+        self.btn_apply.set_tooltip_text("Apply")
+        self.btn_apply.connect("clicked", self.on_btn_apply)
+        self.btn_apply.set_sensitive(False)
+        btn_box.pack_end(self.btn_apply, False, True, 0)
+
+        self.btn_restore = Gtk.Button.new_from_icon_name("edit-undo", Gtk.IconSize.BUTTON)
+        self.btn_restore.set_tooltip_text("Restore")
+        self.btn_restore.connect("clicked", self.on_btn_restore)
+        self.btn_restore.set_sensitive(False)
+        btn_box.pack_end(self.btn_restore, False, True, 0)
+
+    def connect_textview(self):
+        self.text_buffer.connect("changed", self.on_text_buffer_changed)
+
+    def on_text_buffer_changed(self, text_buffer):
+        start, end = text_buffer.get_bounds()
+        text = text_buffer.get_text(start, end, True)
+        if text:
+            if self.key not in self.voc_user or text != self.voc_user[self.key]:
+                self.btn_apply.set_sensitive(True)
+            else:
+                self.btn_apply.set_sensitive(False)
+        else:
+            self.btn_apply.set_sensitive(False)
+        if self.key in self.voc_user and text != self.voc_user[self.key]:
+            self.btn_restore.set_sensitive(True)
+        else:
+            self.btn_restore.set_sensitive(False)
+
+    def on_btn_restore(self, btn):
+        if self.key in self.voc_user and self.voc_user[self.key]:
+            self.text_buffer.set_text(self.voc_user[self.key])
+        else:
+            self.text_buffer.set_text("")
+
+    def on_btn_apply(self, btn):
+        start, end = self.text_buffer.get_bounds()
+        text = self.text_buffer.get_text(start, end, True)
+        if text:
+            self.voc_user[self.key] = text
+            btn.set_sensitive(False)
+            self.btn_restore.set_sensitive(False)
+            self.set_highlight()
 
     def set_highlight(self):
         if self.key in self.voc_user and self.voc_user[self.key]:
@@ -66,6 +115,7 @@ def build_translation_window(keys, voc_en_us, voc_user):
     scrolled_window.add(box)
     for key in keys:
         row = Row(key, voc_en_us, voc_user)
+        row.connect_textview()
         box.pack_start(row, False, False, 0)
 
     scrolled_window.show_all()
