@@ -122,6 +122,11 @@ def build_translation_window(keys, voc_en_us, voc_user):
     return scrolled_window
 
 
+def validate_lang(entry, valid_locales, btn):
+    text = entry.get_text()
+    btn.set_sensitive(text in valid_locales)
+
+
 def main():
     GLib.set_prgname('nwg-shell-translate')
     # List valid locales
@@ -181,8 +186,17 @@ def main():
     img = Gtk.Image.new_from_icon_name("translator", Gtk.IconSize.LARGE_TOOLBAR)
     button_box.pack_start(img, False, False, 0)
     lbl = Gtk.Label()
-    lbl.set_markup("nwg-shell-translate | <b>en_US</b> into <b>{}</b>".format(user_locale))
+    lbl.set_markup("nwg-shell-translate | <b>en_US</b> into".format(user_locale))
     button_box.pack_start(lbl, False, False, 0)
+
+    btn_select = Gtk.Button.new_with_label("Select")
+
+    entry_lang = Gtk.Entry()
+    entry_lang.set_text(user_locale)
+    entry_lang.connect("changed", validate_lang, valid_locales, btn_select)
+    button_box.pack_start(entry_lang, False, False, 0)
+
+    button_box.pack_start(btn_select, False, False, 0)
 
     btn = Gtk.Button.new_with_label("Export")
     button_box.pack_end(btn, False, False, 3)
