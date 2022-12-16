@@ -20,36 +20,53 @@ def handle_keyboard(win, event):
         win.destroy()
 
 
+class Row(Gtk.Box):
+    def __init__(self, key, voc_en_us, voc_user):
+        super().__init__()
+        self.set_orientation(Gtk.Orientation.VERTICAL)
+        self.set_spacing(3)
+        self.key = key
+        self.voc_en_us = voc_en_us
+        self.voc_user = voc_user
+
+        lbl = Gtk.Label()
+        lbl.set_markup('<b>"{}"</b>'.format(self.key))
+        lbl.set_property("halign", Gtk.Align.START)
+        self.pack_start(lbl, False, False, 0)
+
+        lbl = Gtk.Label.new(self.voc_en_us[self.key])
+        lbl.set_property("name", "original-text")
+        lbl.set_line_wrap(True)
+        lbl.set_property("halign", Gtk.Align.START)
+        self.pack_start(lbl, False, False, 0)
+
+        text_view = Gtk.TextView()
+        text_view.set_property("name", "translation")
+        self.text_buffer = text_view.get_buffer()
+        translation = self.voc_user[self.key] if self.key in voc_user else ""
+        self.text_buffer.set_text(translation)
+        text_view.set_editable(True)
+        text_view.set_wrap_mode(Gtk.WrapMode.WORD)
+        self.pack_start(text_view, False, False, 0)
+
+        self.set_highlight()
+
+    def set_highlight(self):
+        if self.key in self.voc_user and self.voc_user[self.key]:
+            self.set_property("name", "row")
+        else:
+            self.set_property("name", "row-empty")
+
+
 def build_translation_window(keys, voc_en_us, voc_user):
     scrolled_window = Gtk.ScrolledWindow.new(None, None)
     scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
     scrolled_window.set_propagate_natural_height(True)
     box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 6)
     scrolled_window.add(box)
-    for i in range(len(keys)):
-        row = Gtk.Box.new(Gtk.Orientation.VERTICAL, 3)
-        row.set_property("name", "row")
+    for key in keys:
+        row = Row(key, voc_en_us, voc_user)
         box.pack_start(row, False, False, 0)
-        key = keys[i]
-
-        lbl = Gtk.Label()
-        lbl.set_markup('<b>"{}"</b>'.format(key))
-        lbl.set_property("halign", Gtk.Align.START)
-        row.pack_start(lbl, False, False, 0)
-
-        lbl = Gtk.Label.new(voc_en_us[key])
-        lbl.set_line_wrap(True)
-        lbl.set_property("halign", Gtk.Align.START)
-        row.pack_start(lbl, False, False, 0)
-
-        text_view = Gtk.TextView()
-        text_view.set_property("name", "translation")
-        text_buffer = text_view.get_buffer()
-        translation = voc_user[key] if key in voc_user else ""
-        text_buffer.set_text(translation)
-        text_view.set_editable(True)
-        text_view.set_wrap_mode(Gtk.WrapMode.WORD)
-        row.pack_start(text_view, False, False, 0)
 
     scrolled_window.show_all()
     return scrolled_window
@@ -57,6 +74,12 @@ def build_translation_window(keys, voc_en_us, voc_user):
 
 def main():
     GLib.set_prgname('nwg-shell-translate')
+    # List valid locales
+    valid_locales = []
+    for loc in os.listdir("/usr/share/i18n/locales/"):
+        if not loc.startswith("translit") and "_" in loc:
+            valid_locales.append(loc)
+    print("{} valid locales found".format(len(valid_locales)))
 
     user_locale = locale.getlocale()[0]
     voc_en_us = load_json(os.path.join(dir_name, "langs", "en_US.json"))
@@ -82,9 +105,11 @@ def main():
     style_context = Gtk.StyleContext()
     style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
     css = b"""
-                textview#translation { padding: 4px 2px 4px 2px }
-                box#row { margin: 0 12px 0 0; padding: 6px; border: solid 1px }
-                """
+            label#original-text { font-style: italic; padding: 2px }
+            textview#translation { padding: 2px 2px 4px 2px }
+            box#row { margin: 0 12px 0 0; padding: 6px; border: solid 1px }
+            box#row-empty { margin: 0 12px 0 0; padding: 6px; border: solid 1px; border-color: #F00 }
+            """
     provider.load_from_data(css)
 
     window = Gtk.Window.new(Gtk.WindowType.TOPLEVEL)
@@ -110,10 +135,11 @@ def main():
     button_box.pack_start(lbl, False, False, 0)
 
     btn = Gtk.Button.new_with_label("Export")
-    button_box.pack_end(btn, False, False, 6)
+    button_box.pack_end(btn, False, False, 3)
 
     btn = Gtk.Button.new_with_label("Close")
-    button_box.pack_end(btn, False, False, 6)
+    btn.connect('clicked', Gtk.main_quit)
+    button_box.pack_end(btn, False, False, 3)
 
     global translation_window
     translation_window = build_translation_window(keys, voc_en_us, voc_user)
