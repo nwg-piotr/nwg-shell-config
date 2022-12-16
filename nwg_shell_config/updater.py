@@ -163,7 +163,7 @@ def main():
     h_box.pack_start(img, False, False, 0)
     lbl = Gtk.Label()
     lbl.set_markup(
-        'nwg-shell-updater  <a href="https://nwg-piotr.github.io/nwg-shell/updates">{}</a>'.format(voc["updates-page"]))
+        'nwg-shell-updater  <a href="https://github.com/nwg-piotr/nwg-shell/discussions/categories/changelog">{}</a>'.format(voc["updates-page"]))
     h_box.pack_start(lbl, False, False, 0)
 
     btn_update.set_label(voc["update"])
