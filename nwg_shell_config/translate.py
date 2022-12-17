@@ -208,7 +208,7 @@ def main():
     button_box.set_property("margin", 6)
     box.pack_start(button_box, False, False, 0)
 
-    img = Gtk.Image.new_from_icon_name("translator", Gtk.IconSize.LARGE_TOOLBAR)
+    img = Gtk.Image.new_from_icon_name("nwg-shell-translate", Gtk.IconSize.LARGE_TOOLBAR)
     button_box.pack_start(img, False, False, 0)
     lbl = Gtk.Label()
     lbl.set_markup("nwg-shell-translate | <b>en_US</b> into".format(user_locale))
