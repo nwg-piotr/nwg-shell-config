@@ -13,6 +13,7 @@ from gi.repository import Gtk, Gdk, GLib
 dir_name = os.path.dirname(__file__)
 
 translation_window = None
+lang_hint_menu = None
 
 
 def handle_keyboard(win, event):
@@ -122,14 +123,38 @@ def build_translation_window(keys, voc_en_us, voc_user):
     return scrolled_window
 
 
+class LangHintMenu(Gtk.Menu):
+    def __init__(self, text, valid_locales, entry):
+        super().__init__()
+        for loc in valid_locales:
+            if text in loc:
+                item = Gtk.MenuItem.new_with_label(loc)
+                item.connect("activate", set_entry_from_item, entry)
+                self.append(item)
+                self.show_all()
+
+
+def set_entry_from_item(item, entry):
+    entry.set_text(item.get_label())
+    entry.grab_focus()
+
+
 def validate_lang(entry, valid_locales, btn):
+    global lang_hint_menu
     text = entry.get_text()
-    btn.set_sensitive(text in valid_locales)
+    if text in valid_locales:
+        btn.set_sensitive(True)
+    else:
+        btn.set_sensitive(False)
+        if len(text) >= 2:
+            lang_hint_menu = LangHintMenu(text, valid_locales, entry)
+            if len(lang_hint_menu.get_children()) > 0:
+                lang_hint_menu.popup_at_widget(entry, Gdk.Gravity.NORTH, Gdk.Gravity.SOUTH, None)
 
 
 def main():
     GLib.set_prgname('nwg-shell-translate')
-    # List valid locales
+
     valid_locales = []
     for loc in os.listdir("/usr/share/i18n/locales/"):
         if not loc.startswith("translit") and "_" in loc:
