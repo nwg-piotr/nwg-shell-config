@@ -174,9 +174,9 @@ def load_json(path):
         return None
 
 
-def save_json(src_dict, path):
+def save_json(src_dict, path, en_ascii=True):
     with open(path, 'w') as f:
-        json.dump(src_dict, f, indent=2)
+        json.dump(src_dict, f, indent=2, ensure_ascii=en_ascii)
 
 
 def load_text_file(path):

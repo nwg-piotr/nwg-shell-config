@@ -5,7 +5,7 @@ import locale
 import os
 import sys
 
-from nwg_shell_config.tools import load_json, eprint
+from nwg_shell_config.tools import load_json, save_json, eprint
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk, GLib
@@ -15,6 +15,7 @@ dir_name = os.path.dirname(__file__)
 existing_translations = []
 keys = []
 voc_en_us = None
+voc_user = None
 scrolled_window = None
 translation_box = None
 lang_hint_menu = None
@@ -116,6 +117,7 @@ class Row(Gtk.Box):
 
 def build_translation_window(user_locale):
     global scrolled_window
+    global voc_user
     voc_user = load_json(os.path.join(dir_name, "langs", "{}.json".format(user_locale)))
     if voc_user:
         print("User dict:\t\t{}.json, {} keys".format(user_locale, len(voc_user)))
@@ -176,6 +178,11 @@ def on_btn_select(btn, entry):
     _locale = entry.get_text()
     if _locale:
         build_translation_window(_locale)
+
+
+def on_btn_export(btn, user_locale):
+    print(voc_user)
+    save_json(voc_user, os.path.join(os.getenv("HOME"), "nwg-shell-config-{}.json".format(user_locale)), en_ascii=False)
 
 
 def main():
@@ -245,6 +252,8 @@ def main():
     button_box.pack_start(lbl, False, False, 0)
 
     btn_select = Gtk.Button.new_with_label("Select")
+    btn_select.set_tooltip_text("Opens current dictionary for entered locale,\nif it exists. Otherwise - "
+                                "creates an empty dictionary")
 
     entry_lang = Gtk.Entry()
     entry_lang.set_text(user_locale)
@@ -255,6 +264,11 @@ def main():
     btn_select.connect("clicked", on_btn_select, entry_lang)
 
     btn = Gtk.Button.new_with_label("Export")
+    btn.set_tooltip_text("Exports current translation to a .json file in you $HOME directory.\n"
+                         "You can then email it to nwg.piotr@gmail.com or share in another way.\n"
+                         "E.g. gist.github.com is always a good idea.")
+    btn.connect("clicked", on_btn_export, user_locale)
+
     button_box.pack_end(btn, False, False, 3)
 
     btn = Gtk.Button.new_with_label("Close")
