@@ -16,6 +16,7 @@ existing_translations = []
 keys = []
 voc_en_us = None
 voc_user = None
+user_locale = None
 scrolled_window = None
 translation_box = None
 lang_hint_menu = None
@@ -176,12 +177,14 @@ def validate_lang(entry, valid_locales, btn):
 
 def on_btn_select(btn, entry):
     _locale = entry.get_text()
+    global user_locale
+    user_locale = _locale
     if _locale:
         build_translation_window(_locale)
 
 
-def on_btn_export(btn, user_locale, ckb_ascii):
-    print(ckb_ascii.get_active())
+def on_btn_export(btn, ckb_ascii):
+    print("user_locale", user_locale)
     save_json(voc_user, os.path.join(os.getenv("HOME"), "nwg-shell-config-{}.json".format(user_locale)),
               en_ascii=ckb_ascii.get_active())
 
@@ -199,6 +202,7 @@ def main():
     for item in os.listdir(os.path.join(dir_name, "langs")):
         existing_translations.append(item.split(".")[0])
 
+    global user_locale
     user_locale = locale.getlocale()[0]
 
     # basic dictionary
@@ -273,7 +277,7 @@ def main():
     btn.set_tooltip_text("Exports current translation to a .json file in you $HOME directory.\n"
                          "You can then email it to nwg.piotr@gmail.com or share in another way.\n"
                          "E.g. gist.github.com is always a good idea.")
-    btn.connect("clicked", on_btn_export, user_locale, ckb_ascii)
+    btn.connect("clicked", on_btn_export, ckb_ascii)
 
     button_box.pack_end(btn, False, False, 0)
 
