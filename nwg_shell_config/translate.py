@@ -121,7 +121,7 @@ def build_translation_window(user_locale):
         print("User dict:\t\t{}.json, {} keys".format(user_locale, len(voc_user)))
     else:
         voc_user = {}
-        print("User lang {} does not yet exist, creating empty dictionary.".format(user_locale))
+        print("User lang '{}' does not yet exist, creating empty dictionary.".format(user_locale))
 
     if scrolled_window:
         scrolled_window.destroy()
