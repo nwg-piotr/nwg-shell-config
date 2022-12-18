@@ -180,9 +180,10 @@ def on_btn_select(btn, entry):
         build_translation_window(_locale)
 
 
-def on_btn_export(btn, user_locale):
-    print(voc_user)
-    save_json(voc_user, os.path.join(os.getenv("HOME"), "nwg-shell-config-{}.json".format(user_locale)), en_ascii=False)
+def on_btn_export(btn, user_locale, ckb_ascii):
+    print(ckb_ascii.get_active())
+    save_json(voc_user, os.path.join(os.getenv("HOME"), "nwg-shell-config-{}.json".format(user_locale)),
+              en_ascii=ckb_ascii.get_active())
 
 
 def main():
@@ -248,7 +249,7 @@ def main():
     img = Gtk.Image.new_from_icon_name("nwg-shell-translate", Gtk.IconSize.LARGE_TOOLBAR)
     button_box.pack_start(img, False, False, 0)
     lbl = Gtk.Label()
-    lbl.set_markup("nwg-shell-translate | <b>en_US</b> into".format(user_locale))
+    lbl.set_markup("nwg-shell-translate <i>(beta)</i> | <b>en_US</b> into".format(user_locale))
     button_box.pack_start(lbl, False, False, 0)
 
     btn_select = Gtk.Button.new_with_label("Select")
@@ -263,17 +264,22 @@ def main():
     button_box.pack_start(btn_select, False, False, 0)
     btn_select.connect("clicked", on_btn_select, entry_lang)
 
+    ckb_ascii = Gtk.CheckButton.new()
+    ckb_ascii.set_label("ASCII")
+    ckb_ascii.set_tooltip_text("Replace accented characters with ASCII codes.")
+    button_box.pack_end(ckb_ascii, False, False, 0)
+
     btn = Gtk.Button.new_with_label("Export")
     btn.set_tooltip_text("Exports current translation to a .json file in you $HOME directory.\n"
                          "You can then email it to nwg.piotr@gmail.com or share in another way.\n"
                          "E.g. gist.github.com is always a good idea.")
-    btn.connect("clicked", on_btn_export, user_locale)
+    btn.connect("clicked", on_btn_export, user_locale, ckb_ascii)
 
-    button_box.pack_end(btn, False, False, 3)
+    button_box.pack_end(btn, False, False, 0)
 
     btn = Gtk.Button.new_with_label("Close")
     btn.connect('clicked', Gtk.main_quit)
-    button_box.pack_end(btn, False, False, 3)
+    button_box.pack_end(btn, False, False, 0)
 
     build_translation_window(user_locale)
 
