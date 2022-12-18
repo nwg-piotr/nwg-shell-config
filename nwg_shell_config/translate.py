@@ -12,7 +12,11 @@ from gi.repository import Gtk, Gdk, GLib
 
 dir_name = os.path.dirname(__file__)
 
-translation_window = None
+existing_translations = []
+keys = []
+voc_en_us = None
+scrolled_window = None
+translation_box = None
 lang_hint_menu = None
 
 
@@ -22,8 +26,9 @@ def handle_keyboard(win, event):
 
 
 class Row(Gtk.Box):
-    def __init__(self, key, voc_en_us, voc_user):
+    def __init__(self, key, voc_user):
         super().__init__()
+        global voc_en_us
         self.set_orientation(Gtk.Orientation.HORIZONTAL)
         self.set_spacing(6)
         vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
@@ -39,6 +44,7 @@ class Row(Gtk.Box):
 
         lbl = Gtk.Label.new(self.voc_en_us[self.key])
         lbl.set_property("name", "original-text")
+        lbl.set_selectable(True)
         lbl.set_line_wrap(True)
         lbl.set_property("halign", Gtk.Align.START)
         vbox.pack_start(lbl, False, False, 0)
@@ -108,27 +114,41 @@ class Row(Gtk.Box):
             self.set_property("name", "row-empty")
 
 
-def build_translation_window(keys, voc_en_us, voc_user):
+def build_translation_window(user_locale):
+    global scrolled_window
+    voc_user = load_json(os.path.join(dir_name, "langs", "{}.json".format(user_locale)))
+    if voc_user:
+        print("User dict:\t\t{}.json, {} keys".format(user_locale, len(voc_user)))
+    else:
+        voc_user = {}
+        print("User lang {} does not yet exist, creating empty dictionary.".format(user_locale))
+
+    if scrolled_window:
+        scrolled_window.destroy()
+
     scrolled_window = Gtk.ScrolledWindow.new(None, None)
     scrolled_window.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
     scrolled_window.set_propagate_natural_height(True)
     box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 6)
     scrolled_window.add(box)
     for key in keys:
-        row = Row(key, voc_en_us, voc_user)
+        row = Row(key, voc_user)
         row.connect_textview()
         box.pack_start(row, False, False, 0)
 
     scrolled_window.show_all()
-    return scrolled_window
+    translation_box.pack_start(scrolled_window, True, True, 0)
 
 
 class LangHintMenu(Gtk.Menu):
     def __init__(self, text, valid_locales, entry):
         super().__init__()
+        self.set_reserve_toggle_size(False)
         for loc in valid_locales:
             if text in loc:
                 item = Gtk.MenuItem.new_with_label(loc)
+                if loc in existing_translations:
+                    item.set_property("name", "existing")
                 item.connect("activate", set_entry_from_item, entry)
                 self.append(item)
                 self.show_all()
@@ -152,6 +172,12 @@ def validate_lang(entry, valid_locales, btn):
                 lang_hint_menu.popup_at_widget(entry, Gdk.Gravity.NORTH, Gdk.Gravity.SOUTH, None)
 
 
+def on_btn_select(btn, entry):
+    _locale = entry.get_text()
+    if _locale:
+        build_translation_window(_locale)
+
+
 def main():
     GLib.set_prgname('nwg-shell-translate')
 
@@ -161,7 +187,14 @@ def main():
             valid_locales.append(loc)
     print("{} valid locales found".format(len(valid_locales)))
 
+    global existing_translations
+    for item in os.listdir(os.path.join(dir_name, "langs")):
+        existing_translations.append(item.split(".")[0])
+
     user_locale = locale.getlocale()[0]
+
+    # basic dictionary
+    global voc_en_us
     voc_en_us = load_json(os.path.join(dir_name, "langs", "en_US.json"))
     if voc_en_us:
         print("Default dict:\ten_US.json, {} keys".format(len(voc_en_us)))
@@ -169,13 +202,8 @@ def main():
         eprint("Couldn't load basic dictionary, exiting.")
         sys.exit(1)
 
-    voc_user = load_json(os.path.join(dir_name, "langs", "{}.json".format(user_locale)))
-    if voc_user:
-        print("User dict:\t\t{}.json, {} keys".format(user_locale, len(voc_user)))
-    else:
-        print("User lang {} does not yet exist, creating empty dictionary.".format(user_locale))
-
-    keys = []
+    # basic dictionary keys
+    global keys
     for key in voc_en_us:
         keys.append(key)
     keys.sort()
@@ -188,18 +216,20 @@ def main():
             label#original-text { font-style: italic; padding: 2px }
             textview#translation { padding: 2px 2px 4px 2px }
             box#row { margin: 0 12px 0 0; padding: 6px; border: solid 1px }
-            box#row-empty { margin: 0 12px 0 0; padding: 6px; border: solid 1px; border-color: #F00 }
+            box#row-empty { margin: 0 12px 0 0; padding: 6px; border: solid 2px; border-color: #F00 }
+            menuitem#existing { font-weight: bold; color: #0c6 }
             """
     provider.load_from_data(css)
 
     window = Gtk.Window.new(Gtk.WindowType.TOPLEVEL)
     window.connect('destroy', Gtk.main_quit)
-    window.connect("key-release-event", handle_keyboard)
+    # window.connect("key-release-event", handle_keyboard)
 
     box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 6)
     box.set_property("margin", 6)
     window.add(box)
 
+    global translation_box
     translation_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
     translation_box.set_property("expand", True)
     box.pack_start(translation_box, True, True, 0)
@@ -222,6 +252,7 @@ def main():
     button_box.pack_start(entry_lang, False, False, 0)
 
     button_box.pack_start(btn_select, False, False, 0)
+    btn_select.connect("clicked", on_btn_select, entry_lang)
 
     btn = Gtk.Button.new_with_label("Export")
     button_box.pack_end(btn, False, False, 3)
@@ -230,9 +261,7 @@ def main():
     btn.connect('clicked', Gtk.main_quit)
     button_box.pack_end(btn, False, False, 3)
 
-    global translation_window
-    translation_window = build_translation_window(keys, voc_en_us, voc_user)
-    translation_box.pack_start(translation_window, True, True, 0)
+    build_translation_window(user_locale)
 
     window.show_all()
     Gtk.main()
