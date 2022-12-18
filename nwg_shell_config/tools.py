@@ -170,7 +170,7 @@ def load_json(path):
         with open(path, 'r') as f:
             return json.load(f)
     except Exception as e:
-        print("Error loading json: {}".format(e))
+        eprint("Error loading json: {}".format(e))
         return None
 
 
