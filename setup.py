@@ -28,7 +28,8 @@ setup(
             'nwg-lock = nwg_shell_config.locker:main',
             'nwg-shell-help = nwg_shell_config.help:main',
             'nwg-autotiling = nwg_shell_config.autotiling:main',
-            'nwg-shell-updater = nwg_shell_config.updater:main'
+            'nwg-shell-updater = nwg_shell_config.updater:main',
+            'nwg-shell-translate = nwg_shell_config.translate:main'
         ]
     }
 )

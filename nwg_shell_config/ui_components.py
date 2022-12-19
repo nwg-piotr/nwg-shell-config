@@ -348,6 +348,16 @@ def screen_tab(settings, voc, pending_updates):
     sb_help_font_size.connect("value-changed", set_int_from_spinbutton, settings, "help-font-size")
     box.pack_start(sb_help_font_size, False, False, 0)
 
+    lbl = Gtk.Label()
+    lbl.set_markup("<i>Would you like to help with translations?</i>")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 7, 4, 1)
+
+    btn = Gtk.Button.new_from_icon_name("nwg-shell-translate", Gtk.IconSize.BUTTON)
+    btn.set_tooltip_text("Runs nwg-shell-translate utility")
+    btn.connect("clicked", launch, "nwg-shell-translate")
+    grid.attach(btn, 4, 7, 1, 1)
+
     frame.show_all()
 
     return frame, update_btn
