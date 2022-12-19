@@ -14,8 +14,8 @@ dir_name = os.path.dirname(__file__)
 
 existing_translations = []
 keys = []
-voc_en_us = None
-voc_user = None
+voc_en_us = {}
+voc_user = {}
 user_locale = None
 scrolled_window = None
 translation_box = None
@@ -116,7 +116,7 @@ class Row(Gtk.Box):
             self.set_property("name", "row-empty")
 
 
-def build_translation_window(user_locale):
+def build_translation_window():
     global scrolled_window
     global voc_user
     voc_user = load_json(os.path.join(dir_name, "langs", "{}.json".format(user_locale)))
@@ -175,18 +175,29 @@ def validate_lang(entry, valid_locales, btn):
                 lang_hint_menu.popup_at_widget(entry, Gdk.Gravity.NORTH, Gdk.Gravity.SOUTH, None)
 
 
-def on_btn_select(btn, entry):
+def on_btn_select(btn, entry, fc_btn):
     _locale = entry.get_text()
     global user_locale
     user_locale = _locale
     if _locale:
-        build_translation_window(_locale)
+        build_translation_window()
+    fc_btn.unselect_all()
 
 
 def on_btn_export(btn, ckb_ascii):
-    print("user_locale", user_locale)
+    global voc_user
+    voc_user["_lang"] = user_locale
     save_json(voc_user, os.path.join(os.getenv("HOME"), "nwg-shell-config-{}.json".format(user_locale)),
               en_ascii=ckb_ascii.get_active())
+
+
+def on_file_chooser_button(fc_btn, entry_lang):
+    global voc_user
+    voc_user = load_json(fc_btn.get_file().get_path())
+    global user_locale
+    user_locale = voc_user["_lang"]
+    entry_lang.set_text(user_locale)
+    build_translation_window()
 
 
 def main():
@@ -253,20 +264,33 @@ def main():
     img = Gtk.Image.new_from_icon_name("nwg-shell-translate", Gtk.IconSize.LARGE_TOOLBAR)
     button_box.pack_start(img, False, False, 0)
     lbl = Gtk.Label()
-    lbl.set_markup("nwg-shell-translate <i>(beta)</i> | <b>en_US</b> into".format(user_locale))
+    lbl.set_markup("nwg-shell-translate | <b>en_US</b> into".format(user_locale))
     button_box.pack_start(lbl, False, False, 0)
 
     btn_select = Gtk.Button.new_with_label("Select")
     btn_select.set_tooltip_text("Opens current dictionary for entered locale,\nif it exists. Otherwise - "
                                 "creates an empty dictionary")
 
+    fc_btn = Gtk.FileChooserButton.new("Open", Gtk.FileChooserAction.OPEN)
+
     entry_lang = Gtk.Entry()
+    entry_lang.set_width_chars(10)
     entry_lang.set_text(user_locale)
     entry_lang.connect("changed", validate_lang, valid_locales, btn_select)
     button_box.pack_start(entry_lang, False, False, 0)
 
     button_box.pack_start(btn_select, False, False, 0)
-    btn_select.connect("clicked", on_btn_select, entry_lang)
+    btn_select.connect("clicked", on_btn_select, entry_lang, fc_btn)
+
+    fc_btn.set_current_folder(os.getenv("HOME"))
+    fc_btn.set_width_chars(10)
+    fc_btn.set_tooltip_text("Opens your previously saved translation")
+    f_filter = Gtk.FileFilter()
+    f_filter.set_name("Translation files (*_??.json)")
+    f_filter.add_pattern("*_??.json")
+    fc_btn.connect("file-set", on_file_chooser_button, entry_lang)
+    fc_btn.add_filter(f_filter)
+    button_box.pack_start(fc_btn, False, False, 0)
 
     ckb_ascii = Gtk.CheckButton.new()
     ckb_ascii.set_label("ASCII")
@@ -282,10 +306,11 @@ def main():
     button_box.pack_end(btn, False, False, 0)
 
     btn = Gtk.Button.new_with_label("Close")
+    btn.set_tooltip_text("Exits the program")
     btn.connect('clicked', Gtk.main_quit)
     button_box.pack_end(btn, False, False, 0)
 
-    build_translation_window(user_locale)
+    build_translation_window()
 
     window.show_all()
     Gtk.main()
