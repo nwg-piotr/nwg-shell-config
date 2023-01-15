@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="24"
+   height="24"
+   version="1.1"
+   id="svg299"
+   sodipodi:docname="nwg-update-available.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview301"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="9.8333333"
+     inkscape:cx="12"
+     inkscape:cy="12"
+     inkscape:window-width="1918"
+     inkscape:window-height="1018"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg299" />
+  <defs
+     id="defs293">
+    <style
+       id="current-color-scheme"
+       type="text/css">
+   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
+  </style>
+  </defs>
+  <path
+     style="fill:#347284;fill-rule:evenodd;stroke-width:1.25;fill-opacity:1"
+     d="M 12.25,2 C 9.564875,4.46225 5.04325,6.631125 3.5,7 3.5,13.66625 6.78125,20.88875 12.25,22 17.71875,20.88875 21,13.66625 21,7 19.45625,6.631125 14.935,4.46225 12.25,2 Z"
+     id="path295" />
+  <path
+     style="fill:#ff8000;fill-rule:evenodd;stroke-width:1.25;fill-opacity:1"
+     d="M 8.29,11.3725 12.22375,13.34 10.6265,13.8725 C 11.04875,14.24 11.58,14.47875 12.1625,14.5 13.09,14.53375 13.955,14.05625 14.42,13.2525 l 2.16625,1.25 C 15.66125,16.105 13.9175,17.06875 12.06875,17 10.433125,16.94 8.944125,16.07875 8.065375,14.7275 l -1.73575,0.57875 z"
+     id="path1213" />
+  <path
+     style="fill:#ff8000;fill-rule:evenodd;stroke-width:1.25;fill-opacity:1"
+     d="M 12.43125,6.9975 V 7 h 0.0012 c 1.63625,0.06 3.12625,0.92175 4.005,2.273 L 18.1725,8.694375 16.21,12.6275 12.27625,10.659625 13.87375,10.1275 C 13.45125,9.76 12.92,9.51875 12.3375,9.4975 11.41,9.46375 10.544625,9.941375 10.079625,10.745125 L 7.914,9.495125 C 8.839125,7.892625 10.581875,6.92875 12.43125,6.9975 Z"
+     id="path1211" />
+</svg>
