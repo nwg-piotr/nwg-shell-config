@@ -49,10 +49,10 @@ class Indicator(object):
         self.item_update = None
         self.ind = AppIndicator3.Indicator.new('azote_status_icon', '',
                                                AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
-        self.ind.set_icon_full('nwg-update-noupdate', 'Tracking off')
-        self.ind.set_attention_icon_full('nwg-update-available', 'Tracking on')
+        # self.ind.set_icon_full('nwg-update-noupdate', 'Up to date')
+        # self.ind.set_attention_icon_full('nwg-update-available', 'Update available')
 
-        self.ind.set_status(AppIndicator3.IndicatorStatus.ATTENTION)
+        # self.ind.set_status(AppIndicator3.IndicatorStatus.ATTENTION)
         # self.ind.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
 
         self.ind.set_menu(self.menu())
@@ -66,7 +66,7 @@ class Indicator(object):
         menu.append(self.item_update)
 
         item = Gtk.MenuItem.new_with_label('Check updates')
-        # item.connect('activate', on_about_button)
+        item.connect('activate', self.check_updates)
         menu.append(item)
 
         item = Gtk.SeparatorMenuItem()
@@ -79,10 +79,10 @@ class Indicator(object):
         menu.show_all()
         return menu
 
-    def check_updates(self):
+    def check_updates(self, *args):
         title = "Up to date"
         if self.distro == "arch":
-            output = subprocess.check_output("baph -c".split()).decode('utf-8')
+            output = subprocess.check_output("baph -c".split()).decode('utf-8').strip()
             if output == "0 0":
                 title = "Up to date"
             else:
@@ -91,20 +91,11 @@ class Indicator(object):
 
         self.ind.set_title(title)
         if title == "Up to date":
-            self.ind.set_icon_full('nwg-update-noupdate', 'Tracking off')
+            self.ind.set_icon_full('nwg-update-noupdate', 'Up to date')
             self.ind.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
         else:
-            self.ind.set_icon_full('nwg-update-available', 'Tracking off')
+            self.ind.set_icon_full('nwg-update-available', 'Update available')
             self.ind.set_status(AppIndicator3.IndicatorStatus.ATTENTION)
-
-
-    def switch_indication(self, item):
-        if item.get_active():
-            self.ind.set_status(AppIndicator3.IndicatorStatus.ATTENTION)
-            self.ind.set_icon_full('/usr/share/azote/indicator_attention.png', 'Tracking on')
-        else:
-            self.ind.set_icon_full('/usr/share/azote/indicator_active.png', 'Tracking off')
-            self.ind.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
 
 
 def main():
