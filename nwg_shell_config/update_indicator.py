@@ -8,6 +8,8 @@ Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project: https://github.com/nwg-piotr/nwg-shell
 License: MIT
 """
+import time
+
 import gi
 import os
 import subprocess
@@ -120,8 +122,10 @@ class Indicator(object):
         update_desc = ""
         # The code below should leave `update_desc` string empty if no updates found
 
-        self.ind.set_icon_full('nwg-update-checking', 'Checking')
-        self.ind.set_status(AppIndicator3.IndicatorStatus.ATTENTION)
+        # self.ind.set_title("Checking")
+        # self.ind.set_icon_full('nwg-update-noupdate', 'Checking')
+        # self.ind.set_status(AppIndicator3.IndicatorStatus.PASSIVE)
+        # time.sleep(1)
 
         # Below we could add update check commands for other distros
         if self.distro == "arch":
@@ -144,7 +148,7 @@ class Indicator(object):
             self.ind.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
         else:
             self.ind.set_title(update_desc)
-            self.ind.set_icon_full('nwg-update-available', 'Update available')
+            self.ind.set_icon_full('nwg-update-checking', 'Update available')
             self.ind.set_status(AppIndicator3.IndicatorStatus.ATTENTION)
 
         print("done")
