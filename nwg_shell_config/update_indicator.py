@@ -67,9 +67,8 @@ def load_vocabulary():
 
 def check_distro():
     # This is just a skeleton function, and only works on Arch Linux for now.
-    os_release = "/etc/os-release"
-    if os.path.isfile(os_release):
-        lines = load_text_file(os_release).splitlines()
+    if os.path.isfile("/etc/os-release"):
+        lines = load_text_file("/etc/os-release").splitlines()
         for line in lines:
             if line.startswith("NAME="):
                 if "Arch" in line:
