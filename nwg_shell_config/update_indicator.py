@@ -15,7 +15,8 @@ import sys
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GLib
-from nwg_shell_config.tools import eprint, is_command, load_text_file, load_json, load_shell_data
+from nwg_shell_config.tools import eprint, is_command, load_text_file, load_json, load_shell_data, check_key, \
+    get_data_dir
 
 try:
     gi.require_version('AppIndicator3', '0.1')
@@ -27,6 +28,12 @@ except:
 
 dir_name = os.path.dirname(__file__)
 shell_data = load_shell_data()
+check_key(shell_data, "update-check-interval", 10)
+settings_file = os.path.join(get_data_dir(), "settings")
+settings = {}
+if os.path.isfile(settings_file):
+    settings = load_json(settings_file)
+check_key(settings, "update-check-interval", 10)
 voc = {}
 
 
@@ -110,6 +117,7 @@ class Indicator(object):
         return menu
 
     def check_updates(self, *args):
+        print("checking updates :)")
         update_desc = ""
         # The code below should leave `update_desc` string empty if no updates found
 
@@ -130,20 +138,19 @@ class Indicator(object):
 
         if not update_desc:
             self.ind.set_title(voc["you-are-up-to-date"])
-        else:
-            self.ind.set_title(update_desc)
-
-        if update_desc == "Up to date":
             self.ind.set_icon_full('nwg-update-noupdate', 'Up to date')
             self.ind.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
         else:
+            self.ind.set_title(update_desc)
             self.ind.set_icon_full('nwg-update-available', 'Update available')
             self.ind.set_status(AppIndicator3.IndicatorStatus.ATTENTION)
+
+        return True
 
     def update(self, *args):
         if self.distro == "arch":
             cmd = "foot sway-update"
-            subprocess.Popen('exec {}'.format(cmd), shell=True)
+            subprocess.call('exec {}'.format(cmd), shell=True)
 
         self.check_updates()
 
@@ -166,6 +173,7 @@ def main():
 
     ind = Indicator(distro)
     ind.check_updates()
+    GLib.timeout_add_seconds(settings["update-check-interval"] * 60, ind.check_updates)
 
     Gtk.main()
 
