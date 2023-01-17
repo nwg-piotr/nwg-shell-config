@@ -57,7 +57,7 @@ def load_vocabulary():
             else:
                 for key in loc:
                     global_voc[key] = loc[key]
-    voc = {}
+    global voc
     for key in ["you-are-up-to-date", "update", "check-updates", "exit"]:
         if key in global_voc:
             voc[key] = global_voc[key]
@@ -117,7 +117,6 @@ class Indicator(object):
         return menu
 
     def check_updates(self, *args):
-        print("checking updates :)")
         update_desc = ""
         # The code below should leave `update_desc` string empty if no updates found
 
@@ -158,7 +157,6 @@ class Indicator(object):
 def main():
     global voc
     voc = load_vocabulary()
-    print(voc)
     distro = check_distro()
     if not distro:
         eprint("Couldn't determine the Linux distribution, terminating")
