@@ -116,8 +116,12 @@ class Indicator(object):
         return menu
 
     def check_updates(self, *args):
+        print("checking")
         update_desc = ""
         # The code below should leave `update_desc` string empty if no updates found
+
+        self.ind.set_icon_full('nwg-update-checking', 'Checking')
+        self.ind.set_status(AppIndicator3.IndicatorStatus.ATTENTION)
 
         # Below we could add update check commands for other distros
         if self.distro == "arch":
@@ -143,6 +147,7 @@ class Indicator(object):
             self.ind.set_icon_full('nwg-update-available', 'Update available')
             self.ind.set_status(AppIndicator3.IndicatorStatus.ATTENTION)
 
+        print("done")
         return True
 
     def update(self, *args):
