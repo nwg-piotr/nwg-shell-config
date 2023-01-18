@@ -30,7 +30,6 @@ from nwg_shell_config.tools import eprint, is_command, load_text_file, load_shel
 try:
     gi.require_version('AppIndicator3', '0.1')
     from gi.repository import AppIndicator3
-
 except:
     eprint('libappindicator-gtk3 package not found - tray icon unavailable')
     sys.exit(1)
@@ -49,9 +48,9 @@ defaults = {
 for key in defaults:
     check_key(settings, key, defaults[key])
 
-voc = {}
+voc = {}  # Vocabulary
 
-ind = None
+ind = None  # Indicator(object) containing
 
 
 def signal_handler(sig, frame):
@@ -86,14 +85,14 @@ def load_vocabulary():
                 eprint("Failed loading translation into '{}'".format(lang))
             else:
                 # Replace keys w/ localized counterparts, if they exist
-                for key in loc:
-                    global_voc[key] = loc[key]
+                for k in loc:
+                    global_voc[k] = loc[k]
 
     # Select and return just the keys we need, in another dict
     global voc
-    for key in ["you-are-up-to-date", "update", "check-updates", "exit"]:
-        if key in global_voc:
-            voc[key] = global_voc[key]
+    for k in ["you-are-up-to-date", "update", "check-updates", "exit"]:
+        if k in global_voc:
+            voc[k] = global_voc[k]
 
     return voc
 
@@ -162,7 +161,7 @@ class Indicator(object):
 
     def check_updates(self, *args):
         update_details = ""
-        # The code below should leave `update_desc` string empty if no updates found
+        # The code below should leave `update_details` string empty if no updates found
 
         GLib.timeout_add_seconds(0, self.switch_icon, "nwg-update-checking", "Checking")
 
