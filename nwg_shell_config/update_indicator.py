@@ -141,9 +141,9 @@ class Indicator(object):
         #   place your code here
 
         if not update_details:
-            GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-noupdate", "Up to date")
+            GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-noupdate", voc["you-are-up-to-date"])
         else:
-            GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-available", "Update available")
+            GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-available", update_details)
 
         self.item_update.set_sensitive(update_details != "")
 
@@ -162,14 +162,17 @@ class Indicator(object):
 
 
 def main():
+    GLib.set_prgname('nwg-update-indicator')
+
     global voc
     voc = load_vocabulary()
+
     distro = check_distro()
     if not distro:
         eprint("Couldn't determine the Linux distribution, terminating")
         sys.exit(1)
     else:
-        print("Running on {}".format(distro))
+        eprint("nwg-update-indicator running on '{}'".format(distro))
 
     if distro == "arch":
         if not is_command("baph") and not is_command("checkupdates"):
