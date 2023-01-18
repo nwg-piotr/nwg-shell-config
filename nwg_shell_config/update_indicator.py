@@ -145,9 +145,9 @@ class Indicator(object):
     def menu(self):
         menu = Gtk.Menu()
 
-        item = Gtk.MenuItem.new_with_label(voc["update"])
-        item.connect('activate', self.update)
-        menu.append(item)
+        self.item_update = Gtk.MenuItem.new_with_label(voc["update"])
+        self.item_update.connect('activate', self.update)
+        menu.append(self.item_update)
 
         item = Gtk.MenuItem.new_with_label(voc["check-updates"])
         item.connect('activate', self.check_updates)
@@ -196,6 +196,10 @@ class Indicator(object):
 
     def switch_icon(self, icon, desc):
         self.ind.set_title(desc)
+        if desc != voc["you-are-up-to-date"]:
+            self.item_update.set_label("{} ({})".format(voc["update"], desc))
+        else:
+            self.item_update.set_label(voc["update"])
         self.ind.set_icon_full(icon, desc)
 
 
