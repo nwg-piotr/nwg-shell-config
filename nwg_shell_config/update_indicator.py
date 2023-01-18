@@ -134,19 +134,15 @@ class Indicator(object):
     def menu(self):
         menu = Gtk.Menu()
 
-        self.item_update = Gtk.MenuItem.new_with_label(voc["update"])
-        self.item_update.connect('activate', self.update)
-        menu.append(self.item_update)
+        item = Gtk.MenuItem.new_with_label(voc["update"])
+        item.connect('activate', self.update)
+        menu.append(item)
 
         item = Gtk.MenuItem.new_with_label(voc["check-updates"])
         item.connect('activate', self.check_updates)
         menu.append(item)
 
         item = Gtk.SeparatorMenuItem()
-        menu.append(item)
-
-        item = Gtk.MenuItem.new_with_label(voc["exit"])
-        item.connect('activate', Gtk.main_quit)
         menu.append(item)
 
         menu.show_all()
@@ -177,8 +173,6 @@ class Indicator(object):
             GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-noupdate", voc["you-are-up-to-date"])
         else:
             GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-available", update_details)
-
-        self.item_update.set_sensitive(update_details != "")
 
         return True  # For this to be called periodically
 
