@@ -12,6 +12,7 @@ License: MIT
 import gi
 import os
 import subprocess
+import signal
 import sys
 
 gi.require_version('Gtk', '3.0')
@@ -36,6 +37,21 @@ if os.path.isfile(settings_file):
     settings = load_json(settings_file)
 check_key(settings, "update-check-interval", 10)
 voc = {}
+
+ind = None
+
+
+def signal_handler(sig, frame):
+    if sig == 2 or sig == 15:
+        desc = {2: "SIGINT", 15: "SIGTERM"}
+        eprint("nwg-update-indicator: terminated with {}".format(desc[sig]))
+        Gtk.main_quit()
+    elif sig == 10:
+        eprint("nwg-update-indicator: SIGUSR1 received, checking updates")
+        if ind:
+            ind.check_updates()
+    elif sig != 17:
+        print("nwg-update-indicator: signal {} received".format(sig))
 
 
 def load_vocabulary():
@@ -179,8 +195,13 @@ def main():
             eprint("No supported AUR helper found, terminating")
             sys.exit(1)
 
+    global ind
     ind = Indicator(distro)  # Will check updates for the 1st time in the constructor
     GLib.timeout_add_seconds(settings["update-check-interval"] * 60, ind.check_updates)
+
+    catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
+    for sig in catchable_sigs:
+        signal.signal(sig, signal_handler)
 
     Gtk.main()
 
