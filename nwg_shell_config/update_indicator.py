@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
 """
-Tray system update indicator
+nwg-shell system tray update indicator
 Copyright: 2023 Piotr Miller & Contributors
 e-mail: nwg.piotr@gmail.com
 Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project: https://github.com/nwg-piotr/nwg-shell
 License: MIT
+NOTE: This
 """
 
 import gi
@@ -86,18 +87,33 @@ def load_vocabulary():
 
 
 def check_distro():
-    # This is just a skeleton function for Arch Linux only. Feel free to contribute.
+    # This is just a skeleton function, and for now it detects Arch Linux only. Feel free to contribute.
     if os.path.isfile("/etc/os-release"):
         lines = load_text_file("/etc/os-release").splitlines()
         for line in lines:
-            if line.startswith("NAME="):
+            if line.startswith("NAME"):
                 if "Arch" in line:
                     return "arch"
                 # add elif for other distros
-            if line.startswith("ID="):
+
+            if line.startswith("ID"):
                 if "arch" in line:
                     return "arch"
                 # add elif for other distros
+
+    elif os.path.isfile("/etc/lsb=release"):
+        lines = load_text_file("/etc/lsb-release").splitlines()
+        for line in lines:
+            if line.startswith("DISTRIB_ID"):
+                if "Arch" in line:
+                    return "arch"
+                # add elif for other distros
+
+            if line.startswith("DISTRIB_DESCRIPTION"):
+                if "Arch" in line:
+                    return "arch"
+                # add elif for other distros
+
     return ""
 
 
