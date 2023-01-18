@@ -88,6 +88,7 @@ def load_vocabulary():
 
 def check_distro():
     # This is just a skeleton function, and for now it detects Arch Linux only. Feel free to contribute.
+    # Use unambiguous, lowercase name for your distro. You will need it in the Indicator.check_updates method.
     if os.path.isfile("/etc/os-release"):
         lines = load_text_file("/etc/os-release").splitlines()
         for line in lines:
@@ -183,6 +184,7 @@ class Indicator(object):
 
     def update(self, *args):
         if self.distro == "arch":
+            # Other distros: you'll need to provide your own `sway-update` script somewhere on $PATH
             cmd = "foot sway-update"
             subprocess.call('exec {}'.format(cmd), shell=True)
 
