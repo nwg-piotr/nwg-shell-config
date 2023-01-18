@@ -8,7 +8,6 @@ Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project: https://github.com/nwg-piotr/nwg-shell
 License: MIT
 """
-import time
 
 import gi
 import os
@@ -68,7 +67,7 @@ def load_vocabulary():
 
 
 def check_distro():
-    # This is just a skeleton function, and only works on Arch Linux for now.
+    # This is just a skeleton function for Arch Linux only. Feel free to contribute.
     if os.path.isfile("/etc/os-release"):
         lines = load_text_file("/etc/os-release").splitlines()
         for line in lines:
@@ -87,14 +86,14 @@ class Indicator(object):
     def __init__(self, distro):
         self.distro = distro
         self.item_update = None
-        self.ind = AppIndicator3.Indicator.new('azote_status_icon', '',
-                                               AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
 
-        self.ind.set_icon_full('nwg-update-noupdate', 'Up to date')
-        self.ind.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
+        self.ind = AppIndicator3.Indicator.new('nwg_update_indicator', '',
+                                               AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
 
         self.ind.set_menu(self.menu())
         self.ind.set_title("Update notifier")
+
+        self.check_updates()
 
     def menu(self):
         menu = Gtk.Menu()
@@ -118,14 +117,10 @@ class Indicator(object):
         return menu
 
     def check_updates(self, *args):
-        print("checking")
-        update_desc = ""
+        update_details = ""
         # The code below should leave `update_desc` string empty if no updates found
 
-        # self.ind.set_title("Checking")
-        # self.ind.set_icon_full('nwg-update-noupdate', 'Checking')
-        # self.ind.set_status(AppIndicator3.IndicatorStatus.PASSIVE)
-        # time.sleep(1)
+        GLib.timeout_add_seconds(0, self.switch_icon, "nwg-update-checking", "Checking")
 
         # Below we could add update check commands for other distros
         if self.distro == "arch":
@@ -133,26 +128,23 @@ class Indicator(object):
                 output = subprocess.check_output("baph -c".split()).decode('utf-8').strip()
                 if output and output != "0 0":
                     u = output.split()
-                    update_desc = "pacman: {}, AUR: {} (baph)".format(u[1], u[0])
+                    update_details = "pacman: {}, AUR: {} (baph)".format(u[1], u[0])
             elif is_command("checkupdates"):
                 output = subprocess.check_output("checkupdates".split()).decode('utf-8')
                 if len(output.splitlines()) > 0:
-                    update_desc = "pacman: {} (checkupdates)".format(len(output.splitlines()))
+                    update_details = "pacman: {} (checkupdates)".format(len(output.splitlines()))
 
         # elif self.distro == "something_else:
         #   place your code here
 
-        if not update_desc:
-            self.ind.set_title(voc["you-are-up-to-date"])
-            self.ind.set_icon_full('nwg-update-noupdate', 'Up to date')
-            self.ind.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
+        if not update_details:
+            GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-noupdate", "Up to date")
         else:
-            self.ind.set_title(update_desc)
-            self.ind.set_icon_full('nwg-update-checking', 'Update available')
-            self.ind.set_status(AppIndicator3.IndicatorStatus.ATTENTION)
+            GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-available", "Update available")
 
-        print("done")
-        return True
+        self.item_update.set_sensitive(update_details != "")
+
+        return True  # For this to be called periodically
 
     def update(self, *args):
         if self.distro == "arch":
@@ -160,6 +152,10 @@ class Indicator(object):
             subprocess.call('exec {}'.format(cmd), shell=True)
 
         self.check_updates()
+
+    def switch_icon(self, icon, desc):
+        self.ind.set_title(desc)
+        self.ind.set_icon_full(icon, desc)
 
 
 def main():
@@ -177,8 +173,7 @@ def main():
             eprint("No supported AUR helper found, terminating")
             sys.exit(1)
 
-    ind = Indicator(distro)
-    ind.check_updates()
+    ind = Indicator(distro)  # Will check updates for the 1st time in the constructor
     GLib.timeout_add_seconds(settings["update-check-interval"] * 60, ind.check_updates)
 
     Gtk.main()
