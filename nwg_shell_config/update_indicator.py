@@ -7,7 +7,14 @@ e-mail: nwg.piotr@gmail.com
 Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project: https://github.com/nwg-piotr/nwg-shell
 License: MIT
-NOTE: This
+
+NOTE: This script has been written to replace the 'updates' nwg-panel executor, which is Arch-specific.
+It's quite well documented in comments, and expected to be adapted for use with other Linux distributions, too.
+
+For use with Arch Linux and derivatives, the script depends on 'baph' (Basic AUR Package Helper) by Nate Maia
+https://bitbucket.org/natemaia/baph, as well if it comes to checking updates, as to updating.
+Updates are being performed by the `sway-update` script, distributed with the 'nwg-shell' AUR package.
+For your own distro, you will need your own version of the latter, installed somewhere on $PATH.
 """
 
 import gi
@@ -182,10 +189,9 @@ class Indicator(object):
         return True  # For this to be called periodically
 
     def update(self, *args):
-        if self.distro == "arch":
-            # Other distros: you'll need to provide your own `sway-update` script somewhere on $PATH
-            cmd = "foot sway-update"
-            subprocess.call('exec {}'.format(cmd), shell=True)
+        # Other distros: we already have the foot terminal installed.
+        # You just need to provide your own `sway-update` script somewhere on $PATH.
+        subprocess.call('exec foot sway-update', shell=True)
 
         self.check_updates()
 
