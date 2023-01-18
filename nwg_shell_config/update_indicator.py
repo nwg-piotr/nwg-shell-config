@@ -40,7 +40,7 @@ voc = {}
 
 def load_vocabulary():
     # We will only need several keys out of the global dictionary
-    # Basic vocabulary (en_US)
+    # Load basic vocabulary (en_US)
     global_voc = load_json(os.path.join(dir_name, "langs", "en_US.json"))
     if not global_voc:
         eprint("Failed loading vocabulary")
@@ -51,13 +51,16 @@ def load_vocabulary():
     if lang != "en_US":
         loc_file = os.path.join(dir_name, "langs", "{}.json".format(lang))
         if os.path.isfile(loc_file):
-            # localized vocabulary
+            # Load localized vocabulary
             loc = load_json(loc_file)
             if not loc:
                 eprint("Failed loading translation into '{}'".format(lang))
             else:
+                # Replace keys w/ localized counterparts, if they exist
                 for key in loc:
                     global_voc[key] = loc[key]
+
+    # Select and return just the keys we need, in another dict
     global voc
     for key in ["you-are-up-to-date", "update", "check-updates", "exit"]:
         if key in global_voc:
