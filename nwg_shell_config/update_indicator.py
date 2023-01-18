@@ -171,7 +171,7 @@ class Indicator(object):
                 output = subprocess.check_output("baph -c".split()).decode('utf-8').strip()
                 if output and output != "0 0":
                     u = output.split()
-                    update_details = "pacman: {}, AUR: {} (baph)".format(u[1], u[0])
+                    update_details = "pacman: {}, AUR: {}".format(u[1], u[0])
             elif is_command("checkupdates"):
                 output = subprocess.check_output("checkupdates".split()).decode('utf-8')
                 if len(output.splitlines()) > 0:
