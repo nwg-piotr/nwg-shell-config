@@ -207,7 +207,7 @@ class Indicator(object):
 
 def main():
     own_pid = os.getpid()
-    # Disallow multiple instances
+    # Interrupt running instances, if any
     for proc in process_iter():
         if "nwg-update-ind" in proc.name():
             pid = proc.pid
