@@ -75,6 +75,7 @@ def load_vocabulary():
         eprint("Failed loading vocabulary")
         sys.exit(1)
 
+    # Detect lang (system or user-defined)
     lang = os.getenv("LANG").split(".")[0] if not shell_data["interface-locale"] else shell_data["interface-locale"]
     # Translate if necessary
     if lang != "en_US":
@@ -206,7 +207,7 @@ class Indicator(object):
 
 def main():
     own_pid = os.getpid()
-
+    # Disallow multiple instances
     for proc in process_iter():
         if "nwg-update-ind" in proc.name():
             pid = proc.pid
@@ -214,8 +215,10 @@ def main():
                 eprint("Killing '{}', pid {}".format(proc.name(), pid))
                 os.kill(pid, signal.SIGINT)
 
+    # Set app_id
     GLib.set_prgname('nwg-update-indicator')
 
+    # Load localized dictionary
     global voc
     voc = load_vocabulary()
 
@@ -233,8 +236,10 @@ def main():
 
     global ind
     ind = Indicator(distro)  # Will check updates for the 1st time in the constructor
+    # Check periodically in given intervals
     GLib.timeout_add_seconds(settings["update-indicator-interval"] * 60, ind.check_updates)
 
+    # Gentle termination; check updates on USR1 (for no reason / possible future use)
     catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
     for sig in catchable_sigs:
         signal.signal(sig, signal_handler)
