@@ -121,6 +121,20 @@
                     <property name="position">6</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkButton" id="button-translate">
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">True</property>
+                    <property name="halign">start</property>
+                    <property name="margin-start">6</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">7</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>

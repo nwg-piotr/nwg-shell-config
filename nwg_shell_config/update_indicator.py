@@ -43,7 +43,7 @@ if os.path.isfile(settings_file):
     settings = load_json(settings_file)
 defaults = {
     "update-indicator-on": True,
-    "update-indicator-interval": 10
+    "update-indicator-interval": 30
 }
 for key in defaults:
     check_key(settings, key, defaults[key])

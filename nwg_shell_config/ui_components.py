@@ -349,14 +349,25 @@ def screen_tab(settings, voc, pending_updates):
     box.pack_start(sb_help_font_size, False, False, 0)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<i>Would you like to help with translations?</i>")
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 7, 4, 1)
+    lbl.set_markup("<b>{}</b>".format(voc["update-tray-icon"]))
+    lbl.set_property("halign", Gtk.Align.START)
+    grid.attach(lbl, 0, 7, 1, 1)
 
-    btn = Gtk.Button.new_from_icon_name("nwg-shell-translate", Gtk.IconSize.BUTTON)
-    btn.set_tooltip_text("Runs nwg-shell-translate utility")
-    btn.connect("clicked", launch, "nwg-shell-translate")
-    grid.attach(btn, 4, 7, 1, 1)
+    cb_update_indicator_on = Gtk.CheckButton.new_with_label(voc["on"])
+    cb_update_indicator_on.set_active(settings["update-indicator-on"])
+    cb_update_indicator_on.connect("toggled", set_from_checkbutton, settings, "update-indicator-on")
+    cb_update_indicator_on.set_tooltip_text(voc["update-tray-icon-tooltip"])
+    grid.attach(cb_update_indicator_on, 1, 7, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["interval-min"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 7, 1, 1)
+
+    sb_update_indicator_interval = Gtk.SpinButton.new_with_range(1, 1440, 1)
+    sb_update_indicator_interval.set_tooltip_text(voc["update-indicator-interval-tooltip"])
+    sb_update_indicator_interval.set_value(settings["update-indicator-interval"])
+    sb_update_indicator_interval.connect("value-changed", set_int_from_spinbutton, settings, "update-indicator-interval")
+    grid.attach(sb_update_indicator_interval, 3, 7, 1, 1)
 
     frame.show_all()
 
