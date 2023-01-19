@@ -25,6 +25,7 @@ import sys
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GLib
+from psutil import process_iter
 from nwg_shell_config.tools import eprint, is_command, load_text_file, load_shell_data, load_json, check_key, get_data_dir
 
 try:
@@ -204,6 +205,15 @@ class Indicator(object):
 
 
 def main():
+    own_pid = os.getpid()
+
+    for proc in process_iter():
+        if "nwg-update-ind" in proc.name():
+            pid = proc.pid
+            if not pid == own_pid:
+                eprint("Killing '{}', pid {}".format(proc.name(), pid))
+                os.kill(pid, signal.SIGINT)
+
     GLib.set_prgname('nwg-update-indicator')
 
     global voc
