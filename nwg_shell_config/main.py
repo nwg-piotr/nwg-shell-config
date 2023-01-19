@@ -700,12 +700,13 @@ def save_includes():
 
         cmd_idle = "exec swayidle timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
                                                                        c_sleep, c_resume, c_before_sleep)
-
-        print("Idle command:", cmd_idle)
         autostart.append(cmd_idle)
         # We can't `exec_always swayidle`, as it would create multiple instances. Let's restart it here.
         subprocess.call("killall swayidle", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         subprocess.Popen(cmd_idle, shell=True)
+
+    if settings["update-indicator-on"]:
+        autostart.append("exec nwg-update-indicator")
 
     if settings["show-on-startup"]:
         autostart.append("exec nwg-shell-config")
