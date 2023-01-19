@@ -789,6 +789,11 @@ def reload():
                 "swaymsg reload"]:
         subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
+    if settings["update-indicator-on"]:
+        launch(None, "nwg-update-indicator")
+    else:
+        subprocess.call("pkill -f nwg-update-indicator", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+
 
 def load_settings():
     settings_file = os.path.join(data_dir, "settings")
