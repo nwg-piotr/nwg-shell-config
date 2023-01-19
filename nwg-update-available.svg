@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
    width="24"
    height="24"
+   viewBox="0 0 6.35 6.35"
    version="1.1"
-   id="svg2395"
-   sodipodi:docname="nwg-update-available.svg"
-   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   id="svg5"
    xml:space="preserve"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="nwg-update-available.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
-     id="namedview2397"
+     id="namedview7"
      pagecolor="#ffffff"
      bordercolor="#000000"
      borderopacity="0.25"
@@ -19,34 +22,29 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="16"
-     inkscape:cx="0.25"
-     inkscape:cy="12.875"
+     inkscape:zoom="5.7761243"
+     inkscape:cx="-5.193794"
+     inkscape:cy="15.581382"
      inkscape:window-width="1918"
      inkscape:window-height="1059"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg2395" /><defs
-     id="defs2387"><style
+     inkscape:current-layer="layer1" /><defs
+     id="defs2"><style
        id="current-color-scheme"
        type="text/css">
    .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
-  </style></defs><path
-     style="color:#000000;fill:#eeeeee;stroke:none;stroke-width:1.63604;-inkscape-stroke:none"
-     d="m 3.3554945,3.2975855 c 0,0 5.7359859,-1.3047215 8.6523415,-1.2975562 2.913297,0.00716 8.636793,1.3386657 8.636793,1.3386657 0,0 -0.03598,16.732628 -8.636369,18.661305 C 3.2191349,20.066112 3.3554945,3.2975855 3.3554945,3.2975855 Z"
-     id="path21415" /><path
-     style="color:#000000;fill:#444444;stroke:none;stroke-width:1.82857;-inkscape-stroke:none"
-     d="M 12.009416,23 11.829127,22.96033 C 9.3503982,22.41492 7.4987725,20.806246 6.1750231,18.810602 4.8512741,16.814957 4.0115011,14.418171 3.4564311,12.106253 2.3462921,7.482416 2.3866861,3.142457 2.3866861,3.142457 l 0.0053,-0.6576817 0.641313,-0.145875 c 0,0 5.7628227,-1.34675932 8.9759669,-1.3388657 3.210038,0.00789 8.960068,1.3815421 8.960068,1.3815421 L 21.6135,2.5314283 21.6121,3.192766 c 0,0 -0.0045,4.329026 -1.134254,8.940114 -0.564902,2.305543 -1.408192,4.694924 -2.719608,6.684472 -1.311417,1.989548 -3.134257,3.596313 -5.568683,4.142255 z m -0.0036,-1.705204 c 1.844881,-0.469453 3.248116,-1.698098 4.364758,-3.392154 1.152669,-1.748712 1.956673,-3.976324 2.493014,-6.165299 0.816089,-3.330728 1.018886,-6.535724 1.06941,-7.8810601 C 18.327895,3.5126207 14.164248,2.6673686 12.00523,2.6620595 9.8420325,2.6567495 5.6647831,3.4837537 4.0591251,3.8193687 c 0.03753,1.3445433 0.211417,4.5586263 1.013377,7.8988673 0.526369,2.192379 1.3260768,4.422692 2.4875113,6.173635 1.1259702,1.697478 2.5506856,2.931088 4.4458026,3.402925 z"
-     id="path21417" /><circle
-     style="fill:#ff6400;fill-opacity:1;stroke-width:1.30326"
-     class="ColorScheme-Highlight"
-     cx="19.87027"
-     cy="21.038019"
-     r="2.6065121"
-     id="circle2391" /><path
-     style="fill:#444444;fill-opacity:1;stroke-width:1.2276"
-     d="m 12.023926,5.5142088 3.069,4.7262592 h -1.8414 v 6.350791 h -2.4552 V 10.240468 H 8.9549263 Z"
-     id="path23484"
-     sodipodi:nodetypes="cccccccc" /></svg>
+  </style><style
+       id="current-color-scheme-6"
+       type="text/css">
+   .ColorScheme-Text { color:#dfdfdf; } .ColorScheme-Highlight { color:#4285f4; } .ColorScheme-NeutralText { color:#ff9800; } .ColorScheme-PositiveText { color:#4caf50; } .ColorScheme-NegativeText { color:#f44336; }
+  </style></defs><g
+     inkscape:label="Warstwa 1"
+     inkscape:groupmode="layer"
+     id="layer1"><path
+       id="path2752"
+       style="opacity:1;fill:#ff8000;fill-opacity:1;stroke:none;stroke-width:0.0731678"
+       d="M 3.8918153,0.26458333 V 2.4989073 h 0.885715 L 3.1750443,4.3392328 1.5725593,2.4989073 h 0.878054 V 0.26736713 A 2.9104102,2.9559668 0 0 0 0.26458333,3.1294861 2.9104102,2.9559668 0 0 0 3.1750443,6.0854168 2.9104102,2.9559668 0 0 0 6.0854163,3.1294861 2.9104102,2.9559668 0 0 0 3.8918153,0.26458333 Z" /></g></svg>
