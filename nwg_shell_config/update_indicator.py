@@ -211,6 +211,11 @@ class Indicator(object):
 
 
 def main():
+    # Die if 'nwg-system-update` script absent
+    if not is_command("nwg-system-update"):
+        eprint("'nwg-system-update' script not found, terminating")
+        sys.exit(1)
+
     own_pid = os.getpid()
     # Interrupt running instances, if any
     for proc in process_iter():
