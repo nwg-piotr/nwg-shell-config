@@ -204,6 +204,7 @@
   "powerbar-tooltip": "For this module to work, you need the `gtklock-powerbar-module` package.",
   "preset": "Preset",
   "preset-tooltip": "Switches current desktop style.",
+  "press-enter-to-exit": "Press Enter to exit...",
   "random-wallpaper-source": "Random wallpaper source",
   "reboot": "Reboot",
   "reboot-tooltip": "Command to reboot the computer.\nLeave blank to disable this feature.",

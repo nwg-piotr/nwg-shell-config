@@ -204,6 +204,7 @@
   "powerbar-tooltip": "By ten moduł działał, potrzebujesz paczki `gtklock-powerbar-module`.",
   "preset": "Preset",
   "preset-tooltip": "Wybiera aktualny styl pulpitu.",
+  "press-enter-to-exit": "Naciśnij Enter by zakończyć...",
   "random-wallpaper-source": "Źródło losowych tapet",
   "reboot": "Restart",
   "reboot-tooltip": "Komenda do zrestartowania komputera.\nPozostaw puste by wyłączyć tę opcję.",

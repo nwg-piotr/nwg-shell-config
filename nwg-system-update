@@ -2,5 +2,5 @@
 # Packagers: you need to replace this script with something, that will work for your distro.
 
 baph -u &&
-echo Press enter to exit...; read;
+echo $1; read;
 swaymsg reload
