@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Packagers: you need to replace this script with something, that will work for your distro.
+# Otherwise, just don't install this script. The tray system update notifier won't show up,
+# as well as related nwg-shell-config options.
 
 baph -u &&
 echo Press enter to exit...; read;
