@@ -92,7 +92,7 @@ def load_vocabulary():
 
     # Select and return just the keys we need, in another dict
     global voc
-    for k in ["you-are-up-to-date", "update", "check-updates", "exit"]:
+    for k in ["you-are-up-to-date", "update", "updates", "check-updates", "exit"]:
         if k in global_voc:
             voc[k] = global_voc[k]
 
@@ -140,7 +140,7 @@ class Indicator(object):
                                                AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
 
         self.ind.set_menu(self.menu())
-        self.ind.set_title("Update notifier")
+        self.ind.set_title(voc["updates"])
 
         self.check_updates()
 
@@ -197,7 +197,7 @@ class Indicator(object):
         self.check_updates()
 
     def switch_icon(self, icon, desc):
-        self.ind.set_title(desc)
+        # self.ind.set_title(desc)
         if desc != voc["you-are-up-to-date"]:
             self.item_update.set_label("{} ({})".format(voc["update"], desc))
         else:

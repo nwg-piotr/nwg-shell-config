@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+baph -u &&
+echo Press enter to exit...; read;
+swaymsg reload

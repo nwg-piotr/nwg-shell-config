@@ -8,3 +8,4 @@ cp nwg-shell-translate.svg /usr/share/pixmaps/
 cp nwg-update-noupdate.svg /usr/share/pixmaps/
 cp nwg-update-available.svg /usr/share/pixmaps/
 cp nwg-update-checking.svg /usr/share/pixmaps/
+cp nwg-system-update /usr/local/bin/
