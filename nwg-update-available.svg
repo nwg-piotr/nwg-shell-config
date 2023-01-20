@@ -25,10 +25,10 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="5.7761243"
-     inkscape:cx="-5.193794"
+     inkscape:cx="-9.608519"
      inkscape:cy="15.581382"
      inkscape:window-width="1918"
-     inkscape:window-height="1059"
+     inkscape:window-height="1018"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -44,7 +44,16 @@
   </style></defs><g
      inkscape:label="Warstwa 1"
      inkscape:groupmode="layer"
-     id="layer1"><path
-       id="path2752"
-       style="opacity:1;fill:#ff8000;fill-opacity:1;stroke:none;stroke-width:0.0731678"
-       d="M 3.8918153,0.26458333 V 2.4989073 h 0.885715 L 3.1750443,4.3392328 1.5725593,2.4989073 h 0.878054 V 0.26736713 A 2.9104102,2.9559668 0 0 0 0.26458333,3.1294861 2.9104102,2.9559668 0 0 0 3.1750443,6.0854168 2.9104102,2.9559668 0 0 0 6.0854163,3.1294861 2.9104102,2.9559668 0 0 0 3.8918153,0.26458333 Z" /></g></svg>
+     id="layer1"><circle
+       style="fill:#ff8000;fill-opacity:1;stroke:none;stroke-width:0.416825"
+       id="path13647-7"
+       cx="3.175"
+       cy="3.175"
+       r="2.9104166" /><g
+       aria-label="➡"
+       id="text724"
+       style="font-size:12.7px;line-height:1.25;stroke-width:0.264583;fill:#eeeeee;fill-opacity:1"
+       transform="matrix(0,0.3868437,-0.3868437,0,10.280684,-1.9460534)"><path
+         d="m 14.875152,15.218163 3.150195,3.150195 -3.150195,3.150195 v -1.69292 H 8.4507382 v -2.91455 h 6.4244138 z"
+         id="path991"
+         style="fill:#eeeeee;fill-opacity:1" /></g></g></svg>
