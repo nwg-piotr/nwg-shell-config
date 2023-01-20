@@ -361,42 +361,43 @@ def screen_tab(settings, voc, pending_updates):
     sb_help_font_size.connect("value-changed", set_int_from_spinbutton, settings, "help-font-size")
     box.pack_start(sb_help_font_size, True, True, 0)
 
-    # Let user be able to replace the default 'nwg-system-update' command with their own.
-    lbl = Gtk.Label()
-    lbl.set_markup("<b>{}</b>".format(voc["update-tray-icon"]))
-    lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 0, 7, 1, 1)
+    # The way to turn the update-indicator section in the form off, is not to provide the 'nwg-system-update' script.
+    if is_command("nwg-system-update"):
+        lbl = Gtk.Label()
+        lbl.set_markup("<b>{}</b>".format(voc["update-tray-icon"]))
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 0, 7, 1, 1)
 
-    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
-    grid.attach(box, 1, 7, 3, 1)
-    cb_update_indicator_on = Gtk.CheckButton.new_with_label(voc["on"])
-    cb_update_indicator_on.set_active(settings["update-indicator-on"])
-    cb_update_indicator_on.connect("toggled", set_from_checkbutton, settings, "update-indicator-on")
-    cb_update_indicator_on.set_tooltip_text(voc["update-tray-icon-tooltip"])
-    box.pack_start(cb_update_indicator_on, False, False, 0)
+        box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
+        grid.attach(box, 1, 7, 3, 1)
+        cb_update_indicator_on = Gtk.CheckButton.new_with_label(voc["on"])
+        cb_update_indicator_on.set_active(settings["update-indicator-on"])
+        cb_update_indicator_on.connect("toggled", set_from_checkbutton, settings, "update-indicator-on")
+        cb_update_indicator_on.set_tooltip_text(voc["update-tray-icon-tooltip"])
+        box.pack_start(cb_update_indicator_on, False, False, 0)
 
-    lbl = Gtk.Label.new("{}:".format(voc["interval"]))
-    lbl.set_property("halign", Gtk.Align.END)
-    box.pack_start(lbl, False, False, 0)
+        lbl = Gtk.Label.new("{}:".format(voc["interval"]))
+        lbl.set_property("halign", Gtk.Align.END)
+        box.pack_start(lbl, False, False, 0)
 
-    sb_update_indicator_interval = Gtk.SpinButton.new_with_range(1, 1440, 1)
-    sb_update_indicator_interval.set_tooltip_text(voc["update-indicator-interval-tooltip"])
-    sb_update_indicator_interval.set_value(settings["update-indicator-interval"])
-    sb_update_indicator_interval.connect("value-changed", set_int_from_spinbutton, settings,
-                                         "update-indicator-interval")
-    box.pack_start(sb_update_indicator_interval, False, False, 0)
+        sb_update_indicator_interval = Gtk.SpinButton.new_with_range(1, 1440, 1)
+        sb_update_indicator_interval.set_tooltip_text(voc["update-indicator-interval-tooltip"])
+        sb_update_indicator_interval.set_value(settings["update-indicator-interval"])
+        sb_update_indicator_interval.connect("value-changed", set_int_from_spinbutton, settings,
+                                             "update-indicator-interval")
+        box.pack_start(sb_update_indicator_interval, False, False, 0)
 
-    lbl = Gtk.Label.new("{}:".format(voc["command"]))
-    lbl.set_property("halign", Gtk.Align.END)
-    box.pack_start(lbl, False, False, 0)
+        lbl = Gtk.Label.new("{}:".format(voc["command"]))
+        lbl.set_property("halign", Gtk.Align.END)
+        box.pack_start(lbl, False, False, 0)
 
-    entry_update_cmd = Gtk.Entry()
-    entry_update_cmd.set_placeholder_text("nwg-system-update")
-    entry_update_cmd.set_tooltip_text(voc["update-command-tooltip"])
-    entry_update_cmd.set_text(settings["update-command"])
-    entry_update_cmd.connect("changed", validate_update_cmd, cb_update_indicator_on, sb_update_indicator_interval,
-                             settings)
-    box.pack_start(entry_update_cmd, False, False, 0)
+        entry_update_cmd = Gtk.Entry()
+        entry_update_cmd.set_placeholder_text("nwg-system-update")
+        entry_update_cmd.set_tooltip_text(voc["update-command-tooltip"])
+        entry_update_cmd.set_text(settings["update-command"])
+        entry_update_cmd.connect("changed", validate_update_cmd, cb_update_indicator_on, sb_update_indicator_interval,
+                                 settings)
+        box.pack_start(entry_update_cmd, False, False, 0)
 
     frame.show_all()
 
