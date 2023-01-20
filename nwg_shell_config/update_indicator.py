@@ -95,7 +95,7 @@ def load_vocabulary():
 
     # Select and return just the keys we need, in another dict
     global voc
-    for k in ["you-are-up-to-date", "update", "updates", "check-updates", "exit"]:
+    for k in ["you-are-up-to-date", "update", "updates", "check-updates", "exit", "press-enter-to-exit"]:
         if k in global_voc:
             voc[k] = global_voc[k]
 
