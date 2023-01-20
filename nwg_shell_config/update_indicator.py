@@ -13,8 +13,9 @@ It's quite well documented in comments, and expected to be adapted for use with 
 
 For use with Arch Linux and derivatives, the script depends on 'baph' (Basic AUR Package Helper) by Nate Maia
 https://bitbucket.org/natemaia/baph, as well if it comes to checking updates, as to updating.
-Updates are being performed by the `sway-update` script, distributed with the 'nwg-shell' AUR package.
-For your own distro, you will need your own version of the latter, installed somewhere on $PATH.
+
+Updates are being performed by the `nwg-system-update` script. For your own distro, you will need your own
+version of the latter, installed somewhere on $PATH.
 """
 
 import gi
