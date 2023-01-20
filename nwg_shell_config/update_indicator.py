@@ -204,8 +204,9 @@ class Indicator(object):
         # self.ind.set_title(desc)
         if desc != voc["you-are-up-to-date"]:
             self.item_update.set_label("{} ({})".format(voc["update"], desc))
+            self.item_update.show()
         else:
-            self.item_update.set_label(voc["update"])
+            self.item_update.hide()
         self.ind.set_icon_full(icon, desc)
 
 
