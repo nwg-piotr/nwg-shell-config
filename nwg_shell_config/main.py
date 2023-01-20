@@ -885,7 +885,8 @@ def load_settings():
         "gtklock-userinfo": False,
         "gtklock-userswitch-command": "",
         "update-indicator-on": True,
-        "update-indicator-interval": 30
+        "update-indicator-interval": 30,
+        "update-command": "nwg-system-update"
     }
     global settings
     if os.path.isfile(settings_file):

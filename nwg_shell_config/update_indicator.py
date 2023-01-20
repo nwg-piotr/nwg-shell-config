@@ -27,7 +27,8 @@ import sys
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GLib
 from psutil import process_iter
-from nwg_shell_config.tools import eprint, is_command, load_text_file, load_shell_data, load_json, check_key, get_data_dir
+from nwg_shell_config.tools import eprint, is_command, load_text_file, load_shell_data, load_json, check_key, \
+    get_data_dir
 
 try:
     gi.require_version('AppIndicator3', '0.1')
@@ -45,7 +46,8 @@ if os.path.isfile(settings_file):
     settings = load_json(settings_file)
 defaults = {
     "update-indicator-on": True,
-    "update-indicator-interval": 30
+    "update-indicator-interval": 30,
+    "update-command": "nwg-system-update"
 }
 for key in defaults:
     check_key(settings, key, defaults[key])
@@ -209,7 +211,7 @@ class Indicator(object):
 
 def main():
     # Die if 'nwg-system-update` script absent
-    if not is_command("nwg-system-update"):
+    if not is_command(settings["update-command"]):
         eprint("'nwg-system-update' script not found, terminating")
         sys.exit(1)
 
