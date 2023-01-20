@@ -102,6 +102,7 @@ def load_vocabulary():
 def check_distro():
     # This is just a skeleton function, and for now it detects Arch Linux only. Feel free to contribute.
     # Use unambiguous, lowercase name for your distro. You will need it in the Indicator.check_updates method.
+
     if os.path.isfile("/etc/os-release"):
         lines = load_text_file("/etc/os-release").splitlines()
         for line in lines:
@@ -163,7 +164,8 @@ class Indicator(object):
 
     def check_updates(self, *args):
         update_details = ""
-        # The code below should leave `update_details` string empty if no updates found
+        # The code below should leave `update_details` string empty if no updates found.
+        # Otherwise, it should set it as a short info, that will be appended to the 'Update' menu item.
 
         GLib.timeout_add_seconds(0, self.switch_icon, "nwg-update-checking", "Checking")
 
@@ -191,8 +193,10 @@ class Indicator(object):
 
     def update(self, *args):
         # Other distros: we already have the foot terminal installed.
-        # You just need to provide your own `sway-update` script somewhere on $PATH.
-        subprocess.call('exec foot sway-update', shell=True)
+        # You just need to provide your own `nwg-system-update` script somewhere on $PATH.
+        # IMPORTANT: the presence of this script will also determine if to display corresponding
+        # options in the config utility.
+        subprocess.call('exec foot nwg-system-update', shell=True)
 
         self.check_updates()
 
