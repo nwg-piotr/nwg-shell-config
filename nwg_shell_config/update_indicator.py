@@ -177,10 +177,6 @@ class Indicator(object):
                 if output and output != "0 0":
                     u = output.split()
                     update_details = "pacman: {}, AUR: {}".format(u[1], u[0])
-            elif is_command("checkupdates"):
-                output = subprocess.check_output("checkupdates".split()).decode('utf-8')
-                if len(output.splitlines()) > 0:
-                    update_details = "pacman: {} (checkupdates)".format(len(output.splitlines()))
 
         # elif self.distro == "something_else:
         #   place your code here
@@ -241,7 +237,7 @@ def main():
         eprint("nwg-update-indicator running on '{}'".format(distro))
 
     if distro == "arch":
-        if not is_command("baph") and not is_command("checkupdates"):
+        if not is_command("baph"):
             eprint("No supported AUR helper found, terminating")
             sys.exit(1)
 
