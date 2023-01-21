@@ -195,7 +195,10 @@ class Indicator(object):
         # You just need to provide your own `nwg-system-update` script somewhere on $PATH.
         # IMPORTANT: the presence of this script will also determine if to display corresponding
         # options in the config utility.
-        subprocess.call("exec foot nwg-system-update '{}'".format(voc["press-enter-to-exit"]), shell=True)
+        if settings["update-command"] == "nwg-system-update":
+            subprocess.call("exec foot nwg-system-update '{}'".format(voc["press-enter-to-exit"]), shell=True)
+        else:
+            subprocess.call("exec {}".format(settings["update-command"]), shell=True)
 
         self.check_updates()
 
