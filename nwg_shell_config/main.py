@@ -461,6 +461,12 @@ class GUI(object):
             self.combo_interface_locale.set_active_id("auto")
         self.combo_interface_locale.connect("changed", set_interface_locale)
 
+        btn_translate = builder.get_object("button-translate")
+        icon = Gtk.Image.new_from_icon_name("nwg-shell-translate", Gtk.IconSize.BUTTON)
+        btn_translate.set_image(icon)
+        btn_translate.set_tooltip_text("Would you like to help with translations?")
+        btn_translate.connect("clicked", on_button_translate)
+
         self.btn_close = builder.get_object("btn-close")
         self.btn_close.set_label(voc["close"])
         self.btn_close.set_tooltip_text(voc["close-tooltip"])
@@ -516,6 +522,10 @@ def set_interface_locale(combo):
         ui.refresh_bottom_menu_locale()
     # kinda shortcut, but let's just get to the screen tab, instead of remembering which one we were in
     set_up_screen_tab()
+
+
+def on_button_translate(btn):
+    launch(btn, "nwg-shell-translate")
 
 
 def save_includes():
@@ -690,12 +700,13 @@ def save_includes():
 
         cmd_idle = "exec swayidle timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
                                                                        c_sleep, c_resume, c_before_sleep)
-
-        print("Idle command:", cmd_idle)
         autostart.append(cmd_idle)
         # We can't `exec_always swayidle`, as it would create multiple instances. Let's restart it here.
         subprocess.call("killall swayidle", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         subprocess.Popen(cmd_idle, shell=True)
+
+    if settings["update-indicator-on"]:
+        autostart.append("exec nwg-update-indicator")
 
     if settings["show-on-startup"]:
         autostart.append("exec nwg-shell-config")
@@ -777,6 +788,11 @@ def reload():
                 "swaync-client --reload-config",
                 "swaymsg reload"]:
         subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+
+    if settings["update-indicator-on"]:
+        launch(None, "nwg-update-indicator")
+    else:
+        subprocess.call("pkill -f nwg-update-indicator", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
 
 def load_settings():
@@ -867,7 +883,10 @@ def load_settings():
         "gtklock-suspend-command": "systemctl suspend",
         "gtklock-time-format": "%H:%M:%S",
         "gtklock-userinfo": False,
-        "gtklock-userswitch-command": ""
+        "gtklock-userswitch-command": "",
+        "update-indicator-on": True,
+        "update-indicator-interval": 30,
+        "update-command": "nwg-system-update"
     }
     global settings
     if os.path.isfile(settings_file):
