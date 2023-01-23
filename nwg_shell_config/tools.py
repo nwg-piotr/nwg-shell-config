@@ -112,6 +112,50 @@ def get_theme_names():
     return names
 
 
+def has_dirs(path):
+    for item in os.listdir(path):
+        if os.path.isdir(os.path.join(path, item)):
+            return True
+    return False
+
+
+def get_theme_name(path):
+    for item in os.listdir(path):
+        if item == "index.theme":
+            lines = load_text_file(os.path.join(path, item)).splitlines()
+            for line in lines:
+                if line.startswith("Name="):
+                    return line.split("=")[1].strip()
+    return None
+
+
+def get_icon_themes():
+    # In contrary to the get_theme_names() function, this time we need as well the theme name, as its folder name,
+    # as we select icon themes by their folder names, and display names may be different. Odd, isn't it?
+    icon_dirs = []
+    for d in get_data_dirs():
+        p = os.path.join(d, "icons")
+        if os.path.isdir(p):
+            icon_dirs.append(p)
+
+    home = os.getenv("HOME")
+    if home:
+        p = os.path.join(home, ".icons")
+        if os.path.isdir(p):
+            icon_dirs.append(p)
+
+    names = {}
+    exclusions = ["default", "hicolor", "locolor"]
+    for d in icon_dirs:
+        for item in os.listdir(d):
+            p = os.path.join(d, item)
+            if item not in exclusions and os.path.isdir(p) and has_dirs(p):
+                name = get_theme_name(os.path.join(d, item))
+                if name:
+                    names[name] = item
+    return names
+
+
 def init_files(src_dir, dst_dir, overwrite=False):
     src_files = os.listdir(src_dir)
     for file in src_files:

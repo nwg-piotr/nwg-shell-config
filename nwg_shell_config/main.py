@@ -570,6 +570,8 @@ def save_includes():
         cmd_launcher += " -ovl"
     if preset["launcher-gtk-theme"]:
         cmd_launcher += " -g {}".format(preset["launcher-gtk-theme"])
+    if preset["launcher-gtk-icon-theme"]:
+        cmd_launcher += " -i {}".format(preset["launcher-gtk-icon-theme"])
 
     if "preset-" in settings["panel-preset"]:
         cmd_launcher += " -s {}.css".format(settings["panel-preset"])
@@ -934,6 +936,7 @@ def load_preset(file_name):
         "launcher-css": "",
         "launcher-on": True,
         "launcher-gtk-theme": "",
+        "launcher-gtk-icon-theme": "",
         "exit-position": "center",
         "exit-full": False,
         "exit-alignment": "middle",

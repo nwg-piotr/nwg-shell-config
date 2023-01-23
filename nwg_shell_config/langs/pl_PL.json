@@ -112,6 +112,7 @@
   "hotspot-delay": "Opóźnienie hotspota",
   "hotspot-delay-tooltip": "Opóźnienie hotspota w milisekundach: im mniejsze, tym szybciej\nmysz musi być wprowadzona nad gorący punkt, by dok się pojawił.\nUstaw 0 by wyłączyć tę funkcję (domyślnie 20).",
   "icon-size": "Wielkość ikony",
+  "icon-theme": "Motyw ikon",
   "idle-lock-screen": "Bezczynność i blokada",
   "idle-settings": "Bezczynność",
   "idle-timeout": "Opóźnienie bezczynności",

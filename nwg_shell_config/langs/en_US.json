@@ -112,6 +112,7 @@
   "hotspot-delay": "Hotspot delay",
   "hotspot-delay-tooltip": "Hotspot delay in milliseconds: the smaller, the faster the mouse\npointer needs to enter the hotspot for the dock to appear.\nSet 0 to disable this feature (default 20).",
   "icon-size": "Icon size",
+  "icon-theme": "Icon theme",
   "idle-lock-screen": "Idle & Lock screen",
   "idle-settings": "Idle settings",
   "idle-timeout": "Idle timeout",
