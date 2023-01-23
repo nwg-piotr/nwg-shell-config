@@ -568,6 +568,8 @@ def save_includes():
         cmd_launcher += " -nocats"
     if preset["launcher-overlay"]:
         cmd_launcher += " -ovl"
+    if preset["launcher-gtk-theme"]:
+        cmd_launcher += " -g {}".format(preset["launcher-gtk-theme"])
 
     if "preset-" in settings["panel-preset"]:
         cmd_launcher += " -s {}.css".format(settings["panel-preset"])
@@ -931,6 +933,7 @@ def load_preset(file_name):
         "launcher-overlay": False,
         "launcher-css": "",
         "launcher-on": True,
+        "launcher-gtk-theme": "",
         "exit-position": "center",
         "exit-full": False,
         "exit-alignment": "middle",

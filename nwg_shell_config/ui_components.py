@@ -7,7 +7,7 @@ from datetime import datetime
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, \
-    list_inputs_by_type, gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp
+    list_inputs_by_type, gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp, get_theme_names
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -1579,23 +1579,35 @@ def drawer_tab(preset, preset_name, voc):
     cb_search_files.connect("toggled", set_from_checkbutton, preset, "launcher-search-files")
     grid.attach(cb_search_files, 2, 3, 1, 1)
 
+    lbl = Gtk.Label.new("{}:".format(voc["gtk-theme"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    combo_gtk_theme = Gtk.ComboBoxText()
+    combo_gtk_theme.append("", voc["default"])
+    for name in get_theme_names():
+        combo_gtk_theme.append(name, name)
+    combo_gtk_theme.set_active_id(preset["launcher-gtk-theme"])
+    combo_gtk_theme.connect("changed", set_dict_key_from_combo, preset, "launcher-gtk-theme")
+    grid.attach(combo_gtk_theme, 1, 4, 1, 1)
+
     cb_categories = Gtk.CheckButton.new_with_label(voc["show-category-buttons"])
     cb_categories.set_tooltip_text(voc["show-category-buttons-tooltip"])
     cb_categories.set_active(preset["launcher-categories"])
     cb_categories.connect("toggled", set_from_checkbutton, preset, "launcher-categories")
-    grid.attach(cb_categories, 0, 4, 2, 1)
+    grid.attach(cb_categories, 0, 5, 2, 1)
 
     cb_resident = Gtk.CheckButton.new_with_label(voc["keep-resident"])
     cb_resident.set_tooltip_text(voc["keep-resident-tooltip"])
     cb_resident.set_active(preset["launcher-resident"])
     cb_resident.connect("toggled", set_from_checkbutton, preset, "launcher-resident")
-    grid.attach(cb_resident, 0, 5, 2, 1)
+    grid.attach(cb_resident, 0, 6, 2, 1)
 
     cb_overlay = Gtk.CheckButton.new_with_label(voc["open-on-overlay"])
     cb_overlay.set_tooltip_text(voc["open-on-overlay-tooltip"])
     cb_overlay.set_active(preset["launcher-overlay"])
     cb_overlay.connect("toggled", set_from_checkbutton, preset, "launcher-overlay")
-    grid.attach(cb_overlay, 0, 6, 2, 1)
+    grid.attach(cb_overlay, 0, 7, 2, 1)
 
     frame.show_all()
 

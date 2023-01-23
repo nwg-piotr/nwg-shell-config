@@ -39,6 +39,19 @@ def get_data_dir():
     return data_dir
 
 
+def get_data_dirs():
+    dirs = [get_data_home()]
+    xdg_data_dirs = os.getenv("XDG_DATA_DIRS") if os.getenv("XDG_DATA_DIRS") else "/usr/local/share/:/usr/share/"
+    for d in xdg_data_dirs.split(":"):
+        dirs.append(d)
+    confirmed = []
+    for d in dirs:
+        if os.path.isdir(d):
+            confirmed.append(d)
+
+    return confirmed
+
+
 def get_shell_data_dir():
     data_dir = ""
     home = os.getenv("HOME")
@@ -69,6 +82,34 @@ def data_home():
         return os.getenv("XDG_DATA_HOME")
 
     return os.path.join(os.getenv("HOME"), ".local/share")
+
+
+def get_theme_names():
+    theme_dirs = []
+    for d in get_data_dirs():
+        p = os.path.join(d, "themes")
+        if os.path.isdir(p):
+            theme_dirs.append(p)
+
+    home = os.getenv("HOME")
+    if home:
+        p = os.path.join(home, ".themes")
+        if os.path.isdir(p):
+            theme_dirs.append(p)
+
+    names = []
+    exclusions = ["Default", "Emacs"]
+    for d in theme_dirs:
+        for item in os.listdir(d):
+            if os.path.isdir(os.path.join(d, item)) and item not in exclusions:
+                content = os.listdir(os.path.join(d, item))
+                for name in content:
+                    if name.startswith("gtk-"):
+                        if item not in names:
+                            names.append(item)
+                            break
+    names.sort()
+    return names
 
 
 def init_files(src_dir, dst_dir, overwrite=False):
