@@ -571,7 +571,9 @@ def save_includes():
     if preset["launcher-gtk-theme"]:
         cmd_launcher += " -g {}".format(preset["launcher-gtk-theme"])
     if preset["launcher-gtk-icon-theme"]:
-        cmd_launcher += " -i {}".format(preset["launcher-gtk-icon-theme"])
+        # dict: {"theme_name": "folder_name"}
+        theme_names = get_icon_themes()
+        cmd_launcher += " -i {}".format(theme_names[preset["launcher-gtk-icon-theme"]])
 
     if "preset-" in settings["panel-preset"]:
         cmd_launcher += " -s {}.css".format(settings["panel-preset"])

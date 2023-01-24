@@ -137,8 +137,8 @@ def set_dict_key_from_combo(combo, settings, key):
     settings[key] = combo.get_active_id()
 
 
-def set_icon_theme_from_combo(combo, settings, key, theme_names):
-    settings[key] = theme_names[combo.get_active_id()]
+# def set_icon_theme_from_combo(combo, settings, key, theme_names):
+#     settings[key] = theme_names[combo.get_active_id()]
 
 
 def on_custom_folder_selected(fcb, cb_custom_path, settings):
@@ -1612,7 +1612,7 @@ def drawer_tab(preset, preset_name, voc):
     for name in sorted(names, key=str.casefold):
         combo_gtk_icon_theme.append(name, name)
     combo_gtk_icon_theme.set_active_id(preset["launcher-gtk-icon-theme"])
-    combo_gtk_icon_theme.connect("changed", set_icon_theme_from_combo, preset, "launcher-gtk-icon-theme", theme_names)
+    combo_gtk_icon_theme.connect("changed", set_dict_key_from_combo, preset, "launcher-gtk-icon-theme")
     grid.attach(combo_gtk_icon_theme, 1, 5, 1, 1)
 
     cb_categories = Gtk.CheckButton.new_with_label(voc["show-category-buttons"])
