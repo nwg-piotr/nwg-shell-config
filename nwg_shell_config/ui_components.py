@@ -524,12 +524,19 @@ def applications_tab(settings, voc, warn):
 def get_browsers():
     result = {}
     browsers = {
+        "brave": "brave --enable-features=UseOzonePlatform --ozone-platform=wayland",
         "chromium": "chromium --enable-features=UseOzonePlatform --ozone-platform=wayland",
         "google-chrome-stable": "google-chrome-stable --enable-features=UseOzonePlatform --ozone-platform=wayland",
-        "firefox": "MOZ_ENABLE_WAYLAND=1 firefox",
-        "qutebrowser": "qutebrowser",
         "epiphany": "epiphany",
-        "surf": "surf"
+        "falkon": "falkon",
+        "firefox": "MOZ_ENABLE_WAYLAND=1 firefox",
+        "konqueror": "konqueror",
+        "midori": "midori",
+        "opera": "opera",
+        "qutebrowser": "qutebrowser",
+        "seamonkey": "seamonkey",
+        "surf": "surf",
+        "vivaldi-stable": "vivaldi-stable --enable-features=UseOzonePlatform --ozone-platform=wayland",
     }
     for key in browsers:
         if is_command(key):
