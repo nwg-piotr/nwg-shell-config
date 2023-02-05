@@ -5,4 +5,3 @@
 
 baph -u &&
 echo $1; read;
-swaymsg reload
