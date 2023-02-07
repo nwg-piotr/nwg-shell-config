@@ -890,7 +890,7 @@ def load_settings():
         "gtklock-time-format": "%H:%M:%S",
         "gtklock-userinfo": False,
         "gtklock-userswitch-command": "",
-        "update-indicator-on": True,
+        "update-indicator-on": False,
         "update-indicator-interval": 30,
         "update-command": "nwg-system-update"
     }

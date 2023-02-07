@@ -402,6 +402,8 @@ def screen_tab(settings, voc, pending_updates):
         entry_update_cmd.connect("changed", validate_update_cmd, cb_update_indicator_on, sb_update_indicator_interval,
                                  settings)
         box.pack_start(entry_update_cmd, False, False, 0)
+    else:
+        settings["update-indicator-on"] = False
 
     frame.show_all()
 
