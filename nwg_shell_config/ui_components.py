@@ -2122,10 +2122,31 @@ def sys_info_tab(voc):
         lbl.set_property("halign", Gtk.Align.START)
         grid.attach(lbl, 1, 4, 1, 1)
 
-    lbl = Gtk.Label()
-    lbl.set_markup('<a href="https://swaywm.org">https://swaywm.org</a>')
-    lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 1, 5, 1, 1)
+    settings = Gtk.Settings.get_default()
+    if settings:
+        lbl = Gtk.Label.new("GTK theme:")
+        lbl.set_property("halign", Gtk.Align.END)
+        grid.attach(lbl, 0, 5, 1, 1)
+
+        lbl = Gtk.Label.new(settings.get_property("gtk-theme-name"))
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 1, 5, 1, 1)
+
+        lbl = Gtk.Label.new("Icon theme:")
+        lbl.set_property("halign", Gtk.Align.END)
+        grid.attach(lbl, 0, 6, 1, 1)
+
+        lbl = Gtk.Label.new(settings.get_property("gtk-icon-theme-name"))
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 1, 6, 1, 1)
+
+        lbl = Gtk.Label.new("Font:")
+        lbl.set_property("halign", Gtk.Align.END)
+        grid.attach(lbl, 0, 7, 1, 1)
+
+        lbl = Gtk.Label.new(settings.get_property("gtk-font-name"))
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 1, 7, 1, 1)
 
     img = Gtk.Image.new_from_icon_name("nwg-shell", Gtk.IconSize.DIALOG)
     img.set_property("margin-left", 12)
