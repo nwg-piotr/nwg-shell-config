@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, GdkPixbuf
+from gi.repository import Gtk, Pango
 from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, \
     list_inputs_by_type, gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp, get_theme_names, \
     get_icon_themes, get_command_output
@@ -2112,6 +2112,7 @@ def sys_info_tab(voc):
     txt = get_command_output("uname -m")[0]
     lbl = Gtk.Label.new("Architecture: {}".format(txt))
     lbl.set_line_wrap(True)
+    lbl.set_wrap_mode(Pango.WrapMode.WORD_CHAR)
     lbl.set_property("xalign", 0)
     grid.attach(lbl, 1, 3, 1, 1)
 
