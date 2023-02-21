@@ -2112,7 +2112,7 @@ def sys_info_tab(voc):
     txt = get_command_output("uname -m")[0]
     lbl = Gtk.Label.new("Architecture: {}".format(txt))
     lbl.set_line_wrap(True)
-    lbl.set_wrap_mode(Pango.WrapMode.WORD_CHAR)
+    lbl.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
     lbl.set_property("xalign", 0)
     grid.attach(lbl, 1, 3, 1, 1)
 
