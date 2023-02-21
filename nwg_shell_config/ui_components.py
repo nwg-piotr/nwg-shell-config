@@ -3,6 +3,7 @@ import gi
 import os
 
 from datetime import datetime
+from i3ipc import Connection
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Pango
@@ -2075,6 +2076,7 @@ def panel_styling_tab(settings, preset, preset_name, voc):
 
     return frame
 
+
 def sys_info_tab(voc):
     frame = Gtk.Frame()
     frame.set_label("  {}  ".format(voc["system-info"]))
@@ -2089,6 +2091,7 @@ def sys_info_tab(voc):
     name, home_url, logo = parse_etc_release()
     if logo:
         img = Gtk.Image.new_from_icon_name(logo, Gtk.IconSize.DIALOG)
+        img.set_property("halign", Gtk.Align.END)
         grid.attach(img, 0, 0, 1, 2)
 
     if name:
@@ -2148,8 +2151,25 @@ def sys_info_tab(voc):
         lbl.set_property("halign", Gtk.Align.START)
         grid.attach(lbl, 1, 7, 1, 1)
 
+    if os.getenv("SWAYSOCK"):
+        i3 = Connection()
+        row = 8
+        outputs = i3.get_outputs()
+        for i in range(len(outputs)):
+            output = outputs[i]
+
+            lbl = Gtk.Label.new("{}:".format(output.name))
+            lbl.set_property("halign", Gtk.Align.END)
+            grid.attach(lbl, 0, row + i, 1, 1)
+
+            r = output.rect
+            lbl = Gtk.Label.new(
+                "{}x{}, scale: {}, x: {}, y: {}".format(r.width, r.height, output.scale, r.x, r.y))
+            lbl.set_property("halign", Gtk.Align.START)
+            grid.attach(lbl, 1, row + i, 1, 1)
+
+    # Right column
     img = Gtk.Image.new_from_icon_name("nwg-shell", Gtk.IconSize.DIALOG)
-    img.set_property("margin-left", 12)
     img.set_property("halign", Gtk.Align.END)
     grid.attach(img, 2, 0, 1, 2)
 
@@ -2234,6 +2254,7 @@ def sys_info_tab(voc):
     frame.show_all()
 
     return frame
+
 
 def parse_etc_release():
     name, home_url, logo = "", "", ""
