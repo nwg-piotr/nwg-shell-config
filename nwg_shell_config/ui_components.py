@@ -5,9 +5,10 @@ import os
 from datetime import datetime
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, GdkPixbuf
 from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, \
-    list_inputs_by_type, gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp, get_theme_names, get_icon_themes
+    list_inputs_by_type, gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp, get_theme_names, \
+    get_icon_themes, get_command_output
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -2073,3 +2074,158 @@ def panel_styling_tab(settings, preset, preset_name, voc):
     frame.show_all()
 
     return frame
+
+def sys_info_tab(voc):
+    frame = Gtk.Frame()
+    frame.set_label("  {}  ".format(voc["system-info"]))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(3)
+
+    name, home_url, logo = parse_etc_release()
+    if logo:
+        img = Gtk.Image.new_from_icon_name(logo, Gtk.IconSize.DIALOG)
+        grid.attach(img, 0, 0, 1, 2)
+
+    if name:
+        lbl = Gtk.Label()
+        lbl.set_markup("<big><b>{}</b></big>".format(name))
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 1, 0, 1, 1)
+
+    if home_url:
+        lbl = Gtk.Label()
+        lbl.set_markup('<a href="{}">{}</a>'.format(home_url, home_url))
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 1, 1, 1, 1)
+
+    txt = get_command_output("uname -r")[0]
+    lbl = Gtk.Label.new("Kernel: {}".format(txt))
+    lbl.set_line_wrap(True)
+    lbl.set_property("xalign", 0)
+    grid.attach(lbl, 1, 2, 1, 1)
+
+    txt = get_command_output("uname -m")[0]
+    lbl = Gtk.Label.new("Architecture: {}".format(txt))
+    lbl.set_line_wrap(True)
+    lbl.set_property("xalign", 0)
+    grid.attach(lbl, 1, 3, 1, 1)
+
+    output = get_command_output("sway -v")
+    if output:
+        lbl = Gtk.Label.new(output[0])
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 1, 4, 1, 1)
+
+    lbl = Gtk.Label()
+    lbl.set_markup('<a href="https://swaywm.org">https://swaywm.org</a>')
+    lbl.set_property("halign", Gtk.Align.START)
+    grid.attach(lbl, 1, 5, 1, 1)
+
+    img = Gtk.Image.new_from_icon_name("nwg-shell", Gtk.IconSize.DIALOG)
+    img.set_property("margin-left", 12)
+    img.set_property("halign", Gtk.Align.END)
+    grid.attach(img, 2, 0, 1, 2)
+
+    output = get_command_output("nwg-shell -v")
+    if output:
+        lbl = Gtk.Label()
+        lbl.set_markup("<big><b>{}</b></big>".format(output[0]))
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 3, 0, 1, 1)
+
+        lbl = Gtk.Label()
+        lbl.set_markup('<a href="https://nwg-piotr.github.io/nwg-shell">https://nwg-piotr.github.io/nwg-shell</a>')
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 3, 1, 1, 1)
+
+    output = get_command_output("nwg-shell-config -v")
+    if output:
+        lbl = Gtk.Label.new(output[0])
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 3, 2, 1, 1)
+
+    output = get_command_output("nwg-panel -v")
+    if output:
+        lbl = Gtk.Label.new(output[0])
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 3, 3, 1, 1)
+
+    output = get_command_output("nwg-drawer -v")
+    if output:
+        lbl = Gtk.Label.new(output[0])
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 3, 4, 1, 1)
+
+    output = get_command_output("nwg-dock -v")
+    if output:
+        lbl = Gtk.Label.new(output[0])
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 3, 5, 1, 1)
+
+    output = get_command_output("nwg-menu -v")
+    if output:
+        lbl = Gtk.Label.new(output[0])
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 3, 6, 1, 1)
+
+    output = get_command_output("nwg-bar -v")
+    if output:
+        lbl = Gtk.Label.new(output[0])
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 3, 7, 1, 1)
+
+    output = get_command_output("nwg-look -v")
+    if output:
+        lbl = Gtk.Label.new(output[0])
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 3, 8, 1, 1)
+
+    output = get_command_output("nwg-displays -v")
+    if output:
+        lbl = Gtk.Label.new(output[0])
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 3, 9, 1, 1)
+
+    output = get_command_output("gtklock -v")
+    if output:
+        lbl = Gtk.Label.new(output[0])
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 3, 10, 1, 1)
+
+    output = get_command_output("swaync -v")
+    if output:
+        lbl = Gtk.Label.new(output[0])
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 3, 11, 1, 1)
+
+    output = get_command_output("azote -h")
+    if output:
+        lbl = Gtk.Label.new(output[1])
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 3, 12, 1, 1)
+
+    frame.show_all()
+
+    return frame
+
+def parse_etc_release():
+    name, home_url, logo = "", "", ""
+    if os.path.isfile("/etc/os-release"):
+        lines = load_text_file("/etc/os-release").splitlines()
+        for line in lines:
+            if line.startswith("NAME="):
+                name = line.split("=")[1][1:-1]
+                continue
+            if line.startswith("HOME_URL="):
+                home_url = line.split("=")[1][1:-1]
+                continue
+            if line.startswith("LOGO="):
+                logo = line.split("=")[1]
+                continue
+
+    return name, home_url, logo

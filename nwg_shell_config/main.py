@@ -152,6 +152,10 @@ def side_menu():
     row.eb.connect("button-press-event", set_up_backup_tab, config_home, data_home, backup_configs, backup_data)
     list_box.add(row)
 
+    row = SideMenuRow(voc["system-info"])
+    row.eb.connect("button-press-event", set_up_sys_info_tab)
+    list_box.add(row)
+
     row = Gtk.ListBoxRow()
     row.set_selectable(False)
     lbl = Gtk.Label()
@@ -387,6 +391,14 @@ def set_up_panel_styling_tab(event_box, event_button, preset, preset_name):
     global content
     content.destroy()
     content = panel_styling_tab(settings, preset, preset_name, voc)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def set_up_sys_info_tab(event_box, event_button):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = sys_info_tab(voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
