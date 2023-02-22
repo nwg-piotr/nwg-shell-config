@@ -2094,9 +2094,10 @@ def sys_info_tab(voc):
         img.set_property("halign", Gtk.Align.END)
         grid.attach(img, 0, 0, 1, 2)
 
+    txt = get_command_output("uname -m")[0]
     if name:
         lbl = Gtk.Label()
-        lbl.set_markup("<big><b>{}</b></big>".format(name))
+        lbl.set_markup("<big><b>{} {}</b></big>".format(name, txt))
         lbl.set_property("halign", Gtk.Align.START)
         grid.attach(lbl, 1, 0, 1, 1)
 
@@ -2112,18 +2113,11 @@ def sys_info_tab(voc):
     lbl.set_property("xalign", 0)
     grid.attach(lbl, 1, 2, 1, 1)
 
-    txt = get_command_output("uname -m")[0]
-    lbl = Gtk.Label.new("Architecture: {}".format(txt))
-    lbl.set_line_wrap(True)
-    lbl.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR)
-    lbl.set_property("xalign", 0)
-    grid.attach(lbl, 1, 3, 1, 1)
-
     output = get_command_output("sway -v")
     if output:
         lbl = Gtk.Label.new(output[0])
         lbl.set_property("halign", Gtk.Align.START)
-        grid.attach(lbl, 1, 4, 1, 1)
+        grid.attach(lbl, 1, 3, 1, 1)
 
     settings = Gtk.Settings.get_default()
     if settings:
@@ -2153,7 +2147,7 @@ def sys_info_tab(voc):
 
     if os.getenv("SWAYSOCK"):
         i3 = Connection()
-        row = 8
+        row = 9
         outputs = i3.get_outputs()
         for i in range(len(outputs)):
             output = outputs[i]
