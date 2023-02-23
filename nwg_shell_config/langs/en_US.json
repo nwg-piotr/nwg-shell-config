@@ -236,6 +236,7 @@
   "suspend-tooltip": "Command to suspend the computer (put to sleep).\nLeave blank to disable this feature.",
   "switch-user": "Switch user",
   "switch-user-tooltip": "Command to switch the current user.\nLeave blank to disable this feature.",
+  "system-info": "System info",
   "tap": "Tap",
   "tap-button-map": "Tap button map",
   "tap-button-map-tooltip": "'lrm' treats 1 finger as left click, 2 fingers as right click, and 3 fingers as middle click.\n'lmr' treats 1 finger as left click, 2 fingers as middle click, and 3 fingers as right click.",
