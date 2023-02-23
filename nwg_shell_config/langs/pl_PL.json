@@ -236,7 +236,7 @@
   "suspend-tooltip": "Komenda do zawieszenia (uśpienia) komputera.\nPozostaw puste by wyłączyć tę opcję.",
   "switch-user": "Przełącz użytkownika",
   "switch-user-tooltip": "Komenda zmiany bieżącego użytkownika.\nPozostaw puste by wyłączyć tę opcję.",
-  "system-info": "Informacje systemie",
+  "system-info": "Informacje o systemie",
   "tap": "Stuknięcie",
   "tap-button-map": "Mapowanie stuknięcia",
   "tap-button-map-tooltip": "'lrm' traktuje 1 palec jako lewy klik, 2 jako prawy i 3 jako środkowy.\n'lmr' traktuje 1 palec jako lewy klik, 2 jako środkowy i 3 jako prawy.",
