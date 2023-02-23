@@ -6,7 +6,7 @@ from datetime import datetime
 from i3ipc import Connection
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Pango
+from gi.repository import Gtk
 from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, \
     list_inputs_by_type, gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp, get_theme_names, \
     get_icon_themes, get_command_output
@@ -2088,7 +2088,7 @@ def sys_info_tab(voc):
     grid.set_column_spacing(6)
     grid.set_row_spacing(3)
 
-    name, home_url, logo = parse_etc_release()
+    name, home_url, logo = parse_os_release()
     if logo:
         img = Gtk.Image.new_from_icon_name(logo, Gtk.IconSize.DIALOG)
         img.set_property("halign", Gtk.Align.END)
@@ -2250,7 +2250,7 @@ def sys_info_tab(voc):
     return frame
 
 
-def parse_etc_release():
+def parse_os_release():
     name, home_url, logo = "", "", ""
     if os.path.isfile("/etc/os-release"):
         lines = load_text_file("/etc/os-release").splitlines()
