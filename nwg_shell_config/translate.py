@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import gi
+import importlib
 import locale
 import os
 import sys
@@ -9,6 +10,8 @@ from nwg_shell_config.tools import load_json, save_json, load_shell_data, eprint
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk, GLib
+
+from importlib import util
 
 dir_name = os.path.dirname(__file__)
 
@@ -196,14 +199,9 @@ def on_file_chooser_button(fc_btn, entry_lang):
 
 
 def load_dictionary(combo):
-    module_name = combo.get_active_id()
-    print("\nmodule_name:", module_name)
-    if module_name != "nwg_shell_config":
-        module = __import__(module_name)
-        parts = module.__file__.split("/")
-        langs_dir = os.path.join("/".join(parts[:-1]), "langs")
-    else:
-        langs_dir = os.path.join(dir_name, "langs")
+    name = importlib.util.find_spec(combo.get_active_id()).origin
+    parts = name.split("/")
+    langs_dir = os.path.join("/".join(parts[:-1]), "langs")
     print("langs_dir:", langs_dir)
     print(load_json(os.path.join(langs_dir, "en_US.json")))
 
@@ -269,11 +267,22 @@ def main():
     lbl = Gtk.Label.new("Application:")
     app_select_box.pack_start(lbl, False, False, 0)
 
-    apps = {"nwg_shell_config": "nwg-shell-config", "nwg_panel": "nwg-panel"}
+    apps = {"nwg_shell_config": "nwg-shell-config", "nwg_panel": "nwg-panel"}  # "entry_point": "command-name"
     combo = Gtk.ComboBoxText()
     app_select_box.pack_start(combo, False, False, 0)
     for key in apps:
-        combo.append(key, apps[key])
+        try:
+            # Older nwg-shell components' versions may have no valid langs. We don't want them in the combo.
+            name = importlib.util.find_spec(key).origin
+            parts = name.split("/")
+            base_dict = os.path.join("/".join(parts[:-1]), "langs", "en_US.json")
+            if os.path.isfile(base_dict):
+                combo.append(key, apps[key])
+            else:
+                eprint("Skipping '{}', 'en_US.json' file not found.".format(key))
+        except:
+            eprint("Couldn't find path for module '{}'".format(key))
+
     combo.connect("changed", load_dictionary)
     combo.set_active_id("nwg_shell_config")
 
