@@ -202,7 +202,7 @@ def load_dictionary(combo):
     name = importlib.util.find_spec(combo.get_active_id()).origin
     parts = name.split("/")
     langs_dir = os.path.join("/".join(parts[:-1]), "langs")
-    print("langs_dir:", langs_dir)
+    print("\nlangs_dir:", langs_dir)
     print(load_json(os.path.join(langs_dir, "en_US.json")))
 
     global existing_langs
