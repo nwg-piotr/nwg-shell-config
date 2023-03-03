@@ -203,7 +203,7 @@ def load_dictionary(combo):
     parts = name.split("/")
     langs_dir = os.path.join("/".join(parts[:-1]), "langs")
     print("\nlangs_dir:", langs_dir)
-    print(load_json(os.path.join(langs_dir, "en_US.json")))
+    # print(load_json(os.path.join(langs_dir, "en_US.json")))
 
     global existing_langs
     existing_langs = []
