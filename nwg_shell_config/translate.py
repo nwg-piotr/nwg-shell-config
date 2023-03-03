@@ -5,14 +5,14 @@ import locale
 import os
 import sys
 
-from nwg_shell_config.tools import load_json, save_json, eprint
+from nwg_shell_config.tools import load_json, save_json, load_shell_data, eprint
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gdk, GLib
 
 dir_name = os.path.dirname(__file__)
 
-existing_translations = []
+existing_langs = []
 keys = []
 voc_en_us = {}
 voc_user = {}
@@ -20,11 +20,6 @@ user_locale = None
 scrolled_window = None
 translation_box = None
 lang_hint_menu = None
-
-
-def handle_keyboard(win, event):
-    if event.type == Gdk.EventType.KEY_RELEASE and event.keyval == Gdk.KEY_Escape:
-        win.destroy()
 
 
 class Row(Gtk.Box):
@@ -150,7 +145,7 @@ class LangHintMenu(Gtk.Menu):
         for loc in valid_locales:
             if text in loc:
                 item = Gtk.MenuItem.new_with_label(loc)
-                if loc in existing_translations:
+                if loc in existing_langs:
                     item.set_property("name", "existing")
                 item.connect("activate", set_entry_from_item, entry)
                 self.append(item)
@@ -200,25 +195,28 @@ def on_file_chooser_button(fc_btn, entry_lang):
     build_translation_window()
 
 
-def main():
-    GLib.set_prgname('nwg-shell-translate')
+def load_dictionary(combo):
+    module_name = combo.get_active_id()
+    print("\nmodule_name:", module_name)
+    if module_name != "nwg_shell_config":
+        module = __import__(module_name)
+        parts = module.__file__.split("/")
+        langs_dir = os.path.join("/".join(parts[:-1]), "langs")
+    else:
+        langs_dir = os.path.join(dir_name, "langs")
+    print("langs_dir:", langs_dir)
+    print(load_json(os.path.join(langs_dir, "en_US.json")))
 
-    valid_locales = []
-    for loc in os.listdir("/usr/share/i18n/locales/"):
-        if not loc.startswith("translit") and "_" in loc:
-            valid_locales.append(loc)
-    print("{} valid locales found".format(len(valid_locales)))
-
-    global existing_translations
-    for item in os.listdir(os.path.join(dir_name, "langs")):
-        existing_translations.append(item.split(".")[0])
-
-    global user_locale
-    user_locale = locale.getlocale()[0]
+    global existing_langs
+    existing_langs = []
+    for item in os.listdir(langs_dir):
+        if item.endswith(".json"):
+            existing_langs.append(item.split(".")[0])
+    print("Existing langs:", existing_langs)
 
     # basic dictionary
     global voc_en_us
-    voc_en_us = load_json(os.path.join(dir_name, "langs", "en_US.json"))
+    voc_en_us = load_json(os.path.join(langs_dir, "en_US.json"))
     if voc_en_us:
         print("Default dict:\ten_US.json, {} keys".format(len(voc_en_us)))
     else:
@@ -230,6 +228,21 @@ def main():
     for key in voc_en_us:
         keys.append(key)
     keys.sort()
+
+
+def main():
+    GLib.set_prgname('nwg-shell-translate')
+
+    valid_locales = []
+    for loc in os.listdir("/usr/share/i18n/locales/"):
+        if not loc.startswith("translit") and "_" in loc:
+            valid_locales.append(loc)
+    print("{} valid locales found".format(len(valid_locales)))
+
+    shell_data = load_shell_data()
+
+    global user_locale
+    user_locale = locale.getlocale()[0] if not shell_data["interface-locale"] else shell_data["interface-locale"]
 
     screen = Gdk.Screen.get_default()
     provider = Gtk.CssProvider()
@@ -246,11 +259,23 @@ def main():
 
     window = Gtk.Window.new(Gtk.WindowType.TOPLEVEL)
     window.connect('destroy', Gtk.main_quit)
-    # window.connect("key-release-event", handle_keyboard)
 
     box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 6)
     box.set_property("margin", 6)
     window.add(box)
+
+    app_select_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
+    box.pack_start(app_select_box, False, False, 6)
+    lbl = Gtk.Label.new("Application:")
+    app_select_box.pack_start(lbl, False, False, 0)
+
+    apps = {"nwg_shell_config": "nwg-shell-config", "nwg_panel": "nwg-panel"}
+    combo = Gtk.ComboBoxText()
+    app_select_box.pack_start(combo, False, False, 0)
+    for key in apps:
+        combo.append(key, apps[key])
+    combo.connect("changed", load_dictionary)
+    combo.set_active_id("nwg_shell_config")
 
     global translation_box
     translation_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
