@@ -232,7 +232,7 @@ def load_dict_and_build_window(combo, load_voc_user=True):
         global voc_en_us
         voc_en_us = load_json(os.path.join(langs_dir, "en_US.json"))
         if voc_en_us:
-            print("Default dict:\ten_US.json, {} keys".format(len(voc_en_us)))
+            print("Default dict: en_US.json, {} keys".format(len(voc_en_us)))
         else:
             eprint("Couldn't load basic dictionary, exiting.")
             sys.exit(1)
@@ -248,7 +248,7 @@ def load_dict_and_build_window(combo, load_voc_user=True):
             global voc_user
             voc_user = load_json(os.path.join(langs_dir, "{}.json".format(user_locale)))
             if voc_user:
-                print("User dict:\t\t{}.json, {} keys".format(user_locale, len(voc_user)))
+                print("User dict: {}.json, {} keys".format(user_locale, len(voc_user)))
             else:
                 voc_user = {}
                 print("User lang '{}' does not yet exist, creating empty dictionary.".format(user_locale))
