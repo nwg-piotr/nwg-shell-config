@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
 
+"""
+nwg-shell translation utility
+Copyright: 2023 Piotr Miller
+e-mail: nwg.piotr@gmail.com
+Repository: https://github.com/nwg-piotr/nwg-shell-config
+Project: https://github.com/nwg-piotr/nwg-shell
+License: MIT
+"""
+
 import gi
 import importlib
 import locale
@@ -15,14 +24,19 @@ from importlib import util
 
 dir_name = os.path.dirname(__file__)
 
+apps = {"nwg_shell_config": "nwg-shell-config", "nwg_panel": "nwg-panel"}  # "entry_point": "command-name"
 existing_langs = []
 keys = []
 voc_en_us = {}
 voc_user = {}
+module_in_edition = ""
 user_locale = None
 scrolled_window = None
 translation_box = None
 lang_hint_menu = None
+existing_translations_label = None
+keys_label = None
+window = None
 
 
 class Row(Gtk.Box):
@@ -116,14 +130,6 @@ class Row(Gtk.Box):
 
 def build_translation_window():
     global scrolled_window
-    global voc_user
-    voc_user = load_json(os.path.join(dir_name, "langs", "{}.json".format(user_locale)))
-    if voc_user:
-        print("User dict:\t\t{}.json, {} keys".format(user_locale, len(voc_user)))
-    else:
-        voc_user = {}
-        print("User lang '{}' does not yet exist, creating empty dictionary.".format(user_locale))
-
     if scrolled_window:
         scrolled_window.destroy()
 
@@ -139,6 +145,8 @@ def build_translation_window():
 
     scrolled_window.show_all()
     translation_box.pack_start(scrolled_window, True, True, 0)
+
+    window.show_all()
 
 
 class LangHintMenu(Gtk.Menu):
@@ -173,59 +181,79 @@ def validate_lang(entry, valid_locales, btn):
                 lang_hint_menu.popup_at_widget(entry, Gdk.Gravity.NORTH, Gdk.Gravity.SOUTH, None)
 
 
-def on_btn_select(btn, entry, fc_btn):
+def on_btn_select(btn, entry, fc_btn, combo):
     _locale = entry.get_text()
     global user_locale
     user_locale = _locale
     if _locale:
-        build_translation_window()
+        load_dict_and_build_window(combo)
     fc_btn.unselect_all()
 
 
 def on_btn_export(btn, ckb_ascii):
     global voc_user
     voc_user["_lang"] = user_locale
-    save_json(voc_user, os.path.join(os.getenv("HOME"), "nwg-shell-config-{}.json".format(user_locale)),
+    voc_user["_module"] = module_in_edition
+    save_json(voc_user, os.path.join(os.getenv("HOME"), "{}-{}.json".format(module_in_edition, user_locale)),
               en_ascii=ckb_ascii.get_active())
 
 
-def on_file_chooser_button(fc_btn, entry_lang):
+def on_file_chooser_button(fc_btn, entry_lang, combo):
     global voc_user
     voc_user = load_json(fc_btn.get_file().get_path())
     global user_locale
     user_locale = voc_user["_lang"]
     entry_lang.set_text(user_locale)
-    build_translation_window()
+    # The "changed" signal must be emitted, even if we're setting the same id again.
+    combo.set_active_id(None)
+    combo.set_active_id(voc_user["_module"])  # Triggers the load_dict_and_build_window() function.
 
 
-def load_dictionary(combo):
-    name = importlib.util.find_spec(combo.get_active_id()).origin
-    parts = name.split("/")
-    langs_dir = os.path.join("/".join(parts[:-1]), "langs")
-    print("\nlangs_dir:", langs_dir)
-    # print(load_json(os.path.join(langs_dir, "en_US.json")))
+def load_dict_and_build_window(combo, load_voc_user=True):
+    if combo.get_active_id():
+        global module_in_edition
+        module_in_edition = combo.get_active_id()
+        print("\n[module '{}']".format(module_in_edition))
+        name = importlib.util.find_spec(combo.get_active_id()).origin
+        parts = name.split("/")
+        langs_dir = os.path.join("/".join(parts[:-1]), "langs")
+        print("langs_dir: {}".format(langs_dir))
 
-    global existing_langs
-    existing_langs = []
-    for item in os.listdir(langs_dir):
-        if item.endswith(".json"):
-            existing_langs.append(item.split(".")[0])
-    print("Existing langs:", existing_langs)
+        global existing_langs
+        existing_langs = []
+        for item in os.listdir(langs_dir):
+            if item.endswith(".json"):
+                existing_langs.append(item.split(".")[0])
+        print("Existing langs:", existing_langs)
+        existing_translations_label.set_markup(
+            "<small><b>Existing langs</b>: {}</small>".format(", ".join(existing_langs)))
 
-    # basic dictionary
-    global voc_en_us
-    voc_en_us = load_json(os.path.join(langs_dir, "en_US.json"))
-    if voc_en_us:
-        print("Default dict:\ten_US.json, {} keys".format(len(voc_en_us)))
-    else:
-        eprint("Couldn't load basic dictionary, exiting.")
-        sys.exit(1)
+        # basic dictionary
+        global voc_en_us
+        voc_en_us = load_json(os.path.join(langs_dir, "en_US.json"))
+        if voc_en_us:
+            print("Default dict:\ten_US.json, {} keys".format(len(voc_en_us)))
+        else:
+            eprint("Couldn't load basic dictionary, exiting.")
+            sys.exit(1)
 
-    # basic dictionary keys
-    global keys
-    for key in voc_en_us:
-        keys.append(key)
-    keys.sort()
+        # basic dictionary keys
+        global keys
+        keys = []
+        for key in voc_en_us:
+            keys.append(key)
+        keys.sort()
+
+        if load_voc_user:
+            global voc_user
+            voc_user = load_json(os.path.join(langs_dir, "{}.json".format(user_locale)))
+            if voc_user:
+                print("User dict:\t\t{}.json, {} keys".format(user_locale, len(voc_user)))
+            else:
+                voc_user = {}
+                print("User lang '{}' does not yet exist, creating empty dictionary.".format(user_locale))
+
+        build_translation_window()
 
 
 def main():
@@ -255,6 +283,7 @@ def main():
             """
     provider.load_from_data(css)
 
+    global window
     window = Gtk.Window.new(Gtk.WindowType.TOPLEVEL)
     window.connect('destroy', Gtk.main_quit)
 
@@ -267,7 +296,6 @@ def main():
     lbl = Gtk.Label.new("Application:")
     app_select_box.pack_start(lbl, False, False, 0)
 
-    apps = {"nwg_shell_config": "nwg-shell-config", "nwg_panel": "nwg-panel"}  # "entry_point": "command-name"
     combo = Gtk.ComboBoxText()
     app_select_box.pack_start(combo, False, False, 0)
     for key in apps:
@@ -283,8 +311,10 @@ def main():
         except:
             eprint("Couldn't find path for module '{}'".format(key))
 
-    combo.connect("changed", load_dictionary)
-    combo.set_active_id("nwg_shell_config")
+    global existing_translations_label
+    existing_translations_label = Gtk.Label()
+    existing_translations_label.set_line_wrap_mode(Gtk.WrapMode.WORD)
+    app_select_box.pack_start(existing_translations_label, False, False, 0)
 
     global translation_box
     translation_box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
@@ -298,7 +328,7 @@ def main():
     img = Gtk.Image.new_from_icon_name("nwg-shell-translate", Gtk.IconSize.LARGE_TOOLBAR)
     button_box.pack_start(img, False, False, 0)
     lbl = Gtk.Label()
-    lbl.set_markup("nwg-shell-translate | <b>en_US</b> into".format(user_locale))
+    lbl.set_markup("<b>nwg-shell-translate</b> | lang:".format(user_locale))
     button_box.pack_start(lbl, False, False, 0)
 
     btn_select = Gtk.Button.new_with_label("Select")
@@ -314,7 +344,7 @@ def main():
     button_box.pack_start(entry_lang, False, False, 0)
 
     button_box.pack_start(btn_select, False, False, 0)
-    btn_select.connect("clicked", on_btn_select, entry_lang, fc_btn)
+    btn_select.connect("clicked", on_btn_select, entry_lang, fc_btn, combo)
 
     fc_btn.set_current_folder(os.getenv("HOME"))
     fc_btn.set_width_chars(10)
@@ -322,7 +352,7 @@ def main():
     f_filter = Gtk.FileFilter()
     f_filter.set_name("Translation files (*_??.json)")
     f_filter.add_pattern("*_??.json")
-    fc_btn.connect("file-set", on_file_chooser_button, entry_lang)
+    fc_btn.connect("file-set", on_file_chooser_button, entry_lang, combo)
     fc_btn.add_filter(f_filter)
     button_box.pack_start(fc_btn, False, False, 0)
 
@@ -344,7 +374,9 @@ def main():
     btn.connect('clicked', Gtk.main_quit)
     button_box.pack_end(btn, False, False, 0)
 
-    build_translation_window()
+    combo.connect("changed", load_dict_and_build_window)
+    combo.set_active_id("nwg_shell_config")
+    # build_translation_window()
 
     window.show_all()
     Gtk.main()
