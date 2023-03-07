@@ -24,12 +24,14 @@ from importlib import util
 
 dir_name = os.path.dirname(__file__)
 
-apps = {"nwg_shell_config": "nwg-shell-config", "nwg_panel": "nwg-panel"}  # "entry_point": "command-name"
+modules = {"nwg_shell_config": "nwg-shell-config", "nwg_panel": "nwg-panel"}  # "entry_point": "command-name"
+apps = ["nwg-look"]
+
 existing_langs = []
 keys = []
 voc_en_us = {}
 voc_user = {}
-module_in_edition = ""
+app_in_edition = ""
 user_locale = None
 scrolled_window = None
 translation_box = None
@@ -193,8 +195,8 @@ def on_btn_select(btn, entry, fc_btn, combo):
 def on_btn_export(btn, ckb_ascii):
     global voc_user
     voc_user["_lang"] = user_locale
-    voc_user["_module"] = module_in_edition
-    save_json(voc_user, os.path.join(os.getenv("HOME"), "{}-{}.json".format(module_in_edition, user_locale)),
+    voc_user["_module"] = app_in_edition
+    save_json(voc_user, os.path.join(os.getenv("HOME"), "{}-{}.json".format(app_in_edition, user_locale)),
               en_ascii=ckb_ascii.get_active())
 
 
@@ -211,12 +213,17 @@ def on_file_chooser_button(fc_btn, entry_lang, combo):
 
 def load_dict_and_build_window(combo, load_voc_user=True):
     if combo.get_active_id():
-        global module_in_edition
-        module_in_edition = combo.get_active_id()
-        print("\n[module '{}']".format(module_in_edition))
-        name = importlib.util.find_spec(combo.get_active_id()).origin
-        parts = name.split("/")
-        langs_dir = os.path.join("/".join(parts[:-1]), "langs")
+        global app_in_edition
+        app_in_edition = combo.get_active_id()
+        print("\n[Application: '{}']".format(app_in_edition))
+        # some apps won't be python modules, so the path will be different
+        exclusions = ["nwg-look"]  # store langs in `/usr/share/app_name/langs/` (t.b.c.)
+        if app_in_edition not in exclusions:
+            name = importlib.util.find_spec(combo.get_active_id()).origin
+            parts = name.split("/")
+            langs_dir = os.path.join("/".join(parts[:-1]), "langs")
+        else:
+            langs_dir = os.path.join("/usr/share", app_in_edition, "langs")
         print("langs_dir: {}".format(langs_dir))
 
         global existing_langs
@@ -298,18 +305,22 @@ def main():
 
     combo = Gtk.ComboBoxText()
     app_select_box.pack_start(combo, False, False, 0)
-    for key in apps:
+    for key in modules:
         try:
             # Older nwg-shell components' versions may have no valid langs. We don't want them in the combo.
             name = importlib.util.find_spec(key).origin
             parts = name.split("/")
             base_dict = os.path.join("/".join(parts[:-1]), "langs", "en_US.json")
             if os.path.isfile(base_dict):
-                combo.append(key, apps[key])
+                combo.append(key, modules[key])
             else:
                 eprint("Skipping '{}', 'en_US.json' file not found.".format(key))
         except:
             eprint("Couldn't find path for module '{}'".format(key))
+
+    for app in apps:
+        if os.path.isfile(os.path.join("/usr/share", app, "langs", "en_US.json")):
+            combo.append(app, app)
 
     global existing_translations_label
     existing_translations_label = Gtk.Label()
@@ -376,7 +387,6 @@ def main():
 
     combo.connect("changed", load_dict_and_build_window)
     combo.set_active_id("nwg_shell_config")
-    # build_translation_window()
 
     window.show_all()
     Gtk.main()
