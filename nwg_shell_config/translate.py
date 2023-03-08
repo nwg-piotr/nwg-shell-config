@@ -24,7 +24,7 @@ from importlib import util
 
 dir_name = os.path.dirname(__file__)
 
-modules = {"nwg_shell_config": "nwg-shell-config", "nwg_panel": "nwg-panel"}  # "entry_point": "command-name"
+modules = {"nwg_shell_config": "nwg-shell-config", "nwg_panel": "nwg-panel", "nwg_displays": "nwg-displays"}  # "entry_point": "command-name"
 apps = ["nwg-look"]
 
 existing_langs = []
