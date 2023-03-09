@@ -28,7 +28,8 @@ dir_name = os.path.dirname(__file__)
 modules = {
     "nwg_shell_config": "nwg-shell-config",
     "nwg_panel": "nwg-panel",
-    "nwg_displays": "nwg-displays"
+    "nwg_displays": "nwg-displays",
+    "azote": "Azote"
 }
 # supported apps, that aren't python modules
 apps = ["nwg-look"]
