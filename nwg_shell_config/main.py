@@ -491,7 +491,8 @@ class GUI(object):
         btn_apply.set_tooltip_text(voc["apply-tooltip"])
         btn_apply.connect("clicked", on_apply_btn)
 
-        self.tz, self.lat, self.long = get_lat_lon()
+        if settings["night-lat"] == -1 or settings["night-long"] == -1:
+            self.tz, self.lat, self.long = get_lat_lon()
 
     def refresh_bottom_menu_locale(self):
         self.label_interface_locale.set_text("{}:".format(voc["interface-locale"]))

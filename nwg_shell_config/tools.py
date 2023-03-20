@@ -201,6 +201,7 @@ def list_inputs_by_type(input_type=""):
 
 
 def get_lat_lon():
+    eprint("Checking location for night light settings")
     # Placeholder in case something goes wrong
     tz, lat, lon = "Europe/Warsaw", 52.2322, 20.9841
 
