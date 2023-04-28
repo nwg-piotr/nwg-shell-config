@@ -28,6 +28,7 @@
   "dock-hotspot-delay": 20,
   "dock-css": "preset-2.css",
   "dock-on": false,
+  "swaync-on": true,
   "swaync-positionX": "right",
   "swaync-positionY": "bottom",
   "swaync-control-center-width": 400,

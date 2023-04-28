@@ -201,6 +201,7 @@
   "sleep-command": "Slaapstand aan",
   "sleep-timeout-tooltip": "Timeout voor de slaapstand in seconden.\nMoet langer zijn dan de timeout voor het vergrendel scherm.",
   "start": "Start",
+  "enable-swaync": "Schakel swaync in",
   "tap": "Tik",
   "tap-button-map": "Touchpad klik",
   "tap-button-map-tooltip": "'lrm' ziet 1 vinger als linker klik, 2 vingers als rechter klik, en 3 vingers als een middel klik.\n'lmr' ziet 1 vinger als linker klik, 2 vingers als middel klik, en 3 vingers als rechter klik.",

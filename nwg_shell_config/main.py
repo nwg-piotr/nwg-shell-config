@@ -10,6 +10,7 @@ License: MIT
 """
 
 import argparse
+from os import pread
 import signal
 
 from nwg_shell_config.tools import *
@@ -674,8 +675,9 @@ def save_includes():
         autostart.append(cmd_night)
 
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
-    p = os.path.join(config_home, "swaync")
-    autostart.append("exec swaync -s {}/{}.css".format(p, name))
+    if preset["swaync-on"]:
+        p = os.path.join(config_home, "swaync")
+        autostart.append("exec swaync -s {}/{}.css".format(p, name))
 
     if settings["appindicator"]:
         autostart.append("exec nm-applet --indicator")
@@ -693,15 +695,15 @@ def save_includes():
 
     if preset["dock-on"] and (preset["dock-autohide"] or preset["dock-permanent"]):
         autostart.append("exec_always {}".format(cmd_dock))
-
-    cmd_panel = "exec_always nwg-panel"
-    if settings["panel-preset"] != "custom":
-        cmd_panel += " -c {}".format(settings["panel-preset"])
-    elif settings["panel-custom"]:
-        cmd_panel += " -c {}".format(settings["panel-custom"])
-    if preset["panel-css"]:
-        cmd_panel += " -s {}".format(preset["panel-css"])
-    autostart.append(cmd_panel)
+    if preset["panel-on"]:
+        cmd_panel = "exec_always nwg-panel"
+        if settings["panel-preset"] != "custom":
+            cmd_panel += " -c {}".format(settings["panel-preset"])
+        elif settings["panel-custom"]:
+            cmd_panel += " -c {}".format(settings["panel-custom"])
+        if preset["panel-css"]:
+            cmd_panel += " -s {}".format(preset["panel-css"])
+        autostart.append(cmd_panel)
 
     autostart.append("exec_always nwg-shell-check-updates")
 
@@ -802,9 +804,8 @@ def reload():
                 "pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
+                "swaync-client --reload-config --skip-wait",
                 "pkill -f swaync",
-                swaync_daemon,
-                "swaync-client --reload-config",
                 "swaymsg reload"]:
         subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 

@@ -1844,8 +1844,13 @@ def notification_tab(preset, preset_name, voc):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
+    enable_button = Gtk.CheckButton.new_with_label("{}".format(voc["enable-swaync"]))
+    enable_button.set_property("halign", Gtk.Align.START)
+    enable_button.connect("toggled", set_from_checkbutton, preset, "swaync-on")
+    grid.attach(enable_button, 0, 0, 1, 1)
+
     lbl = Gtk.Label.new("{}:".format(voc["horizontal-alignment"]))
-    lbl.set_property("halign", Gtk.Align.END)
+    lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 1, 1, 1)
 
     combo_position_x = Gtk.ComboBoxText()
@@ -1857,7 +1862,7 @@ def notification_tab(preset, preset_name, voc):
     combo_position_x.connect("changed", set_dict_key_from_combo, preset, "swaync-positionX")
 
     lbl = Gtk.Label.new("{}:".format(voc["vertical-alignment"]))
-    lbl.set_property("halign", Gtk.Align.END)
+    lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 2, 1, 1)
 
     combo_position_x = Gtk.ComboBoxText()
@@ -1869,7 +1874,7 @@ def notification_tab(preset, preset_name, voc):
     combo_position_x.connect("changed", set_dict_key_from_combo, preset, "swaync-positionY")
 
     lbl = Gtk.Label.new("{}:".format(voc["notification-center-width"]))
-    lbl.set_property("halign", Gtk.Align.END)
+    lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 3, 1, 1)
 
     sb_cc_width = Gtk.SpinButton.new_with_range(0, 1000, 1)
@@ -1878,7 +1883,7 @@ def notification_tab(preset, preset_name, voc):
     grid.attach(sb_cc_width, 1, 3, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["notification-window-width"]))
-    lbl.set_property("halign", Gtk.Align.END)
+    lbl.set_property("halign", Gtk.Align.START)
     grid.attach(lbl, 0, 4, 1, 1)
 
     sb_window_width = Gtk.SpinButton.new_with_range(0, 1000, 1)

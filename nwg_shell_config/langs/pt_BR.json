@@ -199,6 +199,7 @@
   "sleep-command": "Com. de suspensão",
   "sleep-timeout-tooltip": "Tempo limite em segundos para suspensão.\nDeve ser maior do que o tempo limite para bloqueio de tela.",
   "start": "No ínicio",
+  "enable-swaync": "Habilitar swaync",
   "tap": "Toque",
   "tap-button-map": "Mapa do botão de toque",
   "tap-button-map-tooltip": "'lrm' trata 1 dedo como clique esquerdo, 2 dedos \ncomo clique direito, e 3 dedos como clique do meio. \n'lmr' trata 1 dedo como clique esquerdo, 2 dedos \ncomo clique do meio, e 3 dedos como clique direito.",

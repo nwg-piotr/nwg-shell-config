@@ -201,6 +201,7 @@
   "sleep-command": "Försätt-i-vila kommando",
   "sleep-timeout-tooltip": "Vilapaus i sekunder. Måste vara längre än skärmpaus.",
   "start": "Starta",
+  "enable-swaync": "Aktivera swaync",
   "tap": "Knacka",
   "tap-button-map": "Knacka-knapp-karta",
   "tap-button-map-tooltip": "'lrm' behandlar 1 finger som vänster-klick, 2 fingrar som höger-klick, och 3 fingrar som mitten-klick.'lmr' behandlar 1 finger som vänster-klick, 2 fingrar som mitten-klick, och 3 fingrar som höger-klick.",
