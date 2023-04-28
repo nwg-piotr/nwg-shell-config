@@ -2017,9 +2017,14 @@ def panel_styling_tab(settings, preset, preset_name, voc):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
+    enable_button = Gtk.CheckButton.new_with_label("{}".format(voc["enable-panel"]))
+    enable_button.set_property("halign", Gtk.Align.START)
+    enable_button.connect("toggled", set_from_checkbutton, preset, "panel-on")
+    grid.attach(enable_button, 0, 0, 1, 1)
+
     lbl = Gtk.Label.new("{}:".format(voc["panel-config-name"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 0, 1, 1)
+    grid.attach(lbl, 0, 1, 1, 1)
 
     entry_panel = Gtk.Entry()
     entry_panel.set_placeholder_text("config")
@@ -2027,11 +2032,11 @@ def panel_styling_tab(settings, preset, preset_name, voc):
     entry_panel.set_property("halign", Gtk.Align.START)
     entry_panel.set_text(settings["panel-custom"])
     entry_panel.connect("changed", set_from_entry, settings, "panel-custom")
-    grid.attach(entry_panel, 1, 0, 1, 1)
+    grid.attach(entry_panel, 1, 1, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["panel-css-name"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 1, 1, 1)
+    grid.attach(lbl, 0, 2, 1, 1)
 
     entry_panel_css = Gtk.Entry()
     entry_panel_css.set_placeholder_text("style.css")
@@ -2039,11 +2044,11 @@ def panel_styling_tab(settings, preset, preset_name, voc):
     entry_panel_css.set_property("halign", Gtk.Align.START)
     entry_panel_css.set_text(preset["panel-css"])
     entry_panel_css.connect("changed", set_from_entry, preset, "panel-css")
-    grid.attach(entry_panel_css, 1, 1, 1, 1)
+    grid.attach(entry_panel_css, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["drawer-css-name"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 2, 1, 1)
+    grid.attach(lbl, 0, 3, 1, 1)
 
     entry_panel_css = Gtk.Entry()
     entry_panel_css.set_placeholder_text("drawer.css")
@@ -2051,11 +2056,11 @@ def panel_styling_tab(settings, preset, preset_name, voc):
     entry_panel_css.set_text(preset["launcher-css"])
     entry_panel_css.connect("changed", set_from_entry, preset, "launcher-css")
     entry_panel_css.set_tooltip_text(voc["drawer-css-name-tooltip"])
-    grid.attach(entry_panel_css, 1, 2, 1, 1)
+    grid.attach(entry_panel_css, 1, 3, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["dock-css-name"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 3, 1, 1)
+    grid.attach(lbl, 0, 4, 1, 1)
 
     entry_panel_css = Gtk.Entry()
     entry_panel_css.set_placeholder_text("style.css")
@@ -2063,11 +2068,11 @@ def panel_styling_tab(settings, preset, preset_name, voc):
     entry_panel_css.set_text(preset["dock-css"])
     entry_panel_css.connect("changed", set_from_entry, preset, "dock-css")
     entry_panel_css.set_tooltip_text(voc["dock-css-name-tooltip"])
-    grid.attach(entry_panel_css, 1, 3, 1, 1)
+    grid.attach(entry_panel_css, 1, 4, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["exit-menu-css-name"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 4, 1, 1)
+    grid.attach(lbl, 0, 5, 1, 1)
 
     entry_panel_css = Gtk.Entry()
     entry_panel_css.set_placeholder_text("style.css")
@@ -2075,7 +2080,7 @@ def panel_styling_tab(settings, preset, preset_name, voc):
     entry_panel_css.set_text(preset["exit-css"])
     entry_panel_css.connect("changed", set_from_entry, preset, "exit-css")
     entry_panel_css.set_tooltip_text(voc["exit-menu-css-name-tooltip"])
-    grid.attach(entry_panel_css, 1, 4, 1, 1)
+    grid.attach(entry_panel_css, 1, 5, 1, 1)
 
     frame.show_all()
 

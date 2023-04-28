@@ -804,6 +804,7 @@ def reload():
                 "pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
+                "pkill -f nwg-panel",
                 "swaync-client --reload-config --skip-wait",
                 "pkill -f swaync",
                 "swaymsg reload"]:
