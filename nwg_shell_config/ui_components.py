@@ -504,7 +504,7 @@ def applications_tab(settings, voc, warn):
             combo.set_active_id(key)
 
     if entry_browser.get_text():
-        for key in ["chromium", "google-chrome-stable", "firefox", "qutebrowser", "epiphany", "surf"]:
+        for key in ["chromium", "google-chrome-stable", "firefox", "qutebrowser", "epiphany", "microsoft-edge-stable", "surf"]:
             if entry_browser.get_text() == key:
                 combo.set_active_id(key)
 
@@ -535,6 +535,7 @@ def get_browsers():
         "falkon": "falkon",
         "firefox": "MOZ_ENABLE_WAYLAND=1 firefox",
         "konqueror": "konqueror",
+        "microsoft-edge-stable": "microsoft-edge-stable --enable-features=UseOzonePlatform --ozone-platform=wayland",
         "midori": "midori",
         "opera": "opera",
         "qutebrowser": "qutebrowser",
