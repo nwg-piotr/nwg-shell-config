@@ -1,6 +1,7 @@
 import json
 import os
 import shutil
+import socket
 import subprocess
 import sys
 import tarfile
@@ -181,6 +182,19 @@ def list_outputs():
             outputs.append(item.name)
 
     return outputs
+
+
+def h_list_monitors():
+    reply = hyprctl("j/monitors")
+    try:
+        outputs = []
+        for item in json.loads(reply):
+            if "name" in item:
+                outputs.append(item["name"])
+        return outputs
+    except Exception as e:
+        eprint(e)
+        return []
 
 
 def list_inputs_by_type(input_type=""):
@@ -483,3 +497,14 @@ def restore_from_tmp(btn, restore_warning_label, voc):
     except Exception as e:
         notify(voc["backup"], "{}".format(e))
         eprint("Error restoring data {}".format(e))
+
+
+def hyprctl(cmd, buf_size=20480):
+    s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    s.connect("/tmp/hypr/{}/.socket.sock".format(os.getenv("HYPRLAND_INSTANCE_SIGNATURE")))
+
+    s.send(cmd.encode("utf-8"))
+    output = s.recv(buf_size).decode('utf-8')
+    s.close()
+
+    return output
