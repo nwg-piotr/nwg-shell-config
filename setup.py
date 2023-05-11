@@ -25,8 +25,8 @@ setup(
     entry_points={
         'gui_scripts': [
             'nwg-shell-config = nwg_shell_config.main:main',
-            'nwg-shell-config-sway = nwg_shell_config.main-sway:main',
-            'nwg-shell-config-hyprland = nwg_shell_config.main-hyprland:main',
+            'nwg-shell-config-sway = nwg_shell_config.main_sway:main',
+            'nwg-shell-config-hyprland = nwg_shell_config.main_hyprland:main',
             'nwg-lock = nwg_shell_config.locker:main',
             'nwg-shell-help = nwg_shell_config.help:main',
             'nwg-autotiling = nwg_shell_config.autotiling:main',
