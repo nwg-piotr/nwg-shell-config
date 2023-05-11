@@ -2115,9 +2115,13 @@ def sys_info_tab(voc):
     lbl.set_property("xalign", 0)
     grid.attach(lbl, 1, 2, 1, 1)
 
-    output = get_command_output("sway -v")
+    output = ""
+    if os.getenv("SWAYSOCK"):
+        output = get_command_output("sway -v")
+    elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+        output = get_command_output("hyprctl version")
     if output:
-        lbl = Gtk.Label.new(output[0])
+        lbl = Gtk.Label.new("Hyprland {}".format(output[1]))
         lbl.set_property("halign", Gtk.Align.START)
         grid.attach(lbl, 1, 3, 1, 1)
 
