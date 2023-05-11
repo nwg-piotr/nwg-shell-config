@@ -120,10 +120,6 @@ def side_menu():
     row.eb.connect("button-press-event", set_up_screen_tab)
     list_box.add(row)
 
-    row = SideMenuRow(voc["autotiling"])
-    row.eb.connect("button-press-event", set_up_autotiling_tab)
-    list_box.add(row)
-
     row = SideMenuRow(voc["keyboard"])
     row.eb.connect("button-press-event", set_up_keyboard_tab)
     list_box.add(row)
@@ -295,14 +291,6 @@ def set_up_backup_tab(btn, event, config_home, data_home, backup_configs, backup
     global content
     content.destroy()
     content = backup_tab(config_home, data_home, backup_configs, backup_data, voc)
-    grid.attach(content, 1, 0, 1, 1)
-
-
-def set_up_autotiling_tab(*args):
-    hide_submenus()
-    global content
-    content.destroy()
-    content = autotiling_tab(settings, outputs, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
