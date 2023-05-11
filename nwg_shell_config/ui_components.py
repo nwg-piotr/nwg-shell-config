@@ -1,3 +1,4 @@
+import json
 import subprocess
 import gi
 import os
@@ -9,7 +10,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, \
     list_inputs_by_type, gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp, get_theme_names, \
-    get_icon_themes, get_command_output
+    get_icon_themes, get_command_output, hyprctl
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -2160,6 +2161,22 @@ def sys_info_tab(voc):
             r = output.rect
             lbl = Gtk.Label.new(
                 "{}x{}, scale: {}, x: {}, y: {}".format(r.width, r.height, output.scale, r.x, r.y))
+            lbl.set_property("halign", Gtk.Align.START)
+            grid.attach(lbl, 1, row + i, 1, 1)
+
+    elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+        row = 9
+        reply = hyprctl("j/monitors")
+        monitors = json.loads(reply)
+        for i in range(len(monitors)):
+            m = monitors[i]
+
+            lbl = Gtk.Label.new("{}:".format(m["name"]))
+            lbl.set_property("halign", Gtk.Align.END)
+            grid.attach(lbl, 0, row + i, 1, 1)
+
+            lbl = Gtk.Label.new(
+                "{}x{}, scale: {}, x: {}, y: {}".format(m["width"], m["height"], m["scale"], m["x"], m["y"]))
             lbl.set_property("halign", Gtk.Align.START)
             grid.attach(lbl, 1, row + i, 1, 1)
 

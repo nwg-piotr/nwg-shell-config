@@ -21,7 +21,6 @@ arguments = " ".join(sys.argv[1:])
 def main():
     if os.getenv("SWAYSOCK"):
         cmd = "nwg-shell-config-sway {}".format(arguments)
-        print("Running '{}'".format(cmd))
         try:
             subprocess.Popen(cmd.split())
         except FileNotFoundError as e:
@@ -29,7 +28,6 @@ def main():
             sys.exit(1)
     elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
         cmd = "nwg-shell-config-hyprland {}".format(arguments)
-        print("Running '{}'".format(cmd))
         try:
             subprocess.Popen(cmd.split())
         except FileNotFoundError as e:
