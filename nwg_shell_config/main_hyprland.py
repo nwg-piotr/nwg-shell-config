@@ -611,7 +611,7 @@ def save_includes():
 
     variables.append("set $exit {}".format(cmd_exit))
 
-    cmd_dock = "nwg-dock"
+    cmd_dock = "nwg-dock-hyprland"
     if preset["dock-autohide"]:
         cmd_dock += " -d"
     elif preset["dock-permanent"]:
