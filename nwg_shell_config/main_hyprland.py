@@ -576,7 +576,7 @@ def save_includes():
         theme_names = get_icon_themes()
         cmd_launcher += " -i {}".format(theme_names[preset["launcher-gtk-icon-theme"]])
 
-    if "preset-" in settings["panel-preset"]:
+    if "hyprland-" in settings["panel-preset"]:
         cmd_launcher += " -s {}.css".format(settings["panel-preset"])
     elif preset["launcher-css"]:
         cmd_launcher += " -s {}".format(preset["launcher-css"])
@@ -586,7 +586,7 @@ def save_includes():
 
     if preset["launcher-on"]:
         if preset["launcher-resident"]:
-            cmd_launcher_autostart = "exec {}".format(cmd_launcher)
+            cmd_launcher_autostart = "exec = {}".format(cmd_launcher)
             variables.append("set $launcher nwg-drawer")
         else:
             variables.append("set $launcher {}".format(cmd_launcher))
@@ -697,7 +697,7 @@ def save_includes():
         c_before_sleep = "before-sleep {}".format(settings["before-sleep"]) if settings[
             "before-sleep"] else ""
 
-        cmd_idle = "exec swayidle timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
+        cmd_idle = "exec = swayidle timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
                                                                        c_sleep, c_resume, c_before_sleep)
         autostart.append(cmd_idle)
         # We can't `exec swayidle`, as it would create multiple instances. Let's restart it here.
