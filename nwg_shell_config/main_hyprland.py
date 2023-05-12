@@ -397,11 +397,11 @@ def on_apply_btn(b):
 
     save_presets()
     presets = {
-        "preset-0": preset_0,
-        "preset-1": preset_1,
-        "preset-2": preset_2,
-        "preset-3": preset_3,
-        "custom": preset_custom
+        "hyprland-0": preset_0,
+        "hyprland-1": preset_1,
+        "hyprland-2": preset_2,
+        "hyprland-3": preset_3,
+        "custom-hyprland": preset_custom
     }
     preset = presets[settings["panel-preset"]]
     update_swaync_config(preset["swaync-positionX"],
@@ -543,13 +543,13 @@ def save_includes():
     if settings["editor"]:
         variables.append("set $editor {}".format(settings["editor"]))
 
-    if settings["panel-preset"] == "preset-0":
+    if settings["panel-preset"] == "hyprland-0":
         preset = preset_0
-    elif settings["panel-preset"] == "preset-1":
+    elif settings["panel-preset"] == "hyprland-1":
         preset = preset_1
-    elif settings["panel-preset"] == "preset-2":
+    elif settings["panel-preset"] == "hyprland-2":
         preset = preset_2
-    elif settings["panel-preset"] == "preset-3":
+    elif settings["panel-preset"] == "hyprland-3":
         preset = preset_3
     else:
         preset = preset_custom
@@ -586,7 +586,7 @@ def save_includes():
 
     if preset["launcher-on"]:
         if preset["launcher-resident"]:
-            cmd_launcher_autostart = "exec_always {}".format(cmd_launcher)
+            cmd_launcher_autostart = "exec {}".format(cmd_launcher)
             variables.append("set $launcher nwg-drawer")
         else:
             variables.append("set $launcher {}".format(cmd_launcher))
@@ -643,12 +643,12 @@ def save_includes():
     if preset["dock-on"] and not preset["dock-autohide"] and not preset["dock-permanent"]:
         variables.append("set $dock {}".format(cmd_dock))
 
-    save_list_to_text_file(variables, os.path.join(config_home, "sway/variables"))
+    save_list_to_text_file(variables, os.path.join(config_home, "hypr/variables"))
 
-    # ~/.config/sway/autostart
-    autostart = ["exec rm {}".format(os.path.join(temp_dir(), "nwg-shell-check-update.lock"))]
+    # ~/.config/hypr/autostart
+    autostart = ["exec-once = rm {}".format(os.path.join(temp_dir(), "nwg-shell-check-update.lock"))]
     if settings["night-on"]:
-        cmd_night = "exec wlsunset"
+        cmd_night = "exec-once = wlsunset"
         if settings["night-lat"]:
             cmd_night += " -l {}".format(settings["night-lat"])
         if settings["night-long"]:
@@ -663,26 +663,18 @@ def save_includes():
 
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
     p = os.path.join(config_home, "swaync")
-    autostart.append("exec swaync -s {}/{}.css".format(p, name))
+    autostart.append("exec-once = swaync -c {}/hyprland.json -s {}/{}.css".format(p, p, name))
 
     if settings["appindicator"]:
-        autostart.append("exec nm-applet --indicator")
-
-    if settings["autotiling-on"]:
-        cmd_autotiling = "exec_always nwg-autotiling"
-
-        if settings["autotiling-workspaces"]:
-            cmd_autotiling += " -w {}".format(settings["autotiling-workspaces"])
-
-        autostart.append(cmd_autotiling)
+        autostart.append("exec-once = nm-applet --indicator")
 
     if cmd_launcher_autostart:
         autostart.append(cmd_launcher_autostart)
 
     if preset["dock-on"] and (preset["dock-autohide"] or preset["dock-permanent"]):
-        autostart.append("exec_always {}".format(cmd_dock))
+        autostart.append("exec = {}".format(cmd_dock))
 
-    cmd_panel = "exec_always nwg-panel"
+    cmd_panel = "exec = nwg-panel"
     if settings["panel-preset"] != "custom":
         cmd_panel += " -c {}".format(settings["panel-preset"])
     elif settings["panel-custom"]:
@@ -691,7 +683,7 @@ def save_includes():
         cmd_panel += " -s {}".format(preset["panel-css"])
     autostart.append(cmd_panel)
 
-    autostart.append("exec_always nwg-shell-check-updates")
+    autostart.append("exec = nwg-shell-check-updates")
 
     if settings["lockscreen-use-settings"]:
         c_sleep = "timeout {} '{}'".format(settings["sleep-timeout"], settings["sleep-cmd"]) if settings[
@@ -708,17 +700,17 @@ def save_includes():
         cmd_idle = "exec swayidle timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
                                                                        c_sleep, c_resume, c_before_sleep)
         autostart.append(cmd_idle)
-        # We can't `exec_always swayidle`, as it would create multiple instances. Let's restart it here.
+        # We can't `exec swayidle`, as it would create multiple instances. Let's restart it here.
         subprocess.call("killall swayidle", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         subprocess.Popen(cmd_idle, shell=True)
 
     if settings["update-indicator-on"]:
-        autostart.append("exec nwg-update-indicator")
+        autostart.append("exec-once = nwg-update-indicator")
 
     if settings["show-on-startup"]:
-        autostart.append("exec nwg-shell-config")
+        autostart.append("exec-once = nwg-shell-config")
 
-    save_list_to_text_file(autostart, os.path.join(config_home, "sway/autostart"))
+    save_list_to_text_file(autostart, os.path.join(config_home, "hypr/autostart"))
 
     # Export keyboard settings
     if settings["keyboard-use-settings"]:
@@ -736,9 +728,9 @@ def save_includes():
             lines.append('  {} {}'.format(settings["keyboard-custom-name"], settings["keyboard-custom-value"]))
         lines.append('}')
 
-        save_list_to_text_file(lines, os.path.join(config_home, "sway/keyboard"))
+        save_list_to_text_file(lines, os.path.join(config_home, "hypr/keyboard"))
     else:
-        save_list_to_text_file([""], os.path.join(config_home, "sway/keyboard"))
+        save_list_to_text_file([""], os.path.join(config_home, "hypr/keyboard"))
 
     # Export pointer device settings
     if settings["pointer-use-settings"]:
@@ -751,9 +743,9 @@ def save_includes():
             lines.append('  {} {}'.format(settings["keyboard-custom-name"], settings["keyboard-custom-value"]))
         lines.append('}')
 
-        save_list_to_text_file(lines, os.path.join(config_home, "sway/pointer"))
+        save_list_to_text_file(lines, os.path.join(config_home, "hypr/pointer"))
     else:
-        save_list_to_text_file([""], os.path.join(config_home, "sway/pointer"))
+        save_list_to_text_file([""], os.path.join(config_home, "hypr/pointer"))
 
     # Export touchpad settings
     if settings["touchpad-use-settings"]:
@@ -774,9 +766,9 @@ def save_includes():
             lines.append('  {} {}'.format(settings["touchpad-custom-name"], settings["touchpad-custom-value"]))
         lines.append('}')
 
-        save_list_to_text_file(lines, os.path.join(config_home, "sway/touchpad"))
+        save_list_to_text_file(lines, os.path.join(config_home, "hypr/touchpad"))
     else:
-        save_list_to_text_file([""], os.path.join(config_home, "sway/touchpad"))
+        save_list_to_text_file([""], os.path.join(config_home, "hypr/touchpad"))
 
     reload()
 
@@ -786,14 +778,12 @@ def reload():
     p = os.path.join(config_home, "swaync")
     swaync_daemon = "swaync -s {}/{}.css &".format(p, name)
 
-    for cmd in ["pkill -f autotiling",
-                "pkill -f nwg-drawer",
+    for cmd in ["pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
                 "pkill -f swaync",
                 swaync_daemon,
-                "swaync-client --reload-config",
-                "swaymsg reload"]:
+                "swaync-client --reload-config"]:
         subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
     if settings["update-indicator-on"]:
@@ -823,7 +813,7 @@ def load_settings():
         "file-manager": "",
         "editor": "",
         "browser": "",
-        "panel-preset": "preset-0",
+        "panel-preset": "hyprland-0",
         "panel-custom": "",
         "show-on-startup": True,
         "keyboard-use-settings": True,
@@ -915,15 +905,15 @@ def load_settings():
 
 def load_presets():
     global preset_0
-    preset_0 = load_preset("preset-0")
+    preset_0 = load_preset("hyprland-0")
     global preset_1
-    preset_1 = load_preset("preset-1")
+    preset_1 = load_preset("hyprland-1")
     global preset_2
-    preset_2 = load_preset("preset-2")
+    preset_2 = load_preset("hyprland-2")
     global preset_3
-    preset_3 = load_preset("preset-3")
+    preset_3 = load_preset("hyprland-3")
     global preset_custom
-    preset_custom = load_preset("custom")
+    preset_custom = load_preset("custom-hyprland")
 
 
 def load_preset(file_name):
@@ -998,51 +988,46 @@ def load_preset(file_name):
 def save_presets():
     global preset_0, preset_1, preset_2, preset_3, preset_custom
 
-    f = os.path.join(data_dir, "preset-0")
+    f = os.path.join(data_dir, "hyprland-0")
     print("Saving {}".format(f))
     save_json(preset_0, f)
 
-    f = os.path.join(data_dir, "preset-1")
+    f = os.path.join(data_dir, "hyprland-1")
     print("Saving {}".format(f))
     save_json(preset_1, f)
 
-    f = os.path.join(data_dir, "preset-2")
+    f = os.path.join(data_dir, "hyprland-2")
     print("Saving {}".format(f))
     save_json(preset_2, f)
 
-    f = os.path.join(data_dir, "preset-3")
+    f = os.path.join(data_dir, "hyprland-3")
     print("Saving {}".format(f))
     save_json(preset_3, f)
 
-    f = os.path.join(data_dir, "custom")
+    f = os.path.join(data_dir, "custom-hyprland")
     print("Saving {}".format(f))
     save_json(preset_custom, f)
 
 
 def update_swaync_config(pos_x, pos_y, cc_width, window_width, mpris):
-    settings_file = os.path.join(config_home, "swaync/config.json")
+    settings_file = os.path.join(config_home, "swaync/hyprland.json")
     if os.path.isfile(settings_file):
         print("Loading swaync settings from {}".format(settings_file))
         swaync_settings = load_json(settings_file)
-
-        # Check if some new keys appeared
-        defaults = load_json("/etc/xdg/swaync/config.json")
-
-        for key in defaults:
-            if key not in swaync_settings:
-                swaync_settings[key] = defaults[key]
-
-        swaync_settings["positionX"] = pos_x
-        swaync_settings["positionY"] = pos_y
-        swaync_settings["control-center-width"] = cc_width
-        swaync_settings["notification-window-width"] = window_width
     else:
-        swaync_settings = {
-            "positionX": pos_x,
-            "positionY": pos_y,
-            "control-center-width": cc_width,
-            "notification-window-width": window_width
-        }
+        swaync_settings = {}
+
+    # Check if some new keys appeared
+    defaults = load_json("/etc/xdg/swaync/config.json")
+
+    for key in defaults:
+        if key not in swaync_settings:
+            swaync_settings[key] = defaults[key]
+
+    swaync_settings["positionX"] = pos_x
+    swaync_settings["positionY"] = pos_y
+    swaync_settings["control-center-width"] = cc_width
+    swaync_settings["notification-window-width"] = window_width
 
     if mpris:
         if "mpris" not in swaync_settings["widgets"]:
