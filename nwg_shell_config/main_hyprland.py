@@ -700,9 +700,10 @@ def save_includes():
         cmd_idle = "exec = swayidle timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
                                                                        c_sleep, c_resume, c_before_sleep)
         autostart.append(cmd_idle)
-        # We can't `exec swayidle`, as it would create multiple instances. Let's restart it here.
+        # We can't `exec-once = swayidle`, as it would create multiple instances. Let's restart it here.
         subprocess.call("killall swayidle", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-        subprocess.Popen(cmd_idle, shell=True)
+        subprocess.Popen("swayidle timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
+                                                                       c_sleep, c_resume, c_before_sleep), shell=True)
 
     if settings["update-indicator-on"]:
         autostart.append("exec-once = nwg-update-indicator")
