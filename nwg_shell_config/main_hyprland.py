@@ -162,35 +162,35 @@ def side_menu():
     row.add(lbl)
     list_box.add(row)
 
-    row = SideMenuRow("{} 0".format(voc["preset"]))
+    row = SideMenuRow("{} 0".format("hyprland-"))
     list_box.add(row)
 
     submenu_0 = preset_menu(0)
     list_box.add(submenu_0)
     row.eb.connect("button-press-event", toggle_submenu, submenu_0)
 
-    row = SideMenuRow("{} 1".format(voc["preset"]))
+    row = SideMenuRow("{} 1".format("hyprland-"))
     list_box.add(row)
 
     submenu_1 = preset_menu(1)
     list_box.add(submenu_1)
     row.eb.connect("button-press-event", toggle_submenu, submenu_1)
 
-    row = SideMenuRow("{} 2".format(voc["preset"]))
+    row = SideMenuRow("{} 2".format("hyprland-"))
     list_box.add(row)
 
     submenu_2 = preset_menu(2)
     list_box.add(submenu_2)
     row.eb.connect("button-press-event", toggle_submenu, submenu_2)
 
-    row = SideMenuRow("{} 3".format(voc["preset"]))
+    row = SideMenuRow("{} 3".format("hyprland-"))
     list_box.add(row)
 
     submenu_3 = preset_menu(3)
     list_box.add(submenu_3)
     row.eb.connect("button-press-event", toggle_submenu, submenu_3)
 
-    row = SideMenuRow(voc["custom-preset"])
+    row = SideMenuRow("custom-hyprland")
     list_box.add(row)
 
     submenu_c = preset_menu("c")
