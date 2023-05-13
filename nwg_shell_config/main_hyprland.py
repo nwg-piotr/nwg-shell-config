@@ -590,7 +590,7 @@ def save_includes():
         else:
             includes.append("$launcher = {}".format(cmd_launcher))
 
-    cmd_exit = "nwg-bar"
+    cmd_exit = "nwg-bar -t hyprland.json"
     if preset["exit-position"]:
         cmd_exit += " -p {}".format(preset["exit-position"])
     if preset["exit-full"]:
@@ -603,7 +603,7 @@ def save_includes():
     if preset["exit-icon-size"]:
         cmd_exit += " -i {}".format(preset["exit-icon-size"])
 
-    if "preset-" in settings["panel-preset"]:
+    if "hyprland-" in settings["panel-preset"]:
         cmd_exit += " -s {}.css".format(settings["panel-preset"])
     elif preset["exit-css"]:
         cmd_exit += " -s {}".format(preset["exit-css"])
