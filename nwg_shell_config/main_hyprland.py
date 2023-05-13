@@ -642,8 +642,6 @@ def save_includes():
     if preset["dock-on"] and not preset["dock-autohide"] and not preset["dock-permanent"]:
         includes.append("$dock = {}".format(cmd_dock))
 
-    # save_list_to_text_file(includes, os.path.join(config_home, "hypr/includes"))
-
     # ~/.config/hypr/autostart
     includes.append("\n# AUTOSTART")
     includes.append("exec-once = rm {}".format(os.path.join(temp_dir(), "nwg-shell-check-update.lock")))
@@ -711,7 +709,7 @@ def save_includes():
     if settings["show-on-startup"]:
         includes.append("exec-once = nwg-shell-config")
 
-    save_list_to_text_file(includes, os.path.join(config_home, "hypr/includes"))
+    save_list_to_text_file(includes, os.path.join(config_home, "hypr/includes.conf"))
 
     # Export keyboard settings
     if settings["keyboard-use-settings"]:
