@@ -669,10 +669,9 @@ def save_includes():
             lines.append("lon={}".format(settings["night-long"]))
         save_list_to_text_file(lines, os.path.join(gammastep_dir, "gammastep.conf"))
 
-        # subprocess.Popen("gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf")))
-
+        # restart gammastep
         subprocess.call("pkill -f gammastep", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-        time.sleep(1)
+        time.sleep(0.5)
         try:
             subprocess.Popen("gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf")), shell=True)
         except Exception as e:
