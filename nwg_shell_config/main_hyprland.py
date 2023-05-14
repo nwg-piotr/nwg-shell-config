@@ -648,7 +648,7 @@ def save_includes():
     includes.append("exec-once = rm {}".format(os.path.join(temp_dir(), "nwg-shell-check-update.lock")))
     if settings["night-on"]:
         gammastep_dir = os.path.join(config_home, "gammastep")
-        cmd_night = "exec = gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf"))
+        cmd_night = "exec-once = gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf"))
         includes.append(cmd_night)
 
         # save gammastep config file
@@ -789,7 +789,6 @@ def reload():
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
                 "pkill -f swaync",
-                "pkill -f gammastep",
                 swaync_daemon,
                 "swaync-client --reload-config"]:
         subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
