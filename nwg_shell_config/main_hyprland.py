@@ -12,6 +12,7 @@ License: MIT
 import argparse
 import os.path
 import signal
+import subprocess
 
 from nwg_shell_config.tools import *
 from nwg_shell_config.ui_components import *
@@ -666,6 +667,14 @@ def save_includes():
             lines.append("lat={}".format(settings["night-lat"]))
             lines.append("lon={}".format(settings["night-long"]))
         save_list_to_text_file(lines, os.path.join(gammastep_dir, "gammastep.conf"))
+
+        # subprocess.Popen("gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf")))
+
+        subprocess.call("killall gammastep-indicator", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        try:
+            subprocess.Popen("gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf")), shell=True)
+        except Exception as e:
+            print(e)
 
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
     p = os.path.join(config_home, "swaync")
