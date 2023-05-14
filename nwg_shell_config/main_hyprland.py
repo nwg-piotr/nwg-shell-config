@@ -670,7 +670,7 @@ def save_includes():
 
         # subprocess.Popen("gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf")))
 
-        subprocess.call("killall gammastep-indicator", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        subprocess.call("pkill -f gammastep", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         try:
             subprocess.Popen("gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf")), shell=True)
         except Exception as e:
