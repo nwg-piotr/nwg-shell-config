@@ -13,6 +13,7 @@ import argparse
 import os.path
 import signal
 import subprocess
+import time
 
 from nwg_shell_config.tools import *
 from nwg_shell_config.ui_components import *
@@ -671,6 +672,7 @@ def save_includes():
         # subprocess.Popen("gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf")))
 
         subprocess.call("pkill -f gammastep", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        time.sleep(1)
         try:
             subprocess.Popen("gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf")), shell=True)
         except Exception as e:
