@@ -123,12 +123,8 @@ def side_menu():
     row.eb.connect("button-press-event", set_up_screen_tab)
     list_box.add(row)
 
-    row = SideMenuRow(voc["keyboard"])
-    row.eb.connect("button-press-event", set_up_keyboard_tab)
-    list_box.add(row)
-
-    row = SideMenuRow(voc["pointer-device"])
-    row.eb.connect("button-press-event", set_up_pointer_tab)
+    row = SideMenuRow(voc["input-devices"])
+    row.eb.connect("button-press-event", set_up_input_tab)
     list_box.add(row)
 
     row = SideMenuRow(voc["touchpad"])
@@ -297,19 +293,11 @@ def set_up_backup_tab(btn, event, config_home, data_home, backup_configs, backup
     grid.attach(content, 1, 0, 1, 1)
 
 
-def set_up_keyboard_tab(*args):
+def set_up_input_tab(*args):
     hide_submenus()
     global content
     content.destroy()
-    content = keyboard_tab(settings, voc)
-    grid.attach(content, 1, 0, 1, 1)
-
-
-def set_up_pointer_tab(*args):
-    hide_submenus()
-    global content
-    content.destroy()
-    content = pointer_tab(settings, voc)
+    content = h_input_tab(settings, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -673,7 +661,8 @@ def save_includes():
         subprocess.call("pkill -f gammastep", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         time.sleep(0.5)
         try:
-            subprocess.Popen("gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf")), shell=True)
+            subprocess.Popen("gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf")),
+                             shell=True)
         except Exception as e:
             print(e)
 
@@ -714,12 +703,12 @@ def save_includes():
             "before-sleep"] else ""
 
         cmd_idle = "exec = swayidle timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
-                                                                       c_sleep, c_resume, c_before_sleep)
+                                                                         c_sleep, c_resume, c_before_sleep)
         includes.append(cmd_idle)
         # We can't `exec-once = swayidle`, as it would create multiple instances. Let's restart it here.
         subprocess.call("killall swayidle", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         subprocess.Popen("swayidle timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
-                                                                       c_sleep, c_resume, c_before_sleep), shell=True)
+                                                                        c_sleep, c_resume, c_before_sleep), shell=True)
 
     if settings["update-indicator-on"]:
         includes.append("exec-once = nwg-update-indicator")
@@ -806,20 +795,13 @@ def reload():
     if settings["update-indicator-on"]:
         launch(None, "nwg-update-indicator")
     else:
-        subprocess.call("pkill -f nwg-update-indicator", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        subprocess.call("pkill -f nwg-update-indicator", shell=True, stdout=subprocess.DEVNULL,
+                        stderr=subprocess.STDOUT)
 
 
 def load_settings():
     settings_file = os.path.join(data_dir, "settings-hyprland")
     defaults = {
-        "keyboard-layout": "us",
-        "autotiling-workspaces": "",
-        "autotiling-on": True,
-        "autotiling-limit": False,
-        "autotiling-output-limits": {},
-        "autotiling-output-splitwidths": {},
-        "autotiling-output-splitheights": {},
-        "appindicator": True,
         "night-lat": -1,
         "night-long": -1,
         "night-temp-low": 4500,
@@ -833,6 +815,36 @@ def load_settings():
         "panel-preset": "hyprland-0",
         "panel-custom": "",
         "show-on-startup": True,
+
+        "input-use-settings": True,
+        "input-kb_layout": "us",
+        "input-kb_model": "",
+        "input-kb_variant": "",
+        "input-kb_options": "",
+        "input-kb_rules": "",
+        "input-kb_file": "",
+        "input-numlock_by_default": False,
+        "input-repeat_rate": 25,
+        "input-repeat_delay": 600,
+        "input-sensitivity": 0.0,
+        "input-accel_profile": "",
+        "input-left_handed": False,
+        "input-scroll_button": 0,
+        "input-natural_scroll": False,
+        "input-follow_mouse": 1,
+        "input-mouse_refocus": True,
+        "input-float_switch_override_focus": 1,
+
+        "touchpad-disable_while_typing": True,
+        "touchpad-natural_scroll": False,
+        "touchpad-scroll_factor": 1.0,
+        "touchpad-middle_button_emulation": False,
+        "touchpad-tap_button_map": "",
+        "touchpad-clickfinger_behavior": "",
+        "touchpad-tap-to-click": True,
+        "touchpad-drag_lock": False,
+        "touchpad-tap-and-drag": False,
+
         "keyboard-use-settings": True,
         "keyboard-identifier": "",
         "keyboard-xkb-layout": "us",

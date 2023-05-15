@@ -214,6 +214,15 @@ def list_inputs_by_type(input_type=""):
     return inputs
 
 
+def h_list_devices_by_type(device_type):
+    reply = hyprctl("j/devices")
+    devices = json.loads(reply)
+    if devices and device_type in devices:
+        return devices[device_type]
+
+    return {}
+
+
 def get_lat_lon():
     eprint("Checking location for night light settings")
     # Placeholder in case something goes wrong

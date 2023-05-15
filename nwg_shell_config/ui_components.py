@@ -9,8 +9,8 @@ from i3ipc import Connection
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, \
-    list_inputs_by_type, gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp, get_theme_names, \
-    get_icon_themes, get_command_output, hyprctl
+    list_inputs_by_type, h_list_devices_by_type, gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp, \
+    get_theme_names, get_icon_themes, get_command_output, hyprctl
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -796,6 +796,154 @@ def keyboard_tab(settings, voc):
     sb_repeat_rate.connect("value-changed", set_int_from_spinbutton, settings, "keyboard-repeat-rate")
     sb_repeat_rate.set_tooltip_text(voc["keyboard-repeat-rate-tooltip"])
     grid.attach(sb_repeat_rate, 1, 5, 1, 1)
+
+    lbl = Gtk.Label.new("CapsLock:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 6, 1, 1)
+
+    combo_caps = Gtk.ComboBoxText()
+    combo_caps.set_property("halign", Gtk.Align.START)
+    combo_caps.set_tooltip_text(voc["capslock-tooltip"])
+    for item in ["disabled", "enabled"]:
+        combo_caps.append(item, voc[item])
+    combo_caps.set_active_id(settings["keyboard-xkb-capslock"])
+    combo_caps.connect("changed", set_dict_key_from_combo, settings, "keyboard-xkb-capslock")
+    grid.attach(combo_caps, 1, 6, 1, 1)
+
+    lbl = Gtk.Label.new("NumLock:")
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 7, 1, 1)
+
+    combo_num = Gtk.ComboBoxText()
+    combo_num.set_property("halign", Gtk.Align.START)
+    combo_num.set_tooltip_text(voc["numlock-tooltip"])
+    for item in ["disabled", "enabled"]:
+        combo_num.append(item, voc[item])
+    combo_num.set_active_id(settings["keyboard-xkb-numlock"])
+    combo_num.connect("changed", set_dict_key_from_combo, settings, "keyboard-xkb-numlock")
+    grid.attach(combo_num, 1, 7, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["custom-field"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 8, 1, 1)
+
+    entry_cname = Gtk.Entry()
+    entry_cname.set_tooltip_text(voc["custom-field-name-tooltip"])
+    entry_cname.set_placeholder_text(voc["name"])
+    entry_cname.set_text(settings["keyboard-custom-name"])
+    entry_cname.connect("changed", set_from_entry, settings, "keyboard-custom-name")
+    grid.attach(entry_cname, 1, 8, 1, 1)
+
+    entry_cname = Gtk.Entry()
+    entry_cname.set_tooltip_text(voc["custom-field-value-tooltip"])
+    entry_cname.set_placeholder_text(voc["value"])
+    entry_cname.set_text(settings["keyboard-custom-value"])
+    entry_cname.connect("changed", set_from_entry, settings, "keyboard-custom-value")
+    grid.attach(entry_cname, 2, 8, 1, 1)
+
+    frame.show_all()
+
+    return frame
+
+
+def h_input_tab(settings, voc):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["input-devices"]))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_keyboard_use_settings = Gtk.CheckButton.new_with_label(voc["use-these-settings"])
+    cb_keyboard_use_settings.set_property("halign", Gtk.Align.START)
+    cb_keyboard_use_settings.set_property("margin-bottom", 6)
+    cb_keyboard_use_settings.set_tooltip_text(voc["keyboard-include-tooltip"])
+    cb_keyboard_use_settings.set_active(settings["keyboard-use-settings"])
+    cb_keyboard_use_settings.connect("toggled", set_from_checkbutton, settings, "keyboard-use-settings")
+    grid.attach(cb_keyboard_use_settings, 0, 0, 2, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["kb-layout"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    entry_layout = Gtk.Entry()
+    entry_layout.set_tooltip_text(voc["keyboard-layout-tooltip"])
+    entry_layout.set_text(settings["input-kb_layout"])
+    entry_layout.connect("changed", set_from_entry, settings, "input-kb_layout")
+    grid.attach(entry_layout, 1, 1, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["kb-variant"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 1, 1, 1)
+
+    entry_variant = Gtk.Entry()
+    entry_variant.set_tooltip_text(voc["keyboard-variant-tooltip"])
+    entry_variant.set_text(settings["keyboard-xkb-variant"])
+    entry_variant.connect("changed", set_from_entry, settings, "keyboard-xkb-variant")
+    grid.attach(entry_variant, 3, 1, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["kb-model"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    entry_model = Gtk.Entry()
+    entry_model.set_tooltip_text(voc["xkb-kb-model-tooltip"])
+    entry_model.set_text(settings["input-kb_model"])
+    entry_model.connect("changed", set_from_entry, settings, "input-kb_model")
+    grid.attach(entry_model, 1, 2, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["kb-options"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 2, 1, 1)
+
+    entry_options = Gtk.Entry()
+    entry_options.set_tooltip_text(voc["xkb-kb-options-tooltip"])
+    entry_options.set_text(settings["input-kb_options"])
+    entry_options.connect("changed", set_from_entry, settings, "input-kb_options")
+    grid.attach(entry_options, 3, 2, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["kb-rules"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    entry_rules = Gtk.Entry()
+    entry_rules.set_tooltip_text(voc["xkb-kb-rules-tooltip"])
+    entry_rules.set_text(settings["input-kb_rules"])
+    entry_rules.connect("changed", set_from_entry, settings, "input-kb_rules")
+    grid.attach(entry_rules, 1, 4, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["kb-file"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 4, 1, 1)
+
+    entry_file = Gtk.Entry()
+    entry_file.set_tooltip_text(voc["xkb-kb-file-tooltip"])
+    entry_file.set_text(settings["input-kb_file"])
+    entry_file.connect("changed", set_from_entry, settings, "input-kb_file")
+    grid.attach(entry_file, 3, 4, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["keyboard-repeat-delay"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 5, 1, 1)
+
+    sb_repeat_delay = Gtk.SpinButton.new_with_range(1, 6000, 1)
+    sb_repeat_delay.set_value(settings["input-repeat_delay"])
+    sb_repeat_delay.connect("value-changed", set_int_from_spinbutton, settings, "input-repeat_delay")
+    sb_repeat_delay.set_tooltip_text(voc["keyboard-repeat-delay-tooltip"])
+    grid.attach(sb_repeat_delay, 1, 5, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["keyboard-repeat-rate"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 5, 1, 1)
+
+    sb_repeat_rate = Gtk.SpinButton.new_with_range(1, 4000, 1)
+    sb_repeat_rate.set_value(settings["input-repeat_rate"])
+    sb_repeat_rate.connect("value-changed", set_int_from_spinbutton, settings, "input-repeat_rate")
+    sb_repeat_rate.set_tooltip_text(voc["keyboard-repeat-rate-tooltip"])
+    grid.attach(sb_repeat_rate, 3, 5, 1, 1)
 
     lbl = Gtk.Label.new("CapsLock:")
     lbl.set_property("halign", Gtk.Align.END)
