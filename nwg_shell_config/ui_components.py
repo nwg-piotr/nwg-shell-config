@@ -262,8 +262,12 @@ def screen_tab(settings, voc, pending_updates):
     combo = Gtk.ComboBoxText()
     # combo.set_property("halign", Gtk.Align.START)
     grid.attach(combo, 1, 1, 3, 1)
-    for p in ["hyprland-0", "hyprland-1", "hyprland-2", "hyprland-3", "custom-hyprland"]:
-        combo.append(p, p)
+    if os.getenv("SWAYSOCK"):
+        for p in ["preset-0", "preset-1", "preset-2", "preset-3", "custom"]:
+            combo.append(p, p)
+    elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+        for p in ["hyprland-0", "hyprland-1", "hyprland-2", "hyprland-3", "custom-hyprland"]:
+            combo.append(p, p)
     combo.set_active_id(settings["panel-preset"])
     combo.connect("changed", set_dict_key_from_combo, settings, "panel-preset")
     combo.set_tooltip_text(voc["preset-tooltip"])
