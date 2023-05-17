@@ -140,6 +140,9 @@ def set_dict_key_from_combo(combo, settings, key):
     settings[key] = combo.get_active_id()
 
 
+def set_int_dict_key_from_combo(combo, settings, key):
+    settings[key] = int(combo.get_active_id())
+
 # def set_icon_theme_from_combo(combo, settings, key, theme_names):
 #     settings[key] = theme_names[combo.get_active_id()]
 
@@ -945,49 +948,84 @@ def h_input_tab(settings, voc):
     sb_repeat_rate.set_tooltip_text(voc["keyboard-repeat-rate-tooltip"])
     grid.attach(sb_repeat_rate, 3, 5, 1, 1)
 
-    lbl = Gtk.Label.new("CapsLock:")
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 6, 1, 1)
+    cb_numlock = Gtk.CheckButton.new_with_label(voc["numlock-by-default"])
+    cb_numlock.set_property("halign", Gtk.Align.START)
+    cb_numlock.set_property("margin-bottom", 6)
+    cb_numlock.set_active(settings["input-numlock_by_default"])
+    cb_numlock.connect("toggled", set_from_checkbutton, settings, "input-numlock_by_default")
+    grid.attach(cb_numlock, 1, 7, 2, 1)
 
-    combo_caps = Gtk.ComboBoxText()
-    combo_caps.set_property("halign", Gtk.Align.START)
-    combo_caps.set_tooltip_text(voc["capslock-tooltip"])
-    for item in ["disabled", "enabled"]:
-        combo_caps.append(item, voc[item])
-    combo_caps.set_active_id(settings["keyboard-xkb-capslock"])
-    combo_caps.connect("changed", set_dict_key_from_combo, settings, "keyboard-xkb-capslock")
-    grid.attach(combo_caps, 1, 6, 1, 1)
-
-    lbl = Gtk.Label.new("NumLock:")
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 7, 1, 1)
-
-    combo_num = Gtk.ComboBoxText()
-    combo_num.set_property("halign", Gtk.Align.START)
-    combo_num.set_tooltip_text(voc["numlock-tooltip"])
-    for item in ["disabled", "enabled"]:
-        combo_num.append(item, voc[item])
-    combo_num.set_active_id(settings["keyboard-xkb-numlock"])
-    combo_num.connect("changed", set_dict_key_from_combo, settings, "keyboard-xkb-numlock")
-    grid.attach(combo_num, 1, 7, 1, 1)
-
-    lbl = Gtk.Label.new("{}:".format(voc["custom-field"]))
+    lbl = Gtk.Label.new("{}:".format(voc["mouse-sensitivity"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 8, 1, 1)
 
-    entry_cname = Gtk.Entry()
-    entry_cname.set_tooltip_text(voc["custom-field-name-tooltip"])
-    entry_cname.set_placeholder_text(voc["name"])
-    entry_cname.set_text(settings["keyboard-custom-name"])
-    entry_cname.connect("changed", set_from_entry, settings, "keyboard-custom-name")
-    grid.attach(entry_cname, 1, 8, 1, 1)
+    sb_m_sensitivity = Gtk.SpinButton.new_with_range(-1.0, 1.0, 0.1)
+    sb_m_sensitivity.set_value(settings["input-sensitivity"])
+    sb_m_sensitivity.connect("value-changed", set_from_spinbutton, settings, "input-sensitivity", 1)
+    sb_m_sensitivity.set_tooltip_text(voc["scroll-factor-tooltip"])
+    grid.attach(sb_m_sensitivity, 1, 8, 1, 1)
 
-    entry_cname = Gtk.Entry()
-    entry_cname.set_tooltip_text(voc["custom-field-value-tooltip"])
-    entry_cname.set_placeholder_text(voc["value"])
-    entry_cname.set_text(settings["keyboard-custom-value"])
-    entry_cname.connect("changed", set_from_entry, settings, "keyboard-custom-value")
-    grid.attach(entry_cname, 2, 8, 1, 1)
+    lbl = Gtk.Label.new("{}:".format(voc["acceleration-profile"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 8, 1, 1)
+
+    combo_aprofile = Gtk.ComboBoxText()
+    # combo_aprofile.set_property("halign", Gtk.Align.START)
+    combo_aprofile.set_tooltip_text(voc["acceleration-profile-tooltip"])
+    combo_aprofile.append("", voc["default"])
+    for item in ["flat", "adaptive"]:
+        combo_aprofile.append(item, voc[item])
+    combo_aprofile.set_active_id(settings["input-accel_profile"])
+    combo_aprofile.connect("changed", set_dict_key_from_combo, settings, "input-accel_profile")
+    grid.attach(combo_aprofile, 3, 8, 1, 1)
+
+    cb_left_handed = Gtk.CheckButton.new_with_label(voc["left-handed"])
+    cb_left_handed.set_tooltip_text(voc["left-handed-tooltip"])
+    cb_left_handed.set_property("halign", Gtk.Align.START)
+    cb_left_handed.set_active(settings["input-left_handed"])
+    cb_left_handed.connect("toggled", set_from_checkbutton, settings, "input-left_handed")
+    grid.attach(cb_left_handed, 1, 9, 1, 1)
+
+    cb_left_handed = Gtk.CheckButton.new_with_label(voc["natural-scroll"])
+    cb_left_handed.set_tooltip_text(voc["natural-scroll-tooltip"])
+    cb_left_handed.set_property("halign", Gtk.Align.START)
+    cb_left_handed.set_active(settings["input-natural_scroll"])
+    cb_left_handed.connect("toggled", set_from_checkbutton, settings, "input-natural_scroll")
+    grid.attach(cb_left_handed, 2, 9, 1, 1)
+
+    cb_mouse_refocus = Gtk.CheckButton.new_with_label(voc["mouse-refocus"])
+    cb_mouse_refocus.set_tooltip_text(voc["mouse-refocus-tooltip"])
+    cb_mouse_refocus.set_property("halign", Gtk.Align.START)
+    cb_mouse_refocus.set_active(settings["input-mouse_refocus"])
+    cb_mouse_refocus.connect("toggled", set_from_checkbutton, settings, "input-mouse_refocus")
+    grid.attach(cb_mouse_refocus, 3, 9, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["focus-follow-mouse"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 10, 1, 1)
+
+    combo_focus = Gtk.ComboBoxText()
+    # combo_focus.set_property("halign", Gtk.Align.START)
+    combo_focus.set_tooltip_text(voc["focus-follow-mouse-tooltip"])
+    for item in ["0", "1", "2", "3"]:
+        combo_focus.append(item, item)
+    combo_focus.set_active_id(str(settings["input-follow_mouse"]))
+    combo_focus.connect("changed", set_int_dict_key_from_combo, settings, "input-follow_mouse")
+    grid.attach(combo_focus, 1, 10, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["float-switch-override-focus"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 10, 1, 1)
+
+    combo_float_switch = Gtk.ComboBoxText()
+    # combo_float_switch.set_property("halign", Gtk.Align.START)
+    combo_float_switch.set_tooltip_text(voc["float-switch-override-focus-tooltip"])
+    combo_float_switch.append("0", voc["disabled"])
+    for item in ["1", "2"]:
+        combo_float_switch.append(item, item)
+    combo_float_switch.set_active_id(str(settings["input-float_switch_override_focus"]))
+    combo_float_switch.connect("changed", set_int_dict_key_from_combo, settings, "input-float_switch_override_focus")
+    grid.attach(combo_float_switch, 3, 10, 1, 1)
 
     frame.show_all()
 
