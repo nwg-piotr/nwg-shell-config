@@ -1004,9 +1004,32 @@ def h_input_tab(settings, voc):
     cb_mouse_refocus.connect("toggled", set_from_checkbutton, settings, "input-mouse_refocus")
     grid.attach(cb_mouse_refocus, 3, 9, 1, 1)
 
-    lbl = Gtk.Label.new("{}:".format(voc["focus-follow-mouse"]))
+    lbl = Gtk.Label.new("{}:".format(voc["scroll-method"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 10, 1, 1)
+
+    combo_scroll_method = Gtk.ComboBoxText()
+    combo_scroll_method.set_tooltip_text(voc["scroll-method-tooltip"])
+    for item in [("2fg", voc["two_finger"]), ("edge", voc["edge"]), ("on_button_down", voc["on_button_down"]),
+                 ("no_scroll", voc["none"])]:
+        combo_scroll_method.append(item[0], item[1])
+    combo_scroll_method.set_active_id(settings["input-scroll_method"])
+    combo_scroll_method.connect("changed", set_dict_key_from_combo, settings, "input-scroll_method")
+    grid.attach(combo_scroll_method, 1, 10, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["scroll-button"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 10, 1, 1)
+
+    sb_scroll_button = Gtk.SpinButton.new_with_range(0, 512, 1)
+    sb_scroll_button.set_value(settings["input-scroll_button"])
+    sb_scroll_button.connect("value-changed", set_from_spinbutton, settings, "input-scroll_button", 1)
+    sb_scroll_button.set_tooltip_text(voc["scroll-button-tooltip"])
+    grid.attach(sb_scroll_button, 3, 10, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["focus-follow-mouse"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 11, 1, 1)
 
     combo_focus = Gtk.ComboBoxText()
     # combo_focus.set_property("halign", Gtk.Align.START)
@@ -1015,11 +1038,11 @@ def h_input_tab(settings, voc):
         combo_focus.append(item, item)
     combo_focus.set_active_id(str(settings["input-follow_mouse"]))
     combo_focus.connect("changed", set_int_dict_key_from_combo, settings, "input-follow_mouse")
-    grid.attach(combo_focus, 1, 10, 1, 1)
+    grid.attach(combo_focus, 1, 11, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["float-switch-override-focus"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 10, 1, 1)
+    grid.attach(lbl, 2, 11, 1, 1)
 
     combo_float_switch = Gtk.ComboBoxText()
     # combo_float_switch.set_property("halign", Gtk.Align.START)
@@ -1029,7 +1052,7 @@ def h_input_tab(settings, voc):
         combo_float_switch.append(item, item)
     combo_float_switch.set_active_id(str(settings["input-float_switch_override_focus"]))
     combo_float_switch.connect("changed", set_int_dict_key_from_combo, settings, "input-float_switch_override_focus")
-    grid.attach(combo_float_switch, 3, 10, 1, 1)
+    grid.attach(combo_float_switch, 3, 11, 1, 1)
 
     frame.show_all()
 
@@ -1354,6 +1377,102 @@ def touchpad_tab(settings, voc):
     entry_cname.set_text(settings["touchpad-custom-value"])
     entry_cname.connect("changed", set_from_entry, settings, "touchpad-custom-value")
     grid.attach(entry_cname, 2, 8, 2, 1)
+
+    frame.show_all()
+
+    return frame
+
+
+def h_touchpad_tab(settings, voc):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["touchpad"]))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_touchpad_use_settings = Gtk.CheckButton.new_with_label(voc["use-these-settings"])
+    cb_touchpad_use_settings.set_property("halign", Gtk.Align.START)
+    cb_touchpad_use_settings.set_property("margin-bottom", 6)
+    cb_touchpad_use_settings.set_tooltip_text(voc["touchpad-device-include-tooltip"])
+    cb_touchpad_use_settings.set_active(settings["touchpad-use-settings"])
+    cb_touchpad_use_settings.connect("toggled", set_from_checkbutton, settings, "touchpad-use-settings")
+    grid.attach(cb_touchpad_use_settings, 0, 0, 2, 1)
+
+    cb_dwt = Gtk.CheckButton.new_with_label(voc["disable-while-typing"])
+    cb_dwt.set_property("halign", Gtk.Align.START)
+    cb_dwt.set_tooltip_text(voc["dwt-tooltip"])
+    cb_dwt.set_active(settings["touchpad-disable_while_typing"])
+    cb_dwt.connect("toggled", set_from_checkbutton, settings, "touchpad-disable_while_typing")
+    grid.attach(cb_dwt, 1, 1, 1, 1)
+
+    cb_nscroll = Gtk.CheckButton.new_with_label(voc["natural-scroll"])
+    cb_nscroll.set_property("halign", Gtk.Align.START)
+    cb_nscroll.set_tooltip_text(voc["natural-scroll-tooltip"])
+    cb_nscroll.set_active(settings["touchpad-natural_scroll"])
+    cb_nscroll.connect("toggled", set_from_checkbutton, settings, "touchpad-natural_scroll")
+    grid.attach(cb_nscroll, 1, 2, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["scroll-factor"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    sb_sfactor = Gtk.SpinButton.new_with_range(0.1, 10, 0.1)
+    sb_sfactor.set_value(settings["touchpad-scroll_factor"])
+    sb_sfactor.connect("value-changed", set_from_spinbutton, settings, "touchpad-scroll_factor", 1)
+    sb_sfactor.set_tooltip_text(voc["scroll-factor-tooltip"])
+    grid.attach(sb_sfactor, 1, 3, 1, 1)
+
+    cb_memulation = Gtk.CheckButton.new_with_label(voc["middle-emulation"])
+    cb_memulation.set_property("halign", Gtk.Align.START)
+    cb_memulation.set_tooltip_text(voc["middle-emulation-tooltip"])
+    cb_memulation.set_active(settings["touchpad-middle_button_emulation"])
+    cb_memulation.connect("toggled", set_from_checkbutton, settings, "touchpad-middle_button_emulation")
+    grid.attach(cb_memulation, 1, 4, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["tap-button-map"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 5, 1, 1)
+
+    combo_tap_btn_map = Gtk.ComboBoxText()
+    combo_tap_btn_map.set_property("halign", Gtk.Align.START)
+    combo_tap_btn_map.set_tooltip_text(voc["tap-button-map-tooltip"])
+    for item in ["lrm", "lmr"]:
+        combo_tap_btn_map.append(item, item)
+    combo_tap_btn_map.set_active_id(settings["touchpad-tap_button_map"])
+    combo_tap_btn_map.connect("changed", set_dict_key_from_combo, settings, "touchpad-tap_button_map")
+    grid.attach(combo_tap_btn_map, 1, 5, 1, 1)
+
+    cb_clickfinger = Gtk.CheckButton.new_with_label(voc["clickfinger-behavior"])
+    cb_clickfinger.set_property("halign", Gtk.Align.START)
+    cb_clickfinger.set_tooltip_text(voc["clickfinger-behavior-tooltip"])
+    cb_clickfinger.set_active(settings["touchpad-clickfinger_behavior"])
+    cb_clickfinger.connect("toggled", set_from_checkbutton, settings, "touchpad-clickfinger_behavior")
+    grid.attach(cb_clickfinger, 1, 6, 1, 1)
+
+    cb_tap2click = Gtk.CheckButton.new_with_label(voc["tap-to-click"])
+    cb_tap2click.set_property("halign", Gtk.Align.START)
+    cb_tap2click.set_tooltip_text(voc["tap-to-click-tooltip"])
+    cb_tap2click.set_active(settings["touchpad-tap-to-click"])
+    cb_tap2click.connect("toggled", set_from_checkbutton, settings, "touchpad-tap-to-click")
+    grid.attach(cb_tap2click, 1, 7, 1, 1)
+
+    cb_drag_lock = Gtk.CheckButton.new_with_label(voc["drag-lock"])
+    cb_drag_lock.set_property("halign", Gtk.Align.START)
+    cb_drag_lock.set_tooltip_text(voc["drag-lock-tooltip"])
+    cb_drag_lock.set_active(settings["touchpad-drag_lock"])
+    cb_drag_lock.connect("toggled", set_from_checkbutton, settings, "touchpad-drag_lock")
+    grid.attach(cb_drag_lock, 1, 8, 1, 1)
+
+    cb_tap_and_drag = Gtk.CheckButton.new_with_label(voc["tap-and-drag"])
+    cb_tap_and_drag.set_property("halign", Gtk.Align.START)
+    cb_tap_and_drag.set_tooltip_text(voc["tap-and-drag-tooltip"])
+    cb_tap_and_drag.set_active(settings["touchpad-tap-and-drag"])
+    cb_tap_and_drag.connect("toggled", set_from_checkbutton, settings, "touchpad-tap-and-drag")
+    grid.attach(cb_tap_and_drag, 1, 9, 1, 1)
 
     frame.show_all()
 

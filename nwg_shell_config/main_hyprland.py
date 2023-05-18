@@ -305,7 +305,7 @@ def set_up_touchpad_tab(*args):
     hide_submenus()
     global content
     content.destroy()
-    content = touchpad_tab(settings, voc)
+    content = h_touchpad_tab(settings, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -829,12 +829,14 @@ def load_settings():
         "input-sensitivity": 0.0,
         "input-accel_profile": "",
         "input-left_handed": False,
+        "input-scroll_method": "",
         "input-scroll_button": 0,
         "input-natural_scroll": False,
         "input-follow_mouse": 1,
         "input-mouse_refocus": True,
         "input-float_switch_override_focus": 1,
 
+        "touchpad-use-settings": True,
         "touchpad-disable_while_typing": True,
         "touchpad-natural_scroll": False,
         "touchpad-scroll_factor": 1.0,
@@ -864,7 +866,7 @@ def load_settings():
         "pointer-left-handed": "disabled",
         "pointer-custom-name": "",
         "pointer-custom-value": "",
-        "touchpad-use-settings": True,
+
         "touchpad-identifier": "",
         "touchpad-accel-profile": "flat",
         "touchpad-pointer-accel": 0.0,
