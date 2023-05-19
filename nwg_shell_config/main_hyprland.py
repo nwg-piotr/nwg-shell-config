@@ -127,7 +127,7 @@ def side_menu():
     row.eb.connect("button-press-event", set_up_input_tab)
     list_box.add(row)
 
-    row = SideMenuRow(voc["touchpad"])
+    row = SideMenuRow("  {}".format(voc["touchpad"]))
     row.eb.connect("button-press-event", set_up_touchpad_tab)
     list_box.add(row)
 
