@@ -741,7 +741,7 @@ def save_includes():
         if settings["input-accel_profile"]:
             includes.append('    accel_profile = {}'.format(settings["input-accel_profile"]))
         if settings["input-left_handed"]:
-            includes.append('    left_handed = {}'.format(settings["input-left_handed"]))
+            includes.append('    left_handed = {}'.format(bool2txt(settings["input-left_handed"])))
         if settings["input-scroll_method"]:
             includes.append('    scroll_method = {}'.format(settings["input-scroll_method"]))
         if settings["input-scroll_button"]:
