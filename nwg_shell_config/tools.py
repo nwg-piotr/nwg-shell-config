@@ -519,8 +519,8 @@ def hyprctl(cmd, buf_size=20480):
     return output
 
 
-def bool2txt(bool_value):
+def bool2num(bool_value):
     if bool_value:
-        return "true"
+        return "1"
     else:
-        return "false"
+        return "0"

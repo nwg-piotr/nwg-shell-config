@@ -731,7 +731,7 @@ def save_includes():
         if settings["input-kb_rules"]:
             includes.append('    kb_rules = {}'.format(settings["input-kb_rules"]))
         if settings["input-numlock_by_default"]:
-            includes.append('    numlock_by_default = {}'.format(settings["input-numlock_by_default"]))
+            includes.append('    numlock_by_default = {}'.format(bool2num(settings["input-numlock_by_default"])))
         if settings["input-repeat_rate"]:
             includes.append('    repeat_rate = {}'.format(settings["input-repeat_rate"]))
         if settings["input-repeat_delay"]:
@@ -741,17 +741,17 @@ def save_includes():
         if settings["input-accel_profile"]:
             includes.append('    accel_profile = {}'.format(settings["input-accel_profile"]))
         if settings["input-left_handed"]:
-            includes.append('    left_handed = {}'.format(bool2txt(settings["input-left_handed"])))
+            includes.append('    left_handed = {}'.format(bool2num(settings["input-left_handed"])))
         if settings["input-scroll_method"]:
             includes.append('    scroll_method = {}'.format(settings["input-scroll_method"]))
         if settings["input-scroll_button"]:
             includes.append('    scroll_button = {}'.format(settings["input-scroll_button"]))
         if settings["input-natural_scroll"]:
-            includes.append('    natural_scroll = {}'.format(settings["input-natural_scroll"]))
+            includes.append('    natural_scroll = {}'.format(bool2num(settings["input-natural_scroll"])))
         if settings["input-follow_mouse"]:
             includes.append('    follow_mouse = {}'.format(settings["input-follow_mouse"]))
         if settings["input-mouse_refocus"]:
-            includes.append('    mouse_refocus = {}'.format(bool2txt(settings["input-mouse_refocus"])))
+            includes.append('    mouse_refocus = {}'.format(bool2num(settings["input-mouse_refocus"])))
         if settings["input-float_switch_override_focus"]:
             includes.append(
                 '    float_switch_override_focus = {}'.format(settings["input-float_switch_override_focus"]))
@@ -760,24 +760,24 @@ def save_includes():
             includes.append("    touchpad {")
             if settings["touchpad-disable_while_typing"]:
                 includes.append(
-                    '        disable_while_typing = {}'.format(bool2txt(settings["touchpad-disable_while_typing"])))
+                    '        disable_while_typing = {}'.format(bool2num(settings["touchpad-disable_while_typing"])))
             if settings["touchpad-natural_scroll"]:
-                includes.append('        natural_scroll = {}'.format(settings["touchpad-natural_scroll"]))
+                includes.append('        natural_scroll = {}'.format(bool2num(settings["touchpad-natural_scroll"])))
             if settings["touchpad-scroll_factor"]:
                 includes.append('        scroll_factor = {}'.format(settings["touchpad-scroll_factor"]))
             if settings["touchpad-middle_button_emulation"]:
                 includes.append(
-                    '        middle_button_emulation = {}'.format(settings["touchpad-middle_button_emulation"]))
+                    '        middle_button_emulation = {}'.format(bool2num(settings["touchpad-middle_button_emulation"])))
             if settings["touchpad-tap_button_map"]:
                 includes.append('        tap_button_map = {}'.format(settings["touchpad-tap_button_map"]))
             if settings["touchpad-clickfinger_behavior"]:
-                includes.append('        clickfinger_behavior = {}'.format(settings["touchpad-clickfinger_behavior"]))
+                includes.append('        clickfinger_behavior = {}'.format(bool2num(settings["touchpad-clickfinger_behavior"])))
             if settings["touchpad-tap-to-click"]:
-                includes.append('        tap-to-click = {}'.format(bool2txt(settings["touchpad-tap-to-click"])))
+                includes.append('        tap-to-click = {}'.format(bool2num(settings["touchpad-tap-to-click"])))
             if settings["touchpad-drag_lock"]:
-                includes.append('        drag_lock = {}'.format(settings["touchpad-drag_lock"]))
+                includes.append('        drag_lock = {}'.format(bool2num(settings["touchpad-drag_lock"])))
             if settings["touchpad-tap-and-drag"]:
-                includes.append('        tap-and-drag = {}'.format(settings["touchpad-tap-and-drag"]))
+                includes.append('        tap-and-drag = {}'.format(bool2num(settings["touchpad-tap-and-drag"])))
             includes.append("    }")
 
         includes.append('}')
