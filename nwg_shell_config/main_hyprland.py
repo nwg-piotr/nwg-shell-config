@@ -719,7 +719,7 @@ def save_includes():
 
     # Export keyboard settings
     if settings["input-use-settings"]:
-        includes.append("\n#INPUT\ninput {")
+        includes.append("\n#INPUT DEVICES\ninput {")
         if settings["input-kb_layout"]:
             includes.append('    kb_layout = {}'.format(settings["input-kb_layout"]))
         if settings["input-kb_model"]:
