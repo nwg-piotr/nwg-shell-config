@@ -853,6 +853,22 @@ def keyboard_tab(settings, voc):
     return frame
 
 
+def h_general_tab(settings, voc):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["general-settings"]))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    frame.show_all()
+
+    return frame
+
+
 def h_input_tab(settings, voc):
     frame = Gtk.Frame()
     frame.set_label("  {}: {}  ".format(voc["common"], voc["input-devices"]))

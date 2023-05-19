@@ -123,8 +123,12 @@ def side_menu():
     row.eb.connect("button-press-event", set_up_screen_tab)
     list_box.add(row)
 
+    row = SideMenuRow(voc["general-settings"])
+    row.eb.connect("button-press-event", h_set_up_general_tab)
+    list_box.add(row)
+
     row = SideMenuRow(voc["input-devices"])
-    row.eb.connect("button-press-event", set_up_input_tab)
+    row.eb.connect("button-press-event", h_set_up_input_tab)
     list_box.add(row)
 
     row = SideMenuRow("  {}".format(voc["touchpad"]))
@@ -293,7 +297,15 @@ def set_up_backup_tab(btn, event, config_home, data_home, backup_configs, backup
     grid.attach(content, 1, 0, 1, 1)
 
 
-def set_up_input_tab(*args):
+def h_set_up_general_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = h_general_tab(settings, voc)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def h_set_up_input_tab(*args):
     hide_submenus()
     global content
     content.destroy()
@@ -820,6 +832,24 @@ def load_settings():
         "panel-custom": "",
         "show-on-startup": True,
 
+        "gen-border_size": 1,
+        "gen-no_border_on_floating": False,
+        "gen-gaps_in": 5,
+        "gen-gaps_out": 20,
+        "gen-col-active_border-start": "33ccffee",
+        "gen-col-active_border-end": "00ff99ee",
+        "gen-col-active_border-deg": 45,
+        "gen-col-inactive_border-start": "595959aa",
+        "gen-col-inactive_border-end": "",
+        "gen-col-inactive_border-deg": 0,
+        "gen-cursor_inactive_timeout": 0,
+        "gen-layout": "dwindle",
+        "gen-no_cursor_warps": False,
+        "gen-no_focus_fallback": False,
+        "gen-resize_on_border": False,
+        "gen-extend_border_grab_area": 15,
+        "gen-hover_icon_on_border": True,
+        
         "input-use-settings": True,
         "input-kb_layout": "us",
         "input-kb_model": "",

@@ -112,6 +112,7 @@
   "full-width-height-tooltip": "Determines if to take full screen width/height.",
   "gamma": "Gamma",
   "gamma-tooltip": "Gamma correction factor: `wlsunset -g`",
+  "general-settings": "General settings",
   "gtk-theme": "GTK theme",
   "gtklock": "Gtklock",
   "help-window": "Help window",

@@ -112,6 +112,7 @@
   "full-width-height-tooltip": "Określa czy zająć pełną szerokość/wysokość ekranu.",
   "gamma": "Korekcja gamma",
   "gamma-tooltip": "Współczynnik korekcji gamma: `wlsunset -g`",
+  "general-settings": "Ustawienia ogólne",
   "gtk-theme": "Motyw GTK",
   "gtklock": "Gtklock",
   "help-window": "Okno pomocy",
