@@ -104,7 +104,7 @@
   "first-installed-version": "Pierwsza zainstalowana wersja",
   "flat": "płaski",
   "float-switch-override-focus": "Przeł. pływania zmienia fokus",
-  "float-switch-override-focus-tooltip": "Gdy włączone (1 or 2), fokus przejdzie na okno pod kursore\nprzy przejściu z kafelkowego i odwrotnie.\nPrzy wartości 2, fokus podąży za mysza także przy przełączaniu pływające-pływające.",
+  "float-switch-override-focus-tooltip": "Gdy włączone (1 lub 2), fokus przejdzie na okno pod kursorem przy przejściu z pływającego na kafelkowe i odwrotnie. Przy wartości 2, fokus podąży za mysza także przy przełączaniu pływające-pływające.",
   "focus-follow-mouse": "Fokus śledzi mysz",
   "focus-follow-mouse-tooltip": "Określa jak ruchy kursora wpływają na fokus okna.\n0 - Ruch kursora nie zmienia fokusu okna.\n1 - Ruch kursora zawsze zmienia fokus na okno pod kursorem.\n2 - Fokus kursora odłączony od fokusu klawiatury.\n3 - Fokus kursora całkiem oddzielony od fokusu klawiatury.",
   "font-size": "Wielkość czcionki",

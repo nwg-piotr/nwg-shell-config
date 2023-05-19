@@ -517,3 +517,10 @@ def hyprctl(cmd, buf_size=20480):
     s.close()
 
     return output
+
+
+def bool2txt(bool_value):
+    if bool_value:
+        return "true"
+    else:
+        return "false"

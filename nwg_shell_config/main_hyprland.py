@@ -670,8 +670,7 @@ def save_includes():
     p = os.path.join(config_home, "swaync")
     includes.append("exec-once = swaync -c {}/hyprland.json -s {}/{}.css".format(p, p, name))
 
-    if settings["appindicator"]:
-        includes.append("exec-once = nm-applet --indicator")
+    includes.append("exec-once = nm-applet --indicator")
 
     if cmd_launcher_autostart:
         includes.append(cmd_launcher_autostart)
@@ -716,65 +715,74 @@ def save_includes():
     if settings["show-on-startup"]:
         includes.append("exec-once = nwg-shell-config")
 
-    save_list_to_text_file(includes, os.path.join(config_home, "hypr/includes.conf"))
+    # save_list_to_text_file(includes, os.path.join(config_home, "hypr/includes.conf"))
 
     # Export keyboard settings
-    if settings["keyboard-use-settings"]:
-        lines = ['input "type:keyboard" {'] if not settings["keyboard-identifier"] else [
-            'input "%s" {' % settings["keyboard-identifier"]]
-        if settings["keyboard-xkb-layout"]:
-            lines.append('  xkb_layout {}'.format(settings["keyboard-xkb-layout"]))
-        if settings["keyboard-xkb-variant"]:
-            lines.append('  xkb_variant {}'.format(settings["keyboard-xkb-variant"]))
-        lines.append('  repeat_delay {}'.format(settings["keyboard-repeat-delay"]))
-        lines.append('  repeat_rate {}'.format(settings["keyboard-repeat-rate"]))
-        lines.append('  xkb_capslock {}'.format(settings["keyboard-xkb-capslock"]))
-        lines.append('  xkb_numlock {}'.format(settings["keyboard-xkb-numlock"]))
-        if settings["keyboard-custom-name"] and settings["keyboard-custom-value"]:
-            lines.append('  {} {}'.format(settings["keyboard-custom-name"], settings["keyboard-custom-value"]))
-        lines.append('}')
+    if settings["input-use-settings"]:
+        includes.append("\n#INPUT\ninput {")
+        if settings["input-kb_layout"]:
+            includes.append('    kb_layout = {}'.format(settings["input-kb_layout"]))
+        if settings["input-kb_model"]:
+            includes.append('    kb_model = {}'.format(settings["input-kb_model"]))
+        if settings["input-kb_variant"]:
+            includes.append('    kb_variant = {}'.format(settings["input-kb_variant"]))
+        if settings["input-kb_options"]:
+            includes.append('    kb_options = {}'.format(settings["input-kb_options"]))
+        if settings["input-kb_rules"]:
+            includes.append('    kb_rules = {}'.format(settings["input-kb_rules"]))
+        if settings["input-numlock_by_default"]:
+            includes.append('    numlock_by_default = {}'.format(settings["input-numlock_by_default"]))
+        if settings["input-repeat_rate"]:
+            includes.append('    repeat_rate = {}'.format(settings["input-repeat_rate"]))
+        if settings["input-repeat_delay"]:
+            includes.append('    repeat_delay = {}'.format(settings["input-repeat_delay"]))
+        if settings["input-sensitivity"]:
+            includes.append('    sensitivity = {}'.format(settings["input-sensitivity"]))
+        if settings["input-accel_profile"]:
+            includes.append('    accel_profile = {}'.format(settings["input-accel_profile"]))
+        if settings["input-left_handed"]:
+            includes.append('    left_handed = {}'.format(settings["input-left_handed"]))
+        if settings["input-scroll_method"]:
+            includes.append('    scroll_method = {}'.format(settings["input-scroll_method"]))
+        if settings["input-scroll_button"]:
+            includes.append('    scroll_button = {}'.format(settings["input-scroll_button"]))
+        if settings["input-natural_scroll"]:
+            includes.append('    natural_scroll = {}'.format(settings["input-natural_scroll"]))
+        if settings["input-follow_mouse"]:
+            includes.append('    follow_mouse = {}'.format(settings["input-follow_mouse"]))
+        if settings["input-mouse_refocus"]:
+            includes.append('    mouse_refocus = {}'.format(bool2txt(settings["input-mouse_refocus"])))
+        if settings["input-float_switch_override_focus"]:
+            includes.append(
+                '    float_switch_override_focus = {}'.format(settings["input-float_switch_override_focus"]))
 
-        save_list_to_text_file(lines, os.path.join(config_home, "hypr/keyboard"))
-    else:
-        save_list_to_text_file([""], os.path.join(config_home, "hypr/keyboard"))
+        if settings["touchpad-use-settings"]:
+            includes.append("    touchpad {")
+            if settings["touchpad-disable_while_typing"]:
+                includes.append(
+                    '        disable_while_typing = {}'.format(bool2txt(settings["touchpad-disable_while_typing"])))
+            if settings["touchpad-natural_scroll"]:
+                includes.append('        natural_scroll = {}'.format(settings["touchpad-natural_scroll"]))
+            if settings["touchpad-scroll_factor"]:
+                includes.append('        scroll_factor = {}'.format(settings["touchpad-scroll_factor"]))
+            if settings["touchpad-middle_button_emulation"]:
+                includes.append(
+                    '        middle_button_emulation = {}'.format(settings["touchpad-middle_button_emulation"]))
+            if settings["touchpad-tap_button_map"]:
+                includes.append('        tap_button_map = {}'.format(settings["touchpad-tap_button_map"]))
+            if settings["touchpad-clickfinger_behavior"]:
+                includes.append('        clickfinger_behavior = {}'.format(settings["touchpad-clickfinger_behavior"]))
+            if settings["touchpad-tap-to-click"]:
+                includes.append('        tap-to-click = {}'.format(bool2txt(settings["touchpad-tap-to-click"])))
+            if settings["touchpad-drag_lock"]:
+                includes.append('        drag_lock = {}'.format(settings["touchpad-drag_lock"]))
+            if settings["touchpad-tap-and-drag"]:
+                includes.append('        tap-and-drag = {}'.format(settings["touchpad-tap-and-drag"]))
+            includes.append("    }")
 
-    # Export pointer device settings
-    if settings["pointer-use-settings"]:
-        lines = ['input "type:pointer" {'] if not settings["pointer-identifier"] else [
-            'input "%s" {' % settings["pointer-identifier"]]
-        lines.append('  natural_scroll {}'.format(settings["pointer-natural-scroll"]))
-        lines.append('  scroll_factor {}'.format(settings["pointer-scroll-factor"]))
-        lines.append('  left_handed {}'.format(settings["pointer-left-handed"]))
-        if settings["pointer-custom-name"] and settings["pointer-custom-value"]:
-            lines.append('  {} {}'.format(settings["keyboard-custom-name"], settings["keyboard-custom-value"]))
-        lines.append('}')
+        includes.append('}')
 
-        save_list_to_text_file(lines, os.path.join(config_home, "hypr/pointer"))
-    else:
-        save_list_to_text_file([""], os.path.join(config_home, "hypr/pointer"))
-
-    # Export touchpad settings
-    if settings["touchpad-use-settings"]:
-        lines = ['input "type:touchpad" {'] if not settings["touchpad-identifier"] else [
-            'input "%s" {' % settings["touchpad-identifier"]]
-        lines.append('  pointer_accel {}'.format(settings["touchpad-pointer-accel"]))
-        lines.append('  natural_scroll {}'.format(settings["touchpad-natural-scroll"]))
-        lines.append('  scroll_factor {}'.format(settings["touchpad-scroll-factor"]))
-        lines.append('  scroll_method {}'.format(settings["touchpad-scroll-method"]))
-        lines.append('  left_handed {}'.format(settings["touchpad-left-handed"]))
-        lines.append('  tap {}'.format(settings["touchpad-tap"]))
-        lines.append('  tap_button_map {}'.format(settings["touchpad-tap-button-map"]))
-        lines.append('  drag {}'.format(settings["touchpad-drag"]))
-        lines.append('  drag_lock {}'.format(settings["touchpad-drag-lock"]))
-        lines.append('  dwt {}'.format(settings["touchpad-dwt"]))
-        lines.append('  middle_emulation {}'.format(settings["touchpad-middle-emulation"]))
-        if settings["touchpad-custom-name"] and settings["touchpad-custom-value"]:
-            lines.append('  {} {}'.format(settings["touchpad-custom-name"], settings["touchpad-custom-value"]))
-        lines.append('}')
-
-        save_list_to_text_file(lines, os.path.join(config_home, "hypr/touchpad"))
-    else:
-        save_list_to_text_file([""], os.path.join(config_home, "hypr/touchpad"))
+    save_list_to_text_file(includes, os.path.join(config_home, "hypr/includes.conf"))
 
     reload()
 
@@ -847,41 +855,6 @@ def load_settings():
         "touchpad-drag_lock": False,
         "touchpad-tap-and-drag": False,
 
-        "keyboard-use-settings": True,
-        "keyboard-identifier": "",
-        "keyboard-xkb-layout": "us",
-        "keyboard-xkb-variant": "",
-        "keyboard-repeat-delay": 300,
-        "keyboard-repeat-rate": 40,
-        "keyboard-xkb-capslock": "disabled",
-        "keyboard-xkb-numlock": "disabled",
-        "keyboard-custom-name": "",
-        "keyboard-custom-value": "",
-        "pointer-use-settings": True,
-        "pointer-identifier": "",
-        "pointer-accel-profile": "flat",
-        "pointer-pointer-accel": 0.0,
-        "pointer-natural-scroll": "disabled",
-        "pointer-scroll-factor": 1.0,
-        "pointer-left-handed": "disabled",
-        "pointer-custom-name": "",
-        "pointer-custom-value": "",
-
-        "touchpad-identifier": "",
-        "touchpad-accel-profile": "flat",
-        "touchpad-pointer-accel": 0.0,
-        "touchpad-natural-scroll": "disabled",
-        "touchpad-scroll-factor": 1.0,
-        "touchpad-scroll-method": "two_finger",
-        "touchpad-left-handed": "disabled",
-        "touchpad-tap": "enabled",
-        "touchpad-tap-button-map": "lrm",
-        "touchpad-drag": "enabled",
-        "touchpad-drag-lock": "disabled",
-        "touchpad-dwt": "enabled",
-        "touchpad-middle-emulation": "enabled",
-        "touchpad-custom-name": "",
-        "touchpad-custom-value": "",
         "lockscreen-use-settings": True,
         "lockscreen-locker": "swaylock",  # swaylock | gtklock
         "lockscreen-background-source": "local",  # unsplash | local

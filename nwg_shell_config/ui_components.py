@@ -868,7 +868,7 @@ def h_input_tab(settings, voc):
     cb_keyboard_use_settings.set_property("halign", Gtk.Align.START)
     cb_keyboard_use_settings.set_property("margin-bottom", 6)
     cb_keyboard_use_settings.set_tooltip_text(voc["keyboard-include-tooltip"])
-    cb_keyboard_use_settings.set_active(settings["keyboard-use-settings"])
+    cb_keyboard_use_settings.set_active(settings["input-use-settings"])
     cb_keyboard_use_settings.connect("toggled", set_from_checkbutton, settings, "keyboard-use-settings")
     grid.attach(cb_keyboard_use_settings, 0, 0, 2, 1)
 
@@ -888,8 +888,8 @@ def h_input_tab(settings, voc):
 
     entry_variant = Gtk.Entry()
     entry_variant.set_tooltip_text(voc["keyboard-variant-tooltip"])
-    entry_variant.set_text(settings["keyboard-xkb-variant"])
-    entry_variant.connect("changed", set_from_entry, settings, "keyboard-xkb-variant")
+    entry_variant.set_text(settings["input-kb_variant"])
+    entry_variant.connect("changed", set_from_entry, settings, "input-kb_variant")
     grid.attach(entry_variant, 3, 1, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["kb-model"]))
