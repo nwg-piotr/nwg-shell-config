@@ -748,10 +748,8 @@ def save_includes():
             includes.append('    scroll_button = {}'.format(settings["input-scroll_button"]))
         if settings["input-natural_scroll"]:
             includes.append('    natural_scroll = {}'.format(bool2num(settings["input-natural_scroll"])))
-        if settings["input-follow_mouse"]:
-            includes.append('    follow_mouse = {}'.format(settings["input-follow_mouse"]))
-        if settings["input-mouse_refocus"]:
-            includes.append('    mouse_refocus = {}'.format(bool2num(settings["input-mouse_refocus"])))
+        includes.append('    follow_mouse = {}'.format(settings["input-follow_mouse"]))
+        includes.append('    mouse_refocus = {}'.format(bool2num(settings["input-mouse_refocus"])))
         if settings["input-float_switch_override_focus"]:
             includes.append(
                 '    float_switch_override_focus = {}'.format(settings["input-float_switch_override_focus"]))
