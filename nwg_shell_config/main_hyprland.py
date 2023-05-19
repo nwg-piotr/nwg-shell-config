@@ -715,9 +715,7 @@ def save_includes():
     if settings["show-on-startup"]:
         includes.append("exec-once = nwg-shell-config")
 
-    # save_list_to_text_file(includes, os.path.join(config_home, "hypr/includes.conf"))
-
-    # Export keyboard settings
+    # Export input devices settings
     if settings["input-use-settings"]:
         includes.append("\n#INPUT DEVICES\ninput {")
         if settings["input-kb_layout"]:
