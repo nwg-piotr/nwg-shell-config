@@ -832,6 +832,7 @@ def load_settings():
         "panel-custom": "",
         "show-on-startup": True,
 
+        "gen-use-settings": True,
         "gen-border_size": 1,
         "gen-no_border_on_floating": False,
         "gen-gaps_in": 5,

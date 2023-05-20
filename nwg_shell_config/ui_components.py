@@ -864,6 +864,128 @@ def h_general_tab(settings, voc):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
+    cb_gen_use_settings = Gtk.CheckButton.new_with_label(voc["use-these-settings"])
+    cb_gen_use_settings.set_property("halign", Gtk.Align.START)
+    cb_gen_use_settings.set_property("margin-bottom", 6)
+    cb_gen_use_settings.set_tooltip_text(voc["keyboard-include-tooltip"])
+    cb_gen_use_settings.set_active(settings["gen-use-settings"])
+    cb_gen_use_settings.connect("toggled", set_from_checkbutton, settings, "gen-use-settings")
+    grid.attach(cb_gen_use_settings, 0, 0, 2, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["layout"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    combo_layout = Gtk.ComboBoxText()
+    for item in ["dwindle", "master"]:
+        combo_layout.append(item, item)
+    combo_layout.set_active_id(settings["gen-layout"])
+    combo_layout.connect("changed", set_dict_key_from_combo, settings, "gen-layout")
+    grid.attach(combo_layout, 1, 1, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["window-border-size"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    sb_border_size = Gtk.SpinButton.new_with_range(0, 256, 1)
+    sb_border_size.set_property("halign", Gtk.Align.START)
+    sb_border_size.set_value(settings["gen-border_size"])
+    sb_border_size.connect("value-changed", set_int_from_spinbutton, settings, "gen-border_size")
+    grid.attach(sb_border_size, 1, 2, 1, 1)
+
+    cb_no_boarder = Gtk.CheckButton.new_with_label(voc["no-border-on-floating"])
+    cb_no_boarder.set_property("halign", Gtk.Align.START)
+    cb_no_boarder.set_property("margin-bottom", 6)
+    cb_no_boarder.set_active(settings["gen-no_border_on_floating"])
+    cb_no_boarder.connect("toggled", set_from_checkbutton, settings, "gen-no_border_on_floating")
+    grid.attach(cb_no_boarder, 2, 2, 2, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["gaps-in"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    sb_gaps_in = Gtk.SpinButton.new_with_range(0, 256, 1)
+    sb_gaps_in.set_property("halign", Gtk.Align.START)
+    sb_gaps_in.set_value(settings["gen-gaps_in"])
+    sb_gaps_in.connect("value-changed", set_int_from_spinbutton, settings, "gen-gaps_in")
+    grid.attach(sb_gaps_in, 1, 3, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["gaps-out"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 3, 1, 1)
+
+    sb_gaps_out = Gtk.SpinButton.new_with_range(0, 256, 1)
+    sb_gaps_out.set_property("halign", Gtk.Align.START)
+    sb_gaps_out.set_value(settings["gen-gaps_out"])
+    sb_gaps_out.connect("value-changed", set_int_from_spinbutton, settings, "gen-gaps_out")
+    grid.attach(sb_gaps_out, 3, 3, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["color-active-border-start"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    entry_cab_start = Gtk.Entry()
+    entry_cab_start.set_width_chars(8)
+    entry_cab_start.set_tooltip_text(voc["color-border-start-tooltip"])
+    entry_cab_start.set_text(settings["gen-col-active_border-start"])
+    entry_cab_start.connect("changed", set_from_entry, settings, "gen-col-active_border-start")
+    grid.attach(entry_cab_start, 1, 4, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["end"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 4, 1, 1)
+
+    entry_cab_end = Gtk.Entry()
+    entry_cab_end.set_width_chars(8)
+    entry_cab_end.set_tooltip_text(voc["color-border-end-tooltip"])
+    entry_cab_end.set_text(settings["gen-col-active_border-end"])
+    entry_cab_end.connect("changed", set_from_entry, settings, "gen-col-active_border-end")
+    grid.attach(entry_cab_end, 3, 4, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["angle"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 4, 4, 1, 1)
+
+    sb_cab_angle = Gtk.SpinButton.new_with_range(0, 365, 1)
+    sb_cab_angle.set_property("halign", Gtk.Align.START)
+    sb_cab_angle.set_tooltip_text(voc["color-gradient-angle"])
+    sb_cab_angle.set_value(settings["gen-col-active_border-deg"])
+    sb_cab_angle.connect("value-changed", set_int_from_spinbutton, settings, "gen-col-active_border-deg")
+    grid.attach(sb_cab_angle, 5, 4, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["color-inactive-border-start"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 5, 1, 1)
+
+    entry_cib_start = Gtk.Entry()
+    entry_cib_start.set_width_chars(8)
+    entry_cib_start.set_tooltip_text(voc["color-border-start-tooltip"])
+    entry_cib_start.set_text(settings["gen-col-inactive_border-start"])
+    entry_cib_start.connect("changed", set_from_entry, settings, "gen-col-inactive_border-start")
+    grid.attach(entry_cib_start, 1, 5, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["end"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 5, 1, 1)
+
+    entry_cib_end = Gtk.Entry()
+    entry_cib_end.set_width_chars(8)
+    entry_cib_end.set_tooltip_text(voc["color-border-end-tooltip"])
+    entry_cib_end.set_text(settings["gen-col-inactive_border-end"])
+    entry_cib_end.connect("changed", set_from_entry, settings, "gen-col-inactive_border-end")
+    grid.attach(entry_cib_end, 3, 5, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["angle"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 4, 5, 1, 1)
+
+    sb_cib_angle = Gtk.SpinButton.new_with_range(0, 365, 1)
+    sb_cib_angle.set_property("halign", Gtk.Align.START)
+    sb_cib_angle.set_tooltip_text(voc["color-gradient-angle"])
+    sb_cib_angle.set_value(settings["gen-col-inactive_border-deg"])
+    sb_cib_angle.connect("value-changed", set_int_from_spinbutton, settings, "gen-col-inactive_border-deg")
+    grid.attach(sb_cib_angle, 5, 5, 1, 1)
+
     frame.show_all()
 
     return frame
@@ -885,7 +1007,7 @@ def h_input_tab(settings, voc):
     cb_keyboard_use_settings.set_property("margin-bottom", 6)
     cb_keyboard_use_settings.set_tooltip_text(voc["keyboard-include-tooltip"])
     cb_keyboard_use_settings.set_active(settings["input-use-settings"])
-    cb_keyboard_use_settings.connect("toggled", set_from_checkbutton, settings, "keyboard-use-settings")
+    cb_keyboard_use_settings.connect("toggled", set_from_checkbutton, settings, "input-use-settings")
     grid.attach(cb_keyboard_use_settings, 0, 0, 2, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["kb-layout"]))
@@ -990,7 +1112,6 @@ def h_input_tab(settings, voc):
     grid.attach(lbl, 2, 8, 1, 1)
 
     combo_aprofile = Gtk.ComboBoxText()
-    # combo_aprofile.set_property("halign", Gtk.Align.START)
     combo_aprofile.set_tooltip_text(voc["acceleration-profile-tooltip"])
     combo_aprofile.append("", voc["default"])
     for item in ["flat", "adaptive"]:
