@@ -127,6 +127,14 @@ def side_menu():
     row.eb.connect("button-press-event", h_set_up_general_tab)
     list_box.add(row)
 
+    row = SideMenuRow(voc["dwindle-layout"])
+    row.eb.connect("button-press-event", h_set_up_dwindle_tab)
+    list_box.add(row)
+
+    row = SideMenuRow(voc["master-layout"])
+    row.eb.connect("button-press-event", h_set_up_master_tab)
+    list_box.add(row)
+
     row = SideMenuRow(voc["input-devices"])
     row.eb.connect("button-press-event", h_set_up_input_tab)
     list_box.add(row)
@@ -304,6 +312,21 @@ def h_set_up_general_tab(*args):
     content = h_general_tab(settings, voc)
     grid.attach(content, 1, 0, 1, 1)
 
+
+def h_set_up_dwindle_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = h_dwindle_tab(settings, voc)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def h_set_up_master_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = h_master_tab(settings, voc)
+    grid.attach(content, 1, 0, 1, 1)
 
 def h_set_up_input_tab(*args):
     hide_submenus()
@@ -893,6 +916,28 @@ def load_settings():
         "gen-extend_border_grab_area": 15,
         "gen-hover_icon_on_border": True,
 
+        "dwindle-use-settings": True,
+        "dwindle-pseudotile": False,
+        "dwindle-force_split": 0,
+        "dwindle-preserve_split": False,
+        "dwindle-permanent_direction_override": False,
+        "dwindle-special_scale_factor": 0.8,
+        "dwindle-split_width_multiplier": 1.0,
+        "dwindle-no_gaps_when_only": False,
+        "dwindle-use_active_for_splits": True,
+        "dwindle-default_split_ratio": 1.0,
+
+        "master-use-settings": True,
+        "master-allow_small_split": False,
+        "master-special_scale_factor": 0.8,
+        "master-mfact": 0.55,
+        "master-new_is_master": True,
+        "master-new_on_top": False,
+        "master-no_gaps_when_only": False,
+        "master-orientation": "left",
+        "master-inherit_fullscreen": True,
+        "master-always_center_master": False,
+        
         "input-use-settings": True,
         "input-kb_layout": "us",
         "input-kb_model": "",
