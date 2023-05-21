@@ -986,6 +986,45 @@ def h_general_tab(settings, voc):
     sb_cib_angle.connect("value-changed", set_int_from_spinbutton, settings, "gen-col-inactive_border-deg")
     grid.attach(sb_cib_angle, 5, 5, 1, 1)
 
+    cb_no_cursor_warps = Gtk.CheckButton.new_with_label(voc["no-cursor-warps"])
+    cb_no_cursor_warps.set_tooltip_text(voc["no-cursor-warps-tooltip"])
+    cb_no_cursor_warps.set_property("halign", Gtk.Align.START)
+    cb_no_cursor_warps.set_active(settings["gen-no_cursor_warps"])
+    cb_no_cursor_warps.connect("toggled", set_from_checkbutton, settings, "gen-no_cursor_warps")
+    grid.attach(cb_no_cursor_warps, 0, 6, 1, 1)
+
+    cb_no_focus_fallback = Gtk.CheckButton.new_with_label(voc["no-focus-fallback"])
+    cb_no_focus_fallback.set_tooltip_text(voc["no-focus-fallback-tooltip"])
+    cb_no_focus_fallback.set_property("halign", Gtk.Align.START)
+    cb_no_focus_fallback.set_active(settings["gen-no_focus_fallback"])
+    cb_no_focus_fallback.connect("toggled", set_from_checkbutton, settings, "gen-no_focus_fallback")
+    grid.attach(cb_no_focus_fallback, 1, 6, 1, 1)
+
+    cb_resize_on_border = Gtk.CheckButton.new_with_label(voc["resize-on-border"])
+    cb_resize_on_border.set_tooltip_text(voc["resize-on-border"])
+    cb_resize_on_border.set_property("halign", Gtk.Align.START)
+    cb_resize_on_border.set_active(settings["gen-resize_on_border"])
+    cb_resize_on_border.connect("toggled", set_from_checkbutton, settings, "gen-resize_on_border")
+    grid.attach(cb_resize_on_border, 0, 7, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["extend-border-grab-area"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 1, 7, 2, 1)
+
+    sb_extend_grab_area = Gtk.SpinButton.new_with_range(0, 365, 1)
+    sb_extend_grab_area.set_property("halign", Gtk.Align.START)
+    sb_extend_grab_area.set_tooltip_text(voc["extend-border-grab-area-tooltip"])
+    sb_extend_grab_area.set_value(settings["gen-extend_border_grab_area"])
+    sb_extend_grab_area.connect("value-changed", set_int_from_spinbutton, settings, "gen-extend_border_grab_area")
+    grid.attach(sb_extend_grab_area, 3, 7, 1, 1)
+
+    cb_hover = Gtk.CheckButton.new_with_label(voc["hover-icon-on-border"])
+    cb_hover.set_tooltip_text(voc["hover-icon-on-border-tooltip"])
+    cb_hover.set_property("halign", Gtk.Align.START)
+    cb_hover.set_active(settings["gen-hover_icon_on_border"])
+    cb_hover.connect("toggled", set_from_checkbutton, settings, "gen-hover_icon_on_border")
+    grid.attach(cb_hover, 0, 8, 1, 1)
+
     frame.show_all()
 
     return frame

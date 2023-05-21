@@ -727,6 +727,46 @@ def save_includes():
     if settings["show-on-startup"]:
         includes.append("exec-once = nwg-shell-config")
 
+    # Export general devices settings
+    if settings["gen-use-settings"]:
+        includes.append("\n#GENERAL SETTINGS\ngeneral {")
+
+        includes.append('    border_size = {}'.format(settings["gen-border_size"]))
+        includes.append('    no_border_on_floating = {}'.format(bool2num(settings["gen-no_border_on_floating"])))
+        includes.append('    gaps_in = {}'.format(settings["gen-gaps_in"]))
+        includes.append('    gaps_out = {}'.format(settings["gen-gaps_out"]))
+        if settings["gen-col-active_border-start"]:
+            line = "    col.active_border = rgba({})".format(settings["gen-col-active_border-start"])
+            if settings["gen-col-active_border-end"]:
+                line += " rgba({})".format(settings["gen-col-active_border-end"])
+            if settings["gen-col-active_border-end"] and settings["gen-col-active_border-deg"]:
+                line += " {}deg".format(settings["gen-col-active_border-deg"])
+            includes.append(line)
+        if settings["gen-col-inactive_border-start"]:
+            line = "    col.inactive_border = rgba({})".format(settings["gen-col-inactive_border-start"])
+            if settings["gen-col-inactive_border-end"]:
+                line += " rgba({})".format(settings["gen-col-inactive_border-end"])
+            if settings["gen-col-inactive_border-end"] and settings["gen-col-inactive_border-deg"]:
+                line += " {}deg".format(settings["gen-col-inactive_border-deg"])
+            includes.append(line)
+
+        if settings["gen-cursor_inactive_timeout"]:
+            includes.append('    cursor_inactive_timeout = {}'.format(settings["gen-cursor_inactive_timeout"]))
+        includes.append('    layout = {}'.format(settings["gen-layout"]))
+        if settings["gen-no_cursor_warps"]:
+            includes.append('    no_cursor_warps = {}'.format(bool2num(settings["gen-no_cursor_warps"])))
+        if settings["gen-no_focus_fallback"]:
+            includes.append('    no_focus_fallback = {}'.format(bool2num(settings["gen-no_focus_fallback"])))
+        if settings["gen-resize_on_border"]:
+            includes.append('    resize_on_border = {}'.format(bool2num(settings["gen-resize_on_border"])))
+        if settings["gen-extend_border_grab_area"]:
+            includes.append(
+                '    extend_border_grab_area = {}'.format(bool2num(settings["gen-extend_border_grab_area"])))
+        if settings["gen-hover_icon_on_border"]:
+            includes.append('    hover_icon_on_border = {}'.format(bool2num(settings["gen-hover_icon_on_border"])))
+
+        includes.append('}')
+
     # Export input devices settings
     if settings["input-use-settings"]:
         includes.append("\n#INPUT DEVICES\ninput {")
@@ -775,11 +815,13 @@ def save_includes():
                 includes.append('        scroll_factor = {}'.format(settings["touchpad-scroll_factor"]))
             if settings["touchpad-middle_button_emulation"]:
                 includes.append(
-                    '        middle_button_emulation = {}'.format(bool2num(settings["touchpad-middle_button_emulation"])))
+                    '        middle_button_emulation = {}'.format(
+                        bool2num(settings["touchpad-middle_button_emulation"])))
             if settings["touchpad-tap_button_map"]:
                 includes.append('        tap_button_map = {}'.format(settings["touchpad-tap_button_map"]))
             if settings["touchpad-clickfinger_behavior"]:
-                includes.append('        clickfinger_behavior = {}'.format(bool2num(settings["touchpad-clickfinger_behavior"])))
+                includes.append(
+                    '        clickfinger_behavior = {}'.format(bool2num(settings["touchpad-clickfinger_behavior"])))
             if settings["touchpad-tap-to-click"]:
                 includes.append('        tap-to-click = {}'.format(bool2num(settings["touchpad-tap-to-click"])))
             if settings["touchpad-drag_lock"]:
@@ -850,7 +892,7 @@ def load_settings():
         "gen-resize_on_border": False,
         "gen-extend_border_grab_area": 15,
         "gen-hover_icon_on_border": True,
-        
+
         "input-use-settings": True,
         "input-kb_layout": "us",
         "input-kb_model": "",
