@@ -755,7 +755,7 @@ def save_includes():
         includes.append("\n# GENERAL SETTINGS\ngeneral {")
 
         includes.append('    border_size = {}'.format(settings["gen-border_size"]))
-        includes.append('    no_border_on_floating = {}'.format(bool2num(settings["gen-no_border_on_floating"])))
+        includes.append('    no_border_on_floating = {}'.format(bool2lower(settings["gen-no_border_on_floating"])))
         includes.append('    gaps_in = {}'.format(settings["gen-gaps_in"]))
         includes.append('    gaps_out = {}'.format(settings["gen-gaps_out"]))
         if settings["gen-col-active_border-start"]:
@@ -777,16 +777,16 @@ def save_includes():
             includes.append('    cursor_inactive_timeout = {}'.format(settings["gen-cursor_inactive_timeout"]))
         includes.append('    layout = {}'.format(settings["gen-layout"]))
         if settings["gen-no_cursor_warps"]:
-            includes.append('    no_cursor_warps = {}'.format(bool2num(settings["gen-no_cursor_warps"])))
+            includes.append('    no_cursor_warps = {}'.format(bool2lower(settings["gen-no_cursor_warps"])))
         if settings["gen-no_focus_fallback"]:
-            includes.append('    no_focus_fallback = {}'.format(bool2num(settings["gen-no_focus_fallback"])))
+            includes.append('    no_focus_fallback = {}'.format(bool2lower(settings["gen-no_focus_fallback"])))
         if settings["gen-resize_on_border"]:
-            includes.append('    resize_on_border = {}'.format(bool2num(settings["gen-resize_on_border"])))
+            includes.append('    resize_on_border = {}'.format(bool2lower(settings["gen-resize_on_border"])))
         if settings["gen-extend_border_grab_area"]:
             includes.append(
-                '    extend_border_grab_area = {}'.format(bool2num(settings["gen-extend_border_grab_area"])))
+                '    extend_border_grab_area = {}'.format(bool2lower(settings["gen-extend_border_grab_area"])))
         if settings["gen-hover_icon_on_border"]:
-            includes.append('    hover_icon_on_border = {}'.format(bool2num(settings["gen-hover_icon_on_border"])))
+            includes.append('    hover_icon_on_border = {}'.format(bool2lower(settings["gen-hover_icon_on_border"])))
 
         includes.append('}')
 
@@ -794,13 +794,13 @@ def save_includes():
     if settings["dwindle-use-settings"]:
         includes.append("\n# DWINDLE LAYOUT \ndwindle {")
 
-        includes.append('    pseudotile = {}'.format(bool2num(settings["dwindle-pseudotile"])))
-        includes.append('    force_split = {}'.format(bool2num(settings["dwindle-force_split"])))
-        includes.append('    preserve_split = {}'.format(bool2num(settings["dwindle-preserve_split"])))
+        includes.append('    pseudotile = {}'.format(bool2lower(settings["dwindle-pseudotile"])))
+        includes.append('    force_split = {}'.format(settings["dwindle-force_split"]))
+        includes.append('    preserve_split = {}'.format(bool2lower(settings["dwindle-preserve_split"])))
         includes.append('    special_scale_factor = {}'.format(settings["dwindle-special_scale_factor"]))
         includes.append('    split_width_multiplier = {}'.format(settings["dwindle-split_width_multiplier"]))
-        includes.append('    no_gaps_when_only = {}'.format(bool2num(settings["dwindle-no_gaps_when_only"])))
-        includes.append('    use_active_for_splits = {}'.format(bool2num(settings["dwindle-use_active_for_splits"])))
+        includes.append('    no_gaps_when_only = {}'.format(bool2lower(settings["dwindle-no_gaps_when_only"])))
+        includes.append('    use_active_for_splits = {}'.format(bool2lower(settings["dwindle-use_active_for_splits"])))
         includes.append('    default_split_ratio = {}'.format(settings["dwindle-default_split_ratio"]))
 
         includes.append('}')
@@ -809,15 +809,15 @@ def save_includes():
     if settings["master-use-settings"]:
         includes.append("\n# MASTER LAYOUT \nmaster {")
 
-        includes.append('    allow_small_split = {}'.format(bool2num(settings["master-allow_small_split"])))
+        includes.append('    allow_small_split = {}'.format(bool2lower(settings["master-allow_small_split"])))
         includes.append('    special_scale_factor = {}'.format(settings["master-special_scale_factor"]))
         includes.append('    mfact = {}'.format(settings["master-mfact"]))
-        includes.append('    new_is_master = {}'.format(bool2num(settings["master-new_is_master"])))
-        includes.append('    new_on_top = {}'.format(bool2num(settings["master-new_on_top"])))
-        includes.append('    no_gaps_when_only = {}'.format(bool2num(settings["master-no_gaps_when_only"])))
+        includes.append('    new_is_master = {}'.format(bool2lower(settings["master-new_is_master"])))
+        includes.append('    new_on_top = {}'.format(bool2lower(settings["master-new_on_top"])))
+        includes.append('    no_gaps_when_only = {}'.format(bool2lower(settings["master-no_gaps_when_only"])))
         includes.append('    orientation = {}'.format(settings["master-orientation"]))
-        includes.append('    inherit_fullscreen = {}'.format(bool2num(settings["master-inherit_fullscreen"])))
-        includes.append('    always_center_master = {}'.format(bool2num(settings["master-always_center_master"])))
+        includes.append('    inherit_fullscreen = {}'.format(bool2lower(settings["master-inherit_fullscreen"])))
+        includes.append('    always_center_master = {}'.format(bool2lower(settings["master-always_center_master"])))
 
         includes.append('}')
 
@@ -835,7 +835,7 @@ def save_includes():
         if settings["input-kb_rules"]:
             includes.append('    kb_rules = {}'.format(settings["input-kb_rules"]))
         if settings["input-numlock_by_default"]:
-            includes.append('    numlock_by_default = {}'.format(bool2num(settings["input-numlock_by_default"])))
+            includes.append('    numlock_by_default = {}'.format(bool2lower(settings["input-numlock_by_default"])))
         if settings["input-repeat_rate"]:
             includes.append('    repeat_rate = {}'.format(settings["input-repeat_rate"]))
         if settings["input-repeat_delay"]:
@@ -845,15 +845,15 @@ def save_includes():
         if settings["input-accel_profile"]:
             includes.append('    accel_profile = {}'.format(settings["input-accel_profile"]))
         if settings["input-left_handed"]:
-            includes.append('    left_handed = {}'.format(bool2num(settings["input-left_handed"])))
+            includes.append('    left_handed = {}'.format(bool2lower(settings["input-left_handed"])))
         if settings["input-scroll_method"]:
             includes.append('    scroll_method = {}'.format(settings["input-scroll_method"]))
         if settings["input-scroll_button"]:
             includes.append('    scroll_button = {}'.format(settings["input-scroll_button"]))
         if settings["input-natural_scroll"]:
-            includes.append('    natural_scroll = {}'.format(bool2num(settings["input-natural_scroll"])))
+            includes.append('    natural_scroll = {}'.format(bool2lower(settings["input-natural_scroll"])))
         includes.append('    follow_mouse = {}'.format(settings["input-follow_mouse"]))
-        includes.append('    mouse_refocus = {}'.format(bool2num(settings["input-mouse_refocus"])))
+        includes.append('    mouse_refocus = {}'.format(bool2lower(settings["input-mouse_refocus"])))
         if settings["input-float_switch_override_focus"]:
             includes.append(
                 '    float_switch_override_focus = {}'.format(settings["input-float_switch_override_focus"]))
@@ -862,26 +862,26 @@ def save_includes():
             includes.append("    touchpad {")
             if settings["touchpad-disable_while_typing"]:
                 includes.append(
-                    '        disable_while_typing = {}'.format(bool2num(settings["touchpad-disable_while_typing"])))
+                    '        disable_while_typing = {}'.format(bool2lower(settings["touchpad-disable_while_typing"])))
             if settings["touchpad-natural_scroll"]:
-                includes.append('        natural_scroll = {}'.format(bool2num(settings["touchpad-natural_scroll"])))
+                includes.append('        natural_scroll = {}'.format(bool2lower(settings["touchpad-natural_scroll"])))
             if settings["touchpad-scroll_factor"]:
                 includes.append('        scroll_factor = {}'.format(settings["touchpad-scroll_factor"]))
             if settings["touchpad-middle_button_emulation"]:
                 includes.append(
                     '        middle_button_emulation = {}'.format(
-                        bool2num(settings["touchpad-middle_button_emulation"])))
+                        bool2lower(settings["touchpad-middle_button_emulation"])))
             if settings["touchpad-tap_button_map"]:
                 includes.append('        tap_button_map = {}'.format(settings["touchpad-tap_button_map"]))
             if settings["touchpad-clickfinger_behavior"]:
                 includes.append(
-                    '        clickfinger_behavior = {}'.format(bool2num(settings["touchpad-clickfinger_behavior"])))
+                    '        clickfinger_behavior = {}'.format(bool2lower(settings["touchpad-clickfinger_behavior"])))
             if settings["touchpad-tap-to-click"]:
-                includes.append('        tap-to-click = {}'.format(bool2num(settings["touchpad-tap-to-click"])))
+                includes.append('        tap-to-click = {}'.format(bool2lower(settings["touchpad-tap-to-click"])))
             if settings["touchpad-drag_lock"]:
-                includes.append('        drag_lock = {}'.format(bool2num(settings["touchpad-drag_lock"])))
+                includes.append('        drag_lock = {}'.format(bool2lower(settings["touchpad-drag_lock"])))
             if settings["touchpad-tap-and-drag"]:
-                includes.append('        tap-and-drag = {}'.format(bool2num(settings["touchpad-tap-and-drag"])))
+                includes.append('        tap-and-drag = {}'.format(bool2lower(settings["touchpad-tap-and-drag"])))
             includes.append("    }")
 
         includes.append('}')
