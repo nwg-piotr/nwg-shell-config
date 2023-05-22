@@ -1114,10 +1114,10 @@ def h_dwindle_tab(settings, voc):
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 4, 1, 1)
 
-    sb_dsr = Gtk.SpinButton.new_with_range(0.1, 1.9, 0.1)
+    sb_dsr = Gtk.SpinButton.new_with_range(0.1, 1.9, 0.01)
     sb_dsr.set_value(settings["dwindle-default_split_ratio"])
     sb_dsr.set_tooltip_text(voc["default-split-ratio-tooltip"])
-    sb_dsr.connect("value-changed", set_from_spinbutton, settings, "dwindle-default_split_ratio", 2)
+    sb_dsr.connect("value-changed", set_from_spinbutton, settings, "dwindle-default_split_ratio", 3)
     grid.attach(sb_dsr, 1, 4, 1, 1)
 
     frame.show_all()
