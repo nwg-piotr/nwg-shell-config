@@ -752,7 +752,7 @@ def save_includes():
 
     # Export general devices settings
     if settings["gen-use-settings"]:
-        includes.append("\n#GENERAL SETTINGS\ngeneral {")
+        includes.append("\n# GENERAL SETTINGS\ngeneral {")
 
         includes.append('    border_size = {}'.format(settings["gen-border_size"]))
         includes.append('    no_border_on_floating = {}'.format(bool2num(settings["gen-no_border_on_floating"])))
@@ -790,9 +790,40 @@ def save_includes():
 
         includes.append('}')
 
+    # Export dwindle layout settings
+    if settings["dwindle-use-settings"]:
+        includes.append("\n# DWINDLE LAYOUT \ndwindle {")
+
+        includes.append('    pseudotile = {}'.format(bool2num(settings["dwindle-pseudotile"])))
+        includes.append('    force_split = {}'.format(bool2num(settings["dwindle-force_split"])))
+        includes.append('    preserve_split = {}'.format(bool2num(settings["dwindle-preserve_split"])))
+        includes.append('    special_scale_factor = {}'.format(settings["dwindle-special_scale_factor"]))
+        includes.append('    split_width_multiplier = {}'.format(settings["dwindle-split_width_multiplier"]))
+        includes.append('    no_gaps_when_only = {}'.format(bool2num(settings["dwindle-no_gaps_when_only"])))
+        includes.append('    use_active_for_splits = {}'.format(bool2num(settings["dwindle-use_active_for_splits"])))
+        includes.append('    default_split_ratio = {}'.format(settings["dwindle-default_split_ratio"]))
+
+        includes.append('}')
+
+    # Export master layout settings
+    if settings["master-use-settings"]:
+        includes.append("\n# MASTER LAYOUT \nmaster {")
+
+        includes.append('    allow_small_split = {}'.format(bool2num(settings["master-allow_small_split"])))
+        includes.append('    special_scale_factor = {}'.format(settings["master-special_scale_factor"]))
+        includes.append('    mfact = {}'.format(settings["master-mfact"]))
+        includes.append('    new_is_master = {}'.format(bool2num(settings["master-new_is_master"])))
+        includes.append('    new_on_top = {}'.format(bool2num(settings["master-new_on_top"])))
+        includes.append('    no_gaps_when_only = {}'.format(bool2num(settings["master-no_gaps_when_only"])))
+        includes.append('    orientation = {}'.format(settings["master-orientation"]))
+        includes.append('    inherit_fullscreen = {}'.format(bool2num(settings["master-inherit_fullscreen"])))
+        includes.append('    always_center_master = {}'.format(bool2num(settings["master-always_center_master"])))
+
+        includes.append('}')
+
     # Export input devices settings
     if settings["input-use-settings"]:
-        includes.append("\n#INPUT DEVICES\ninput {")
+        includes.append("\n# INPUT DEVICES\ninput {")
         if settings["input-kb_layout"]:
             includes.append('    kb_layout = {}'.format(settings["input-kb_layout"]))
         if settings["input-kb_model"]:
@@ -919,7 +950,7 @@ def load_settings():
         "dwindle-use-settings": True,
         "dwindle-pseudotile": False,
         "dwindle-force_split": 0,
-        "dwindle-preserve_split": False,
+        "dwindle-preserve_split": True,
         "dwindle-permanent_direction_override": False,
         "dwindle-special_scale_factor": 0.8,
         "dwindle-split_width_multiplier": 1.0,

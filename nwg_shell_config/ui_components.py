@@ -1074,58 +1074,51 @@ def h_dwindle_tab(settings, voc):
     cb_preserve_split.set_tooltip_text(voc["preserve-split-tooltip"])
     cb_preserve_split.set_active(settings["dwindle-preserve_split"])
     cb_preserve_split.connect("toggled", set_from_checkbutton, settings, "dwindle-preserve_split")
-    grid.attach(cb_preserve_split, 0, 2, 1, 1)
-
-    cb_pdo = Gtk.CheckButton.new_with_label(voc["permanent-direction-override"])
-    cb_pdo.set_property("halign", Gtk.Align.START)
-    cb_pdo.set_tooltip_text(voc["permanent-direction-override-tooltip"])
-    cb_pdo.set_active(settings["dwindle-permanent_direction_override"])
-    cb_pdo.connect("toggled", set_from_checkbutton, settings, "dwindle-permanent_direction_override")
-    grid.attach(cb_pdo, 1, 2, 2, 1)
+    grid.attach(cb_preserve_split, 1, 1, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["special-scale-factor"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 3, 1, 1)
+    grid.attach(lbl, 0, 2, 1, 1)
 
     sb_ssf = Gtk.SpinButton.new_with_range(0.0, 1.0, 0.1)
     sb_ssf.set_value(settings["dwindle-special_scale_factor"])
     sb_ssf.set_tooltip_text(voc["special-scale-factor-tooltip"])
-    sb_ssf.connect("value-changed", set_from_spinbutton, settings, "dwindle-special_scale_factor")
-    grid.attach(sb_ssf, 1, 3, 1, 1)
+    sb_ssf.connect("value-changed", set_from_spinbutton, settings, "dwindle-special_scale_factor", 2)
+    grid.attach(sb_ssf, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["split-width-multiplier"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 2, 3, 1, 1)
+    grid.attach(lbl, 2, 2, 1, 1)
 
     sb_swm = Gtk.SpinButton.new_with_range(0.1, 2.0, 0.1)
     sb_swm.set_value(settings["dwindle-split_width_multiplier"])
     sb_swm.set_tooltip_text(voc["split-width-multiplier-tooltip"])
-    sb_swm.connect("value-changed", set_from_spinbutton, settings, "dwindle-split_width_multiplier")
-    grid.attach(sb_swm, 3, 3, 1, 1)
+    sb_swm.connect("value-changed", set_from_spinbutton, settings, "dwindle-split_width_multiplier", 2)
+    grid.attach(sb_swm, 3, 2, 1, 1)
 
     cb_ngwo = Gtk.CheckButton.new_with_label(voc["no-gaps-when-only"])
     cb_ngwo.set_property("halign", Gtk.Align.START)
     cb_ngwo.set_tooltip_text(voc["no-gaps-when-only-tooltip"])
     cb_ngwo.set_active(settings["dwindle-no_gaps_when_only"])
     cb_ngwo.connect("toggled", set_from_checkbutton, settings, "dwindle-no_gaps_when_only")
-    grid.attach(cb_ngwo, 0, 4, 2, 1)
+    grid.attach(cb_ngwo, 0, 3, 2, 1)
 
     cb_uafs = Gtk.CheckButton.new_with_label(voc["use-active-for-splits"])
     cb_uafs.set_property("halign", Gtk.Align.START)
     cb_uafs.set_tooltip_text(voc["use-active-for-splits-tooltip"])
     cb_uafs.set_active(settings["dwindle-use_active_for_splits"])
     cb_uafs.connect("toggled", set_from_checkbutton, settings, "dwindle-use_active_for_splits")
-    grid.attach(cb_uafs, 2, 4, 2, 1)
+    grid.attach(cb_uafs, 2, 3, 2, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["default-split-ratio"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 5, 1, 1)
+    grid.attach(lbl, 0, 4, 1, 1)
 
     sb_dsr = Gtk.SpinButton.new_with_range(0.1, 1.9, 0.1)
     sb_dsr.set_value(settings["dwindle-default_split_ratio"])
     sb_dsr.set_tooltip_text(voc["default-split-ratio-tooltip"])
-    sb_dsr.connect("value-changed", set_from_spinbutton, settings, "dwindle-default_split_ratio")
-    grid.attach(sb_dsr, 1, 5, 1, 1)
+    sb_dsr.connect("value-changed", set_from_spinbutton, settings, "dwindle-default_split_ratio", 2)
+    grid.attach(sb_dsr, 1, 4, 1, 1)
 
     frame.show_all()
 
@@ -1179,7 +1172,7 @@ def h_master_tab(settings, voc):
     sb_msf = Gtk.SpinButton.new_with_range(0.0, 1.0, 0.01)
     sb_msf.set_value(settings["master-mfact"])
     sb_msf.set_tooltip_text(voc["master-split-factor-tooltip"])
-    sb_msf.connect("value-changed", set_from_spinbutton, settings, "master-mfact")
+    sb_msf.connect("value-changed", set_from_spinbutton, settings, "master-mfact", 3)
     grid.attach(sb_msf, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["special-scale-factor"]))
@@ -1189,8 +1182,44 @@ def h_master_tab(settings, voc):
     sb_ssf = Gtk.SpinButton.new_with_range(0.0, 1.0, 0.01)
     sb_ssf.set_value(settings["master-special_scale_factor"])
     sb_ssf.set_tooltip_text(voc["special-scale-factor-tooltip"])
-    sb_ssf.connect("value-changed", set_from_spinbutton, settings, "master-special_scale_factor")
+    sb_ssf.connect("value-changed", set_from_spinbutton, settings, "master-special_scale_factor", 3)
     grid.attach(sb_ssf, 3, 2, 1, 1)
+
+    cb_ngwo = Gtk.CheckButton.new_with_label(voc["no-gaps-when-only"])
+    cb_ngwo.set_property("halign", Gtk.Align.START)
+    cb_ngwo.set_tooltip_text(voc["no-gaps-when-only-tooltip"])
+    cb_ngwo.set_active(settings["master-no_gaps_when_only"])
+    cb_ngwo.connect("toggled", set_from_checkbutton, settings, "master-no_gaps_when_only")
+    grid.attach(cb_ngwo, 0, 3, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["master-orientation"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 3, 1, 1)
+
+    combo_orientation = Gtk.ComboBoxText()
+    combo_orientation.set_property("halign", Gtk.Align.START)
+    combo_orientation.set_tooltip_text(voc["master-orientation-tooltip"])
+    d = {"left": voc["left"], "right": voc["right"], "top": voc["top"], "bottom": voc["bottom"],
+         "center": voc["center"]}
+    for item in ["left", "right", "top", "bottom", "center"]:
+        combo_orientation.append(item, d[item])
+    combo_orientation.set_active_id(settings["master-orientation"])
+    combo_orientation.connect("changed", set_dict_key_from_combo, settings, "master-orientation")
+    grid.attach(combo_orientation, 3, 3, 1, 1)
+
+    cb_inherit = Gtk.CheckButton.new_with_label(voc["inherit-fullscreen"])
+    cb_inherit.set_property("halign", Gtk.Align.START)
+    cb_inherit.set_tooltip_text(voc["inherit-fullscreen-tooltip"])
+    cb_inherit.set_active(settings["master-inherit_fullscreen"])
+    cb_inherit.connect("toggled", set_from_checkbutton, settings, "master-inherit_fullscreen")
+    grid.attach(cb_inherit, 0, 4, 1, 1)
+
+    cb_acenter = Gtk.CheckButton.new_with_label(voc["always-center-master"])
+    cb_acenter.set_property("halign", Gtk.Align.START)
+    cb_acenter.set_tooltip_text(voc["always-center-master-tooltip"])
+    cb_acenter.set_active(settings["master-always_center_master"])
+    cb_acenter.connect("toggled", set_from_checkbutton, settings, "master-always_center_master")
+    grid.attach(cb_acenter, 1, 4, 2, 1)
 
     frame.show_all()
 
