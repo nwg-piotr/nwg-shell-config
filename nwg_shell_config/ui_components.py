@@ -1,3 +1,4 @@
+import json
 import subprocess
 import gi
 import os
@@ -8,8 +9,8 @@ from i3ipc import Connection
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, \
-    list_inputs_by_type, gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp, get_theme_names, \
-    get_icon_themes, get_command_output
+    list_inputs_by_type, h_list_devices_by_type, gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp, \
+    get_theme_names, get_icon_themes, get_command_output, hyprctl
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -139,6 +140,9 @@ def set_dict_key_from_combo(combo, settings, key):
     settings[key] = combo.get_active_id()
 
 
+def set_int_dict_key_from_combo(combo, settings, key):
+    settings[key] = int(combo.get_active_id())
+
 # def set_icon_theme_from_combo(combo, settings, key, theme_names):
 #     settings[key] = theme_names[combo.get_active_id()]
 
@@ -258,8 +262,12 @@ def screen_tab(settings, voc, pending_updates):
     combo = Gtk.ComboBoxText()
     # combo.set_property("halign", Gtk.Align.START)
     grid.attach(combo, 1, 1, 3, 1)
-    for p in ["preset-0", "preset-1", "preset-2", "preset-3", "custom"]:
-        combo.append(p, p)
+    if os.getenv("SWAYSOCK"):
+        for p in ["preset-0", "preset-1", "preset-2", "preset-3", "custom"]:
+            combo.append(p, p)
+    elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+        for p in ["hyprland-0", "hyprland-1", "hyprland-2", "hyprland-3", "custom-hyprland"]:
+            combo.append(p, p)
     combo.set_active_id(settings["panel-preset"])
     combo.connect("changed", set_dict_key_from_combo, settings, "panel-preset")
     combo.set_tooltip_text(voc["preset-tooltip"])
@@ -504,7 +512,7 @@ def applications_tab(settings, voc, warn):
             combo.set_active_id(key)
 
     if entry_browser.get_text():
-        for key in ["chromium", "google-chrome-stable", "firefox", "qutebrowser", "epiphany", "surf"]:
+        for key in ["chromium", "google-chrome-stable", "firefox", "qutebrowser", "epiphany", "microsoft-edge-stable", "surf"]:
             if entry_browser.get_text() == key:
                 combo.set_active_id(key)
 
@@ -535,6 +543,7 @@ def get_browsers():
         "falkon": "falkon",
         "firefox": "MOZ_ENABLE_WAYLAND=1 firefox",
         "konqueror": "konqueror",
+        "microsoft-edge-stable": "microsoft-edge-stable --enable-features=UseOzonePlatform --ozone-platform=wayland",
         "midori": "midori",
         "opera": "opera",
         "qutebrowser": "qutebrowser",
@@ -838,6 +847,584 @@ def keyboard_tab(settings, voc):
     entry_cname.set_text(settings["keyboard-custom-value"])
     entry_cname.connect("changed", set_from_entry, settings, "keyboard-custom-value")
     grid.attach(entry_cname, 2, 8, 1, 1)
+
+    frame.show_all()
+
+    return frame
+
+
+def h_general_tab(settings, voc):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["general-settings"]))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_gen_use_settings = Gtk.CheckButton.new_with_label(voc["use-these-settings"])
+    cb_gen_use_settings.set_property("halign", Gtk.Align.START)
+    cb_gen_use_settings.set_property("margin-bottom", 6)
+    cb_gen_use_settings.set_tooltip_text(voc["hyprland-include-tooltip"])
+    cb_gen_use_settings.set_active(settings["gen-use-settings"])
+    cb_gen_use_settings.connect("toggled", set_from_checkbutton, settings, "gen-use-settings")
+    grid.attach(cb_gen_use_settings, 0, 0, 2, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["layout"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    combo_layout = Gtk.ComboBoxText()
+    for item in ["dwindle", "master"]:
+        combo_layout.append(item, item)
+    combo_layout.set_active_id(settings["gen-layout"])
+    combo_layout.connect("changed", set_dict_key_from_combo, settings, "gen-layout")
+    grid.attach(combo_layout, 1, 1, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["window-border-size"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    sb_border_size = Gtk.SpinButton.new_with_range(0, 256, 1)
+    sb_border_size.set_property("halign", Gtk.Align.START)
+    sb_border_size.set_value(settings["gen-border_size"])
+    sb_border_size.connect("value-changed", set_int_from_spinbutton, settings, "gen-border_size")
+    grid.attach(sb_border_size, 1, 2, 1, 1)
+
+    cb_no_boarder = Gtk.CheckButton.new_with_label(voc["no-border-on-floating"])
+    cb_no_boarder.set_property("halign", Gtk.Align.START)
+    cb_no_boarder.set_property("margin-bottom", 6)
+    cb_no_boarder.set_active(settings["gen-no_border_on_floating"])
+    cb_no_boarder.connect("toggled", set_from_checkbutton, settings, "gen-no_border_on_floating")
+    grid.attach(cb_no_boarder, 2, 2, 2, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["gaps-in"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    sb_gaps_in = Gtk.SpinButton.new_with_range(0, 256, 1)
+    sb_gaps_in.set_property("halign", Gtk.Align.START)
+    sb_gaps_in.set_value(settings["gen-gaps_in"])
+    sb_gaps_in.connect("value-changed", set_int_from_spinbutton, settings, "gen-gaps_in")
+    grid.attach(sb_gaps_in, 1, 3, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["gaps-out"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 3, 1, 1)
+
+    sb_gaps_out = Gtk.SpinButton.new_with_range(0, 256, 1)
+    sb_gaps_out.set_property("halign", Gtk.Align.START)
+    sb_gaps_out.set_value(settings["gen-gaps_out"])
+    sb_gaps_out.connect("value-changed", set_int_from_spinbutton, settings, "gen-gaps_out")
+    grid.attach(sb_gaps_out, 3, 3, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["color-active-border-start"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    entry_cab_start = Gtk.Entry()
+    entry_cab_start.set_width_chars(8)
+    entry_cab_start.set_tooltip_text(voc["color-border-start-tooltip"])
+    entry_cab_start.set_text(settings["gen-col-active_border-start"])
+    entry_cab_start.connect("changed", set_from_entry, settings, "gen-col-active_border-start")
+    grid.attach(entry_cab_start, 1, 4, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["end"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 4, 1, 1)
+
+    entry_cab_end = Gtk.Entry()
+    entry_cab_end.set_width_chars(8)
+    entry_cab_end.set_tooltip_text(voc["color-border-end-tooltip"])
+    entry_cab_end.set_text(settings["gen-col-active_border-end"])
+    entry_cab_end.connect("changed", set_from_entry, settings, "gen-col-active_border-end")
+    grid.attach(entry_cab_end, 3, 4, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["angle"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 4, 4, 1, 1)
+
+    sb_cab_angle = Gtk.SpinButton.new_with_range(0, 365, 1)
+    sb_cab_angle.set_property("halign", Gtk.Align.START)
+    sb_cab_angle.set_tooltip_text(voc["color-gradient-angle"])
+    sb_cab_angle.set_value(settings["gen-col-active_border-deg"])
+    sb_cab_angle.connect("value-changed", set_int_from_spinbutton, settings, "gen-col-active_border-deg")
+    grid.attach(sb_cab_angle, 5, 4, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["color-inactive-border-start"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 5, 1, 1)
+
+    entry_cib_start = Gtk.Entry()
+    entry_cib_start.set_width_chars(8)
+    entry_cib_start.set_tooltip_text(voc["color-border-start-tooltip"])
+    entry_cib_start.set_text(settings["gen-col-inactive_border-start"])
+    entry_cib_start.connect("changed", set_from_entry, settings, "gen-col-inactive_border-start")
+    grid.attach(entry_cib_start, 1, 5, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["end"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 5, 1, 1)
+
+    entry_cib_end = Gtk.Entry()
+    entry_cib_end.set_width_chars(8)
+    entry_cib_end.set_tooltip_text(voc["color-border-end-tooltip"])
+    entry_cib_end.set_text(settings["gen-col-inactive_border-end"])
+    entry_cib_end.connect("changed", set_from_entry, settings, "gen-col-inactive_border-end")
+    grid.attach(entry_cib_end, 3, 5, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["angle"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 4, 5, 1, 1)
+
+    sb_cib_angle = Gtk.SpinButton.new_with_range(0, 365, 1)
+    sb_cib_angle.set_property("halign", Gtk.Align.START)
+    sb_cib_angle.set_tooltip_text(voc["color-gradient-angle"])
+    sb_cib_angle.set_value(settings["gen-col-inactive_border-deg"])
+    sb_cib_angle.connect("value-changed", set_int_from_spinbutton, settings, "gen-col-inactive_border-deg")
+    grid.attach(sb_cib_angle, 5, 5, 1, 1)
+
+    cb_no_cursor_warps = Gtk.CheckButton.new_with_label(voc["no-cursor-warps"])
+    cb_no_cursor_warps.set_tooltip_text(voc["no-cursor-warps-tooltip"])
+    cb_no_cursor_warps.set_property("halign", Gtk.Align.START)
+    cb_no_cursor_warps.set_active(settings["gen-no_cursor_warps"])
+    cb_no_cursor_warps.connect("toggled", set_from_checkbutton, settings, "gen-no_cursor_warps")
+    grid.attach(cb_no_cursor_warps, 0, 6, 1, 1)
+
+    cb_no_focus_fallback = Gtk.CheckButton.new_with_label(voc["no-focus-fallback"])
+    cb_no_focus_fallback.set_tooltip_text(voc["no-focus-fallback-tooltip"])
+    cb_no_focus_fallback.set_property("halign", Gtk.Align.START)
+    cb_no_focus_fallback.set_active(settings["gen-no_focus_fallback"])
+    cb_no_focus_fallback.connect("toggled", set_from_checkbutton, settings, "gen-no_focus_fallback")
+    grid.attach(cb_no_focus_fallback, 1, 6, 1, 1)
+
+    cb_resize_on_border = Gtk.CheckButton.new_with_label(voc["resize-on-border"])
+    cb_resize_on_border.set_tooltip_text(voc["resize-on-border"])
+    cb_resize_on_border.set_property("halign", Gtk.Align.START)
+    cb_resize_on_border.set_active(settings["gen-resize_on_border"])
+    cb_resize_on_border.connect("toggled", set_from_checkbutton, settings, "gen-resize_on_border")
+    grid.attach(cb_resize_on_border, 0, 7, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["extend-border-grab-area"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 1, 7, 2, 1)
+
+    sb_extend_grab_area = Gtk.SpinButton.new_with_range(0, 365, 1)
+    sb_extend_grab_area.set_property("halign", Gtk.Align.START)
+    sb_extend_grab_area.set_tooltip_text(voc["extend-border-grab-area-tooltip"])
+    sb_extend_grab_area.set_value(settings["gen-extend_border_grab_area"])
+    sb_extend_grab_area.connect("value-changed", set_int_from_spinbutton, settings, "gen-extend_border_grab_area")
+    grid.attach(sb_extend_grab_area, 3, 7, 1, 1)
+
+    cb_hover = Gtk.CheckButton.new_with_label(voc["hover-icon-on-border"])
+    cb_hover.set_tooltip_text(voc["hover-icon-on-border-tooltip"])
+    cb_hover.set_property("halign", Gtk.Align.START)
+    cb_hover.set_active(settings["gen-hover_icon_on_border"])
+    cb_hover.connect("toggled", set_from_checkbutton, settings, "gen-hover_icon_on_border")
+    grid.attach(cb_hover, 0, 8, 1, 1)
+
+    frame.show_all()
+
+    return frame
+
+
+def h_dwindle_tab(settings, voc):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["dwindle-layout"]))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_use_settings = Gtk.CheckButton.new_with_label(voc["use-these-settings"])
+    cb_use_settings.set_property("halign", Gtk.Align.START)
+    cb_use_settings.set_property("margin-bottom", 6)
+    cb_use_settings.set_tooltip_text(voc["hyprland-include-tooltip"])
+    cb_use_settings.set_active(settings["dwindle-use-settings"])
+    cb_use_settings.connect("toggled", set_from_checkbutton, settings, "dwindle-use-settings")
+    grid.attach(cb_use_settings, 0, 0, 2, 1)
+
+    cb_pseudotiling = Gtk.CheckButton.new_with_label(voc["pseudotiling"])
+    cb_pseudotiling.set_property("halign", Gtk.Align.START)
+    cb_pseudotiling.set_tooltip_text(voc["pseudotiling-tooltip"])
+    cb_pseudotiling.set_active(settings["dwindle-pseudotile"])
+    cb_pseudotiling.connect("toggled", set_from_checkbutton, settings, "dwindle-pseudotile")
+    grid.attach(cb_pseudotiling, 0, 1, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["force-split"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 1, 1, 1)
+
+    combo_force_split = Gtk.ComboBoxText()
+    combo_force_split.set_tooltip_text(voc["force-split-tooltip"])
+    d = {"0": voc["force-split-0"], "1": voc["force-split-1"], "2": voc["force-split-2"]}
+    for item in ["0", "1", "2"]:
+        combo_force_split.append(item, d[item])
+    combo_force_split.set_active_id(str(settings["dwindle-force_split"]))
+    combo_force_split.connect("changed", set_int_dict_key_from_combo, settings, "dwindle-force_split")
+    grid.attach(combo_force_split, 3, 1, 1, 1)
+
+    cb_preserve_split = Gtk.CheckButton.new_with_label(voc["preserve-split"])
+    cb_preserve_split.set_property("halign", Gtk.Align.START)
+    cb_preserve_split.set_tooltip_text(voc["preserve-split-tooltip"])
+    cb_preserve_split.set_active(settings["dwindle-preserve_split"])
+    cb_preserve_split.connect("toggled", set_from_checkbutton, settings, "dwindle-preserve_split")
+    grid.attach(cb_preserve_split, 1, 1, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["special-scale-factor"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    sb_ssf = Gtk.SpinButton.new_with_range(0.0, 1.0, 0.1)
+    sb_ssf.set_value(settings["dwindle-special_scale_factor"])
+    sb_ssf.set_tooltip_text(voc["special-scale-factor-tooltip"])
+    sb_ssf.connect("value-changed", set_from_spinbutton, settings, "dwindle-special_scale_factor", 2)
+    grid.attach(sb_ssf, 1, 2, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["split-width-multiplier"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 2, 1, 1)
+
+    sb_swm = Gtk.SpinButton.new_with_range(0.1, 2.0, 0.1)
+    sb_swm.set_value(settings["dwindle-split_width_multiplier"])
+    sb_swm.set_tooltip_text(voc["split-width-multiplier-tooltip"])
+    sb_swm.connect("value-changed", set_from_spinbutton, settings, "dwindle-split_width_multiplier", 2)
+    grid.attach(sb_swm, 3, 2, 1, 1)
+
+    cb_ngwo = Gtk.CheckButton.new_with_label(voc["no-gaps-when-only"])
+    cb_ngwo.set_property("halign", Gtk.Align.START)
+    cb_ngwo.set_tooltip_text(voc["no-gaps-when-only-tooltip"])
+    cb_ngwo.set_active(settings["dwindle-no_gaps_when_only"])
+    cb_ngwo.connect("toggled", set_from_checkbutton, settings, "dwindle-no_gaps_when_only")
+    grid.attach(cb_ngwo, 0, 3, 2, 1)
+
+    cb_uafs = Gtk.CheckButton.new_with_label(voc["use-active-for-splits"])
+    cb_uafs.set_property("halign", Gtk.Align.START)
+    cb_uafs.set_tooltip_text(voc["use-active-for-splits-tooltip"])
+    cb_uafs.set_active(settings["dwindle-use_active_for_splits"])
+    cb_uafs.connect("toggled", set_from_checkbutton, settings, "dwindle-use_active_for_splits")
+    grid.attach(cb_uafs, 2, 3, 2, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["default-split-ratio"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    sb_dsr = Gtk.SpinButton.new_with_range(0.1, 1.9, 0.01)
+    sb_dsr.set_value(settings["dwindle-default_split_ratio"])
+    sb_dsr.set_tooltip_text(voc["default-split-ratio-tooltip"])
+    sb_dsr.connect("value-changed", set_from_spinbutton, settings, "dwindle-default_split_ratio", 3)
+    grid.attach(sb_dsr, 1, 4, 1, 1)
+
+    frame.show_all()
+
+    return frame
+
+
+def h_master_tab(settings, voc):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["master-layout"]))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_use_settings = Gtk.CheckButton.new_with_label(voc["use-these-settings"])
+    cb_use_settings.set_property("halign", Gtk.Align.START)
+    cb_use_settings.set_property("margin-bottom", 6)
+    cb_use_settings.set_tooltip_text(voc["hyprland-include-tooltip"])
+    cb_use_settings.set_active(settings["master-use-settings"])
+    cb_use_settings.connect("toggled", set_from_checkbutton, settings, "master-use-settings")
+    grid.attach(cb_use_settings, 0, 0, 2, 1)
+
+    cb_assp = Gtk.CheckButton.new_with_label(voc["allow-small-split"])
+    cb_assp.set_property("halign", Gtk.Align.START)
+    cb_assp.set_tooltip_text(voc["allow-small-split-tooltip"])
+    cb_assp.set_active(settings["master-allow_small_split"])
+    cb_assp.connect("toggled", set_from_checkbutton, settings, "master-allow_small_split")
+    grid.attach(cb_assp, 0, 1, 1, 1)
+
+    cb_nis = Gtk.CheckButton.new_with_label(voc["new-is-master"])
+    cb_nis.set_property("halign", Gtk.Align.START)
+    cb_nis.set_tooltip_text(voc["new-is-master-tooltip"])
+    cb_nis.set_active(settings["master-new_is_master"])
+    cb_nis.connect("toggled", set_from_checkbutton, settings, "master-new_is_master")
+    grid.attach(cb_nis, 1, 1, 1, 1)
+
+    cb_not = Gtk.CheckButton.new_with_label(voc["new-on-top"])
+    cb_not.set_property("halign", Gtk.Align.START)
+    cb_not.set_tooltip_text(voc["new-on-top-tooltip"])
+    cb_not.set_active(settings["master-new_on_top"])
+    cb_not.connect("toggled", set_from_checkbutton, settings, "master-new_on_top")
+    grid.attach(cb_not, 2, 1, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["master-split-factor"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    sb_msf = Gtk.SpinButton.new_with_range(0.0, 1.0, 0.01)
+    sb_msf.set_value(settings["master-mfact"])
+    sb_msf.set_tooltip_text(voc["master-split-factor-tooltip"])
+    sb_msf.connect("value-changed", set_from_spinbutton, settings, "master-mfact", 3)
+    grid.attach(sb_msf, 1, 2, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["special-scale-factor"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 2, 1, 1)
+
+    sb_ssf = Gtk.SpinButton.new_with_range(0.0, 1.0, 0.01)
+    sb_ssf.set_value(settings["master-special_scale_factor"])
+    sb_ssf.set_tooltip_text(voc["special-scale-factor-tooltip"])
+    sb_ssf.connect("value-changed", set_from_spinbutton, settings, "master-special_scale_factor", 3)
+    grid.attach(sb_ssf, 3, 2, 1, 1)
+
+    cb_ngwo = Gtk.CheckButton.new_with_label(voc["no-gaps-when-only"])
+    cb_ngwo.set_property("halign", Gtk.Align.START)
+    cb_ngwo.set_tooltip_text(voc["no-gaps-when-only-tooltip"])
+    cb_ngwo.set_active(settings["master-no_gaps_when_only"])
+    cb_ngwo.connect("toggled", set_from_checkbutton, settings, "master-no_gaps_when_only")
+    grid.attach(cb_ngwo, 0, 3, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["master-orientation"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 3, 1, 1)
+
+    combo_orientation = Gtk.ComboBoxText()
+    combo_orientation.set_property("halign", Gtk.Align.START)
+    combo_orientation.set_tooltip_text(voc["master-orientation-tooltip"])
+    d = {"left": voc["left"], "right": voc["right"], "top": voc["top"], "bottom": voc["bottom"],
+         "center": voc["center"]}
+    for item in ["left", "right", "top", "bottom", "center"]:
+        combo_orientation.append(item, d[item])
+    combo_orientation.set_active_id(settings["master-orientation"])
+    combo_orientation.connect("changed", set_dict_key_from_combo, settings, "master-orientation")
+    grid.attach(combo_orientation, 3, 3, 1, 1)
+
+    cb_inherit = Gtk.CheckButton.new_with_label(voc["inherit-fullscreen"])
+    cb_inherit.set_property("halign", Gtk.Align.START)
+    cb_inherit.set_tooltip_text(voc["inherit-fullscreen-tooltip"])
+    cb_inherit.set_active(settings["master-inherit_fullscreen"])
+    cb_inherit.connect("toggled", set_from_checkbutton, settings, "master-inherit_fullscreen")
+    grid.attach(cb_inherit, 0, 4, 1, 1)
+
+    cb_acenter = Gtk.CheckButton.new_with_label(voc["always-center-master"])
+    cb_acenter.set_property("halign", Gtk.Align.START)
+    cb_acenter.set_tooltip_text(voc["always-center-master-tooltip"])
+    cb_acenter.set_active(settings["master-always_center_master"])
+    cb_acenter.connect("toggled", set_from_checkbutton, settings, "master-always_center_master")
+    grid.attach(cb_acenter, 1, 4, 2, 1)
+
+    frame.show_all()
+
+    return frame
+
+
+def h_input_tab(settings, voc):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["input-devices"]))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_keyboard_use_settings = Gtk.CheckButton.new_with_label(voc["use-these-settings"])
+    cb_keyboard_use_settings.set_property("halign", Gtk.Align.START)
+    cb_keyboard_use_settings.set_property("margin-bottom", 6)
+    cb_keyboard_use_settings.set_tooltip_text(voc["hyprland-include-tooltip"])
+    cb_keyboard_use_settings.set_active(settings["input-use-settings"])
+    cb_keyboard_use_settings.connect("toggled", set_from_checkbutton, settings, "input-use-settings")
+    grid.attach(cb_keyboard_use_settings, 0, 0, 2, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["kb-layout"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 1, 1, 1)
+
+    entry_layout = Gtk.Entry()
+    entry_layout.set_tooltip_text(voc["keyboard-layout-tooltip"])
+    entry_layout.set_text(settings["input-kb_layout"])
+    entry_layout.connect("changed", set_from_entry, settings, "input-kb_layout")
+    grid.attach(entry_layout, 1, 1, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["kb-variant"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 1, 1, 1)
+
+    entry_variant = Gtk.Entry()
+    entry_variant.set_tooltip_text(voc["keyboard-variant-tooltip"])
+    entry_variant.set_text(settings["input-kb_variant"])
+    entry_variant.connect("changed", set_from_entry, settings, "input-kb_variant")
+    grid.attach(entry_variant, 3, 1, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["kb-model"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 2, 1, 1)
+
+    entry_model = Gtk.Entry()
+    entry_model.set_tooltip_text(voc["xkb-kb-model-tooltip"])
+    entry_model.set_text(settings["input-kb_model"])
+    entry_model.connect("changed", set_from_entry, settings, "input-kb_model")
+    grid.attach(entry_model, 1, 2, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["kb-options"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 2, 1, 1)
+
+    entry_options = Gtk.Entry()
+    entry_options.set_tooltip_text(voc["xkb-kb-options-tooltip"])
+    entry_options.set_text(settings["input-kb_options"])
+    entry_options.connect("changed", set_from_entry, settings, "input-kb_options")
+    grid.attach(entry_options, 3, 2, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["kb-rules"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 4, 1, 1)
+
+    entry_rules = Gtk.Entry()
+    entry_rules.set_tooltip_text(voc["xkb-kb-rules-tooltip"])
+    entry_rules.set_text(settings["input-kb_rules"])
+    entry_rules.connect("changed", set_from_entry, settings, "input-kb_rules")
+    grid.attach(entry_rules, 1, 4, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["kb-file"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 4, 1, 1)
+
+    entry_file = Gtk.Entry()
+    entry_file.set_tooltip_text(voc["xkb-kb-file-tooltip"])
+    entry_file.set_text(settings["input-kb_file"])
+    entry_file.connect("changed", set_from_entry, settings, "input-kb_file")
+    grid.attach(entry_file, 3, 4, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["keyboard-repeat-delay"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 5, 1, 1)
+
+    sb_repeat_delay = Gtk.SpinButton.new_with_range(1, 6000, 1)
+    sb_repeat_delay.set_value(settings["input-repeat_delay"])
+    sb_repeat_delay.connect("value-changed", set_int_from_spinbutton, settings, "input-repeat_delay")
+    sb_repeat_delay.set_tooltip_text(voc["keyboard-repeat-delay-tooltip"])
+    grid.attach(sb_repeat_delay, 1, 5, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["keyboard-repeat-rate"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 5, 1, 1)
+
+    sb_repeat_rate = Gtk.SpinButton.new_with_range(1, 4000, 1)
+    sb_repeat_rate.set_value(settings["input-repeat_rate"])
+    sb_repeat_rate.connect("value-changed", set_int_from_spinbutton, settings, "input-repeat_rate")
+    sb_repeat_rate.set_tooltip_text(voc["keyboard-repeat-rate-tooltip"])
+    grid.attach(sb_repeat_rate, 3, 5, 1, 1)
+
+    cb_numlock = Gtk.CheckButton.new_with_label(voc["numlock-by-default"])
+    cb_numlock.set_property("halign", Gtk.Align.START)
+    cb_numlock.set_property("margin-bottom", 6)
+    cb_numlock.set_active(settings["input-numlock_by_default"])
+    cb_numlock.connect("toggled", set_from_checkbutton, settings, "input-numlock_by_default")
+    grid.attach(cb_numlock, 1, 7, 2, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["mouse-sensitivity"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 8, 1, 1)
+
+    sb_m_sensitivity = Gtk.SpinButton.new_with_range(-1.0, 1.0, 0.1)
+    sb_m_sensitivity.set_value(settings["input-sensitivity"])
+    sb_m_sensitivity.connect("value-changed", set_from_spinbutton, settings, "input-sensitivity", 1)
+    sb_m_sensitivity.set_tooltip_text(voc["scroll-factor-tooltip"])
+    grid.attach(sb_m_sensitivity, 1, 8, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["acceleration-profile"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 8, 1, 1)
+
+    combo_aprofile = Gtk.ComboBoxText()
+    combo_aprofile.set_tooltip_text(voc["acceleration-profile-tooltip"])
+    combo_aprofile.append("", voc["default"])
+    for item in ["flat", "adaptive"]:
+        combo_aprofile.append(item, voc[item])
+    combo_aprofile.set_active_id(settings["input-accel_profile"])
+    combo_aprofile.connect("changed", set_dict_key_from_combo, settings, "input-accel_profile")
+    grid.attach(combo_aprofile, 3, 8, 1, 1)
+
+    cb_left_handed = Gtk.CheckButton.new_with_label(voc["left-handed"])
+    cb_left_handed.set_tooltip_text(voc["left-handed-tooltip"])
+    cb_left_handed.set_property("halign", Gtk.Align.START)
+    cb_left_handed.set_active(settings["input-left_handed"])
+    cb_left_handed.connect("toggled", set_from_checkbutton, settings, "input-left_handed")
+    grid.attach(cb_left_handed, 1, 9, 1, 1)
+
+    cb_left_handed = Gtk.CheckButton.new_with_label(voc["natural-scroll"])
+    cb_left_handed.set_tooltip_text(voc["natural-scroll-tooltip"])
+    cb_left_handed.set_property("halign", Gtk.Align.START)
+    cb_left_handed.set_active(settings["input-natural_scroll"])
+    cb_left_handed.connect("toggled", set_from_checkbutton, settings, "input-natural_scroll")
+    grid.attach(cb_left_handed, 2, 9, 1, 1)
+
+    cb_mouse_refocus = Gtk.CheckButton.new_with_label(voc["mouse-refocus"])
+    cb_mouse_refocus.set_tooltip_text(voc["mouse-refocus-tooltip"])
+    cb_mouse_refocus.set_property("halign", Gtk.Align.START)
+    cb_mouse_refocus.set_active(settings["input-mouse_refocus"])
+    cb_mouse_refocus.connect("toggled", set_from_checkbutton, settings, "input-mouse_refocus")
+    grid.attach(cb_mouse_refocus, 3, 9, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["scroll-method"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 10, 1, 1)
+
+    combo_scroll_method = Gtk.ComboBoxText()
+    combo_scroll_method.set_tooltip_text(voc["scroll-method-tooltip"])
+    for item in [("2fg", voc["two_finger"]), ("edge", voc["edge"]), ("on_button_down", voc["on_button_down"]),
+                 ("no_scroll", voc["none"])]:
+        combo_scroll_method.append(item[0], item[1])
+    combo_scroll_method.set_active_id(settings["input-scroll_method"])
+    combo_scroll_method.connect("changed", set_dict_key_from_combo, settings, "input-scroll_method")
+    grid.attach(combo_scroll_method, 1, 10, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["scroll-button"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 10, 1, 1)
+
+    sb_scroll_button = Gtk.SpinButton.new_with_range(0, 512, 1)
+    sb_scroll_button.set_value(settings["input-scroll_button"])
+    sb_scroll_button.connect("value-changed", set_from_spinbutton, settings, "input-scroll_button", 1)
+    sb_scroll_button.set_tooltip_text(voc["scroll-button-tooltip"])
+    grid.attach(sb_scroll_button, 3, 10, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["focus-follow-mouse"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 11, 1, 1)
+
+    combo_focus = Gtk.ComboBoxText()
+    # combo_focus.set_property("halign", Gtk.Align.START)
+    combo_focus.set_tooltip_text(voc["focus-follow-mouse-tooltip"])
+    for item in ["0", "1", "2", "3"]:
+        combo_focus.append(item, item)
+    combo_focus.set_active_id(str(settings["input-follow_mouse"]))
+    combo_focus.connect("changed", set_int_dict_key_from_combo, settings, "input-follow_mouse")
+    grid.attach(combo_focus, 1, 11, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["float-switch-override-focus"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 11, 1, 1)
+
+    combo_float_switch = Gtk.ComboBoxText()
+    # combo_float_switch.set_property("halign", Gtk.Align.START)
+    combo_float_switch.set_tooltip_text(voc["float-switch-override-focus-tooltip"])
+    combo_float_switch.append("0", voc["disabled"])
+    for item in ["1", "2"]:
+        combo_float_switch.append(item, item)
+    combo_float_switch.set_active_id(str(settings["input-float_switch_override_focus"]))
+    combo_float_switch.connect("changed", set_int_dict_key_from_combo, settings, "input-float_switch_override_focus")
+    grid.attach(combo_float_switch, 3, 11, 1, 1)
 
     frame.show_all()
 
@@ -1162,6 +1749,102 @@ def touchpad_tab(settings, voc):
     entry_cname.set_text(settings["touchpad-custom-value"])
     entry_cname.connect("changed", set_from_entry, settings, "touchpad-custom-value")
     grid.attach(entry_cname, 2, 8, 2, 1)
+
+    frame.show_all()
+
+    return frame
+
+
+def h_touchpad_tab(settings, voc):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["touchpad"]))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_touchpad_use_settings = Gtk.CheckButton.new_with_label(voc["use-these-settings"])
+    cb_touchpad_use_settings.set_property("halign", Gtk.Align.START)
+    cb_touchpad_use_settings.set_property("margin-bottom", 6)
+    cb_touchpad_use_settings.set_tooltip_text(voc["hyprland-include-tooltip"])
+    cb_touchpad_use_settings.set_active(settings["touchpad-use-settings"])
+    cb_touchpad_use_settings.connect("toggled", set_from_checkbutton, settings, "touchpad-use-settings")
+    grid.attach(cb_touchpad_use_settings, 0, 0, 2, 1)
+
+    cb_dwt = Gtk.CheckButton.new_with_label(voc["disable-while-typing"])
+    cb_dwt.set_property("halign", Gtk.Align.START)
+    cb_dwt.set_tooltip_text(voc["dwt-tooltip"])
+    cb_dwt.set_active(settings["touchpad-disable_while_typing"])
+    cb_dwt.connect("toggled", set_from_checkbutton, settings, "touchpad-disable_while_typing")
+    grid.attach(cb_dwt, 1, 1, 1, 1)
+
+    cb_nscroll = Gtk.CheckButton.new_with_label(voc["natural-scroll"])
+    cb_nscroll.set_property("halign", Gtk.Align.START)
+    cb_nscroll.set_tooltip_text(voc["natural-scroll-tooltip"])
+    cb_nscroll.set_active(settings["touchpad-natural_scroll"])
+    cb_nscroll.connect("toggled", set_from_checkbutton, settings, "touchpad-natural_scroll")
+    grid.attach(cb_nscroll, 1, 2, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["scroll-factor"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    sb_sfactor = Gtk.SpinButton.new_with_range(0.1, 10, 0.1)
+    sb_sfactor.set_value(settings["touchpad-scroll_factor"])
+    sb_sfactor.connect("value-changed", set_from_spinbutton, settings, "touchpad-scroll_factor", 1)
+    sb_sfactor.set_tooltip_text(voc["scroll-factor-tooltip"])
+    grid.attach(sb_sfactor, 1, 3, 1, 1)
+
+    cb_memulation = Gtk.CheckButton.new_with_label(voc["middle-emulation"])
+    cb_memulation.set_property("halign", Gtk.Align.START)
+    cb_memulation.set_tooltip_text(voc["middle-emulation-tooltip"])
+    cb_memulation.set_active(settings["touchpad-middle_button_emulation"])
+    cb_memulation.connect("toggled", set_from_checkbutton, settings, "touchpad-middle_button_emulation")
+    grid.attach(cb_memulation, 1, 4, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["tap-button-map"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 5, 1, 1)
+
+    combo_tap_btn_map = Gtk.ComboBoxText()
+    combo_tap_btn_map.set_property("halign", Gtk.Align.START)
+    combo_tap_btn_map.set_tooltip_text(voc["tap-button-map-tooltip"])
+    for item in ["lrm", "lmr"]:
+        combo_tap_btn_map.append(item, item)
+    combo_tap_btn_map.set_active_id(settings["touchpad-tap_button_map"])
+    combo_tap_btn_map.connect("changed", set_dict_key_from_combo, settings, "touchpad-tap_button_map")
+    grid.attach(combo_tap_btn_map, 1, 5, 1, 1)
+
+    cb_clickfinger = Gtk.CheckButton.new_with_label(voc["clickfinger-behavior"])
+    cb_clickfinger.set_property("halign", Gtk.Align.START)
+    cb_clickfinger.set_tooltip_text(voc["clickfinger-behavior-tooltip"])
+    cb_clickfinger.set_active(settings["touchpad-clickfinger_behavior"])
+    cb_clickfinger.connect("toggled", set_from_checkbutton, settings, "touchpad-clickfinger_behavior")
+    grid.attach(cb_clickfinger, 1, 6, 1, 1)
+
+    cb_tap2click = Gtk.CheckButton.new_with_label(voc["tap-to-click"])
+    cb_tap2click.set_property("halign", Gtk.Align.START)
+    cb_tap2click.set_tooltip_text(voc["tap-to-click-tooltip"])
+    cb_tap2click.set_active(settings["touchpad-tap-to-click"])
+    cb_tap2click.connect("toggled", set_from_checkbutton, settings, "touchpad-tap-to-click")
+    grid.attach(cb_tap2click, 1, 7, 1, 1)
+
+    cb_drag_lock = Gtk.CheckButton.new_with_label(voc["drag-lock"])
+    cb_drag_lock.set_property("halign", Gtk.Align.START)
+    cb_drag_lock.set_tooltip_text(voc["drag-lock-tooltip"])
+    cb_drag_lock.set_active(settings["touchpad-drag_lock"])
+    cb_drag_lock.connect("toggled", set_from_checkbutton, settings, "touchpad-drag_lock")
+    grid.attach(cb_drag_lock, 1, 8, 1, 1)
+
+    cb_tap_and_drag = Gtk.CheckButton.new_with_label(voc["tap-and-drag"])
+    cb_tap_and_drag.set_property("halign", Gtk.Align.START)
+    cb_tap_and_drag.set_tooltip_text(voc["tap-and-drag-tooltip"])
+    cb_tap_and_drag.set_active(settings["touchpad-tap-and-drag"])
+    cb_tap_and_drag.connect("toggled", set_from_checkbutton, settings, "touchpad-tap-and-drag")
+    grid.attach(cb_tap_and_drag, 1, 9, 1, 1)
 
     frame.show_all()
 
@@ -2113,9 +2796,15 @@ def sys_info_tab(voc):
     lbl.set_property("xalign", 0)
     grid.attach(lbl, 1, 2, 1, 1)
 
-    output = get_command_output("sway -v")
-    if output:
+    output = ""
+    if os.getenv("SWAYSOCK"):
+        output = get_command_output("sway -v")
         lbl = Gtk.Label.new(output[0])
+        lbl.set_property("halign", Gtk.Align.START)
+        grid.attach(lbl, 1, 3, 1, 1)
+    elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+        output = get_command_output("hyprctl version")
+        lbl = Gtk.Label.new("Hyprland {}".format(output[1]))
         lbl.set_property("halign", Gtk.Align.START)
         grid.attach(lbl, 1, 3, 1, 1)
 
@@ -2159,6 +2848,22 @@ def sys_info_tab(voc):
             r = output.rect
             lbl = Gtk.Label.new(
                 "{}x{}, scale: {}, x: {}, y: {}".format(r.width, r.height, output.scale, r.x, r.y))
+            lbl.set_property("halign", Gtk.Align.START)
+            grid.attach(lbl, 1, row + i, 1, 1)
+
+    elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+        row = 9
+        reply = hyprctl("j/monitors")
+        monitors = json.loads(reply)
+        for i in range(len(monitors)):
+            m = monitors[i]
+
+            lbl = Gtk.Label.new("{}:".format(m["name"]))
+            lbl.set_property("halign", Gtk.Align.END)
+            grid.attach(lbl, 0, row + i, 1, 1)
+
+            lbl = Gtk.Label.new(
+                "{}x{}, scale: {}, x: {}, y: {}".format(m["width"], m["height"], m["scale"], m["x"], m["y"]))
             lbl.set_property("halign", Gtk.Align.START)
             grid.attach(lbl, 1, row + i, 1, 1)
 
