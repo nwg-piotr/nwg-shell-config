@@ -995,9 +995,9 @@ def load_preset(file_name):
                 preset[key] = defaults[key]
                 print("'{}' key missing from preset, adding '{}'".format(key, defaults[key]))
                 missing += 1
-            if missing > 0:
-                print("Saving {}".format(preset_file))
-                save_json(preset, preset_file)
+        if missing > 0:
+            print("Saving {}".format(preset_file))
+            save_json(preset, preset_file)
 
         return preset
     else:
