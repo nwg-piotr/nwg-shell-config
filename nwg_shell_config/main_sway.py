@@ -11,6 +11,7 @@ License: MIT
 
 import argparse
 import signal
+import time
 
 from nwg_shell_config.tools import *
 from nwg_shell_config.ui_components import *
@@ -659,19 +660,31 @@ def save_includes():
 
     # ~/.config/sway/autostart
     autostart = ["exec rm {}".format(os.path.join(temp_dir(), "nwg-shell-check-update.lock"))]
+
+    # Kill gammastep. We will need either to restart it or turn it off
+    subprocess.call("pkill -f gammastep", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+    time.sleep(0.5)
+
     if settings["night-on"]:
-        cmd_night = "exec wlsunset"
-        if settings["night-lat"]:
-            cmd_night += " -l {}".format(settings["night-lat"])
-        if settings["night-long"]:
-            cmd_night += " -L {}".format(settings["night-long"])
-        if settings["night-temp-low"]:
-            cmd_night += " -t {}".format(settings["night-temp-low"])
-        if settings["night-temp-high"]:
-            cmd_night += " -T {}".format(settings["night-temp-high"])
-        if settings["night-gamma"]:
-            cmd_night += " -g {}".format(settings["night-gamma"])
+        gammastep_dir = os.path.join(config_home, "gammastep")
+        cmd_night = "exec-once = gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf"))
         autostart.append(cmd_night)
+
+        # save gammastep config file
+        os.makedirs(gammastep_dir, exist_ok=True)
+        lines = ["[general]"]
+        if settings["night-temp-high"]:
+            lines.append("temp-day={}".format(settings["night-temp-high"]))
+        if settings["night-temp-low"]:
+            lines.append("temp-night={}".format(settings["night-temp-low"]))
+        if settings["night-gamma"]:
+            lines.append("gamma={}".format(settings["night-gamma"]))
+        lines.append("adjustment-method=wayland")
+        if settings["night-lat"] and settings["night-long"]:
+            lines.append("location-provider=manual\n[manual]")
+            lines.append("lat={}".format(settings["night-lat"]))
+            lines.append("lon={}".format(settings["night-long"]))
+        save_list_to_text_file(lines, os.path.join(gammastep_dir, "gammastep.conf"))
 
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
     p = os.path.join(config_home, "swaync")
