@@ -667,7 +667,7 @@ def save_includes():
 
     if settings["night-on"]:
         gammastep_dir = os.path.join(config_home, "gammastep")
-        cmd_night = "exec-once = gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf"))
+        cmd_night = "exec gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf"))
         autostart.append(cmd_night)
 
         # save gammastep config file
