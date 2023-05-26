@@ -9,6 +9,7 @@
   "launcher-overlay": false,
   "launcher-css": "hyprland-0.css",
   "launcher-on": true,
+  "launcher-gtk-theme": "",
   "launcher-gtk-icon-theme": "",
   "exit-position": "center",
   "exit-full": false,
