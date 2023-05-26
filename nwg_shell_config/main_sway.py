@@ -686,6 +686,12 @@ def save_includes():
             lines.append("lon={}".format(settings["night-long"]))
         save_list_to_text_file(lines, os.path.join(gammastep_dir, "gammastep.conf"))
 
+        try:
+            subprocess.Popen("gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf")),
+                             shell=True)
+        except Exception as e:
+            print(e)
+
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
     p = os.path.join(config_home, "swaync")
     autostart.append("exec swaync -s {}/{}.css".format(p, name))
