@@ -705,7 +705,7 @@ def save_includes():
         #     print(e)
 
         subprocess.call("pkill -f wlsunset", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-        time.sleep(1)
+        time.sleep(0.5)
         try:
             subprocess.Popen(
                 "wlsunset -t {} -T {} -l {} -L {} -g {}".format(settings["night-temp-low"],
