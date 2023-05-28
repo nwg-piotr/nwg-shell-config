@@ -328,6 +328,7 @@ def h_set_up_master_tab(*args):
     content = h_master_tab(settings, voc)
     grid.attach(content, 1, 0, 1, 1)
 
+
 def h_set_up_input_tab(*args):
     hide_submenus()
     global content
@@ -673,35 +674,48 @@ def save_includes():
     includes.append("exec-once = rm {}".format(os.path.join(temp_dir(), "nwg-shell-check-update.lock")))
 
     # Kill gammastep. We will need either to restart it or turn it off
-    subprocess.call("pkill -f gammastep", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-    time.sleep(0.5)
+    # subprocess.call("pkill -f gammastep", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+    # time.sleep(0.5)
 
     if settings["night-on"]:
-        gammastep_dir = os.path.join(config_home, "gammastep")
-        cmd_night = "exec-once = gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf"))
-        includes.append(cmd_night)
+        # gammastep_dir = os.path.join(config_home, "gammastep")
+        # cmd_night = "exec-once = gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf"))
+        # includes.append(cmd_night)
+        #
+        # # save gammastep config file
+        # os.makedirs(gammastep_dir, exist_ok=True)
+        # lines = ["[general]"]
+        # if settings["night-temp-high"]:
+        #     lines.append("temp-day={}".format(settings["night-temp-high"]))
+        # if settings["night-temp-low"]:
+        #     lines.append("temp-night={}".format(settings["night-temp-low"]))
+        # if settings["night-gamma"]:
+        #     lines.append("gamma={}".format(settings["night-gamma"]))
+        # lines.append("adjustment-method=wayland")
+        # if settings["night-lat"] and settings["night-long"]:
+        #     lines.append("location-provider=manual\n[manual]")
+        #     lines.append("lat={}".format(settings["night-lat"]))
+        #     lines.append("lon={}".format(settings["night-long"]))
+        # save_list_to_text_file(lines, os.path.join(gammastep_dir, "gammastep.conf"))
+        #
+        # try:
+        #     subprocess.Popen("gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf")),
+        #                      shell=True)
+        # except Exception as e:
+        #     print(e)
 
-        # save gammastep config file
-        os.makedirs(gammastep_dir, exist_ok=True)
-        lines = ["[general]"]
-        if settings["night-temp-high"]:
-            lines.append("temp-day={}".format(settings["night-temp-high"]))
-        if settings["night-temp-low"]:
-            lines.append("temp-night={}".format(settings["night-temp-low"]))
-        if settings["night-gamma"]:
-            lines.append("gamma={}".format(settings["night-gamma"]))
-        lines.append("adjustment-method=wayland")
-        if settings["night-lat"] and settings["night-long"]:
-            lines.append("location-provider=manual\n[manual]")
-            lines.append("lat={}".format(settings["night-lat"]))
-            lines.append("lon={}".format(settings["night-long"]))
-        save_list_to_text_file(lines, os.path.join(gammastep_dir, "gammastep.conf"))
-
+        subprocess.call("pkill -f wlsunset", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        time.sleep(1)
         try:
-            subprocess.Popen("gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf")),
-                             shell=True)
+            subprocess.Popen(
+                "wlsunset -t {} -T {} -l {} -L {} -g {}".format(settings["night-temp-low"],
+                                                                settings["night-temp-high"],
+                                                                settings["night-lat"],
+                                                                settings["night-long"],
+                                                                settings["night-gamma"]),
+                shell=True)
         except Exception as e:
-            print(e)
+            eprint(e)
 
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
     p = os.path.join(config_home, "swaync")
@@ -970,7 +984,7 @@ def load_settings():
         "master-orientation": "left",
         "master-inherit_fullscreen": True,
         "master-always_center_master": False,
-        
+
         "input-use-settings": True,
         "input-kb_layout": "us",
         "input-kb_model": "",
