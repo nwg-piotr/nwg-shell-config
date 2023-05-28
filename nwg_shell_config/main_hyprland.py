@@ -706,16 +706,17 @@ def save_includes():
 
         subprocess.call("pkill -f wlsunset", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         time.sleep(0.5)
-        try:
-            subprocess.Popen(
-                "wlsunset -t {} -T {} -l {} -L {} -g {}".format(settings["night-temp-low"],
+        cmd = "wlsunset -t {} -T {} -l {} -L {} -g {}".format(settings["night-temp-low"],
                                                                 settings["night-temp-high"],
                                                                 settings["night-lat"],
                                                                 settings["night-long"],
-                                                                settings["night-gamma"]),
-                shell=True)
+                                                                settings["night-gamma"])
+        try:
+            subprocess.Popen(cmd, shell=True)
         except Exception as e:
             eprint(e)
+
+        includes.append("exec-once = {}".format(cmd))
 
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
     p = os.path.join(config_home, "swaync")
