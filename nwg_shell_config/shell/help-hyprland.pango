@@ -1,4 +1,4 @@
-<span face="monospace"><b>[S]*+t</b> ............................ Terminal
+<span face="monospace"><b>[S]*+t/[S]+F2</b> ..................... Terminal
 <b>[S]+w</b> .......................... Web browser
 <b>[S]+e</b> .......................... Text editor
 <b>[S]+f</b> ......................... File manager
