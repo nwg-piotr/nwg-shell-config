@@ -86,7 +86,7 @@ def main():
         GtkLayerShell.set_layer(window, GtkLayerShell.Layer.OVERLAY)
         GtkLayerShell.set_exclusive_zone(window, 0)
         if settings["help-keyboard"]:
-            GtkLayerShell.set_keyboard_interactivity(window, True)
+            GtkLayerShell.set_keyboard_mode(window, GtkLayerShell.KeyboardMode.ON_DEMAND)
 
     window.connect('destroy', Gtk.main_quit)
     window.connect("key-release-event", handle_keyboard)

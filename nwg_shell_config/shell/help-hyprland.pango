@@ -1,30 +1,26 @@
 <span face="monospace"><b>[S]*+t/[S]+F2</b> ..................... Terminal
-<b>[S]+w</b> .......................... Web browser
-<b>[S]+e</b> .......................... Text editor
-<b>[S]+f</b> ......................... File manager
-<b>[S]+d</b> ....................... Dock show/hide
-<b>[S]+c</b> .................. Notification center
-<b>[S]+s</b> ....................... Shell settings
-<b>[Alt]+F1</b> ................ Application drawer
+<b>[S]+W</b> .......................... Web browser
+<b>[S]+E</b> .......................... Text editor
+<b>[S]+F</b> ......................... File manager
+<b>[S]+D</b> ....................... Dock show/hide
+<b>[S]+S</b> ....................... Shell settings
+<b>[Alt]+F1/[S]+Space</b> ...... Application drawer
 <b>[S]+F1</b> ...................... Show/hide help
 ⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼
-<b>[Alt]+q/[S]+F4</b> ................... Kill task
-<b>[S]+x</b> ............................ Exit menu
-<b>[Alt]+l</b> ........................ Lock screen
-<b>[S]+[Shift]+C</b> .................. Reload sway
+<b>[Alt]+Q/[Alt]+F4</b> ................. Kill task
+<b>[S]+X</b> ............................ Exit menu
+<b>[S]+L</b> .......................... Lock screen
+<b>[S]+[Shift]+C</b> .............. Reload Hyprland
 ⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼
 <b>[S]+number</b> ................ Switch workspace
 <b>[S]+[Shift]+number</b> ....... Move to workspace
 <b>[S]+arrow</b> ....................... Move focus
-<b>[S]+[Shift]+arrow</b> ........... Move container
+<b>[S]+[Shift]+arrow</b> .............. Move window
 <b>[S]+[Alt]+left</b> .......... Previous workspace
 <b>[S]+[Alt]+right</b> ............. Next workspace
-<b>[S]+h</b> ..................... Split horizontal
-<b>[S]+v</b> ....................... Split vertical
-<b>[S]+Tab</b> ....................... Toggle split
 <b>[Alt]+Tab</b> .................... Toggle layout
-<b>[S]+Space</b> .................. Toggle floating
-<b>[S]+b</b> ........................ Toggle border
+<b>[S]+V</b> ...................... Toggle floating
+<b>[S]+B</b> ........................ Toggle border
 <b>[S]+[Shift]+F</b> ................... Fullscreen
 <b>[Alt]+arrow</b> ............... Resize container
 <b>[S]+plus/minus</b> .................. Inner gaps
@@ -37,4 +33,4 @@
 <b>[Shift]+[Ctrl]+PrtScr</b> ........ S-shot region
 <b>[S]+[Shift]+[Ctrl]+PrtScr</b> .... S-shot window</span>
 
-<span face="monospace" size="small">[S] = Super/Win key*</span>
+<span face="monospace" size="small">*[S] = Super/Win key</span>
