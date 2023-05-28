@@ -7,7 +7,7 @@
 <b>[Alt]+F1/[S]+Space</b> ...... Application drawer
 <b>[S]+F1</b> ...................... Show/hide help
 ⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼
-<b>[Alt]+Q/[Alt]+F4</b> ................. Kill task
+<b>[Alt]+Q/[Alt]+F4</b> ............... Kill window
 <b>[S]+X</b> ............................ Exit menu
 <b>[S]+L</b> .......................... Lock screen
 <b>[S]+[Shift]+C</b> .............. Reload Hyprland
