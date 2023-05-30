@@ -3,7 +3,6 @@
 <b>[S]+E</b> .......................... Text editor
 <b>[S]+F</b> ......................... File manager
 <b>[S]+D</b> ....................... Dock show/hide
-<b>[S]+S</b> ....................... Shell settings
 <b>[Alt]+F1/[S]+Space</b> ...... Application drawer
 <b>[S]+F1</b> ...................... Show/hide help
 ⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼
@@ -11,22 +10,26 @@
 <b>[S]+X</b> ............................ Exit menu
 <b>[S]+L</b> .......................... Lock screen
 <b>[S]+[Shift]+C</b> .............. Reload Hyprland
+<b>[S]+[Shift]+M</b> ................ Exit Hyprland
 ⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼
+<b>[S]+LMB</b> ........................ Move window
+<b>[S]+RMB</b> ...................... Resize window
 <b>[S]+number</b> ................ Switch workspace
 <b>[S]+[Shift]+number</b> ....... Move to workspace
 <b>[S]+arrow</b> ....................... Move focus
-<b>[S]+[Shift]+arrow</b> .............. Move window
-<b>[S]+[Alt]+left</b> .......... Previous workspace
-<b>[S]+[Alt]+right</b> ............. Next workspace
-<b>[Alt]+Tab</b> .................... Toggle layout
+<b>[S]+scroll</b> ....... Scroll through workspaces
 <b>[S]+V</b> ...................... Toggle floating
-<b>[S]+B</b> ........................ Toggle border
 <b>[S]+[Shift]+F</b> ................... Fullscreen
-<b>[Alt]+arrow</b> ............... Resize container
-<b>[S]+plus/minus</b> .................. Inner gaps
-<b>[Alt]+plus/minus</b> ................ Outer gaps
-<b>[S]+[Shift]+Z</b> ........... Move to scratchpad
-<b>[S]+Z</b> ...................... Show scratchpad
+<b>[S]+I</b> ........................... Pin window
+<b>[S]+[Shift]+Z</b> .... Move to special workspace
+<b>[S]+Z</b> ............. Toggle special workspace
+Dwindle⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼
+<b>[S]+J</b> ......................... Toggle split
+<b>[S]+P</b> ............................... Pseudo
+Master⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼
+<b>[S]+A</b> ....................... Focus previous
+<b>[S]+S</b> ....................... Swap w/ master
+<b>[S]+D</b> ........................... Focus next
 ⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼
 <b>PrtScr</b> .......................... Screenshot
 <b>[Ctrl]+PrtScr</b> ........... Screenshot display
