@@ -2,7 +2,7 @@
 
 """
 nwg-shell config utility
-Repository: https://github.com/nwg-piotr/nwg-panel
+Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project site: https://nwg-piotr.github.io/nwg-shell
 Author's email: nwg.piotr@gmail.com
 Copyright (c) 2021-2022 Piotr Miller & Contributors
@@ -661,36 +661,22 @@ def save_includes():
     # ~/.config/sway/autostart
     autostart = ["exec rm {}".format(os.path.join(temp_dir(), "nwg-shell-check-update.lock"))]
 
-    # Kill gammastep. We will need either to restart it or turn it off
-    subprocess.call("pkill -f gammastep", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+    # Kill wlsunset. We will need either to restart it or turn it off
+    subprocess.call("pkill -f wlsunset", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
     time.sleep(0.5)
 
     if settings["night-on"]:
-        gammastep_dir = os.path.join(config_home, "gammastep")
-        cmd_night = "exec gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf"))
-        autostart.append(cmd_night)
-
-        # save gammastep config file
-        os.makedirs(gammastep_dir, exist_ok=True)
-        lines = ["[general]"]
-        if settings["night-temp-high"]:
-            lines.append("temp-day={}".format(settings["night-temp-high"]))
-        if settings["night-temp-low"]:
-            lines.append("temp-night={}".format(settings["night-temp-low"]))
-        if settings["night-gamma"]:
-            lines.append("gamma={}".format(settings["night-gamma"]))
-        lines.append("adjustment-method=wayland")
-        if settings["night-lat"] and settings["night-long"]:
-            lines.append("location-provider=manual\n[manual]")
-            lines.append("lat={}".format(settings["night-lat"]))
-            lines.append("lon={}".format(settings["night-long"]))
-        save_list_to_text_file(lines, os.path.join(gammastep_dir, "gammastep.conf"))
-
+        cmd = "wlsunset -t {} -T {} -l {} -L {} -g {}".format(settings["night-temp-low"],
+                                                              settings["night-temp-high"],
+                                                              settings["night-lat"],
+                                                              settings["night-long"],
+                                                              settings["night-gamma"])
         try:
-            subprocess.Popen("gammastep-indicator -c {}".format(os.path.join(gammastep_dir, "gammastep.conf")),
-                             shell=True)
+            subprocess.Popen(cmd, shell=True)
         except Exception as e:
-            print(e)
+            eprint(e)
+
+        autostart.append("exec {}".format(cmd))
 
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
     p = os.path.join(config_home, "swaync")

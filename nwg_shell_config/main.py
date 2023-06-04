@@ -2,7 +2,7 @@
 
 """
 nwg-shell config utility
-Repository: https://github.com/nwg-piotr/nwg-panel
+Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project site: https://nwg-piotr.github.io/nwg-shell
 Author's email: nwg.piotr@gmail.com
 Copyright (c) 2021-2023 Piotr Miller & Contributors
@@ -21,20 +21,17 @@ arguments = " ".join(sys.argv[1:])
 def main():
     if os.getenv("SWAYSOCK"):
         cmd = "nwg-shell-config-sway {}".format(arguments)
-        try:
-            subprocess.Popen(cmd.split())
-        except FileNotFoundError as e:
-            eprint(e)
-            sys.exit(1)
+        eprint("Starting sway version")
     elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
         cmd = "nwg-shell-config-hyprland {}".format(arguments)
-        try:
-            subprocess.Popen(cmd.split())
-        except FileNotFoundError as e:
-            eprint(e)
-            sys.exit(1)
+        eprint("Starting Hyprland version")
     else:
         eprint("This program needs either sway or Hyprland environment")
+        sys.exit(1)
+    try:
+        subprocess.Popen(cmd.split())
+    except Exception as e:
+        eprint(e)
         sys.exit(1)
 
 

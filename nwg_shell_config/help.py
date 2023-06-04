@@ -67,7 +67,14 @@ def main():
             pass
     save_string(str(os.getpid()), pid_file)
 
-    content_path = os.path.join(data_dir, "help.pango")
+    if os.getenv("SWAYSOCK"):
+        content_path = os.path.join(data_dir, "help.pango")
+    elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+        content_path = os.path.join(data_dir, "help-hyprland.pango")
+    else:
+        eprint("This program only works on sway or Hyprland, terminating.")
+        sys.exit(1)
+
     if not os.path.isfile(content_path):
         init_files(os.path.join(dir_name, "shell"), data_dir)
     content = load_text_file(content_path)
@@ -79,7 +86,7 @@ def main():
         GtkLayerShell.set_layer(window, GtkLayerShell.Layer.OVERLAY)
         GtkLayerShell.set_exclusive_zone(window, 0)
         if settings["help-keyboard"]:
-            GtkLayerShell.set_keyboard_interactivity(window, True)
+            GtkLayerShell.set_keyboard_mode(window, GtkLayerShell.KeyboardMode.ON_DEMAND)
 
     window.connect('destroy', Gtk.main_quit)
     window.connect("key-release-event", handle_keyboard)
