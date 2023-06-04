@@ -32,7 +32,15 @@ from nwg_shell_config.tools import temp_dir, init_files, get_data_dir, load_json
     check_key
 
 data_dir = get_data_dir()
-settings = load_json(os.path.join(data_dir, "settings"))
+
+if os.getenv("SWAYSOCK"):
+    settings = load_json(os.path.join(data_dir, "settings"))
+elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+    settings = load_json(os.path.join(data_dir, "settings-hyprland"))
+else:
+    eprint("This program only works on sway or Hyprland, terminating.")
+    sys.exit(1)
+
 defaults = {
     "help-font-size": 14,
     "help-layer-shell": True,
