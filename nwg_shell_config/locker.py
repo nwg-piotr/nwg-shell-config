@@ -24,7 +24,15 @@ config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else 
                                                                                              ".config/")
 data_dir = get_data_dir()
 tmp_dir = temp_dir()
-settings = load_json(os.path.join(data_dir, "settings"))
+
+if os.getenv("SWAYSOCK"):
+    settings = load_json(os.path.join(data_dir, "settings"))
+elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+    settings = load_json(os.path.join(data_dir, "settings-hyprland"))
+else:
+    eprint("This program only works on sway or Hyprland, terminating.")
+    sys.exit(1)
+
 preset = load_json(
     os.path.join(data_dir, settings["panel-preset"])) if "panel-preset" in settings and "panel-preset" else {}
 
