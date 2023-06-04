@@ -2,7 +2,7 @@
 
 """
 nwg-shell config utility
-Repository: https://github.com/nwg-piotr/nwg-panel
+Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project site: https://nwg-piotr.github.io/nwg-shell
 Author's email: nwg.piotr@gmail.com
 Copyright (c) 2021-2022 Piotr Miller & Contributors
