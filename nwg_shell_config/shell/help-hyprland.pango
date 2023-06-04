@@ -18,7 +18,7 @@
 <b>[S]+[Shift]+number</b> ....... Move to workspace
 <b>[S]+arrow</b> ....................... Move focus
 <b>[S]+scroll</b> ....... Scroll through workspaces
-<b>[S]+V</b> ...................... Toggle floating
+<b>[S]+Space</b> .................. Toggle floating
 <b>[S]+[Shift]+F</b> ................... Fullscreen
 <b>[S]+I</b> ........................... Pin window
 <b>[S]+[Shift]+Z</b> .... Move to special workspace
