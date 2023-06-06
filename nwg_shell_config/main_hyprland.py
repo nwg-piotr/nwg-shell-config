@@ -638,7 +638,8 @@ def save_includes():
 
     includes.append("$exit = {}".format(cmd_exit))
 
-    cmd_dock = "nwg-dock-hyprland"
+    # For vertical dock not to collide with horizontal panels, we need to start it w/ some delay
+    cmd_dock = "nwg-dock-hyprland" if preset["dock-position"] != "left" else "sleep 2 && nwg-dock-hyprland"
     if preset["dock-autohide"]:
         cmd_dock += " -d"
     elif preset["dock-permanent"]:
@@ -699,9 +700,6 @@ def save_includes():
     if cmd_launcher_autostart:
         includes.append(cmd_launcher_autostart)
 
-    if preset["dock-on"] and (preset["dock-autohide"] or preset["dock-permanent"]):
-        includes.append("exec = {}".format(cmd_dock))
-
     cmd_panel = "exec = nwg-panel"
     if settings["panel-preset"] != "custom":
         cmd_panel += " -c {}".format(settings["panel-preset"])
@@ -710,6 +708,9 @@ def save_includes():
     if preset["panel-css"]:
         cmd_panel += " -s {}".format(preset["panel-css"])
     includes.append(cmd_panel)
+
+    if preset["dock-on"] and (preset["dock-autohide"] or preset["dock-permanent"]):
+        includes.append("exec = {}".format(cmd_dock))
 
     includes.append("exec = nwg-shell-check-updates")
 
