@@ -24,7 +24,7 @@
 <b>[S]+[Shift]+Z</b> .... Move to special workspace
 <b>[S]+Z</b> ............. Toggle special workspace
 Dwindle⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼
-<b>Alt+Tab</b> ....................... Toggle split
+<b>[Alt]+Tab</b> ..................... Toggle split
 <b>[S]+P</b> ............................... Pseudo
 Master⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼
 <b>[S]+A</b> ....................... Focus previous
