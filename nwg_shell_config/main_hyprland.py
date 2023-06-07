@@ -639,7 +639,8 @@ def save_includes():
     includes.append("$exit = {}".format(cmd_exit))
 
     # For vertical dock not to collide with horizontal panels, we need to start it w/ some delay
-    cmd_dock = "nwg-dock-hyprland" if preset["dock-position"] != "left" else "sleep 2 && nwg-dock-hyprland"
+    cmd_dock = "nwg-dock-hyprland" if preset["dock-startup-delay"] == 0 else "sleep {} && nwg-dock-hyprland".format(
+        str(preset["dock-startup-delay"]))
     if preset["dock-autohide"]:
         cmd_dock += " -d"
     elif preset["dock-permanent"]:
@@ -1086,6 +1087,7 @@ def load_preset(file_name):
         "dock-margin": 0,
         "dock-icon-size": 48,
         "dock-hotspot-delay": 20,
+        "dock-startup-delay": 0,
         "dock-css": "",
         "dock-on": False,
         "swaync-positionX": "right",

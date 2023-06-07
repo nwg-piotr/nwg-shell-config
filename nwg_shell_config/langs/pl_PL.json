@@ -311,6 +311,8 @@
   "split-width-multiplier": "Mnożnik szerokości podziału",
   "split-width-multiplier-tooltip": "Określa mnożnik szerokości automatycznego podziału.",
   "start": "Początek",
+  "startup-delay": "Opóźnienie uruchomienia",
+  "startup-delay-tooltip": "Gdy pionowy dok współistnieje z poziomym panelem (lub odwrotnie), dok powinien być uruchomiony gdy panel w pełni wystartuje, aby uniknąć konfliktu pozycji. Ustaw opóźnienie w sekundach.",
   "suspend": "Zawieś",
   "suspend-tooltip": "Komenda do zawieszenia (uśpienia) komputera.\nPozostaw puste by wyłączyć tę opcję.",
   "switch-user": "Przełącz użytkownika",

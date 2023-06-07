@@ -28,6 +28,7 @@
   "dock-margin": 0,
   "dock-icon-size": 42,
   "dock-hotspot-delay": 20,
+  "dock-startup-delay": 2,
   "dock-css": "hyprland-3.css",
   "dock-on": true,
   "swaync-positionX": "right",

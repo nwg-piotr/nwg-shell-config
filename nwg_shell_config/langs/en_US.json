@@ -311,6 +311,8 @@
   "split-width-multiplier": "Split width multiplier",
   "split-width-multiplier-tooltip": "Specifies the auto-split width multiplier.",
   "start": "Start",
+  "startup-delay": "Startup delay",
+  "startup-delay-tooltip": "When a vertical dock coexists with a horizontal panel (or vice versa), the dock should be started when the panel is fully launched, to avoid conflicting positions. Set the delay in seconds.",
   "suspend": "Suspend",
   "suspend-tooltip": "Command to suspend the computer (put to sleep).\nLeave blank to disable this feature.",
   "switch-user": "Switch user",
