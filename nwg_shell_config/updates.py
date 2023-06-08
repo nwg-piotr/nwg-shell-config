@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
-import os
-
-from nwg_shell_config.tools import load_text_file, log_line, save_list_to_text_file, get_command_output
+from nwg_shell_config.tools import log_line, get_command_output
 
 
 def update_version(version, log_file, label, config_home, shell_data):
@@ -30,5 +28,9 @@ def update_version(version, log_file, label, config_home, shell_data):
     if version == "0.3.4":
         o = get_command_output("nwg-shell-installer -r")
         log_line(log_file, label, "\n".join(o))
+
+    if version == "0.5.0":
+        log_line(log_file, label, "\nnwg-shell 0.5.0 comes with Hyprland support.\n\n")
+        log_line(log_file, label, "\nTo install them, you need to:.\n\n")
 
     shell_data["updates"].append(version)

@@ -9,4 +9,4 @@ except Exception:
     __version__ = "unknown"
 
 # Shell versions that need to trigger upgrade
-__need_update__ = ["0.3.0", "0.3.4"]
+__need_update__ = ["0.3.0", "0.3.4", "0.5.0"]

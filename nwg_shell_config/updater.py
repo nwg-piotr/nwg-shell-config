@@ -27,7 +27,7 @@ from nwg_shell_config.__about__ import __need_update__
 from gi.repository import Gtk, Gdk
 
 from nwg_shell_config.tools import temp_dir, get_data_dir, get_shell_data_dir, save_string, get_shell_version, \
-    is_newer, load_shell_data, is_command, save_json, load_json, eprint
+    is_newer, load_shell_data, load_text_file, is_command, save_json, load_json, eprint
 
 from nwg_shell_config.updates import *
 
