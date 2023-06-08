@@ -158,13 +158,15 @@ def get_icon_themes():
 
 
 def init_files(src_dir, dst_dir, overwrite=False):
+    running_hyprland = os.getenv("HYPRLAND_INSTANCE_SIGNATURE")
     src_files = os.listdir(src_dir)
     for file in src_files:
         if os.path.isfile(os.path.join(src_dir, file)):
             if overwrite or not os.path.isfile(os.path.join(dst_dir, file)):
-                copy2(os.path.join(src_dir, file), os.path.join(dst_dir, file))
-                print("Copying default file to '{}'".format(
-                    os.path.join(dst_dir, file)))
+                if "hyprland" not in file or running_hyprland:
+                    copy2(os.path.join(src_dir, file), os.path.join(dst_dir, file))
+                    print("Copying default file to '{}'".format(
+                        os.path.join(dst_dir, file)))
 
 
 def list_outputs():

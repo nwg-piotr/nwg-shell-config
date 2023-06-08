@@ -1241,7 +1241,8 @@ def main():
     if his:
         print("HYPRLAND_INSTANCE_SIGNATURE={}".format(his))
     else:
-        print("HYPRLAND_INSTANCE_SIGNATURE not found, terminating")
+        eprint("HYPRLAND_INSTANCE_SIGNATURE not found, terminating")
+        sys.exit(1)
 
     global data_dir
     data_dir = get_data_dir()

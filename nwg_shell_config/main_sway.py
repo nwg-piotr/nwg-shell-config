@@ -10,6 +10,7 @@ License: MIT
 """
 
 import argparse
+import os
 import signal
 import time
 
@@ -1122,6 +1123,10 @@ def main():
 
     parser.parse_args()
     args = parser.parse_args()
+
+    if not os.getenv("SWAYSOCK"):
+        eprint("SWAYSOCK not found, terminating")
+        sys.exit(1)
 
     GLib.set_prgname('nwg-shell-config')
 
