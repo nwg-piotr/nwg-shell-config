@@ -51,8 +51,8 @@ current_submenu = None
 btn_apply = Gtk.Button()
 grid = Gtk.Grid()
 
-backup_configs = ["azote", "foot", "gtklock", "nwg-bar", "nwg-displays", "nwg-dock", "nwg-drawer", "nwg-look",
-                  "nwg-panel", "sway", "swaync"]
+backup_configs = ["azote", "foot", "gtklock", "hypr", "nwg-bar", "nwg-displays", "nwg-dock", "nwg-dock-hyprland",
+                  "nwg-drawer", "nwg-look", "nwg-panel", "sway", "swaync"]
 
 backup_data = ["nwg-look", "nwg-panel", "nwg-shell-config"]
 

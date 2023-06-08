@@ -53,8 +53,8 @@ current_submenu = None
 btn_apply = Gtk.Button()
 grid = Gtk.Grid()
 
-backup_configs = ["azote", "foot", "gtklock", "nwg-bar", "nwg-displays", "nwg-dock", "nwg-drawer", "nwg-look",
-                  "nwg-panel", "sway", "swaync"]
+backup_configs = ["azote", "foot", "gtklock", "hypr", "nwg-bar", "nwg-displays", "nwg-dock", "nwg-dock-hyprland",
+                  "nwg-drawer", "nwg-look", "nwg-panel", "sway", "swaync"]
 
 backup_data = ["nwg-look", "nwg-panel", "nwg-shell-config"]
 
@@ -640,7 +640,8 @@ def save_includes():
 
     # For vertical dock not to collide with horizontal panels, we need to start it w/ some delay
     if preset["dock-startup-delay"] > 0:
-        cmd_dock = "killall nwg-dock-hyprland\nexec = sleep {} && nwg-dock-hyprland".format(preset["dock-startup-delay"])
+        cmd_dock = "killall nwg-dock-hyprland\nexec = sleep {} && nwg-dock-hyprland".format(
+            preset["dock-startup-delay"])
     else:
         cmd_dock = "exec = nwg-dock-hyprland"
     if preset["dock-autohide"]:
