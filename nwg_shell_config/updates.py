@@ -30,7 +30,6 @@ def update_version(version, log_file, label, config_home, shell_data):
         log_line(log_file, label, "\n".join(o))
 
     if version == "0.5.0":
-        log_line(log_file, label, "\nnwg-shell 0.5.0 comes with Hyprland support.\n\n")
-        log_line(log_file, label, "\nTo install them, you need to:.\n\n")
+        log_line(log_file, label, "\nYou won't see this notification again.\n\n")
 
     shell_data["updates"].append(version)

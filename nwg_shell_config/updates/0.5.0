@@ -1,0 +1,9 @@
+<span font-size="large"><b>nwg-shell v0.5.0</b> (2023.06.09)</span>
+
+You may <b>add Hyprland support</b> to your current nwg-shell installation. To copy default configs for Hyprland, execute:
+
+<i>$ nwg-shell-installer -r -hypr</i>
+
+in your terminal emulator. Then install the `hyprland` package and enjoy.
+
+<b>Press the 'Update' button to see this message never again.</b>

@@ -3,7 +3,7 @@
 """
 nwg-shell graphical updater script
 
-Copyright (c) 2022 Piotr Miller
+Copyright (c) 2022-2023 Piotr Miller
 e-mail: nwg.piotr@gmail.com
 Project: https://github.com/nwg-piotr/nwg-shell
 License: MIT
