@@ -714,7 +714,7 @@ def save_includes():
     includes.append(cmd_panel)
 
     if preset["dock-on"] and (preset["dock-autohide"] or preset["dock-permanent"]):
-        includes.append("exec = {}".format(cmd_dock))
+        includes.append(cmd_dock)
 
     includes.append("exec = nwg-shell-check-updates")
 
