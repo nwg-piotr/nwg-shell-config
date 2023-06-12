@@ -354,7 +354,7 @@ def screen_tab(settings, voc, pending_updates):
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
     grid.attach(box, 1, 6, 3, 1)
 
-    cb_help_overlay = Gtk.CheckButton.new_with_label(voc["overlay"])
+    cb_help_overlay = Gtk.CheckButton.new_with_label(voc["on-layer"])
     cb_help_overlay.set_active(settings["help-layer-shell"])
     cb_help_overlay.connect("toggled", set_from_checkbutton, settings, "help-layer-shell")
     cb_help_overlay.set_tooltip_text(voc["overlay-tooltip"])

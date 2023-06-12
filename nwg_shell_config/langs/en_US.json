@@ -241,6 +241,7 @@
   "numlock-tooltip": "Initially enables or disables NumLock on startup.",
   "on": "on",
   "on_button_down": "On button down",
+  "on-layer": "On layer",
   "open-on-overlay": "Open on overlay",
   "open-on-overlay-tooltip": "Open on overlay layer (over panels etc.)",
   "other": "Other",

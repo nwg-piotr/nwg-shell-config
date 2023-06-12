@@ -91,7 +91,7 @@ def main():
 
     if settings["help-layer-shell"]:
         GtkLayerShell.init_for_window(window)
-        GtkLayerShell.set_layer(window, GtkLayerShell.Layer.OVERLAY)
+        GtkLayerShell.set_layer(window, GtkLayerShell.Layer.TOP)
         GtkLayerShell.set_exclusive_zone(window, 0)
         if settings["help-keyboard"]:
             GtkLayerShell.set_keyboard_mode(window, GtkLayerShell.KeyboardMode.ON_DEMAND)

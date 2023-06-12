@@ -241,6 +241,7 @@
   "numlock-tooltip": "Określa stan klawisza NumLock po uruchomieniu.",
   "on": "włączone",
   "on_button_down": "Na przycisk",
+  "on-layer": "Na warstwie",
   "open-on-overlay": "Otwieraj w nakładce",
   "open-on-overlay-tooltip": "Otwieraj w warstwie nakładki (powyżej panelu itp.)",
   "other": "Inne",
