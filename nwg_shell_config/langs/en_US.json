@@ -226,6 +226,8 @@
   "night-light-day-tooltip": "Day light color temperature: `wlsunset -T`",
   "night-light-night-tooltip": "Night light color temperature: `wlsunset -t`",
   "night-light-tooltip": "Determines if to use `wlsunset`.",
+  "nm-applet": "NetworkManager applet",
+  "nm-applet-tooltip": "Determines if to autostart NetworkManager applet",
   "no-border-on-floating": "No boarder on floating",
   "no-cursor-warps": "No cursor warps",
   "no-cursor-warps-tooltip": "If set, will not warp the cursor in many cases (focusing, keybinds, etc)",

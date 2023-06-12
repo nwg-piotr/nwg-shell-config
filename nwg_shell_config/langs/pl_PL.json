@@ -226,6 +226,8 @@
   "night-light-day-tooltip": "Temperatura barwowa światła dziennego: `wlsunset -T`",
   "night-light-night-tooltip": "Temperatura barwowa światła nocnego: `wlsunset -t`",
   "night-light-tooltip": "Określa czy używać `wlsunset`.",
+  "nm-applet": "Applet NetworkManager",
+  "nm-applet-tooltip": "Określa czy uruchamiać applet NetworkManager",
   "no-border-on-floating": "Pływające okna bez ramki",
   "no-cursor-warps": "Bez przyspieszania kursora",
   "no-cursor-warps-tooltip": "Wyłącza przyspieszanie kursora w wielu przypadkach (ogniskowanie, skróty klawiaturowe itp.)",

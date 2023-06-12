@@ -415,6 +415,12 @@ def screen_tab(settings, voc, pending_updates):
     else:
         settings["update-indicator-on"] = False
 
+    cb_nm_applet = Gtk.CheckButton.new_with_label(voc["nm-applet"])
+    cb_nm_applet.set_active(settings["appindicator"])
+    cb_nm_applet.connect("toggled", set_from_checkbutton, settings, "appindicator")
+    cb_nm_applet.set_tooltip_text(voc["nm-applet-tooltip"])
+    grid.attach(cb_nm_applet, 1, 8, 1, 1)
+
     frame.show_all()
 
     return frame, update_btn

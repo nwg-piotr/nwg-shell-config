@@ -699,7 +699,8 @@ def save_includes():
     p = os.path.join(config_home, "swaync")
     includes.append("exec-once = swaync -c {}/hyprland.json -s {}/{}.css".format(p, p, name))
 
-    includes.append("exec-once = nm-applet --indicator")
+    if settings["appindicator"]:
+        includes.append("exec-once = nm-applet --indicator")
 
     if cmd_launcher_autostart:
         includes.append(cmd_launcher_autostart)
@@ -908,6 +909,7 @@ def reload():
 def load_settings():
     settings_file = os.path.join(data_dir, "settings-hyprland")
     defaults = {
+        "appindicator": True,
         "night-lat": -1,
         "night-long": -1,
         "night-temp-low": 4500,
