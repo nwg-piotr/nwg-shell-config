@@ -882,7 +882,9 @@ def save_includes():
 
         includes.append('}')
 
-    save_list_to_text_file(includes, os.path.join(config_home, "hypr/includes.conf"))
+    p = os.path.join(config_home, "hypr/includes.conf")
+    print("Saving includes to {}".format(p))
+    save_list_to_text_file(includes, p)
 
     reload()
 
@@ -1214,7 +1216,6 @@ def load_settings_save_includes():
     data_dir = get_data_dir()
     load_presets()
     load_settings()
-    print("Saving includes")
     save_includes()
     sys.exit(0)
 
