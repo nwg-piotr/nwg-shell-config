@@ -1249,7 +1249,7 @@ def main():
     parser.add_argument("-s",
                         "--save",
                         action="store_true",
-                        help="load settings & Save includes (for use w/ external scripts ")
+                        help="load settings & Save includes (for use w/ external scripts)")
 
     parser.parse_args()
     args = parser.parse_args()
