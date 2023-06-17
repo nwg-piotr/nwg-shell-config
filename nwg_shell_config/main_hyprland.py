@@ -1214,6 +1214,7 @@ def load_settings_save_includes():
     data_dir = get_data_dir()
     load_presets()
     load_settings()
+    save_includes()
     sys.exit(0)
 
 
