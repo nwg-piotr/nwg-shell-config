@@ -2,7 +2,7 @@
 
 **Contributing:** please read the [general contributing rules for the nwg-shell project](https://nwg-piotr.github.io/nwg-shell/contribution).
 
-The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection of components to build a GTK-based user interface for [sway](https://github.com/swaywm/sway) Wayland compositor. It consists of a panel, launcher, dock, traditional menu, wallpaper manager, as well as some helper scripts. This program is a GUI to configure all the components in one place. It also integrates several third party components, which we arbitrarily found the best to build a coherent user experience.
+The [nwg-shell](https://github.com/nwg-piotr/nwg-shell) project is a collection of components to build a GTK-based user interface for [sway](https://github.com/swaywm/sway) and [Hyprland](https://github.com/hyprwm/Hyprland) Wayland compositor. It consists of a panel, launcher, dock, traditional menu, wallpaper manager, as well as some helper scripts. This program is a GUI to configure all the components in one place. It also integrates several third party components, which we arbitrarily found the best to build a coherent user experience.
 
 [Learn more about nwg-shell on the project website](https://nwg-piotr.github.io/nwg-shell)
 
@@ -45,9 +45,9 @@ The latter is only turned on by default in `preset-1` and `preset-3`.
 
 For key bindings help, press `[Super]+F1`.
 
-## Notes
+## Includes
 
-### Includes
+### sway
 
 All the settings managed by nwg-shell-config are included into the `~/.config/sway/config` file like this:
 
@@ -86,7 +86,15 @@ bindsym $Mod+d          exec $dock
 
 Feel free to add whichever other binding you need, but do not change the variable values other way than with the config GUI.
 
-### Styling
+### Hyprland
+
+All the settings managed by nwg-shell-config are included from the `~/.config/hypr/includes.conf` file. It generates a part of settings for you:
+General, Input devices, Touchpad, Dwindle layout, Master layout. Decoration, animations, gestures and per-device config are left to be configured by yourself.
+
+There are also two more included files: `monitors.conf` and `workspaces.conf`, that come from the nwg-displays utility.
+
+
+## Styling
 
 To change the appearance of nwg-shell components, you need to edit their css style sheets. They are all located in 
 appropriate `~./config/nwg-*` directories, named `preset-*.css`. You may edit them to your liking.
@@ -96,8 +104,3 @@ Panel & css).
 ### nwg-panel & nwg-menu
 
 have their own config GUI. Find the "Panel settings" entry in the Controls menu. More info there's in the [panel Wiki](https://github.com/nwg-piotr/nwg-panel/wiki).
-
-### Restoring defaults
-
-If you happen to break any of the `preset0-*` files, just delete it, and run the config utility. 
-The file will be restored from the default one. You may also run `nwg-shell-config -r` to restore all default presets.
