@@ -892,15 +892,14 @@ def save_includes():
 def reload():
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
     p = os.path.join(config_home, "swaync")
-    swaync_daemon = "swaync -s {}/{}.css &".format(p, name)
-
+    swaync_daemon = "swaync -c {}/hyprland.json -s {}/{}.css".format(p, p, name)
     for cmd in ["pkill -f nwg-drawer",
                 "pkill -f nwg-dock",
                 "pkill -f nwg-bar",
-                "pkill -f swaync",
-                swaync_daemon,
-                "swaync-client --reload-config"]:
+                "pkill -f swaync",]:
         subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+
+    subprocess.Popen(swaync_daemon, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
     if settings["update-indicator-on"]:
         launch(None, "nwg-update-indicator")
