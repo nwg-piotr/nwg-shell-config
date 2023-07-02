@@ -975,6 +975,7 @@ def load_preset(file_name):
         "dock-margin": 0,
         "dock-icon-size": 48,
         "dock-hotspot-delay": 20,
+        "dock-startup-delay": 0,
         "dock-css": "",
         "dock-on": False,
         "swaync-positionX": "right",
