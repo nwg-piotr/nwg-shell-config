@@ -793,6 +793,7 @@ def save_includes():
         includes.append('    pseudotile = {}'.format(bool2lower(settings["dwindle-pseudotile"])))
         includes.append('    force_split = {}'.format(settings["dwindle-force_split"]))
         includes.append('    preserve_split = {}'.format(bool2lower(settings["dwindle-preserve_split"])))
+        includes.append('    smart_split = {}'.format(bool2lower(settings["dwindle-smart_split"])))
         includes.append('    special_scale_factor = {}'.format(settings["dwindle-special_scale_factor"]))
         includes.append('    split_width_multiplier = {}'.format(settings["dwindle-split_width_multiplier"]))
         includes.append('    no_gaps_when_only = {}'.format(bool2lower(settings["dwindle-no_gaps_when_only"])))

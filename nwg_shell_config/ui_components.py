@@ -1126,6 +1126,13 @@ def h_dwindle_tab(settings, voc):
     sb_dsr.connect("value-changed", set_from_spinbutton, settings, "dwindle-default_split_ratio", 3)
     grid.attach(sb_dsr, 1, 4, 1, 1)
 
+    cb_smart_split = Gtk.CheckButton.new_with_label(voc["smart-split"])
+    cb_smart_split.set_property("halign", Gtk.Align.START)
+    cb_smart_split.set_tooltip_text(voc["smart-split-tooltip"])
+    cb_smart_split.set_active(settings["dwindle-smart_split"])
+    cb_smart_split.connect("toggled", set_from_checkbutton, settings, "dwindle-smart_split")
+    grid.attach(cb_smart_split, 2, 4, 1, 1)
+
     frame.show_all()
 
     return frame

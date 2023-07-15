@@ -309,6 +309,8 @@
   "show-on-startup-tooltip": "Odznacz by nie uruchamiać tego okna podczas startu systemu.",
   "sleep-command": "Komenda uśpienia",
   "sleep-timeout-tooltip": "Opóźnienie uśpienia w sekundach.\nMusi być dłuższe niż opóźnienie blokady.",
+  "smart-split": "Inteligentny podział",
+  "smart-split-tooltip": "Włącza precyzyjną kontrolę nad podziałem okna na podstawie pozycji kursora. Okno jest koncepcyjnie podzielone na 3 trójkąty i ten, w którym znajduje się kursor określa kierunek podziału. Włącza 'Zachowaj podział'.",
   "special-scale-factor": "Specjalny wsp. podziału",
   "special-scale-factor-tooltip": "0 - 1 -> określa współczynnik podziału okien w specjalnym obszarze roboczym",
   "split-width-multiplier": "Mnożnik szerokości podziału",
