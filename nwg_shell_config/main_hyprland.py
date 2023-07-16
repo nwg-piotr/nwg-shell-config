@@ -950,6 +950,7 @@ def load_settings():
         "dwindle-pseudotile": False,
         "dwindle-force_split": 0,
         "dwindle-preserve_split": True,
+        "dwindle-smart_split": False,
         "dwindle-permanent_direction_override": False,
         "dwindle-special_scale_factor": 0.8,
         "dwindle-split_width_multiplier": 1.0,
