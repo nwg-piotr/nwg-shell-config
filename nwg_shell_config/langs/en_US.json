@@ -81,6 +81,8 @@
   "desktop-styles": "Desktop styles",
   "device": "Device",
   "device-tooltip": "Determines whether to use a certain device identifier\nor just an input type.",
+  "disable-hyprland-logo": "Disable Hyprland logo",
+  "disable-hyprland-logo-tooltip": "Disables Hyprland logo background",
   "disable-input-inhibitor": "Disable input inhibitor",
   "disable-input-inhibitor-tooltip": "Allows input events (like keyboard, mouse) on the lock screen.",
   "disable-while-typing": "Disable while typing",

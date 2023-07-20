@@ -1239,6 +1239,37 @@ def h_master_tab(settings, voc):
     return frame
 
 
+def h_misc_tab(settings, voc):
+    frame = Gtk.Frame()
+    frame.set_label("  {}: {}  ".format(voc["common"], voc["miscellaneous"]))
+    frame.set_label_align(0.5, 0.5)
+    frame.set_property("hexpand", True)
+    grid = Gtk.Grid()
+    frame.add(grid)
+    grid.set_property("margin", 12)
+    grid.set_column_spacing(6)
+    grid.set_row_spacing(6)
+
+    cb_use_settings = Gtk.CheckButton.new_with_label(voc["use-these-settings"])
+    cb_use_settings.set_property("halign", Gtk.Align.START)
+    cb_use_settings.set_property("margin-bottom", 6)
+    cb_use_settings.set_tooltip_text(voc["hyprland-include-tooltip"])
+    cb_use_settings.set_active(settings["misc-use-settings"])
+    cb_use_settings.connect("toggled", set_from_checkbutton, settings, "misc-use-settings")
+    grid.attach(cb_use_settings, 0, 0, 2, 1)
+
+    cb_logo = Gtk.CheckButton.new_with_label(voc["disable-hyprland-logo"])
+    cb_logo.set_property("halign", Gtk.Align.START)
+    cb_logo.set_tooltip_text(voc["disable-hyprland-logo-tooltip"])
+    cb_logo.set_active(settings["misc-disable_hyprland_logo"])
+    cb_logo.connect("toggled", set_from_checkbutton, settings, "misc-disable_hyprland_logo")
+    grid.attach(cb_logo, 0, 1, 1, 1)
+
+    frame.show_all()
+
+    return frame
+
+
 def h_input_tab(settings, voc):
     frame = Gtk.Frame()
     frame.set_label("  {}: {}  ".format(voc["common"], voc["input-devices"]))

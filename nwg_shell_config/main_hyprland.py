@@ -354,7 +354,7 @@ def h_set_up_misc_tab(*args):
     hide_submenus()
     global content
     content.destroy()
-    content = h_master_tab(settings, voc)
+    content = h_misc_tab(settings, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -1011,6 +1011,21 @@ def load_settings():
         "touchpad-tap-to-click": True,
         "touchpad-drag_lock": False,
         "touchpad-tap-and-drag": False,
+
+        "misc-use-settings": True,
+        "misc-disable_hyprland_logo": False,
+        "misc-vrr": 0,
+        "misc-mouse_move_enables_dpms": False,
+        "misc-key_press_enables_dpms": False,
+        "misc-always_follow_on_dnd": True,
+        "misc-layers_hog_keyboard_focus": True,
+        "misc-animate_manual_resizes": False,
+        "misc-animate_mouse_windowdragging": False,
+        "misc-focus_on_activate": False,
+        "misc-hide_cursor_on_touch": True,
+        "misc-mouse_move_focuses_monitor": True,
+        "misc-cursor_zoom_factor": 1.0,
+
 
         "lockscreen-use-settings": True,
         "lockscreen-locker": "swaylock",  # swaylock | gtklock

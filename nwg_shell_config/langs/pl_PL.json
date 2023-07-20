@@ -81,6 +81,8 @@
   "desktop-styles": "Style pulpitu",
   "device": "Urządzenie",
   "device-tooltip": "Określa czy użyć konkretnego identyfikatora urządzenia\nczy tylko typu urządzenia wejściowego.",
+  "disable-hyprland-logo": "Wyłącz logo Hyprland",
+  "disable-hyprland-logo-tooltip": "Wyłącza logo Hyprland w tle",
   "disable-input-inhibitor": "Wyłącz blokadę wejścia",
   "disable-input-inhibitor-tooltip": "Zezwala na zdarzenia wejścia (jak klawiatura, mysz) na ekranie blokady.",
   "disable-while-typing": "Wyłącz podczas pisania",
