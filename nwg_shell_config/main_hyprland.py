@@ -144,6 +144,10 @@ def side_menu():
     row.eb.connect("button-press-event", set_up_touchpad_tab)
     list_box.add(row)
 
+    row = SideMenuRow(voc["miscellaneous"])
+    row.eb.connect("button-press-event", h_set_up_misc_tab)
+    list_box.add(row)
+
     row = SideMenuRow(voc["idle-lock-screen"])
     row.eb.connect("button-press-event", set_up_lockscreen_tab)
     list_box.add(row)
@@ -343,6 +347,14 @@ def set_up_touchpad_tab(*args):
     global content
     content.destroy()
     content = h_touchpad_tab(settings, voc)
+    grid.attach(content, 1, 0, 1, 1)
+
+
+def h_set_up_misc_tab(*args):
+    hide_submenus()
+    global content
+    content.destroy()
+    content = h_master_tab(settings, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
