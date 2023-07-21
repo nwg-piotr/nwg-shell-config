@@ -899,7 +899,6 @@ def save_includes():
         includes.append('    focus_on_activate = {}'.format(bool2lower(settings["misc-focus_on_activate"])))
         includes.append('    hide_cursor_on_touch = {}'.format(bool2lower(settings["misc-hide_cursor_on_touch"])))
         includes.append('    mouse_move_focuses_monitor = {}'.format(bool2lower(settings["misc-mouse_move_focuses_monitor"])))
-        includes.append('    cursor_zoom_factor = {}'.format(settings["misc-cursor_zoom_factor"]))
         includes.append('}')
 
     p = os.path.join(config_home, "hypr/includes.conf")
@@ -1028,7 +1027,6 @@ def load_settings():
         "misc-focus_on_activate": False,
         "misc-hide_cursor_on_touch": True,
         "misc-mouse_move_focuses_monitor": True,
-        "misc-cursor_zoom_factor": 1.0,
 
         "lockscreen-use-settings": True,
         "lockscreen-locker": "swaylock",  # swaylock | gtklock

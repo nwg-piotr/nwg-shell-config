@@ -89,7 +89,6 @@
   "misc-focus_on_activate": false,
   "misc-hide_cursor_on_touch": true,
   "misc-mouse_move_focuses_monitor": true,
-  "misc-cursor_zoom_factor": 1.0,
   "lockscreen-use-settings": true,
   "lockscreen-locker": "swaylock",
   "lockscreen-background-source": "local",
