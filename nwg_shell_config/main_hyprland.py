@@ -761,7 +761,6 @@ def save_includes():
     # Export general devices settings
     if settings["gen-use-settings"]:
         includes.append("\n# GENERAL SETTINGS\ngeneral {")
-
         includes.append('    border_size = {}'.format(settings["gen-border_size"]))
         includes.append('    no_border_on_floating = {}'.format(bool2lower(settings["gen-no_border_on_floating"])))
         includes.append('    gaps_in = {}'.format(settings["gen-gaps_in"]))
@@ -795,13 +794,11 @@ def save_includes():
                 '    extend_border_grab_area = {}'.format(bool2lower(settings["gen-extend_border_grab_area"])))
         if settings["gen-hover_icon_on_border"]:
             includes.append('    hover_icon_on_border = {}'.format(bool2lower(settings["gen-hover_icon_on_border"])))
-
         includes.append('}')
 
     # Export dwindle layout settings
     if settings["dwindle-use-settings"]:
         includes.append("\n# DWINDLE LAYOUT \ndwindle {")
-
         includes.append('    pseudotile = {}'.format(bool2lower(settings["dwindle-pseudotile"])))
         includes.append('    force_split = {}'.format(settings["dwindle-force_split"]))
         includes.append('    preserve_split = {}'.format(bool2lower(settings["dwindle-preserve_split"])))
@@ -811,13 +808,11 @@ def save_includes():
         includes.append('    no_gaps_when_only = {}'.format(bool2lower(settings["dwindle-no_gaps_when_only"])))
         includes.append('    use_active_for_splits = {}'.format(bool2lower(settings["dwindle-use_active_for_splits"])))
         includes.append('    default_split_ratio = {}'.format(settings["dwindle-default_split_ratio"]))
-
         includes.append('}')
 
     # Export master layout settings
     if settings["master-use-settings"]:
         includes.append("\n# MASTER LAYOUT \nmaster {")
-
         includes.append('    allow_small_split = {}'.format(bool2lower(settings["master-allow_small_split"])))
         includes.append('    special_scale_factor = {}'.format(settings["master-special_scale_factor"]))
         includes.append('    mfact = {}'.format(settings["master-mfact"]))
@@ -827,7 +822,6 @@ def save_includes():
         includes.append('    orientation = {}'.format(settings["master-orientation"]))
         includes.append('    inherit_fullscreen = {}'.format(bool2lower(settings["master-inherit_fullscreen"])))
         includes.append('    always_center_master = {}'.format(bool2lower(settings["master-always_center_master"])))
-
         includes.append('}')
 
     # Export input devices settings
@@ -892,7 +886,20 @@ def save_includes():
             if settings["touchpad-tap-and-drag"]:
                 includes.append('        tap-and-drag = {}'.format(bool2lower(settings["touchpad-tap-and-drag"])))
             includes.append("    }")
+        includes.append('}')
 
+    # Export misc settings
+    if settings["misc-use-settings"]:
+        includes.append("\n# MISC SETTINGS\nmisc {")
+        includes.append('    disable_hyprland_logo = {}'.format(bool2lower(settings["misc-disable_hyprland_logo"])))
+        includes.append('    vrr = {}'.format(settings["misc-vrr"]))
+        includes.append('    mouse_move_enables_dpms = {}'.format(bool2lower(settings["misc-mouse_move_enables_dpms"])))
+        includes.append('    key_press_enables_dpms = {}'.format(bool2lower(settings["misc-key_press_enables_dpms"])))
+        includes.append('    layers_hog_keyboard_focus = {}'.format(bool2lower(settings["misc-layers_hog_keyboard_focus"])))
+        includes.append('    focus_on_activate = {}'.format(bool2lower(settings["misc-focus_on_activate"])))
+        includes.append('    hide_cursor_on_touch = {}'.format(bool2lower(settings["misc-hide_cursor_on_touch"])))
+        includes.append('    mouse_move_focuses_monitor = {}'.format(bool2lower(settings["misc-mouse_move_focuses_monitor"])))
+        includes.append('    cursor_zoom_factor = {}'.format(settings["misc-cursor_zoom_factor"]))
         includes.append('}')
 
     p = os.path.join(config_home, "hypr/includes.conf")
