@@ -1265,6 +1265,62 @@ def h_misc_tab(settings, voc):
     cb_logo.connect("toggled", set_from_checkbutton, settings, "misc-disable_hyprland_logo")
     grid.attach(cb_logo, 0, 1, 1, 1)
 
+    lbl = Gtk.Label.new("{}:".format(voc["vrr"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 1, 1, 1, 1)
+
+    combo_vrr = Gtk.ComboBoxText()
+    combo_vrr.set_property("halign", Gtk.Align.START)
+    combo_vrr.set_tooltip_text(voc["vrr-tooltip"])
+    d = {0: voc["off"], 1: voc["on"], 2: voc["fullscreen-only"]}
+    for item in [0, 1, 2]:
+        combo_vrr.append(str(item), d[item])
+    combo_vrr.set_active_id(str(settings["misc-vrr"]))
+    combo_vrr.connect("changed", set_int_dict_key_from_combo, settings, "misc-vrr")
+    grid.attach(combo_vrr, 2, 1, 1, 1)
+
+    cb_dpms_mouse = Gtk.CheckButton.new_with_label(voc["mouse-move-enables-dpms"])
+    cb_dpms_mouse.set_property("halign", Gtk.Align.START)
+    cb_dpms_mouse.set_tooltip_text(voc["mouse-move-enables-dpms-tooltip"])
+    cb_dpms_mouse.set_active(settings["misc-mouse_move_enables_dpms"])
+    cb_dpms_mouse.connect("toggled", set_from_checkbutton, settings, "misc-mouse_move_enables_dpms")
+    grid.attach(cb_dpms_mouse, 0, 2, 1, 1)
+
+    cb_dpms_key = Gtk.CheckButton.new_with_label(voc["key-press-enables-dpms"])
+    cb_dpms_key.set_property("halign", Gtk.Align.START)
+    cb_dpms_key.set_tooltip_text(voc["key-press-enables-dpms-tooltip"])
+    cb_dpms_key.set_active(settings["misc-key_press_enables_dpms"])
+    cb_dpms_key.connect("toggled", set_from_checkbutton, settings, "misc-key_press_enables_dpms")
+    grid.attach(cb_dpms_key, 1, 2, 2, 1)
+
+    cb_layers_hog = Gtk.CheckButton.new_with_label(voc["layers-hog-keyboard-focus"])
+    cb_layers_hog.set_property("halign", Gtk.Align.START)
+    cb_layers_hog.set_tooltip_text(voc["layers-hog-keyboard-focus-tooltip"])
+    cb_layers_hog.set_active(settings["misc-layers_hog_keyboard_focus"])
+    cb_layers_hog.connect("toggled", set_from_checkbutton, settings, "misc-layers_hog_keyboard_focus")
+    grid.attach(cb_layers_hog, 0, 3, 1, 1)
+
+    cb_focus_on_activate = Gtk.CheckButton.new_with_label(voc["focus-on-activate"])
+    cb_focus_on_activate.set_property("halign", Gtk.Align.START)
+    cb_focus_on_activate.set_tooltip_text(voc["focus-on-activate-tooltip"])
+    cb_focus_on_activate.set_active(settings["misc-focus_on_activate"])
+    cb_focus_on_activate.connect("toggled", set_from_checkbutton, settings, "misc-focus_on_activate")
+    grid.attach(cb_focus_on_activate, 1, 3, 2, 1)
+
+    cb_hide_cursor = Gtk.CheckButton.new_with_label(voc["hide-cursor-on-touch"])
+    cb_hide_cursor.set_property("halign", Gtk.Align.START)
+    cb_hide_cursor.set_tooltip_text(voc["hide-cursor-on-touch-tooltip"])
+    cb_hide_cursor.set_active(settings["misc-hide_cursor_on_touch"])
+    cb_hide_cursor.connect("toggled", set_from_checkbutton, settings, "misc-hide_cursor_on_touch")
+    grid.attach(cb_hide_cursor, 0, 4, 1, 1)
+
+    cb_mouse_mon = Gtk.CheckButton.new_with_label(voc["mouse-move-focuses-monitor"])
+    cb_mouse_mon.set_property("halign", Gtk.Align.START)
+    cb_mouse_mon.set_tooltip_text(voc["mouse-move-focuses-monitor-tooltip"])
+    cb_mouse_mon.set_active(settings["misc-mouse_move_focuses_monitor"])
+    cb_mouse_mon.connect("toggled", set_from_checkbutton, settings, "misc-mouse_move_focuses_monitor")
+    grid.attach(cb_mouse_mon, 1, 4, 2, 1)
+
     frame.show_all()
 
     return frame
