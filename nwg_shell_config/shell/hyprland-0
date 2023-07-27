@@ -10,6 +10,7 @@
   "launcher-css": "hyprland-0.css",
   "launcher-on": true,
   "launcher-gtk-theme": "",
+  "launcher-force-theme": false,
   "launcher-gtk-icon-theme": "",
   "exit-position": "center",
   "exit-full": false,

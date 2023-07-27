@@ -1107,6 +1107,7 @@ def load_preset(file_name):
         "launcher-on": True,
         "launcher-gtk-theme": "",
         "launcher-gtk-icon-theme": "",
+        "launcher-force-theme": False,
         "exit-position": "center",
         "exit-full": False,
         "exit-alignment": "middle",
