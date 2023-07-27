@@ -2427,6 +2427,12 @@ def drawer_tab(preset, preset_name, voc):
     cb_overlay.connect("toggled", set_from_checkbutton, preset, "launcher-overlay")
     grid.attach(cb_overlay, 0, 8, 2, 1)
 
+    cb_force_theme = Gtk.CheckButton.new_with_label(voc["run-with-gtk-theme"])
+    cb_force_theme.set_tooltip_text(voc["run-with-gtk-theme-tooltip"])
+    cb_force_theme.set_active(preset["launcher-force-theme"])
+    cb_force_theme.connect("toggled", set_from_checkbutton, preset, "launcher-force-theme")
+    grid.attach(cb_force_theme, 0, 9, 2, 1)
+
     frame.show_all()
 
     return frame
