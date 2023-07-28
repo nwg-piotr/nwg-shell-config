@@ -598,6 +598,9 @@ def save_includes():
     if settings["terminal"]:
         cmd_launcher += " -term {}".format(settings["terminal"])
 
+    if preset["launcher-force-theme"]:
+        cmd_launcher += " -ft"
+
     if preset["launcher-on"]:
         if preset["launcher-resident"]:
             cmd_launcher_autostart = "exec_always {}".format(cmd_launcher)
@@ -958,6 +961,7 @@ def load_preset(file_name):
         "launcher-on": True,
         "launcher-gtk-theme": "",
         "launcher-gtk-icon-theme": "",
+        "launcher-force-theme": False,
         "exit-position": "center",
         "exit-full": False,
         "exit-alignment": "middle",
