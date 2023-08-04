@@ -978,6 +978,7 @@ def load_preset(file_name):
         "dock-permanent": False,
         "dock-exclusive": False,
         "dock-alignment": "center",
+        "dock-layer": "overlay",
         "dock-margin": 0,
         "dock-icon-size": 48,
         "dock-hotspot-delay": 20,
