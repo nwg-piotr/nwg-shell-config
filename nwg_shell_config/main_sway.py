@@ -637,6 +637,8 @@ def save_includes():
         cmd_dock += " -p {}".format(preset["dock-position"])
     if preset["dock-output"] and preset["dock-output"] != "Any":
         cmd_dock += " -o {}".format(preset["dock-output"])
+    if preset["dock-layer"]:
+        cmd_dock += " -l {}".format(preset["dock-layer"])
     if preset["dock-full"]:
         cmd_dock += " -f"
     if preset["dock-alignment"]:
