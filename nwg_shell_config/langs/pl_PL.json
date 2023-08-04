@@ -261,6 +261,7 @@
   "on": "włączone",
   "on_button_down": "Na przycisk",
   "on-layer": "Na warstwie",
+  "on-layer-tooltip": "Określa na której warstwie gtk-layer-shell wyświetlać zawartość.",
   "open-on-overlay": "Otwieraj w nakładce",
   "open-on-overlay-tooltip": "Otwieraj w warstwie nakładki (powyżej panelu itp.)",
   "other": "Inne",
