@@ -668,6 +668,8 @@ def save_includes():
         cmd_dock += " -p {}".format(preset["dock-position"])
     if preset["dock-output"] and preset["dock-output"] != "Any":
         cmd_dock += " -o {}".format(preset["dock-output"])
+    if preset["dock-layer"]:
+        cmd_dock += " -l {}".format(preset["dock-layer"])
     if preset["dock-full"]:
         cmd_dock += " -f"
     if preset["dock-alignment"]:
@@ -1125,6 +1127,7 @@ def load_preset(file_name):
         "dock-permanent": False,
         "dock-exclusive": False,
         "dock-alignment": "center",
+        "dock-layer": "overlay",
         "dock-margin": 0,
         "dock-icon-size": 48,
         "dock-hotspot-delay": 20,

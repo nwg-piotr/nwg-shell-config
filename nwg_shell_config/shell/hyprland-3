@@ -26,6 +26,7 @@
   "dock-permanent": true,
   "dock-exclusive": true,
   "dock-alignment": "start",
+  "dock-layer": "overlay",
   "dock-margin": 0,
   "dock-icon-size": 42,
   "dock-hotspot-delay": 20,

@@ -261,6 +261,7 @@
   "on": "on",
   "on_button_down": "On button down",
   "on-layer": "On layer",
+  "on-layer-tooltip": "Determines the gtk-layer-shell layer to show the content on.",
   "open-on-overlay": "Open on overlay",
   "open-on-overlay-tooltip": "Open on overlay layer (over panels etc.)",
   "other": "Other",
