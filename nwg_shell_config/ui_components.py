@@ -2940,10 +2940,12 @@ def sys_info_tab(voc):
         lbl.set_property("halign", Gtk.Align.START)
         grid.attach(lbl, 1, 3, 1, 1)
     elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
-        output = get_command_output("hyprctl version")
-        lbl = Gtk.Label.new("Hyprland {}".format(output[1]))
-        lbl.set_property("halign", Gtk.Align.START)
-        grid.attach(lbl, 1, 3, 1, 1)
+        reply = hyprctl("j/version")
+        values = json.loads(reply)
+        if values and "tag" in values:
+            lbl = Gtk.Label.new("Hyprland Tag: {}".format(values["tag"]))
+            lbl.set_property("halign", Gtk.Align.START)
+            grid.attach(lbl, 1, 3, 1, 1)
 
     settings = Gtk.Settings.get_default()
     if settings:
