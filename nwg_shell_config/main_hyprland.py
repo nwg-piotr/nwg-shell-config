@@ -808,6 +808,7 @@ def save_includes():
         includes.append('    force_split = {}'.format(settings["dwindle-force_split"]))
         includes.append('    preserve_split = {}'.format(bool2lower(settings["dwindle-preserve_split"])))
         includes.append('    smart_split = {}'.format(bool2lower(settings["dwindle-smart_split"])))
+        includes.append('    smart_resizing = {}'.format(bool2lower(settings["dwindle-smart_resizing"])))
         includes.append('    special_scale_factor = {}'.format(settings["dwindle-special_scale_factor"]))
         includes.append('    split_width_multiplier = {}'.format(settings["dwindle-split_width_multiplier"]))
         includes.append('    no_gaps_when_only = {}'.format(bool2lower(settings["dwindle-no_gaps_when_only"])))
@@ -974,6 +975,7 @@ def load_settings():
         "dwindle-force_split": 0,
         "dwindle-preserve_split": True,
         "dwindle-smart_split": False,
+        "dwindle-smart_resizing": True,
         "dwindle-permanent_direction_override": False,
         "dwindle-special_scale_factor": 0.8,
         "dwindle-split_width_multiplier": 1.0,

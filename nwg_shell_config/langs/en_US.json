@@ -331,6 +331,8 @@
   "sleep-timeout-tooltip": "Sleep timeout in seconds.\nMust be longer than Lock screen timeout.",
   "smart-split": "Smart split",
   "smart-split-tooltip": "Allows a more precise control over the window split direction based on the cursor’s position. The window is conceptually divided into four triangles, and cursor’s triangle determines the split direction. Turns on preserve_split.",
+  "smart-resizing": "Smart resizing",
+  "smart-resizing-tooltip": "If enabled, resizing direction will be determined by the mouse’s position on the window (nearest to which corner). Else, it is based on the window’s tiling position.",
   "special-scale-factor": "Special scale factor",
   "special-scale-factor-tooltip": "0 - 1 -> specifies the scale factor of windows on the special workspace",
   "split-width-multiplier": "Split width multiplier",

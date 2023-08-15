@@ -331,6 +331,8 @@
   "sleep-timeout-tooltip": "Opóźnienie uśpienia w sekundach.\nMusi być dłuższe niż opóźnienie blokady.",
   "smart-split": "Inteligentny podział",
   "smart-split-tooltip": "Włącza precyzyjną kontrolę nad podziałem okna na podstawie pozycji kursora. Okno jest koncepcyjnie podzielone na 3 trójkąty i ten, w którym znajduje się kursor określa kierunek podziału. Włącza 'Zachowaj podział'.",
+  "smart-resizing": "Inteligentne skalowanie",
+  "smart-resizing-tooltip": "Jeśli włączone, kierunek zmiany rozmiaru zostanie określony przez pozycję myszy w oknie (najbliżej którego rogu). W przeciwnym razie opiera się na położeniu okna w kafelkowaniu.",
   "special-scale-factor": "Specjalny wsp. podziału",
   "special-scale-factor-tooltip": "0 - 1 -> określa współczynnik podziału okien w specjalnym obszarze roboczym",
   "split-width-multiplier": "Mnożnik szerokości podziału",

@@ -1133,6 +1133,13 @@ def h_dwindle_tab(settings, voc):
     cb_smart_split.connect("toggled", set_from_checkbutton, settings, "dwindle-smart_split")
     grid.attach(cb_smart_split, 2, 4, 1, 1)
 
+    cb_smart_resizing = Gtk.CheckButton.new_with_label(voc["smart-resizing"])
+    cb_smart_resizing.set_property("halign", Gtk.Align.START)
+    cb_smart_resizing.set_tooltip_text(voc["smart-resizing-tooltip"])
+    cb_smart_resizing.set_active(settings["dwindle-smart_resizing"])
+    cb_smart_resizing.connect("toggled", set_from_checkbutton, settings, "dwindle-smart_resizing")
+    grid.attach(cb_smart_resizing, 3, 4, 1, 1)
+
     frame.show_all()
 
     return frame
