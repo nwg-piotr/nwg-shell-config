@@ -76,7 +76,7 @@ def main():
     save_string(str(os.getpid()), pid_file)
 
     if os.getenv("SWAYSOCK"):
-        content_path = os.path.join(data_dir, "help.pango")
+        content_path = os.path.join(data_dir, "help-sway.pango")
     elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
         content_path = os.path.join(data_dir, "help-hyprland.pango")
     else:
@@ -126,7 +126,7 @@ def main():
     window.show_all()
 
     if settings["help-layer-shell"]:
-        window.set_size_request(0, window.get_allocated_width() * 2)
+        window.set_size_request(0, window.get_allocated_width() * 1.9)
 
     catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
     for sig in catchable_sigs:
