@@ -1,0 +1,14 @@
+{
+  "processes": "Процессы",
+  "wallpapers": "Обои",
+  "look-settings": "Внешний вид",
+  "displays-settings": "Настройки дисплеев",
+  "panel-settings": "Настройки панели",
+  "shellssettings": "Настройки оболочки",
+  "exit": "Выйти",
+  "lock": "Заблокировать",
+  "lock-screen": "Заблокировать экран",
+  "exit-compositor": "Выйти из композитора",
+  "reboot": "Перезагрузить компьютер",
+  "shutdown": "Выключить компьютер"
+}

@@ -1,0 +1,14 @@
+{
+  "processes": "İşlemler",
+  "wallpapers": "Duvar Kağıtları",
+  "look-settings": "Görünüm ayarları",
+  "displays-settings": "Ekran ayarları",
+  "panel-settings": "Panel ayarları",
+  "shellssettings": "Kabuk ayarları",
+  "exit": "Çıkış",
+  "lock": "Kilitle",
+  "lock-screen": "Ekranı kilitle",
+  "exit-compositor": "Kompozitörden çık",
+  "reboot": "Yeniden başlat",
+  "shutdown": "Gücü kapat"
+}

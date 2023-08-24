@@ -1,0 +1,14 @@
+{
+  "processes": "Procesy",
+  "wallpapers": "Tapety",
+  "look-settings": "Ustawienia wyglądu",
+  "displays-settings": "Ustawienia wyświetlaczy",
+  "panel-settings": "Ustawienia panelu",
+  "shellssettings": "Ustawienia powłoki",
+  "exit": "Wyjście",
+  "lock": "Zablokuj",
+  "lock-screen": "Zablokuj ekran",
+  "exit-compositor": "Opuść kompozytor",
+  "reboot": "Uruchom ponownie",
+  "shutdown": "Wyłącz"
+}
