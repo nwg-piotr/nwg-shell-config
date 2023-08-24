@@ -4,7 +4,7 @@
   "look-settings": "Внешний вид",
   "displays-settings": "Настройки дисплеев",
   "panel-settings": "Настройки панели",
-  "shellssettings": "Настройки оболочки",
+  "shell-settings": "Настройки оболочки",
   "exit": "Выйти",
   "lock": "Заблокировать",
   "lock-screen": "Заблокировать экран",

@@ -1,0 +1,14 @@
+{
+  "processes": "Processus",
+  "wallpapers": "Fonds d'écran",
+  "look-settings": "Gestion du thème",
+  "displays-settings": "Gestion de l'affichage",
+  "panel-settings": "Gestion des panneaux",
+  "shell-settings": "Gestion du shell",
+  "exit": "Quitter",
+  "lock": "Verrouiller",
+  "lock-screen": "Verrouiller l'écran",
+  "exit-compositor": "Quitter le compositeur",
+  "reboot": "Redémarrer",
+  "shutdown": "Éteindre"
+}
