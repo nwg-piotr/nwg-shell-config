@@ -5,10 +5,10 @@
   "displays-settings": "Bildschirmeinstellungen",
   "panel-settings": "Paneleinstellungen",
   "shell-settings": "Shelleinstellungen",
-  "exit": "Beenden",
+  "exit": "Verlassen",
   "lock": "Sperren",
   "lock-screen": "Sperrbildschirm",
-  "exit-compositor": "Compositor beenden",
+  "exit-compositor": "Compositor verlassen",
   "reboot": "Neustarten",
   "shutdown": "Herunterfahren"
 }
