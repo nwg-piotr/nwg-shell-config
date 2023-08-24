@@ -1,14 +1,14 @@
 {
   "processes": "Processi",
   "wallpapers": "Sfondi",
-  "look-settings": "Impostazioni estetiche",
+  "look-settings": "Impostazioni aspetto",
   "displays-settings": "Impostazioni schermi",
   "panel-settings": "Impostazioni pannello",
-  "shell-settings": "Impostazioni stella",
+  "shell-settings": "Impostazioni shell",
   "exit": "Esci",
-  "lock": "Blocca",
-  "lock-screen": "Blocca schermo",
-  "exit-compositor": "Esci compositor",
-  "reboot": "Riavvia",
+  "lock": "Blocco",
+  "lock-screen": "Blocco schermo",
+  "exit-compositor": "Esci dal compositore",
+  "reboot": "Riavvio",
   "shutdown": "Spegni"
 }
