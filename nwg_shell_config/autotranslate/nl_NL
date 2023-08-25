@@ -1,0 +1,14 @@
+{
+  "processes": "Processen",
+  "wallpapers": "Achtergronden",
+  "look-settings": "Instellingen uiterlijk",
+  "displays-settings": "Instellingen beeldscherm",
+  "panel-settings": "Instellingen paneel",
+  "shell-settings": "Instellingen shell",
+  "exit": "Log uit",
+  "lock": "Vergrendel",
+  "lock-screen": "Vergrendel scherm",
+  "exit-compositor": "Log uit compositor",
+  "reboot": "Herstart",
+  "shutdown": "Sluit af"
+}
