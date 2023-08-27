@@ -25,6 +25,7 @@ def main():
     shell_data = load_shell_data()
     if not shell_data["autotranslated"]:
         print("Looks like auto-translation has not yet been done. Let's get this over with.")
+        print("This will only be done once. Then you're free to modify labels manually.")
 
         user_locale = locale.getlocale()[0]
 
