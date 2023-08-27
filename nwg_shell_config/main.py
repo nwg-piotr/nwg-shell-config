@@ -21,7 +21,7 @@ arguments = " ".join(sys.argv[1:])
 def main():
     shell_data = load_shell_data()
     if not shell_data["autotranslated"]:
-        subprocess.Popen("autotranslate")
+        subprocess.Popen("nwg-autotranslate")
 
     if os.getenv("SWAYSOCK"):
         cmd = "nwg-shell-config-sway {}".format(arguments)
