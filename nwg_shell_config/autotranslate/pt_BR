@@ -8,6 +8,7 @@
   "exit": "Sair",
   "lock": "Bloquear",
   "lock-screen": "Tela de bloqueio",
+  "logout": "Sair",
   "exit-compositor": "Sair do compositor",
   "reboot": "Reiniciar",
   "shutdown": "Desligar"

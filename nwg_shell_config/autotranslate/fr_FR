@@ -8,6 +8,7 @@
   "exit": "Quitter",
   "lock": "Verrouiller",
   "lock-screen": "Verrouiller l'écran",
+  "logout": "Se déconnecter",
   "exit-compositor": "Quitter le compositeur",
   "reboot": "Redémarrer",
   "shutdown": "Éteindre"

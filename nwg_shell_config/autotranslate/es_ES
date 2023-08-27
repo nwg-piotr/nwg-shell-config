@@ -8,6 +8,7 @@
   "exit": "Salir",
   "lock": "Bloquear",
   "lock-screen": "Bloquear la pantalla",
+  "logout": "Cerrar sesión",
   "exit-compositor": "Salir del compositor",
   "reboot": "Reiniciar",
   "shutdown": "Apagar"

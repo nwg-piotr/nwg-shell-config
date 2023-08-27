@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-This script automagically translates some preinstalled UI labels into users $LANG
+This script automagically translates some preinstalled UI labels into users $LANG.
 Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project site: https://nwg-piotr.github.io/nwg-shell
 Author's email: nwg.piotr@gmail.com
@@ -38,23 +38,27 @@ def main():
         save_json(shell_data, shell_data_file)
         sys.exit(0)
     else:
-        print(f"Translation into '{user_locale}' found, loading.")
+        print(f"Translation into '{user_locale}' found")
         global translation
-        translation = load_json(os.path.join(dir_name, "autotranslate", user_locale))
+        # en_US MUST contain all the keys, load them all just in case
+        translation = load_json(os.path.join(dir_name, "autotranslate", "en_US"))
+        user_lang = load_json(os.path.join(dir_name, "autotranslate", user_locale))
+        # translate available words into users lang
+        for key in translation:
+            if key in user_lang:
+                translation[key] = user_lang[key]
         print(translation)
 
-        # translate panel configs
-        panel_config_dir = os.path.join(config_home, "nwg-panel")
+        # Translate panel configs
+        config_dir = os.path.join(config_home, "nwg-panel")
         items = ["preset-0", "preset-1", "preset-2", "preset-2", "hyprland-0", "hyprland-1", "hyprland-2", "hyprland-3"]
         for item in items:
-            path = os.path.join(panel_config_dir, item)
-            print(f"File: '{path}'")
+            path = os.path.join(config_dir, item)
             panels = load_json(path)
             for panel in panels:
                 if "processes-label" in panel["controls-settings"]:
                     tr = translation["processes"]
                     panel["controls-settings"]["processes-label"] = tr
-                    print(f"'Processes' -> '{tr}'")
 
                 if "custom-items" in panel["controls-settings"]:
                     custom_items = panel["controls-settings"]["custom-items"]
@@ -63,32 +67,72 @@ def main():
                         if i["name"] == "Wallpapers":
                             tr = translation["wallpapers"]
                             i["name"] = tr
-                            print(f"'Wallpapers' -> '{tr}'")
 
                         if i["name"] == "GTK settings":
                             tr = translation["look-settings"]
                             i["name"] = tr
-                            print(f"'GTK settings' -> '{tr}'")
 
                         if i["name"] == "Wallpapers":
                             tr = translation["wallpapers"]
                             i["name"] = tr
-                            print(f"'Wallpapers' -> '{tr}'")
 
                         if i["name"] == "Displays":
                             tr = translation["displays-settings"]
                             i["name"] = tr
-                            print(f"'Displays' -> '{tr}'")
 
                         if i["name"] == "Panel settings":
                             tr = translation["panel-settings"]
                             i["name"] = tr
-                            print(f"'Panel settings' -> '{tr}'")
 
                         if i["name"] == "Shell settings":
                             tr = translation["shell-settings"]
                             i["name"] = tr
-                            print(f"'Shell settings' -> '{tr}'")
+
+                if "menu" in panel["controls-settings"]:
+                    menu = panel["controls-settings"]["menu"]
+                    if menu["name"] == "Exit":
+                        menu["name"] = translation["exit"]
+
+                    entries = menu["items"]
+                    for entry in entries:
+                        if entry["name"] == "Lock":
+                            entry["name"] = translation["lock-screen"]
+
+                        if entry["name"] == "Exit sway session" or entry["name"] == "Exit Hyprland session":
+                            entry["name"] = translation["exit-compositor"]
+
+                        if entry["name"] == "Restart":
+                            entry["name"] = translation["reboot"]
+
+                        if entry["name"] == "Shutdown":
+                            entry["name"] = translation["shutdown"]
+
+            print(f"Saving {path}")
+            save_json(panels, path)
+
+        # Translate nwg-bar template
+        config_dir = os.path.join(config_home, "nwg-bar")
+        path = os.path.join(config_dir, "bar.json")
+        bar = load_json(path)
+        for item in bar:
+            if item["label"] == "Lock":
+                item["label"] = translation["lock"]
+
+            if item["label"] == "Logout":
+                item["label"] = translation["logout"]
+
+            if item["label"] == "Reboot":
+                item["label"] = translation["reboot"]
+
+            if item["label"] == "Shutdown":
+                item["label"] = translation["shutdown"]
+
+        print(f"Saving {path}")
+        save_json(bar, path)
+
+        print("Marking autotranslation done")
+        shell_data["autotranslated"] = True
+        save_json(shell_data, shell_data_file)
 
 
 if __name__ == "__main__":

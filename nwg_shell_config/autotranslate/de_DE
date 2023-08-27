@@ -8,6 +8,7 @@
   "exit": "Beenden",
   "lock": "Sperren",
   "lock-screen": "Sperrbildschirm",
+  "logout": "Ausloggen",
   "exit-compositor": "Compositor beenden",
   "reboot": "Neustarten",
   "shutdown": "Herunterfahren"

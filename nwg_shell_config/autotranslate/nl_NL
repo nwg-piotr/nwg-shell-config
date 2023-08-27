@@ -8,6 +8,7 @@
   "exit": "Log uit",
   "lock": "Vergrendel",
   "lock-screen": "Vergrendel scherm",
+  "logout": "Uitloggen",
   "exit-compositor": "Log uit compositor",
   "reboot": "Herstart",
   "shutdown": "Sluit af"

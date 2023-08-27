@@ -8,6 +8,7 @@
   "exit": "Çıkış",
   "lock": "Kilitle",
   "lock-screen": "Ekranı kilitle",
+  "logout": "Çıkış Yap",
   "exit-compositor": "Kompozitörden çık",
   "reboot": "Yeniden başlat",
   "shutdown": "Gücü kapat"
