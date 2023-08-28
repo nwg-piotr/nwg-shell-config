@@ -24,6 +24,8 @@ def main():
         subprocess.Popen("nwg-autotranslate")
         if os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
             subprocess.Popen("hyprctl reload".split())
+        elif os.getenv("SWAYSOCK"):
+            subprocess.Popen("swaymsg reload".split())
 
     if os.getenv("SWAYSOCK"):
         cmd = "nwg-shell-config-sway {}".format(arguments)
