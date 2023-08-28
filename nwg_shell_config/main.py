@@ -22,9 +22,12 @@ def main():
     shell_data = load_shell_data()
     if not shell_data["autotranslated"]:
         subprocess.Popen("nwg-autotranslate")
+
         if os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+            eprint("Labels translated, reloading Hyprland.")
             subprocess.Popen("hyprctl reload".split())
-        elif os.getenv("SWAYSOCK"):
+        else:
+            eprint("Labels translated, reloading sway.")
             subprocess.Popen("swaymsg reload".split())
 
     if os.getenv("SWAYSOCK"):
