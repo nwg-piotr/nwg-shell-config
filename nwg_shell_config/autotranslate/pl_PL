@@ -10,6 +10,6 @@
   "lock-screen": "Zablokuj ekran",
   "logout": "Wyloguj",
   "exit-compositor": "Opuść kompozytor",
-  "reboot": "Uruchom ponownie",
+  "reboot": "Zrestartuj",
   "shutdown": "Wyłącz"
 }
