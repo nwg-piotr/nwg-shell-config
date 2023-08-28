@@ -52,7 +52,8 @@ def main():
 
             # Translate panel configs
             config_dir = os.path.join(config_home, "nwg-panel")
-            items = ["preset-0", "preset-1", "preset-2", "preset-2", "hyprland-0", "hyprland-1", "hyprland-2", "hyprland-3"]
+            items = ["preset-0", "preset-1", "preset-2", "preset-2", "hyprland-0", "hyprland-1", "hyprland-2",
+                     "hyprland-3"]
             for item in items:
                 path = os.path.join(config_dir, item)
                 panels = load_json(path)
@@ -99,7 +100,8 @@ def main():
                             if entry["name"] == "Lock":
                                 entry["name"] = translation["lock-screen"]
 
-                            if entry["name"] == "Exit sway session" or entry["name"] == "Exit Hyprland session":
+                            if entry["name"] == "Exit sway session" or entry["name"] == "Exit Hyprland session" or \
+                                    entry["name"] == "Logout":
                                 entry["name"] = translation["exit-compositor"]
 
                             if entry["name"] == "Restart":

@@ -27,6 +27,7 @@ def main():
         cmd = "nwg-shell-config-sway {}".format(arguments)
         eprint("Starting sway version")
     elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+        subprocess.Popen("hyprctl reload")
         cmd = "nwg-shell-config-hyprland {}".format(arguments)
         eprint("Starting Hyprland version")
     else:
