@@ -9,12 +9,12 @@ def read(f_name):
 
 setup(
     name='nwg-shell-config',
-    version='0.5.15',
+    version='0.5.16',
     description='nwg-shell configuration utility',
     packages=find_packages(),
     include_package_data=True,
     package_data={
-        "": ["glade/*", "langs/*", "shell/*", "updates/*"]
+        "": ["glade/*", "autotranslate/*", "langs/*", "shell/*", "updates/*"]
     },
     url='https://github.com/nwg-piotr/nwg-shell-config',
     license='MIT',
@@ -24,6 +24,7 @@ setup(
     install_requires=[],
     entry_points={
         'gui_scripts': [
+            'nwg-autotranslate = nwg_shell_config.autotranslate:main',
             'nwg-shell-config = nwg_shell_config.main:main',
             'nwg-shell-config-sway = nwg_shell_config.main_sway:main',
             'nwg-shell-config-hyprland = nwg_shell_config.main_hyprland:main',

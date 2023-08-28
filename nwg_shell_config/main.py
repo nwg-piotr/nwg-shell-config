@@ -13,12 +13,23 @@ import os
 import sys
 import subprocess
 
-from nwg_shell_config.tools import eprint
+from nwg_shell_config.tools import eprint, load_shell_data
 
 arguments = " ".join(sys.argv[1:])
 
 
 def main():
+    shell_data = load_shell_data()
+    if not shell_data["autotranslated"]:
+        subprocess.Popen("nwg-autotranslate")
+
+        if os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+            eprint("Labels translated, reloading Hyprland.")
+            subprocess.Popen("hyprctl reload".split())
+        else:
+            eprint("Labels translated, reloading sway.")
+            subprocess.Popen("swaymsg reload".split())
+
     if os.getenv("SWAYSOCK"):
         cmd = "nwg-shell-config-sway {}".format(arguments)
         eprint("Starting sway version")

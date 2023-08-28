@@ -1,0 +1,15 @@
+{
+  "processes": "Processos",
+  "wallpapers": "Papéis de parede",
+  "look-settings": "Configurações de aparência",
+  "displays-settings": "Configurações de tela",
+  "panel-settings": "Configurações do painel",
+  "shell-settings": "Configurações do shell",
+  "exit": "Sair",
+  "lock": "Bloquear",
+  "lock-screen": "Tela de bloqueio",
+  "logout": "Sair",
+  "exit-compositor": "Sair do compositor",
+  "reboot": "Reiniciar",
+  "shutdown": "Desligar"
+}

@@ -1,0 +1,15 @@
+{
+  "processes": "Prozesse",
+  "wallpapers": "Bildschirmhintergründe",
+  "look-settings": "Aussehenseinstellungen",
+  "displays-settings": "Bildschirmeinstellungen",
+  "panel-settings": "Paneleinstellungen",
+  "shell-settings": "Shelleinstellungen",
+  "exit": "Beenden",
+  "lock": "Sperren",
+  "lock-screen": "Sperrbildschirm",
+  "logout": "Ausloggen",
+  "exit-compositor": "Compositor beenden",
+  "reboot": "Neustarten",
+  "shutdown": "Herunterfahren"
+}

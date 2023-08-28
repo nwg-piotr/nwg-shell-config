@@ -359,7 +359,8 @@ def load_shell_data():
     defaults = {
         "installed-version": get_shell_version(),
         "updates": [],
-        "interface-locale": ""
+        "interface-locale": "",
+        "autotranslated": False
     }
     if not shell_data:
         shell_data = defaults

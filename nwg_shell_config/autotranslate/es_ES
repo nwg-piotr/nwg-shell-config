@@ -1,0 +1,15 @@
+{
+  "processes": "Procesos",
+  "wallpapers": "Fondos de pantalla",
+  "look-settings": "Opciones de apariencia",
+  "displays-settings": "Opciones de pantalla",
+  "panel-settings": "Opciones del panel",
+  "shell-settings": "Opciones de shell",
+  "exit": "Salir",
+  "lock": "Bloquear",
+  "lock-screen": "Bloquear la pantalla",
+  "logout": "Cerrar sesión",
+  "exit-compositor": "Salir del compositor",
+  "reboot": "Reiniciar",
+  "shutdown": "Apagar"
+}
