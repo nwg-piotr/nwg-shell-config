@@ -22,12 +22,13 @@ def main():
     shell_data = load_shell_data()
     if not shell_data["autotranslated"]:
         subprocess.Popen("nwg-autotranslate")
+        if os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+            subprocess.Popen("hyprctl reload".split())
 
     if os.getenv("SWAYSOCK"):
         cmd = "nwg-shell-config-sway {}".format(arguments)
         eprint("Starting sway version")
     elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
-        subprocess.Popen("hyprctl reload")
         cmd = "nwg-shell-config-hyprland {}".format(arguments)
         eprint("Starting Hyprland version")
     else:
