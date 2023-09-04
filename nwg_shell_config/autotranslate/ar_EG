@@ -1,0 +1,15 @@
+{
+  "processes": "العمليات",
+  "wallpapers": "الخلفيات",
+  "look-settings": "إعدادات المظهر",
+  "displays-settings": "إعدادات الشاشات",
+  "panel-settings": "إعدادات الصفحة",
+  "shell-settings": "إعدادات الشيل",
+  "exit": "خروج",
+  "lock": "قفل",
+  "lock-screen": "شاشة القفل",
+  "logout": "Logout",
+  "exit-compositor": "الخروج من الكومباسيتور",
+  "reboot": "اعادة التشغيل",
+  "shutdown": "ايقاف التشغيل"
+}
