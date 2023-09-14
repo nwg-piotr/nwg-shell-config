@@ -41,7 +41,7 @@ pid = os.getpid()
 defaults = {
     "panel-preset": "preset-0",
     "lockscreen-use-settings": True,
-    "lockscreen-locker": "swaylock",  # swaylock | gtklock
+    "lockscreen-locker": "gtklock",  # swaylock | gtklock
     "lockscreen-background-source": "local",  # unsplash | local
     "lockscreen-custom-cmd": "",
     "lockscreen-timeout": 1200,
