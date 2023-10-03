@@ -1026,7 +1026,7 @@ def load_settings():
         "touchpad-tap-and-drag": False,
 
         "misc-use-settings": True,
-        "misc-disable_hyprland_logo": False,
+        "misc-disable_hyprland_logo": True,
         "misc-vrr": 0,
         "misc-mouse_move_enables_dpms": False,
         "misc-key_press_enables_dpms": False,
