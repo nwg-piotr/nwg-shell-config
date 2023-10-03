@@ -3100,13 +3100,16 @@ def parse_os_release():
         lines = load_text_file("/etc/os-release").splitlines()
         for line in lines:
             if line.startswith("NAME="):
-                name = line.split("=")[1][1:-1]
+                name = line.split("=")[1].replace('"', '')
                 continue
             if line.startswith("HOME_URL="):
-                home_url = line.split("=")[1][1:-1]
+                home_url = line.split("=")[1].replace('"', '')
                 continue
             if line.startswith("LOGO="):
                 logo = line.split("=")[1]
                 continue
+
+        if not logo:
+            logo = name
 
     return name, home_url, logo
