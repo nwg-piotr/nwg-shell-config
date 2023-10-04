@@ -1103,6 +1103,15 @@ def load_vocabulary():
                     voc[key] = loc[key]
 
 
+def load_settings_save_includes():
+    global data_dir
+    data_dir = get_data_dir()
+    load_presets()
+    load_settings()
+    save_includes()
+    sys.exit(0)
+
+
 def restore_backup(b_path, voc):
     if b_path.startswith("~/"):
         b_path = os.path.join(os.getenv("HOME"), b_path[2:])
@@ -1129,8 +1138,16 @@ def main():
                         default="",
                         help="restore all configs from a backup file (given path)")
 
+    parser.add_argument("-s",
+                        "--save",
+                        action="store_true",
+                        help="load settings & Save includes (for use w/ external scripts)")
+
     parser.parse_args()
     args = parser.parse_args()
+
+    if args.save:
+        load_settings_save_includes()
 
     if not os.getenv("SWAYSOCK"):
         eprint("SWAYSOCK not found, terminating")
