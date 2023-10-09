@@ -11,7 +11,7 @@
   "launcher-on": true,
   "launcher-gtk-theme": "",
   "launcher-gtk-icon-theme": "",
-  "launcher-force-theme": false,
+  "launcher-force-theme": true,
   "exit-position": "center",
   "exit-full": false,
   "exit-alignment": "middle",
