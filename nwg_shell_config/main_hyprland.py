@@ -1266,6 +1266,9 @@ def restore_backup(b_path, voc):
 
 
 def main():
+    global data_dir
+    data_dir = get_data_dir()
+
     parser = argparse.ArgumentParser()
     parser.add_argument("-v",
                         "--version",
@@ -1293,6 +1296,7 @@ def main():
     args = parser.parse_args()
 
     if args.save:
+        init_files(os.path.join(dir_name, "shell"), data_dir)
         load_settings_save_includes()
 
     GLib.set_prgname('nwg-shell-config')
@@ -1303,9 +1307,6 @@ def main():
     else:
         eprint("HYPRLAND_INSTANCE_SIGNATURE not found, terminating")
         sys.exit(1)
-
-    global data_dir
-    data_dir = get_data_dir()
 
     global outputs
     outputs = h_list_monitors()

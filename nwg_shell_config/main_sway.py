@@ -1120,6 +1120,9 @@ def restore_backup(b_path, voc):
 
 
 def main():
+    global data_dir
+    data_dir = get_data_dir()
+
     parser = argparse.ArgumentParser()
     parser.add_argument("-v",
                         "--version",
@@ -1147,6 +1150,7 @@ def main():
     args = parser.parse_args()
 
     if args.save:
+        init_files(os.path.join(dir_name, "shell"), data_dir)
         load_settings_save_includes()
 
     if not os.getenv("SWAYSOCK"):
@@ -1154,9 +1158,6 @@ def main():
         sys.exit(1)
 
     GLib.set_prgname('nwg-shell-config')
-
-    global data_dir
-    data_dir = get_data_dir()
 
     global outputs
     outputs = list_outputs()
