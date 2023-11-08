@@ -2440,6 +2440,12 @@ def drawer_tab(preset, preset_name, voc):
     cb_force_theme.connect("toggled", set_from_checkbutton, preset, "launcher-force-theme")
     grid.attach(cb_force_theme, 0, 9, 2, 1)
 
+    cb_run_through_compositor = Gtk.CheckButton.new_with_label(voc["run-through-compositor"])
+    cb_run_through_compositor.set_tooltip_text(voc["run-through-compositor-tooltip"])
+    cb_run_through_compositor.set_active(preset["launcher-run-through-compositor"])
+    cb_run_through_compositor.connect("toggled", set_from_checkbutton, preset, "launcher-run-through-compositor")
+    grid.attach(cb_run_through_compositor, 0, 10, 2, 1)
+
     frame.show_all()
 
     return frame

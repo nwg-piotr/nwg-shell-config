@@ -310,6 +310,8 @@
   "resume-command": "Kom. wznowienia",
   "right": "Prawo",
   "round-image": "Okrągły avatar",
+  "run-through-compositor": "Uruchamiaj przez kompozytor",
+  "run-through-compositor-tooltip": "Uruchamiaj programy przez 'swaymsg exec' na sway lub 'hyprctl dispatch exec' na Hyprland.",
   "run-with-gtk-theme": "Uruchamiaj z GTK_THEME=",
   "run-with-gtk-theme-tooltip": "Uruchamiaj programy ze zmienną środowiskową GTK_THEME=<default-gtk-theme>. Konieczne by aplikacjom libadwaita/GTK4 ustawić inny motyw niż Adwaita.",
   "screen-settings": "Ustawienia ekranu",

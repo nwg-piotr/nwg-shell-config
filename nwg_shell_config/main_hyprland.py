@@ -627,6 +627,9 @@ def save_includes():
     if preset["launcher-force-theme"]:
         cmd_launcher += " -ft"
 
+    if preset["launcher-run-through-compositor"]:
+        cmd_launcher += " -wm hyprland"
+
     if preset["launcher-on"]:
         if preset["launcher-resident"]:
             cmd_launcher_autostart = "exec = {}".format(cmd_launcher)
@@ -1115,6 +1118,7 @@ def load_preset(file_name):
         "launcher-gtk-theme": "",
         "launcher-gtk-icon-theme": "",
         "launcher-force-theme": False,
+        "launcher-run-through-compositor": False,
         "exit-position": "center",
         "exit-full": False,
         "exit-alignment": "middle",
