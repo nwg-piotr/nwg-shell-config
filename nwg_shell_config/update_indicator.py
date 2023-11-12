@@ -53,6 +53,7 @@ for key in defaults:
     check_key(settings, key, defaults[key])
 
 voc = {}  # Vocabulary
+nwg_system_update_arg = ""
 
 ind = None  # Indicator(object) containing
 
@@ -174,13 +175,39 @@ class Indicator(object):
 
         # Below we could add update check commands for other distros
         if self.distro == "arch":
-            if is_command("baph"):
+            global nwg_system_update_arg
+            nwg_system_update_arg = "-baph"
+            if is_command("yay"):
+                nwg_system_update_arg = "-yay"
+                eprint("Using yay")
+                pacman, aur = 0, 0
+                try:
+                    output = subprocess.check_output("checkupdates".split()).decode('utf-8').splitlines()
+                    pacman = len(output)
+                except subprocess.CalledProcessError:
+                    pass
+                try:
+                    output = subprocess.check_output("yay -Qu".split()).decode('utf-8').splitlines()
+                    aur = len(output)
+                except subprocess.CalledProcessError:
+                    pass
+
+                if pacman or aur:
+                    update_details = f"pacman: {pacman}, AUR: {aur}"
+
+            elif is_command("baph"):
+                eprint("Using baph")
                 output = subprocess.check_output("baph -c".split()).decode('utf-8').strip()
                 if output and output != "0 0":
                     u = output.split()
-                    update_details = "pacman: {}, AUR: {}".format(u[1], u[0])
+                    update_details = f"pacman: {u[1]}, AUR: {u[0]}"
 
-        # elif self.distro == "something_else:
+            if update_details:
+                eprint(update_details)
+            else:
+                eprint(voc["you-are-up-to-date"])
+
+        # elif self.distro == "something_else":
         #   place your code here
 
         if not update_details:
@@ -196,7 +223,10 @@ class Indicator(object):
         # IMPORTANT: the presence of this script will also determine if to display corresponding
         # options in the config utility.
         if settings["update-command"] == "nwg-system-update":
-            subprocess.call("exec foot nwg-system-update '{}'".format(voc["press-enter-to-exit"]), shell=True)
+            cmd = "exec foot nwg-system-update '{}'".format(voc["press-enter-to-exit"])
+            if nwg_system_update_arg:
+                cmd += f" {nwg_system_update_arg}"
+            subprocess.call(cmd, shell=True)
         else:
             subprocess.call("exec {}".format(settings["update-command"]), shell=True)
 
