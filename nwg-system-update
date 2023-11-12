@@ -3,5 +3,9 @@
 # Otherwise, just don't install this script. The tray system update notifier won't show up,
 # as well as related nwg-shell-config options.
 
-baph -u &&
-echo $1; read;
+if [ "$2" = "-yay" ]; then
+    yay -Syu;
+else
+    baph -u;
+fi
+echo "$1"; read -r;
