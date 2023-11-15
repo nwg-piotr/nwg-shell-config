@@ -162,7 +162,7 @@ class Indicator(object):
         # The code below should leave `update_details` string empty if no updates found.
         # Otherwise, it should set it as a short info, that will be appended to the 'Update' menu item.
 
-        GLib.timeout_add_seconds(0, self.switch_icon, "nwg-update-checking", "Checking")
+        GLib.timeout_add_seconds(0, self.switch_icon, "nwg-screenshot", "Checking")
 
         # Below we could add update check commands for other distros
         if self.distro == "arch":
@@ -242,14 +242,14 @@ def main():
     own_pid = os.getpid()
     # Interrupt running instances, if any
     for proc in process_iter():
-        if "nwg-update-ind" in proc.name():
+        if "nwg-screenshot" in proc.name():
             pid = proc.pid
             if not pid == own_pid:
                 eprint("Killing '{}', pid {}".format(proc.name(), pid))
                 os.kill(pid, signal.SIGINT)
 
     # Set app_id
-    GLib.set_prgname('nwg-update-indicator')
+    GLib.set_prgname('nwg-screenshot')
 
     # Load localized dictionary
     global voc
