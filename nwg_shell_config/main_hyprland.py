@@ -938,9 +938,7 @@ def reload():
         subprocess.call("pkill -f nwg-update-indicator", shell=True, stdout=subprocess.DEVNULL,
                         stderr=subprocess.STDOUT)
 
-    if settings["screenshot"]:
-        launch(None, "nwg-screenshot")
-    else:
+    if not settings["screenshot"]:
         subprocess.call("pkill -f nwg-screenshot", shell=True, stdout=subprocess.DEVNULL,
                         stderr=subprocess.STDOUT)
 

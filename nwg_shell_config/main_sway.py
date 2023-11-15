@@ -695,7 +695,7 @@ def save_includes():
         autostart.append("exec nm-applet --indicator")
 
     if settings["screenshot"]:
-        autostart.append("exec nwg-screenshot-applet")
+        autostart.append("exec_always nwg-screenshot-applet")
 
     if settings["autotiling-on"]:
         cmd_autotiling = "exec_always nwg-autotiling"
@@ -830,9 +830,7 @@ def reload():
     else:
         subprocess.call("pkill -f nwg-update-indicator", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
-    if settings["screenshot"]:
-        launch(None, "nwg-screenshot")
-    else:
+    if not settings["screenshot"]:
         subprocess.call("pkill -f nwg-screenshot", shell=True, stdout=subprocess.DEVNULL,
                         stderr=subprocess.STDOUT)
 
