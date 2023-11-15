@@ -45,7 +45,10 @@ for key in defaults:
 voc = {}  # Vocabulary
 nwg_system_update_arg = ""
 
-ind = None  # Indicator(object) containing
+_ind = None  # Indicator(object) containing
+
+counter = 0
+command = ""
 
 if os.getenv("SWAYSOCK"):
     cmd_exec = "swaymsg exec"
@@ -53,6 +56,10 @@ elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
     cmd_exec = "hyprctl dispatch exec"
 else:
     eprint("This program needs either sway or Hyprland environment")
+    sys.exit(1)
+
+if not is_command("screenshot"):
+    eprint("'screenshot [fullscreen|region|focused|display|swappy]' command not found")
     sys.exit(1)
 
 
@@ -103,8 +110,19 @@ def load_vocabulary():
 
 
 def screenshot(item, s_type):
+    global counter, command
     if s_type == ScreenshotType.FULLSCREEN:
         subprocess.Popen(f'{cmd_exec} screenshot fullscreen', shell=True)
+    if s_type == ScreenshotType.DISPLAY:
+        _ind.switch_icon(f'nwg-3', "")
+        counter = 2
+        command = f'{cmd_exec} screenshot display'
+        GLib.timeout_add_seconds(1, count_down_and_execute)
+    if s_type == ScreenshotType.FOCUSED:
+        _ind.switch_icon(f'nwg-3', "")
+        counter = 2
+        command = f'{cmd_exec} screenshot focused'
+        GLib.timeout_add_seconds(1, count_down_and_execute)
     elif s_type == ScreenshotType.REGION:
         subprocess.Popen(f'{cmd_exec} screenshot swappy', shell=True)
 
@@ -117,11 +135,11 @@ def menu():
     m.append(item)
 
     item = Gtk.MenuItem.new_with_label(voc["screenshot-display"])
-    # item.connect('activate', self.check_updates)
+    item.connect('activate', screenshot, ScreenshotType.DISPLAY)
     m.append(item)
 
     item = Gtk.MenuItem.new_with_label(voc["screenshot-focused"])
-    # item.connect('activate', self.check_updates)
+    item.connect('activate', screenshot, ScreenshotType.FOCUSED)
     m.append(item)
 
     item = Gtk.MenuItem.new_with_label(voc["screenshot-region"])
@@ -147,14 +165,23 @@ class Indicator(object):
         self.ind.set_icon_full("nwg-screenshot", voc["screenshot"])
 
     def switch_icon(self, icon, desc):
-        # self.ind.set_title(desc)
-        if desc != voc["you-are-up-to-date"]:
-            self.item_update.set_label("{} ({})".format(voc["update"], desc))
-            self.item_update.show()
-        else:
-            self.item_update.hide()
-
         self.ind.set_icon_full(icon, desc)
+
+
+def count_down_and_execute():
+    global counter, command, _ind
+    if counter > 0:
+        _ind.switch_icon(f'nwg-{counter}', "")
+        counter -= 1
+        # repeat
+        return True
+    else:
+        cmd = command
+        command = ""
+        subprocess.Popen(cmd, shell=True)
+        _ind.ind.set_icon_full("nwg-screenshot", voc["screenshot"])
+        # do not repeat
+        return False
 
 
 def main():
@@ -173,8 +200,8 @@ def main():
     # Load localized dictionary
     load_vocabulary()
 
-    global ind
-    ind = Indicator()  # Will check updates for the 1st time in the constructor
+    global _ind
+    _ind = Indicator()
 
     # Gentle termination; check updates on USR1 (for no reason / possible future use)
     catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
