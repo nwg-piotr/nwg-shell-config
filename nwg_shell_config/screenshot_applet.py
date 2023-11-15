@@ -201,10 +201,10 @@ class Indicator(object):
         # elif self.distro == "something_else":
         #   place your code here
 
-        if not update_details:
-            GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-noupdate", voc["you-are-up-to-date"])
-        else:
-            GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-available", update_details)
+        # if not update_details:
+        #     GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-noupdate", voc["you-are-up-to-date"])
+        # else:
+        #     GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-available", update_details)
 
         return True  # For this to be called periodically
 
