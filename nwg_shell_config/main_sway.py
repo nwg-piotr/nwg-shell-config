@@ -694,6 +694,9 @@ def save_includes():
     if settings["appindicator"]:
         autostart.append("exec nm-applet --indicator")
 
+    if settings["screenshot"]:
+        autostart.append("exec nwg-screenshot-applet")
+
     if settings["autotiling-on"]:
         cmd_autotiling = "exec_always nwg-autotiling"
 
@@ -851,6 +854,7 @@ def load_settings():
         "browser": "",
         "panel-preset": "preset-0",
         "panel-custom": "",
+        "screenshot": True,
         "show-on-startup": True,
         "keyboard-use-settings": True,
         "keyboard-identifier": "",

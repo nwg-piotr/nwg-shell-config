@@ -723,6 +723,9 @@ def save_includes():
     if settings["appindicator"]:
         includes.append("exec-once = nm-applet --indicator")
 
+    if settings["screenshot"]:
+        includes.append("exec = nwg-screenshot-applet")
+
     if cmd_launcher_autostart:
         includes.append(cmd_launcher_autostart)
 
@@ -952,6 +955,7 @@ def load_settings():
         "browser": "",
         "panel-preset": "hyprland-0",
         "panel-custom": "",
+        "screenshot": True,
         "show-on-startup": True,
 
         "gen-use-settings": True,

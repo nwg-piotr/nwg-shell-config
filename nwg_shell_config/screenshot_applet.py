@@ -18,8 +18,7 @@ import sys
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GLib
 from psutil import process_iter
-from nwg_shell_config.tools import eprint, is_command, load_text_file, load_shell_data, load_json, check_key, \
-    get_data_dir
+from nwg_shell_config.tools import eprint, is_command, load_shell_data, load_json, check_key, get_data_dir
 from enum import Enum
 
 try:

@@ -316,6 +316,8 @@
   "run-with-gtk-theme-tooltip": "Uruchamiaj programy ze zmienną środowiskową GTK_THEME=<default-gtk-theme>. Konieczne by aplikacjom libadwaita/GTK4 ustawić inny motyw niż Adwaita.",
   "screen-settings": "Ustawienia ekranu",
   "screenshot": "Zrzut ekranu",
+  "screenshot-applet": "Applet zrzutu ekranu",
+  "screenshot-applet-tooltip": "Określa czy uruchamiać applet zrzutu ekranu w tacce systemowej.",
   "screenshot-display": "Aktywny wyświetlacz",
   "screenshot-focused": "Aktywne okno",
   "screenshot-fullscreen": "Pełny ekran",

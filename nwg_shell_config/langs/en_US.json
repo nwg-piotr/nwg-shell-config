@@ -316,6 +316,8 @@
   "run-with-gtk-theme-tooltip": "Run apps with GTK_THEME=<default-gtk-theme> environment variable. Necessary to set a theme other than Adwaita for libadwaita/GTK4 apps.",
   "screen-settings": "Screen settings",
   "screenshot": "Screenshot",
+  "screenshot-applet": "Screenshot applet",
+  "screenshot-applet-tooltip": "Determines if to show the screenshot applet in the system tray",
   "screenshot-display": "Focused display",
   "screenshot-focused": "Focused window",
   "screenshot-fullscreen": "Full screen",

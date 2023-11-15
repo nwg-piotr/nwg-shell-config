@@ -421,6 +421,12 @@ def screen_tab(settings, voc, pending_updates):
     cb_nm_applet.set_tooltip_text(voc["nm-applet-tooltip"])
     grid.attach(cb_nm_applet, 1, 8, 1, 1)
 
+    cb_screenshot = Gtk.CheckButton.new_with_label(voc["screenshot-applet"])
+    cb_screenshot.set_active(settings["screenshot"])
+    cb_screenshot.connect("toggled", set_from_checkbutton, settings, "screenshot")
+    cb_screenshot.set_tooltip_text(voc["screenshot-applet-tooltip"])
+    grid.attach(cb_screenshot, 2, 8, 1, 1)
+
     frame.show_all()
 
     return frame, update_btn
