@@ -147,7 +147,8 @@ class Indicator(object):
         self.ind.set_menu(self.menu())
         self.ind.set_title(voc["updates"])
 
-        self.check_updates()
+        self.switch_icon("nwg-update-noupdate", "")
+        GLib.timeout_add_seconds(0, self.check_updates, True)
 
     def menu(self):
         menu = Gtk.Menu()
@@ -166,7 +167,7 @@ class Indicator(object):
         menu.show_all()
         return menu
 
-    def check_updates(self, *args):
+    def check_updates(self, once):
         update_details = ""
         # The code below should leave `update_details` string empty if no updates found.
         # Otherwise, it should set it as a short info, that will be appended to the 'Update' menu item.
@@ -215,6 +216,8 @@ class Indicator(object):
         else:
             GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-available", update_details)
 
+        if once:
+            return False
         return True  # For this to be called periodically
 
     def update(self, *args):
@@ -279,7 +282,7 @@ def main():
     global ind
     ind = Indicator(distro)  # Will check updates for the 1st time in the constructor
     # Check periodically in given intervals
-    GLib.timeout_add_seconds(settings["update-indicator-interval"] * 60, ind.check_updates)
+    GLib.timeout_add_seconds(settings["update-indicator-interval"] * 60, ind.check_updates, False)
 
     # Gentle termination; check updates on USR1 (for no reason / possible future use)
     catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
