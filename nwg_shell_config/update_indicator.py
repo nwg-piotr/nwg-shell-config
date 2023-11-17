@@ -17,12 +17,14 @@ https://bitbucket.org/natemaia/baph, as well if it comes to checking updates, as
 Updates are being performed by the `nwg-system-update` script. For your own distro, you will need your own
 version of the latter, installed somewhere on $PATH.
 """
+import time
 
 import gi
 import os
 import subprocess
 import signal
 import sys
+import threading
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GLib
@@ -147,8 +149,8 @@ class Indicator(object):
         self.ind.set_menu(self.menu())
         self.ind.set_title(voc["updates"])
 
-        self.switch_icon("nwg-update-noupdate", "")
-        GLib.timeout_add_seconds(0, self.check_updates, True)
+        self.switch_icon("nwg-update-noupdate", "Checking")
+        self.check_updates()
 
     def menu(self):
         menu = Gtk.Menu()
@@ -167,12 +169,18 @@ class Indicator(object):
         menu.show_all()
         return menu
 
-    def check_updates(self, once):
+    def check_updates(self, *args):
+        self.switch_icon("nwg-update-checking", "Checking")
+
+        thr = threading.Thread(target=self.check_updates_actual_job, args=(), kwargs={})
+        thr.start()
+
+        return True  # For this to be called periodically
+
+    def check_updates_actual_job(self):
         update_details = ""
         # The code below should leave `update_details` string empty if no updates found.
         # Otherwise, it should set it as a short info, that will be appended to the 'Update' menu item.
-
-        GLib.timeout_add_seconds(0, self.switch_icon, "nwg-update-checking", "Checking")
 
         # Below we could add update check commands for other distros
         if self.distro == "arch":
@@ -212,13 +220,9 @@ class Indicator(object):
         #   place your code here
 
         if not update_details:
-            GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-noupdate", voc["you-are-up-to-date"])
+            GLib.timeout_add_seconds(0, self.switch_icon, "nwg-update-noupdate", voc["you-are-up-to-date"])
         else:
-            GLib.timeout_add_seconds(1, self.switch_icon, "nwg-update-available", update_details)
-
-        if once:
-            return False
-        return True  # For this to be called periodically
+            GLib.timeout_add_seconds(0, self.switch_icon, "nwg-update-available", update_details)
 
     def update(self, *args):
         # Other distros: we already have the foot terminal installed.
@@ -282,7 +286,7 @@ def main():
     global ind
     ind = Indicator(distro)  # Will check updates for the 1st time in the constructor
     # Check periodically in given intervals
-    GLib.timeout_add_seconds(settings["update-indicator-interval"] * 60, ind.check_updates, False)
+    GLib.timeout_add_seconds(settings["update-indicator-interval"] * 60, ind.check_updates)
 
     # Gentle termination; check updates on USR1 (for no reason / possible future use)
     catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
