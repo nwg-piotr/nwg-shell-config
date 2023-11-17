@@ -741,6 +741,9 @@ def save_includes():
     if settings["update-indicator-on"]:
         autostart.append("exec nwg-update-indicator")
 
+    if settings["screenshot"]:
+        autostart.append("exec_always nwg-screenshot-applet")
+
     if settings["show-on-startup"]:
         autostart.append("exec nwg-shell-config")
 
@@ -827,6 +830,10 @@ def reload():
     else:
         subprocess.call("pkill -f nwg-update-indicator", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
+    if not settings["screenshot"]:
+        subprocess.call("pkill -f nwg-screenshot", shell=True, stdout=subprocess.DEVNULL,
+                        stderr=subprocess.STDOUT)
+
 
 def load_settings():
     settings_file = os.path.join(data_dir, "settings")
@@ -851,6 +858,7 @@ def load_settings():
         "browser": "",
         "panel-preset": "preset-0",
         "panel-custom": "",
+        "screenshot": True,
         "show-on-startup": True,
         "keyboard-use-settings": True,
         "keyboard-identifier": "",

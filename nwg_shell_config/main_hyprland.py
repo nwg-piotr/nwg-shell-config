@@ -763,6 +763,9 @@ def save_includes():
     if settings["update-indicator-on"]:
         includes.append("exec-once = nwg-update-indicator")
 
+    if settings["screenshot"]:
+        includes.append("exec = nwg-screenshot-applet")
+
     if settings["show-on-startup"]:
         includes.append("exec-once = nwg-shell-config")
 
@@ -935,6 +938,10 @@ def reload():
         subprocess.call("pkill -f nwg-update-indicator", shell=True, stdout=subprocess.DEVNULL,
                         stderr=subprocess.STDOUT)
 
+    if not settings["screenshot"]:
+        subprocess.call("pkill -f nwg-screenshot", shell=True, stdout=subprocess.DEVNULL,
+                        stderr=subprocess.STDOUT)
+
 
 def load_settings():
     settings_file = os.path.join(data_dir, "settings-hyprland")
@@ -952,6 +959,7 @@ def load_settings():
         "browser": "",
         "panel-preset": "hyprland-0",
         "panel-custom": "",
+        "screenshot": True,
         "show-on-startup": True,
 
         "gen-use-settings": True,
