@@ -694,9 +694,6 @@ def save_includes():
     if settings["appindicator"]:
         autostart.append("exec nm-applet --indicator")
 
-    if settings["screenshot"]:
-        autostart.append("exec_always nwg-screenshot-applet")
-
     if settings["autotiling-on"]:
         cmd_autotiling = "exec_always nwg-autotiling"
 
@@ -743,6 +740,9 @@ def save_includes():
 
     if settings["update-indicator-on"]:
         autostart.append("exec nwg-update-indicator")
+
+    if settings["screenshot"]:
+        autostart.append("exec_always nwg-screenshot-applet")
 
     if settings["show-on-startup"]:
         autostart.append("exec nwg-shell-config")

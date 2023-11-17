@@ -723,9 +723,6 @@ def save_includes():
     if settings["appindicator"]:
         includes.append("exec-once = nm-applet --indicator")
 
-    if settings["screenshot"]:
-        includes.append("exec = nwg-screenshot-applet")
-
     if cmd_launcher_autostart:
         includes.append(cmd_launcher_autostart)
 
@@ -765,6 +762,9 @@ def save_includes():
 
     if settings["update-indicator-on"]:
         includes.append("exec-once = nwg-update-indicator")
+
+    if settings["screenshot"]:
+        includes.append("exec = nwg-screenshot-applet")
 
     if settings["show-on-startup"]:
         includes.append("exec-once = nwg-shell-config")
