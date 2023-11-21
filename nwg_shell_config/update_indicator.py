@@ -279,7 +279,7 @@ def main():
         eprint("nwg-update-indicator running on '{}'".format(distro))
 
     if distro == "arch":
-        if not is_command("baph"):
+        if not is_command("baph") and not is_command("yay"):
             eprint("No supported AUR helper found, terminating")
             sys.exit(1)
 
