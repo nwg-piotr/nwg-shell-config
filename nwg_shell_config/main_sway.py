@@ -765,6 +765,9 @@ def save_includes():
             lines.append('  {} {}'.format(settings["keyboard-custom-name"], settings["keyboard-custom-value"]))
         lines.append('}')
 
+        if preset["launcher-super-key"]:
+            lines.append('bindsym --release Super_L exec $launcher')
+
         save_list_to_text_file(lines, os.path.join(config_home, "sway/keyboard"))
     else:
         save_list_to_text_file([""], os.path.join(config_home, "sway/keyboard"))
@@ -976,6 +979,7 @@ def load_preset(file_name):
         "launcher-gtk-icon-theme": "",
         "launcher-force-theme": False,
         "launcher-run-through-compositor": False,
+        "launcher-super-key": False,
         "exit-position": "center",
         "exit-full": False,
         "exit-alignment": "middle",
