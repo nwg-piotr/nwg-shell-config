@@ -913,6 +913,12 @@ def save_includes():
         includes.append('    mouse_move_focuses_monitor = {}'.format(bool2lower(settings["misc-mouse_move_focuses_monitor"])))
         includes.append('}')
 
+    if preset["launcher-super-key"]:  # add more keys when necessary, for now we have one
+        includes.append('\n# KEY BINDINGS')
+
+    if preset["launcher-super-key"]:
+        includes.append('bindr = SUPER, SUPER_L, exec, $launcher')
+
     p = os.path.join(config_home, "hypr/includes.conf")
     print("Saving includes to {}".format(p))
     save_list_to_text_file(includes, p)
@@ -1127,6 +1133,7 @@ def load_preset(file_name):
         "launcher-gtk-icon-theme": "",
         "launcher-force-theme": False,
         "launcher-run-through-compositor": False,
+        "launcher-super-key": False,
         "exit-position": "center",
         "exit-full": False,
         "exit-alignment": "middle",

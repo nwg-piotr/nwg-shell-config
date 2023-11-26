@@ -264,6 +264,8 @@
   "on-layer-tooltip": "Określa na której warstwie gtk-layer-shell wyświetlać zawartość.",
   "open-on-overlay": "Otwieraj w nakładce",
   "open-on-overlay-tooltip": "Otwieraj w warstwie nakładki (powyżej panelu itp.)",
+  "open-on-super": "Otwieraj po klawiszu SUPER",
+  "open-on-super-tooltip": "Dowiązuje zwolnienie klawisza SUPER do uruchomienia programu.",
   "other": "Inne",
   "output": "Wyjście",
   "overlay": "Na nakładce",

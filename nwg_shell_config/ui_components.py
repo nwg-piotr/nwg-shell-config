@@ -2434,23 +2434,29 @@ def drawer_tab(preset, preset_name, voc):
     cb_resident.connect("toggled", set_from_checkbutton, preset, "launcher-resident")
     grid.attach(cb_resident, 0, 7, 2, 1)
 
+    cb_super = Gtk.CheckButton.new_with_label(voc["open-on-super"])
+    cb_super.set_tooltip_text(voc["open-on-super-tooltip"])
+    cb_super.set_active(preset["launcher-super-key"])
+    cb_super.connect("toggled", set_from_checkbutton, preset, "launcher-super-key")
+    grid.attach(cb_super, 0, 8, 2, 1)
+
     cb_overlay = Gtk.CheckButton.new_with_label(voc["open-on-overlay"])
     cb_overlay.set_tooltip_text(voc["open-on-overlay-tooltip"])
     cb_overlay.set_active(preset["launcher-overlay"])
     cb_overlay.connect("toggled", set_from_checkbutton, preset, "launcher-overlay")
-    grid.attach(cb_overlay, 0, 8, 2, 1)
+    grid.attach(cb_overlay, 0, 9, 2, 1)
 
     cb_force_theme = Gtk.CheckButton.new_with_label(voc["run-with-gtk-theme"])
     cb_force_theme.set_tooltip_text(voc["run-with-gtk-theme-tooltip"])
     cb_force_theme.set_active(preset["launcher-force-theme"])
     cb_force_theme.connect("toggled", set_from_checkbutton, preset, "launcher-force-theme")
-    grid.attach(cb_force_theme, 0, 9, 2, 1)
+    grid.attach(cb_force_theme, 0, 10, 2, 1)
 
     cb_run_through_compositor = Gtk.CheckButton.new_with_label(voc["run-through-compositor"])
     cb_run_through_compositor.set_tooltip_text(voc["run-through-compositor-tooltip"])
     cb_run_through_compositor.set_active(preset["launcher-run-through-compositor"])
     cb_run_through_compositor.connect("toggled", set_from_checkbutton, preset, "launcher-run-through-compositor")
-    grid.attach(cb_run_through_compositor, 0, 10, 2, 1)
+    grid.attach(cb_run_through_compositor, 0, 11, 2, 1)
 
     frame.show_all()
 
