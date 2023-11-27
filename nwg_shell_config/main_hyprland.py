@@ -378,7 +378,7 @@ def set_up_drawer_tab(event_box, event_button, preset, preset_name):
     hide_submenus()
     global content
     content.destroy()
-    content = drawer_tab(preset, preset_name, voc)
+    content = drawer_tab(preset, preset_name, outputs, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -629,6 +629,9 @@ def save_includes():
 
     if preset["launcher-run-through-compositor"]:
         cmd_launcher += " -wm hyprland"
+
+    if preset["launcher-output"] and preset["launcher-output"] != "Any":
+        cmd_launcher += " -o {}".format(preset["launcher-output"])
 
     if preset["launcher-on"]:
         if preset["launcher-resident"]:
@@ -1134,6 +1137,7 @@ def load_preset(file_name):
         "launcher-force-theme": False,
         "launcher-run-through-compositor": False,
         "launcher-super-key": False,
+        "launcher-output": "Any",
         "exit-position": "center",
         "exit-full": False,
         "exit-alignment": "middle",
@@ -1142,7 +1146,7 @@ def load_preset(file_name):
         "exit-css": "",
         "exit-on": True,
         "dock-position": "bottom",
-        "dock-output": "",
+        "dock-output": "Any",
         "dock-full": False,
         "dock-autohide": False,
         "dock-permanent": False,
