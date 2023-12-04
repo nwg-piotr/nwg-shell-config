@@ -1,0 +1,24 @@
+#! /bin/sh
+
+# Script for nwg-shell-config to work with it's update_indicator module
+
+# checking if sudo or doas exist
+[ $(command -v sudo 2>&1 /dev/null) ] && root=sudo || root=doas
+
+# sync repos ddbb
+sync() {
+$root scratch sync 2>&1 /dev/null
+}
+# checking available updates
+checkupdates() {
+
+check=$(scratch outdate | wc -l)
+case $check in
+    1) printf 0 ;;
+    *) printf "$(( $check - 1 ))" ;;
+esac
+}
+
+sync
+checkupdates
+
