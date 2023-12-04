@@ -115,11 +115,15 @@ def check_distro():
             if line.startswith("NAME"):
                 if "Arch" in line:
                     return "arch"
+                elif "Venom" in line:
+                    return "venom"
                 # add elif for other distros
 
             if line.startswith("ID"):
                 if "arch" in line:
                     return "arch"
+                elif "venom" in line:
+                    return "venom"
                 # add elif for other distros
 
     elif os.path.isfile("/etc/lsb=release"):
@@ -183,8 +187,8 @@ class Indicator(object):
         # Otherwise, it should set it as a short info, that will be appended to the 'Update' menu item.
 
         # Below we could add update check commands for other distros
+        global nwg_system_update_arg
         if self.distro == "arch":
-            global nwg_system_update_arg
             nwg_system_update_arg = "-baph"
             if is_command("yay"):
                 nwg_system_update_arg = "-yay"
@@ -215,6 +219,19 @@ class Indicator(object):
                 eprint(update_details)
             else:
                 eprint(voc["you-are-up-to-date"])
+
+        elif self.distro == "venom":
+            nwg_system_update_arg = "-scratch"
+            eprint("Using scratch")
+            scratch = 0
+            try:
+                output = subprocess.check_output("venomupdates".split()).decode('utf-8').splitlines()
+                scratch = len(output)
+            except subprocess.CalledProcessError:
+                pass
+
+            if scratch:
+                update_details = f"scratch: {scratch}"
 
         # elif self.distro == "something_else":
         #   place your code here
