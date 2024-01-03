@@ -10,13 +10,6 @@ import signal
 import sys
 import urllib.request
 
-import gi
-
-gi.require_version('Gtk', '3.0')
-gi.require_version('Gdk', '3.0')
-gi.require_version('GdkPixbuf', '2.0')
-gi.require_version('GtkLayerShell', '0.1')
-
 from nwg_shell_config.tools import get_data_dir, temp_dir, load_json, load_text_file, save_string, gtklock_module_path, \
     playerctl_metadata, eprint
 
@@ -91,16 +84,6 @@ def launch(button, cmd):
     subprocess.Popen('exec {}'.format(cmd), shell=True)
 
 
-def terminate_old_instance_if_any():
-    try:
-        old_pid = int(load_text_file(os.path.join(tmp_dir, "nwg-lock-pid")))
-        if old_pid != pid:
-            os.kill(old_pid, 15)
-    except:
-        pass
-    save_string(str(pid), os.path.join(tmp_dir, "nwg-lock-pid"))
-
-
 def set_remote_wallpaper():
     url = "https://source.unsplash.com/{}x{}/?{}".format(settings["unsplash-width"], settings["unsplash-height"],
                                                          ",".join(settings["unsplash-keywords"]))
@@ -135,8 +118,12 @@ def set_local_wallpaper():
     if len(paths) > 0:
         p = paths[random.randrange(len(paths))]
         if settings["lockscreen-locker"] == "swaylock":
-            subprocess.call("pkill -f swaylock", shell=True)
-            subprocess.Popen('swaylock -i {} ; kill -n 15 {}'.format(p, pid), shell=True)
+            # subprocess.call("pkill -f swaylock", shell=True)
+            # subprocess.Popen('swaylock -i {} ; kill -n 15 {}'.format(p, pid), shell=True)
+            subprocess.Popen('swaylock -i {}'.format(p), shell=True)
+            # subprocess.run(['swaylock', '-i', f'{p}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            # sys.exit(0)
+
         elif settings["lockscreen-locker"] == "gtklock":
             subprocess.call("pkill -f gtklock", shell=True)
 
