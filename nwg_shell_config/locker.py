@@ -74,16 +74,6 @@ preset_defaults = {
 }
 
 
-def signal_handler(sig, frame):
-    desc = {2: "SIGINT", 15: "SIGTERM", 10: "SIGUSR1"}
-    if sig == 2 or sig == 15:
-        print("Terminated with {}".format(desc[sig]))
-
-
-def launch(button, cmd):
-    subprocess.Popen('exec {}'.format(cmd), shell=True)
-
-
 def set_remote_wallpaper():
     url = "https://source.unsplash.com/{}x{}/?{}".format(settings["unsplash-width"], settings["unsplash-height"],
                                                          ",".join(settings["unsplash-keywords"]))
@@ -119,26 +109,19 @@ def set_local_wallpaper():
         p = paths[random.randrange(len(paths))]
         if settings["lockscreen-locker"] == "swaylock":
             subprocess.Popen('swaylock -i {}'.format(p), shell=True)
-            # just for clarity ;)
-            sys.exit(0)
 
         elif settings["lockscreen-locker"] == "gtklock":
-            subprocess.call("pkill -f gtklock", shell=True)
-
             eprint(
-                '{} -S -H -T {} -b {} ; kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"], p,
-                                                               pid))
+                '{} -S -H -T {} -b {}'.format(gtklock_command(), settings["gtklock-idle-timeout"], p))
             subprocess.Popen(
-                '{} -S -H -T {} -b {} ; kill -n 15 {}'.format(gtklock_command(), settings["gtklock-idle-timeout"],
-                                                               p, pid), shell=True)
+                '{} -S -H -T {} -b {}'.format(gtklock_command(), settings["gtklock-idle-timeout"], p), shell=True)
     else:
         print("No image paths found")
 
         if settings["lockscreen-locker"] == "swaylock":
-            subprocess.call("pkill -f swaylock", shell=True)
             subprocess.Popen('exec swaylock -f', shell=True)
+
         elif settings["lockscreen-locker"] == "gtklock":
-            subprocess.call("pkill -f gtklock", shell=True)
             subprocess.Popen('exec gtklock -d', shell=True)
 
     sys.exit(0)
@@ -236,13 +219,8 @@ def main():
         if key not in preset:
             preset[key] = preset_defaults[key]
 
-    catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
-    for sig in catchable_sigs:
-        signal.signal(sig, signal_handler)
-
     if settings["lockscreen-custom-cmd"]:
         subprocess.Popen('exec {}'.format(settings["lockscreen-custom-cmd"]), shell=True)
-
         sys.exit(0)
 
     if settings["lockscreen-background-source"] == "unsplash":
