@@ -118,11 +118,9 @@ def set_local_wallpaper():
     if len(paths) > 0:
         p = paths[random.randrange(len(paths))]
         if settings["lockscreen-locker"] == "swaylock":
-            # subprocess.call("pkill -f swaylock", shell=True)
-            # subprocess.Popen('swaylock -i {} ; kill -n 15 {}'.format(p, pid), shell=True)
             subprocess.Popen('swaylock -i {}'.format(p), shell=True)
-            # subprocess.run(['swaylock', '-i', f'{p}'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            # sys.exit(0)
+            # just for clarity ;)
+            sys.exit(0)
 
         elif settings["lockscreen-locker"] == "gtklock":
             subprocess.call("pkill -f gtklock", shell=True)
