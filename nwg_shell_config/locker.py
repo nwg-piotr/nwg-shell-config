@@ -82,14 +82,10 @@ def set_remote_wallpaper():
         r = urllib.request.urlretrieve(url, wallpaper)
         if r[1]["Content-Type"] in ["image/jpeg", "image/png"]:
             if settings["lockscreen-locker"] == "swaylock":
-                subprocess.call("pkill -f swaylock", shell=True)
-                subprocess.Popen('swaylock -i {} ; kill -n 15 {}'.format(wallpaper, pid), shell=True)
+                subprocess.Popen('swaylock -i {}'.format(wallpaper), shell=True)
             elif settings["lockscreen-locker"] == "gtklock":
-                subprocess.call("pkill -f gtklock", shell=True)
-
-                eprint('{} -S -H -T 10 -b {} ; kill -n 15 {}'.format(gtklock_command(), wallpaper, pid))
-                subprocess.Popen('{} -S -H -T 10 -b {} ; kill -n 15 {}'.format(gtklock_command(), wallpaper, pid),
-                                 shell=True)
+                eprint('{} -S -H -T 10 -b {}'.format(gtklock_command(), wallpaper))
+                subprocess.Popen('{} -S -H -T 10 -b {}'.format(gtklock_command(), wallpaper), shell=True)
 
     except Exception as e:
         print(e)
