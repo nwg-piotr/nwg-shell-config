@@ -1994,7 +1994,8 @@ def lockscreen_tab(settings, voc):
 
     combo_locker = Gtk.ComboBoxText()
     combo_locker.set_tooltip_text(voc["locker-tooltip"])
-    combo_locker.append("gtklock", "gtklock")
+    if not os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+        combo_locker.append("gtklock", "gtklock")
     if is_command("swaylock"):
         combo_locker.append("swaylock", "swaylock")
     else:

@@ -5,7 +5,7 @@ nwg-shell config utility
 Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project site: https://nwg-piotr.github.io/nwg-shell
 Author's email: nwg.piotr@gmail.com
-Copyright (c) 2021-2023 Piotr Miller & Contributors
+Copyright (c) 2021-2024 Piotr Miller & Contributors
 License: MIT
 """
 
@@ -152,9 +152,10 @@ def side_menu():
     row.eb.connect("button-press-event", set_up_lockscreen_tab)
     list_box.add(row)
 
-    row = SideMenuRow(voc["gtklock"])
-    row.eb.connect("button-press-event", set_up_gtklock_tab)
-    list_box.add(row)
+    # currently gtklock does not work on Hyprland
+    # row = SideMenuRow(voc["gtklock"])
+    # row.eb.connect("button-press-event", set_up_gtklock_tab)
+    # list_box.add(row)
 
     row = SideMenuRow(voc["applications"])
     row.eb.connect("button-press-event", set_up_applications_tab)
@@ -1060,9 +1061,9 @@ def load_settings():
         "lockscreen-background-source": "local",  # unsplash | local
         "lockscreen-custom-cmd": "",
         "lockscreen-timeout": 1200,
-        "sleep-cmd": 'swaymsg "output * dpms off"',
+        "sleep-cmd": "systemctl suspend",
         "sleep-timeout": 1800,
-        "resume-cmd": 'swaymsg "output * dpms on"',
+        "resume-cmd": "",
         "before-sleep": "",
         "backgrounds-custom-path": "",
         "backgrounds-use-custom-path": False,
