@@ -32,6 +32,8 @@
   "calculate-lat-long-tooltip": "Se você estava online durante a primeira execução, os valores de \nLat/Long já devem refletir suas configurações de fuso horário. \nAperte o botão se algo deu errado E se você está online agora.",
   "capslock-tooltip": "Inicialmente ativa ou desativa o CapsLock na inicialização.",
   "center": "No meio",
+  "clipboard-history": "Histórico da prancheta",
+  "clipboard-history-tooltip": "Determina se o histórico da área de transferência deve ser armazenado no cliphist.",
   "close": "Fechar",
   "columns": "Colunas",
   "common": "Padrão",

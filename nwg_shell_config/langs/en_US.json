@@ -55,6 +55,8 @@
   "check-updates": "Check updates",
   "clickfinger-behavior": "Clickfinger behavior",
   "clickfinger-behavior-tooltip": "Button presses with 1, 2, or 3 fingers will be mapped to LMB, RMB, and MMB respectively.\nThis disables interpretation of clicks based on location on the touchpad.",
+  "clipboard-history": "Clipboard history",
+  "clipboard-history-tooltip": "Determines whether to store clipboard history to cliphist (add commands to autostart).",
   "close": "Close",
   "close-tooltip": "Close the window w/o applying changes.",
   "color-active-border-start": "Active border color Start",

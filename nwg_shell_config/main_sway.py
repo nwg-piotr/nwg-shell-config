@@ -697,6 +697,10 @@ def save_includes():
     if settings["appindicator"]:
         autostart.append("exec nm-applet --indicator")
 
+    if settings["cliphist"]:
+        autostart.append("exec wl-paste --type text --watch cliphist store")
+        autostart.append("exec wl-paste --type image --watch cliphist store")
+
     if settings["autotiling-on"]:
         cmd_autotiling = "exec_always nwg-autotiling"
 
@@ -852,6 +856,7 @@ def load_settings():
         "autotiling-output-splitwidths": {},
         "autotiling-output-splitheights": {},
         "appindicator": True,
+        "cliphist": True,
         "night-lat": -1,
         "night-long": -1,
         "night-temp-low": 4500,

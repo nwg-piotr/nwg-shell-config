@@ -415,6 +415,12 @@ def screen_tab(settings, voc, pending_updates):
     else:
         settings["update-indicator-on"] = False
 
+    cb_cliphist = Gtk.CheckButton.new_with_label(voc["clipboard-history"])
+    cb_cliphist.set_active(settings["cliphist"])
+    cb_cliphist.connect("toggled", set_from_checkbutton, settings, "cliphist")
+    cb_cliphist.set_tooltip_text(voc["clipboard-history-tooltip"])
+    grid.attach(cb_cliphist, 0, 8, 1, 1)
+
     cb_nm_applet = Gtk.CheckButton.new_with_label(voc["nm-applet"])
     cb_nm_applet.set_active(settings["appindicator"])
     cb_nm_applet.connect("toggled", set_from_checkbutton, settings, "appindicator")

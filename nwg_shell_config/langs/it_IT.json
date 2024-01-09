@@ -32,6 +32,8 @@
   "calculate-lat-long-tooltip": "Se eri online durante la prima esecuzione, I valori di Lat/Long dovrebbero già riflettere le impostazioni del fuso orario.\nPremi il pulsante se qualcosa è andato storto\nE sei online ora.",
   "capslock-tooltip": "Abilita o disabilita il blocco Maiuscolo all'avvio.",
   "center": "Centro",
+  "clipboard-history": "Cronologia degli appunti",
+  "clipboard-history-tooltip": "Determina se archiviare la cronologia degli appunti su cliphist.",
   "close": "Chiudi",
   "columns": "Colonne",
   "common": "Common",

@@ -1,5 +1,6 @@
 {
   "appindicator": true,
+  "cliphist": true,
   "night-lat": -1,
   "night-long": -1,
   "night-temp-low": 4500,
@@ -96,6 +97,7 @@
   "lockscreen-background-source": "local",
   "lockscreen-custom-cmd": "",
   "lockscreen-timeout": 1200,
+  "screenshot": true,
   "sleep-cmd": "systemctl suspend",
   "sleep-timeout": 1800,
   "resume-cmd": "",

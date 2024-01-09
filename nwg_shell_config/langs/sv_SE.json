@@ -33,6 +33,8 @@
   "calculate-lat-long-tooltip": "Om du var uppkopplad mot internet under första körning, så borde latitud/longitud \nvärden spegla dina tidzons inställningar. Tryck på knappen om något gick fel och om du är uppkopplad mot internet nu.",
   "capslock-tooltip": "Initialt aktiverar eller inaktiverar CapsLock vid start.",
   "center": "Mitten",
+  "clipboard-history": "Urklippshistorik",
+  "clipboard-history-tooltip": "Bestämmer om urklippshistorik ska lagras till cliphist.",
   "close": "Stäng",
   "close-tooltip": "Stäng fönster utan att applicera ändringar",
   "columns": "Kolumner",

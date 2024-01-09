@@ -55,6 +55,8 @@
   "check-updates": "Sprawdź aktualizacje",
   "clickfinger-behavior": "Zachowanie palca klikającego",
   "clickfinger-behavior-tooltip": "Button presses with 1, 2, or 3 fingers will be mapped to LMB, RMB, and MMB respectively.\nThis disables interpretation of clicks based on location on the touchpad.",
+  "clipboard-history": "Historia schowka",
+  "clipboard-history-tooltip": "Określa czy zapisywać historię schowka w cliphist (dodaje komendy do autostart).",
   "close": "Zamknij",
   "close-tooltip": "Zamknij okno bez zastosowania zmian.",
   "color-active-border-start": "Kolor aktywnej ramki Start",

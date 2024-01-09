@@ -32,6 +32,8 @@
   "calculate-lat-long-tooltip": "Si vous étiez connecté lors de la première exécution \nles valeurs devraient déjà correspondre à vos réglages\n de timezone. Appuyer sur le bouton si \nquelque chose s'est mal passé\nET que vous êtes à présent connecté.",
   "capslock-tooltip": "Activer ou désactiver CapsLock (VerrMaj) au démarrage.",
   "center": "Centre",
+  "clipboard-history": "Hist. du presse-papiers",
+  "clipboard-history-tooltip": "Détermine s’il faut stocker l’historique du presse-papiers dans cliphist.",
   "close": "Fermer",
   "columns": "Colonnes",
   "common": "Commun",

@@ -727,6 +727,10 @@ def save_includes():
     if settings["appindicator"]:
         includes.append("exec-once = nm-applet --indicator")
 
+    if settings["cliphist"]:
+        includes.append("exec-once = wl-paste --type text --watch cliphist store")
+        includes.append("exec-once = wl-paste --type image --watch cliphist store")
+
     if cmd_launcher_autostart:
         includes.append(cmd_launcher_autostart)
 
@@ -957,6 +961,7 @@ def load_settings():
     settings_file = os.path.join(data_dir, "settings-hyprland")
     defaults = {
         "appindicator": True,
+        "cliphist": True,
         "night-lat": -1,
         "night-long": -1,
         "night-temp-low": 4500,

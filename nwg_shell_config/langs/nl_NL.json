@@ -33,6 +33,8 @@
   "calculate-lat-long-tooltip": "Als je online was tijdens de initiele installatie, dan moeten de latitude/longitude waarden al overeen komen met de instellingen van je tijdszone.\n Druk op de knop als er iets verkeerd is gegaan\nEN als je nu online bent.",
   "capslock-tooltip": "Zorgt ervoor dat CapsLock wordt aan of uitgezet bij het opstarten.",
   "center": "Centreer",
+  "clipboard-history": "Klembordgeschiedenis",
+  "clipboard-history-tooltip": "Bepaalt of de klembordgeschiedenis in cliphist moet worden opgeslagen.",
   "close": "Sluit",
   "close-tooltip": "Sluit het venster zonder iets te wijzigen.",
   "columns": "Kolommen",
