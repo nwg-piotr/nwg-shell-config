@@ -117,7 +117,7 @@
   ],
   "help-font-size": 12,
   "help-layer-shell": true,
-  "help-keyboard": false,
+  "help-keyboard": true,
   "gtklock-disable-input-inhibitor": false,
   "gtklock-idle-timeout": 10,
   "gtklock-logout-command": "swaymsg exit",
