@@ -14,5 +14,5 @@ cp nwg-2.svg /usr/share/pixmaps/
 cp nwg-1.svg /usr/share/pixmaps/
 cp nwg-system-update /usr/local/bin/
 
-install -Dm 644 -t "/usr/share/licenses/nwg-shell-config" LICENSE
-install -Dm 644 -t "/usr/share/doc/nwg-shell-config" README.md
+sudo install -Dm 644 -t "/usr/share/licenses/nwg-shell-config" LICENSE
+sudo install -Dm 644 -t "/usr/share/doc/nwg-shell-config" README.md
