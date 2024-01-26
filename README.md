@@ -6,6 +6,8 @@ This program is a part of the [nwg-shell](https://nwg-piotr.github.io/nwg-shell)
 **Nwg-shell-config** utility provides a graphical user interface for configuring [sway](https://github.com/swaywm/sway) and [Hyprland](https://github.com/hyprwm/Hyprland) Wayland
 compositors in nwg-shell.
 
+<a href="https://github.com/nwg-piotr/nwg-shell-config/assets/20579136/8443e30a-7125-43ab-8994-b471b9343e74"><img src="https://github.com/nwg-piotr/nwg-shell-config/assets/20579136/8443e30a-7125-43ab-8994-b471b9343e74" width=640></a>
+
 ## Installation
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/nwg-shell-config.svg)](https://repology.org/project/nwg-shell-config/versions)
