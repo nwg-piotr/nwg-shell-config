@@ -8,7 +8,9 @@ compositors in nwg-shell.
 
 <a href="https://github.com/nwg-piotr/nwg-shell-config/assets/20579136/8443e30a-7125-43ab-8994-b471b9343e74"><img src="https://github.com/nwg-piotr/nwg-shell-config/assets/20579136/8443e30a-7125-43ab-8994-b471b9343e74" width=640></a>
 
-## Screen settings
+## Program window tabs
+
+### Screen settings (common)
 
 - desktop style selection
 - night light settings (user location, day/night color temperature, gamma)
@@ -16,65 +18,65 @@ compositors in nwg-shell.
 - update notification tray icon settings
 - other system tray icons on/off switches
 
-## Autotiling (sway)
+### Autotiling (sway)
 
 - workspaces to work on
 - depth limit
-- splith width, height
+- split width, height
 
-## Keyboard (sway)
+### Keyboard (sway)
 
 - system-wide or per device keyboard settings: layout, repeat settings, CapsLock & NumLock settings
 
-## Pointer device (sway)
+### Pointer device (sway)
 
 - system-wide or per device pointer device settings: acceleration, scroll & other
 
-## Touchpad (sway)
+### Touchpad (sway)
 
 - system-wide or per device touchpad settings: acceleration, scroll & tap behaviour
 
-## General settings (Hyprland)
+### General settings (Hyprland)
 
 - window tiling layout selection (dwindle/Master)
 - window border settings
 - window gaps settings
 
-## Dwindle layout (Hyprland)
+### Dwindle layout (Hyprland)
 
 - split settings
 - smart resizing
 
-## Master layout (Hyprland)
+### Master layout (Hyprland)
 
 - split settings
 
-## Input devices (Hyprland)
+### Input devices (Hyprland)
 
 - keyboard layout & other settings
 - mouse sensitivity, acceleration & other settings
 - touchpad scroll factor & other settings
 
-## Miscellaneous (Hyprland)
+### Miscellaneous (Hyprland)
 
 - disable Hyprland logo/background
 - DMPS behavior
 - focus settings
 
-## Idle & Lock screen
+### Idle & Lock screen (common)
 
 - screen locker selection: swaylock / gtklock, the latter on sway only
 - lock screen background source (local wallpapers / unsplash.com images)
 - screen locker timeouts
 
-## Gtklock (sway)
+### Gtklock (sway)
 
 - modules settings (userinfo, powerbar, playertl)
 - commands settings (reboot, power off, suspend, logout)
 - time format
 - idle timeout
 
-## Applications
+### Applications (common)
 
 For key bindings to work properly, you need to select some default applications, and those are:
 
@@ -83,15 +85,15 @@ For key bindings to work properly, you need to select some default applications,
 - text editor
 - web browser
 
-## Backup
+### Backup (common)
 
 - you'll find a backup / restore utility here. It allows to pack all nwg-shell-related configs into a `.tar.gz` file, and install them back from it.
 
-## System info
+### System info (common)
 
 - this tab gathers and displays some basic system info, including installed OS, Wayland compositor and nwg-shell-related packages versions.
 
-## Desktop styles submenu
+### Desktop styles submenu (common)
 
 It allows to select per-preset app settings for:
 
@@ -101,7 +103,17 @@ It allows to select per-preset app settings for:
 - notifications
 - gtklock (sway only)
 
-## Translation tool
+### Translation tool
 
 In the window footer you'll find the nwg-shell-translate button, in case you'd like to help at [translations](https://nwg-piotr.github.io/nwg-shell/contribution#translations).
 
+## Other tools
+
+The nwg-shell-config module / package is also a home for several other utilities and scripts:
+
+- `nwg-autotiling`: a version of the [autotiling](https://github.com/nwg-piotr/autotiling) script modified for better integration w/ nwg-shell
+- `nwg-autotranslate`: during first run it translates panel and exit menu labels into user's locale - if we have this language 
+- `nwg-lock`: provides communication between the shell and the screen the locker of your choice
+- `nwg-update-indicator`: a script responsible for the system update tray indicator (Arch and Venom Linux only so far)
+- `nwg-screenshot-applet`: provides the tray icon and menu, that executes the `/usr/local/bin/screenshot` script with appropriate arguments.  
+- `nwg-shell-help`: provides the keyboard shortcuts help window, together with the system tray icon
