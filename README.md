@@ -16,11 +16,29 @@ compositors in nwg-shell.
 - update notification tray icon settings
 - other system tray icons on/off switches
 
+## Autotiling (sway)
+
+- workspaces to work on
+- depth limit
+- splith width, height
+
+## Keyboard (sway)
+
+- system-wide or per device keyboard settings: layout, repeat settings, CapsLock & NumLock settings
+
+## Pointer device (sway)
+
+- system-wide or per device pointer device settings: acceleration, scroll & other
+
+## Touchpad (sway)
+
+- system-wide or per device touchpad settings: acceleration, scroll & tap behaviour
+
 ## General settings (Hyprland)
 
 - window tiling layout selection (dwindle/Master)
 - window border settings
-- wingow gaps settings
+- window gaps settings
 
 ## Dwindle layout (Hyprland)
 
@@ -48,6 +66,13 @@ compositors in nwg-shell.
 - screen locker selection: swaylock / gtklock, the latter on sway only
 - lock screen background source (local wallpapers / unsplash.com images)
 - screen locker timeouts
+
+## Gtklock (sway)
+
+- modules settings (userinfo, powerbar, playertl)
+- commands settings (reboot, power off, suspend, logout)
+- time format
+- idle timeout
 
 ## Applications
 
@@ -79,25 +104,4 @@ It allows to select per-preset app settings for:
 ## Translation tool
 
 In the window footer you'll find the nwg-shell-translate button, in case you'd like to help at [translations](https://nwg-piotr.github.io/nwg-shell/contribution#translations).
-
-## Installation
-
-[![Packaging status](https://repology.org/badge/vertical-allrepos/nwg-shell-config.svg)](https://repology.org/project/nwg-shell-config/versions)
-
-## Command line arguments
-
-```text
-$ nwg-shell-config -h
-usage: nwg-shell-config-hyprland [-h] [-v] [-r] [-b RESTORE_BACKUP] [-s]
-
-options:
-  -h, --help            show this help message and exit
-  -v, --version         display version information
-  -r, --restore         restore default presets
-  -b RESTORE_BACKUP, --restore_backup RESTORE_BACKUP
-                        restore all configs from a backup file (given path)
-  -s, --save            load settings & Save includes (for use w/ external scripts)
-```
-- `-s | --save` argument makes the program read current settings, export the `~/.config/hypr/includes.conf` file and 
-terminate. This is for use with external scripts.
 
