@@ -12,7 +12,7 @@ compositors in nwg-shell.
 
 ### Screen settings (common)
 
-- desktop style selection
+- desktop style (preset) selection
 - night light settings (user location, day/night color temperature, gamma)
 - help window (key binding cheat sheet) settings
 - update notification tray icon settings
@@ -20,8 +20,8 @@ compositors in nwg-shell.
 
 ### Autotiling (sway)
 
-- workspaces to work on
-- depth limit
+- workspaces for autotiling to work on
+- split depth limit
 - split width, height
 
 ### Keyboard (sway)
@@ -87,11 +87,11 @@ For key bindings to work properly, you need to select some default applications,
 
 ### Backup (common)
 
-- you'll find a backup / restore utility here. It allows to pack all nwg-shell-related configs into a `.tar.gz` file, and install them back from it.
+- You'll find a backup / restore utility here. It allows to pack all nwg-shell-related configs into a `.tar.gz` file, and install them back from it.
 
 ### System info (common)
 
-- this tab gathers and displays some basic system info, including installed OS, Wayland compositor and nwg-shell-related packages versions.
+- This tab gathers and displays some basic system info, including installed OS, Wayland compositor and nwg-shell-related packages versions.
 
 ### Desktop styles submenu (common)
 
@@ -103,7 +103,7 @@ It allows to select per-preset app settings for:
 - notifications
 - gtklock (sway only)
 
-### Translation tool
+## Translation tool
 
 In the window footer you'll find the nwg-shell-translate button, in case you'd like to help at [translations](https://nwg-piotr.github.io/nwg-shell/contribution#translations).
 
