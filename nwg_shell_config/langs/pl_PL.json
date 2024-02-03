@@ -75,6 +75,7 @@
   "custom-field-value-tooltip": "Własne pole którego potrzebujesz, a brak go w formularzu powyżej.\nWprowadź tu wartość pola. Pomyśl dwa razy, nim to zrobisz.",
   "custom-preset": "Własny preset",
   "default": "Domyślny",
+  "default-applications": "Aplikacje domyślne",
   "default-split-ratio": "Domyślny współczynnik podziału",
   "default-split-ratio-tooltip": "Domyślny współczynnik podziału przy otwieraniu okna. 1 oznacza równy podział 50/50. 0.1 - 1.9.",
   "desired-wallpaper-height": "Pożądana wysokość tapety",
