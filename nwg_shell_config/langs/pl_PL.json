@@ -295,6 +295,7 @@
   "pointer-device": "Urządzenie wskazujące",
   "pointer-device-include-tooltip": "Określa czy eksportować plik włączany 'pointer'.",
   "position": "Pozycja",
+  "powerbar-commands": "Komendy paska zasilania",
   "power-off": "Wyłączenie",
   "power-off-tooltip": "Komenda do wyłączenia komputera.\nPozostaw puste by wyłączyć tę opcję.",
   "powerbar": "Powerbar",
