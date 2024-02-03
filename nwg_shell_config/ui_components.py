@@ -552,6 +552,7 @@ def applications_tab(settings, voc, warn):
 
     entry_pb_lock = Gtk.Entry.new()
     entry_pb_lock.set_text(settings["pb-lock"])
+    entry_pb_lock.set_tooltip_text(voc["leave-blank-btn-tooltip"])
     entry_pb_lock.set_property("halign", Gtk.Align.START)
     set_from_entry(entry_pb_lock, settings, "pb-lock")
     entry_pb_lock.connect("changed", set_from_entry, settings, "pb-lock")
@@ -563,6 +564,7 @@ def applications_tab(settings, voc, warn):
 
     entry_pb_exit = Gtk.Entry.new()
     entry_pb_exit.set_text(settings["pb-exit"])
+    entry_pb_exit.set_tooltip_text(voc["leave-blank-btn-tooltip"])
     entry_pb_exit.set_property("halign", Gtk.Align.START)
     set_from_entry(entry_pb_exit, settings, "pb-exit")
     entry_pb_exit.connect("changed", set_from_entry, settings, "pb-exit")
@@ -574,6 +576,7 @@ def applications_tab(settings, voc, warn):
 
     entry_pb_reboot = Gtk.Entry.new()
     entry_pb_reboot.set_text(settings["pb-reboot"])
+    entry_pb_reboot.set_tooltip_text(voc["leave-blank-btn-tooltip"])
     entry_pb_reboot.set_property("halign", Gtk.Align.START)
     set_from_entry(entry_pb_reboot, settings, "pb-reboot")
     entry_pb_reboot.connect("changed", set_from_entry, settings, "pb-reboot")
@@ -585,21 +588,22 @@ def applications_tab(settings, voc, warn):
 
     entry_pb_sleep = Gtk.Entry.new()
     entry_pb_sleep.set_text(settings["pb-sleep"])
+    entry_pb_sleep.set_tooltip_text(voc["leave-blank-btn-tooltip"])
     entry_pb_sleep.set_property("halign", Gtk.Align.START)
     set_from_entry(entry_pb_sleep, settings, "pb-sleep")
     entry_pb_sleep.connect("changed", set_from_entry, settings, "pb-sleep")
     grid.attach(entry_pb_sleep, 1, 10, 1, 1)
 
-    lbl = Gtk.Label.new(f'{voc["reboot"]}:')
+    lbl = Gtk.Label.new(f'{voc["power-off"]}:')
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 11, 1, 1)
 
-    entry_pb_reboot = Gtk.Entry.new()
-    entry_pb_reboot.set_text(settings["pb-reboot"])
-    entry_pb_reboot.set_property("halign", Gtk.Align.START)
-    set_from_entry(entry_pb_reboot, settings, "pb-reboot")
-    entry_pb_reboot.connect("changed", set_from_entry, settings, "pb-reboot")
-    grid.attach(entry_pb_reboot, 1, 11, 1, 1)
+    entry_pb_poweroff = Gtk.Entry.new()
+    entry_pb_poweroff.set_text(settings["pb-poweroff"])
+    entry_pb_poweroff.set_property("halign", Gtk.Align.START)
+    set_from_entry(entry_pb_poweroff, settings, "pb-poweroff")
+    entry_pb_poweroff.connect("changed", set_from_entry, settings, "pb-poweroff")
+    grid.attach(entry_pb_poweroff, 1, 11, 1, 1)
 
     if warn:
         lbl = Gtk.Label.new("If you see this warning on startup, some of the fields above\n"

@@ -197,6 +197,7 @@
   "layers-hog-keyboard-focus": "Layers hog keyboard focus",
   "layers-hog-keyboard-focus-tooltip": "If true, will make keyboard-interactive layers keep their focus on mouse move (e.g. panel, launchers)",
   "layout": "Layout",
+  "leave-blank-btn-tooltip": "Leave blank to disable powerbar button",
   "left": "Left",
   "left-handed": "Left handed",
   "left-handed-tooltip": "Enables or disables left handed mode.",
