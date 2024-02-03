@@ -881,7 +881,7 @@ def load_settings():
         "editor": "",
         "browser": "",
 
-        "pb-exit": "hyprctl dispatch exit",
+        "pb-exit": "swaymsg exit",
         "pb-lock": "nwg-lock",
         "pb-poweroff": "systemctl -i poweroff",
         "pb-reboot": "systemctl reboot",
