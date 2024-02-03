@@ -50,5 +50,7 @@
   "gtklock-powerbar-linked-buttons": false,
   "gtklock-playerctl-art-size": 64,
   "gtklock-playerctl-position": "top-right",
-  "gtklock-playerctl-show-hidden": true
+  "gtklock-playerctl-show-hidden": true,
+  "powerbar-on": true,
+  "pb-size": 48
 }

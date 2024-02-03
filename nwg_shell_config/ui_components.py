@@ -449,9 +449,14 @@ def applications_tab(settings, voc, warn):
     grid.set_column_spacing(6)
     grid.set_row_spacing(6)
 
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>{}</b>".format(voc["default-applications"]))
+    lbl.set_property("halign", Gtk.Align.START)
+    grid.attach(lbl, 0, 0, 1, 1)
+
     lbl = Gtk.Label.new("{}:".format(voc["terminal"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 0, 1, 1)
+    grid.attach(lbl, 0, 1, 1, 1)
 
     entry_terminal = Gtk.Entry.new()
     entry_terminal.set_tooltip_text(voc["terminal-tooltip"])
@@ -466,11 +471,11 @@ def applications_tab(settings, voc, warn):
         entry_terminal.set_text(settings["terminal"])
     set_from_entry(entry_terminal, settings, "terminal")
 
-    grid.attach(entry_terminal, 1, 0, 1, 1)
+    grid.attach(entry_terminal, 1, 1, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["file-manager"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 1, 1, 1)
+    grid.attach(lbl, 0, 2, 1, 1)
 
     entry_fm = Gtk.Entry()
     entry_fm.set_tooltip_text(voc["file-manager-tooltip"])
@@ -485,11 +490,11 @@ def applications_tab(settings, voc, warn):
     else:
         entry_fm.set_text(settings["file-manager"])
 
-    grid.attach(entry_fm, 1, 1, 1, 1)
+    grid.attach(entry_fm, 1, 2, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["text-editor"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 2, 1, 1)
+    grid.attach(lbl, 0, 3, 1, 1)
 
     entry_te = Gtk.Entry()
     entry_te.set_tooltip_text(voc["text-editor-tooltip"])
@@ -504,11 +509,11 @@ def applications_tab(settings, voc, warn):
     else:
         entry_te.set_text(settings["editor"])
 
-    grid.attach(entry_te, 1, 2, 1, 1)
+    grid.attach(entry_te, 1, 3, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["web-browser"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 3, 1, 1)
+    grid.attach(lbl, 0, 4, 1, 1)
 
     entry_browser = Gtk.Entry.new()
     entry_browser.set_tooltip_text(voc["web-browser-tooltip"])
@@ -517,12 +522,12 @@ def applications_tab(settings, voc, warn):
     entry_browser.set_text(settings["browser"])
     set_from_entry(entry_browser, settings, "browser")
     entry_browser.connect("changed", set_from_entry, settings, "browser")
-    grid.attach(entry_browser, 1, 3, 2, 1)
+    grid.attach(entry_browser, 1, 4, 2, 1)
 
     combo = Gtk.ComboBoxText()
     combo.set_property("halign", Gtk.Align.START)
     combo.set_tooltip_text(voc["web-browser-combo-tooltip"])
-    grid.attach(combo, 1, 4, 1, 1)
+    grid.attach(combo, 1, 5, 1, 1)
     browsers = get_browsers()
     for key in browsers:
         combo.append(key, key)
@@ -536,6 +541,66 @@ def applications_tab(settings, voc, warn):
 
     combo.connect("changed", set_browser_from_combo, entry_browser, browsers)
 
+    lbl = Gtk.Label()
+    lbl.set_markup("<b>{}</b>".format(voc["powerbar-commands"]))
+    lbl.set_property("halign", Gtk.Align.START)
+    grid.attach(lbl, 0, 6, 1, 1)
+
+    lbl = Gtk.Label.new(f'{voc["pb-lock-screen"]}:')
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 7, 1, 1)
+
+    entry_pb_lock = Gtk.Entry.new()
+    entry_pb_lock.set_text(settings["pb-lock"])
+    entry_pb_lock.set_property("halign", Gtk.Align.START)
+    set_from_entry(entry_pb_lock, settings, "pb-lock")
+    entry_pb_lock.connect("changed", set_from_entry, settings, "pb-lock")
+    grid.attach(entry_pb_lock, 1, 7, 1, 1)
+
+    lbl = Gtk.Label.new(f'{voc["exit"]}:')
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 8, 1, 1)
+
+    entry_pb_exit = Gtk.Entry.new()
+    entry_pb_exit.set_text(settings["pb-exit"])
+    entry_pb_exit.set_property("halign", Gtk.Align.START)
+    set_from_entry(entry_pb_exit, settings, "pb-exit")
+    entry_pb_exit.connect("changed", set_from_entry, settings, "pb-exit")
+    grid.attach(entry_pb_exit, 1, 8, 1, 1)
+
+    lbl = Gtk.Label.new(f'{voc["reboot"]}:')
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 9, 1, 1)
+
+    entry_pb_reboot = Gtk.Entry.new()
+    entry_pb_reboot.set_text(settings["pb-reboot"])
+    entry_pb_reboot.set_property("halign", Gtk.Align.START)
+    set_from_entry(entry_pb_reboot, settings, "pb-reboot")
+    entry_pb_reboot.connect("changed", set_from_entry, settings, "pb-reboot")
+    grid.attach(entry_pb_reboot, 1, 9, 1, 1)
+
+    lbl = Gtk.Label.new(f'{voc["sleep"]}:')
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 10, 1, 1)
+
+    entry_pb_sleep = Gtk.Entry.new()
+    entry_pb_sleep.set_text(settings["pb-sleep"])
+    entry_pb_sleep.set_property("halign", Gtk.Align.START)
+    set_from_entry(entry_pb_sleep, settings, "pb-sleep")
+    entry_pb_sleep.connect("changed", set_from_entry, settings, "pb-sleep")
+    grid.attach(entry_pb_sleep, 1, 10, 1, 1)
+
+    lbl = Gtk.Label.new(f'{voc["reboot"]}:')
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 11, 1, 1)
+
+    entry_pb_reboot = Gtk.Entry.new()
+    entry_pb_reboot.set_text(settings["pb-reboot"])
+    entry_pb_reboot.set_property("halign", Gtk.Align.START)
+    set_from_entry(entry_pb_reboot, settings, "pb-reboot")
+    entry_pb_reboot.connect("changed", set_from_entry, settings, "pb-reboot")
+    grid.attach(entry_pb_reboot, 1, 11, 1, 1)
+
     if warn:
         lbl = Gtk.Label.new("If you see this warning on startup, some of the fields above\n"
                             "have not yet been saved. Adjust these settings to your needs,\n"
@@ -544,7 +609,7 @@ def applications_tab(settings, voc, warn):
         lbl.set_justify(Gtk.Justification.CENTER)
         lbl.set_property("margin-top", 18)
         lbl.set_line_wrap(True)
-        grid.attach(lbl, 0, 5, 3, 2)
+        grid.attach(lbl, 0, 8, 3, 2)
 
     frame.show_all()
 
@@ -2442,41 +2507,57 @@ def drawer_tab(preset, preset_name, outputs, voc):
     combo_outputs.set_active_id(preset["launcher-output"])
     combo_outputs.connect("changed", set_dict_key_from_combo, preset, "launcher-output")
 
+    lbl = Gtk.Label.new("{}:".format(voc["pb-icon-size"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 7, 1, 1)
+
+    sb_pb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
+    sb_pb_icon_size.set_value(preset["pb-size"])
+    sb_pb_icon_size.connect("value-changed", set_int_from_spinbutton, preset, "pb-size")
+    sb_pb_icon_size.set_tooltip_text(voc["app-icon-size-tooltip"])
+    grid.attach(sb_pb_icon_size, 1, 7, 1, 1)
+
     cb_categories = Gtk.CheckButton.new_with_label(voc["show-category-buttons"])
     cb_categories.set_tooltip_text(voc["show-category-buttons-tooltip"])
     cb_categories.set_active(preset["launcher-categories"])
     cb_categories.connect("toggled", set_from_checkbutton, preset, "launcher-categories")
-    grid.attach(cb_categories, 0, 7, 2, 1)
+    grid.attach(cb_categories, 0, 8, 2, 1)
 
     cb_resident = Gtk.CheckButton.new_with_label(voc["keep-resident"])
     cb_resident.set_tooltip_text(voc["keep-resident-tooltip"])
     cb_resident.set_active(preset["launcher-resident"])
     cb_resident.connect("toggled", set_from_checkbutton, preset, "launcher-resident")
-    grid.attach(cb_resident, 0, 8, 2, 1)
+    grid.attach(cb_resident, 0, 9, 2, 1)
 
     cb_super = Gtk.CheckButton.new_with_label(voc["open-on-super"])
     cb_super.set_tooltip_text(voc["open-on-super-tooltip"])
     cb_super.set_active(preset["launcher-super-key"])
     cb_super.connect("toggled", set_from_checkbutton, preset, "launcher-super-key")
-    grid.attach(cb_super, 0, 9, 2, 1)
+    grid.attach(cb_super, 0, 10, 2, 1)
 
     cb_overlay = Gtk.CheckButton.new_with_label(voc["open-on-overlay"])
     cb_overlay.set_tooltip_text(voc["open-on-overlay-tooltip"])
     cb_overlay.set_active(preset["launcher-overlay"])
     cb_overlay.connect("toggled", set_from_checkbutton, preset, "launcher-overlay")
-    grid.attach(cb_overlay, 0, 10, 2, 1)
+    grid.attach(cb_overlay, 0, 11, 2, 1)
 
     cb_force_theme = Gtk.CheckButton.new_with_label(voc["run-with-gtk-theme"])
     cb_force_theme.set_tooltip_text(voc["run-with-gtk-theme-tooltip"])
     cb_force_theme.set_active(preset["launcher-force-theme"])
     cb_force_theme.connect("toggled", set_from_checkbutton, preset, "launcher-force-theme")
-    grid.attach(cb_force_theme, 0, 11, 2, 1)
+    grid.attach(cb_force_theme, 2, 8, 2, 1)
 
     cb_run_through_compositor = Gtk.CheckButton.new_with_label(voc["run-through-compositor"])
     cb_run_through_compositor.set_tooltip_text(voc["run-through-compositor-tooltip"])
     cb_run_through_compositor.set_active(preset["launcher-run-through-compositor"])
     cb_run_through_compositor.connect("toggled", set_from_checkbutton, preset, "launcher-run-through-compositor")
-    grid.attach(cb_run_through_compositor, 0, 12, 2, 1)
+    grid.attach(cb_run_through_compositor, 2, 9, 2, 1)
+
+    cb_show_power_bar = Gtk.CheckButton.new_with_label(voc["show-power-bar"])
+    cb_show_power_bar.set_tooltip_text(voc["show-power-bar-tooltip"])
+    cb_show_power_bar.set_active(preset["powerbar-on"])
+    cb_show_power_bar.connect("toggled", set_from_checkbutton, preset, "powerbar-on")
+    grid.attach(cb_show_power_bar, 2, 10, 2, 1)
 
     frame.show_all()
 

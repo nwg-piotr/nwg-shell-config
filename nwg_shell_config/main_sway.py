@@ -10,7 +10,6 @@ License: MIT
 """
 
 import argparse
-import os
 import signal
 import time
 
@@ -607,6 +606,20 @@ def save_includes():
     if preset["launcher-output"] and preset["launcher-output"] != "Any":
         cmd_launcher += " -o {}".format(preset["launcher-output"])
 
+    if preset["powerbar-on"]:
+        if settings["pb-exit"]:
+            cmd_launcher += f' -pbexit \'{settings["pb-exit"]}\''
+        if settings["pb-lock"]:
+            cmd_launcher += f' -pblock \'{settings["pb-lock"]}\''
+        if settings["pb-poweroff"]:
+            cmd_launcher += f' -pbpoweroff \'{settings["pb-poweroff"]}\''
+        if settings["pb-reboot"]:
+            cmd_launcher += f' -pbreboot \'{settings["pb-reboot"]}\''
+        if settings["pb-sleep"]:
+            cmd_launcher += f' -pbsleep \'{settings["pb-sleep"]}\''
+        if preset["pb-size"] >= 8:
+            cmd_launcher += f' -pbsize {preset["pb-size"]}'
+
     if preset["launcher-on"]:
         if preset["launcher-resident"]:
             cmd_launcher_autostart = "exec_always {}".format(cmd_launcher)
@@ -867,6 +880,13 @@ def load_settings():
         "file-manager": "",
         "editor": "",
         "browser": "",
+
+        "pb-exit": "hyprctl dispatch exit",
+        "pb-lock": "nwg-lock",
+        "pb-poweroff": "systemctl -i poweroff",
+        "pb-reboot": "systemctl reboot",
+        "pb-sleep": "systemctl suspend",
+
         "panel-preset": "preset-0",
         "panel-custom": "",
         "screenshot": True,
@@ -1022,7 +1042,9 @@ def load_preset(file_name):
         "gtklock-powerbar-linked-buttons": False,
         "gtklock-playerctl-art-size": 64,
         "gtklock-playerctl-position": "top-right",
-        "gtklock-playerctl-show-hidden": True
+        "gtklock-playerctl-show-hidden": True,
+        "powerbar-on": True,
+        "pb-size": 48
     }
     preset_file = os.path.join(data_dir, file_name)
     if os.path.isfile(preset_file):
