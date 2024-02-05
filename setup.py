@@ -9,7 +9,7 @@ def read(f_name):
 
 setup(
     name='nwg-shell-config',
-    version='0.5.32',
+    version='0.5.33',
     description='nwg-shell configuration utility',
     packages=find_packages(),
     include_package_data=True,
