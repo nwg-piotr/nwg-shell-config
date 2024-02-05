@@ -452,7 +452,7 @@ def applications_tab(settings, voc, warn):
     lbl = Gtk.Label()
     lbl.set_markup("<b>{}</b>".format(voc["default-applications"]))
     lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 0, 0, 1, 1)
+    grid.attach(lbl, 0, 0, 2, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["terminal"]))
     lbl.set_property("halign", Gtk.Align.END)
@@ -544,7 +544,7 @@ def applications_tab(settings, voc, warn):
     lbl = Gtk.Label()
     lbl.set_markup("<b>{}</b>".format(voc["powerbar-commands"]))
     lbl.set_property("halign", Gtk.Align.START)
-    grid.attach(lbl, 0, 6, 1, 1)
+    grid.attach(lbl, 0, 6, 2, 1)
 
     lbl = Gtk.Label.new(f'{voc["pb-lock-screen"]}:')
     lbl.set_property("halign", Gtk.Align.END)

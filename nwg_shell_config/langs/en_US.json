@@ -296,7 +296,7 @@
   "pointer-device": "Pointer device",
   "pointer-device-include-tooltip": "Determines if to export the 'pointer' config include.",
   "position": "Position",
-  "powerbar-commands": "Power bar commands",
+  "powerbar-commands": "App drawer Power bar commands",
   "power-off": "Power off",
   "power-off-tooltip": "Command to power off the computer.\nLeave blank to disable this feature.",
   "powerbar": "Powerbar",
