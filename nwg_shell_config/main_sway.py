@@ -627,23 +627,26 @@ def save_includes():
         else:
             variables.append("set $launcher {}".format(cmd_launcher))
 
-    cmd_exit = "nwg-bar"
-    if preset["exit-position"]:
-        cmd_exit += " -p {}".format(preset["exit-position"])
-    if preset["exit-full"]:
-        cmd_exit += " -f"
-    if preset["exit-alignment"]:
-        cmd_exit += " -a {}".format(preset["exit-alignment"])
-    if preset["exit-margin"]:
-        cmd_exit += " -mb {} -ml {} -mr {} -mt {}".format(preset["exit-margin"], preset["exit-margin"],
-                                                          preset["exit-margin"], preset["exit-margin"])
-    if preset["exit-icon-size"]:
-        cmd_exit += " -i {}".format(preset["exit-icon-size"])
+    if preset["exit-on"]:
+        cmd_exit = "nwg-bar"
+        if preset["exit-position"]:
+            cmd_exit += " -p {}".format(preset["exit-position"])
+        if preset["exit-full"]:
+            cmd_exit += " -f"
+        if preset["exit-alignment"]:
+            cmd_exit += " -a {}".format(preset["exit-alignment"])
+        if preset["exit-margin"]:
+            cmd_exit += " -mb {} -ml {} -mr {} -mt {}".format(preset["exit-margin"], preset["exit-margin"],
+                                                              preset["exit-margin"], preset["exit-margin"])
+        if preset["exit-icon-size"]:
+            cmd_exit += " -i {}".format(preset["exit-icon-size"])
 
-    if "preset-" in settings["panel-preset"]:
-        cmd_exit += " -s {}.css".format(settings["panel-preset"])
-    elif preset["exit-css"]:
-        cmd_exit += " -s {}".format(preset["exit-css"])
+        if "preset-" in settings["panel-preset"]:
+            cmd_exit += " -s {}.css".format(settings["panel-preset"])
+        elif preset["exit-css"]:
+            cmd_exit += " -s {}".format(preset["exit-css"])
+    else:
+        cmd_exit = "$launcher"
 
     variables.append("set $exit {}".format(cmd_exit))
 
