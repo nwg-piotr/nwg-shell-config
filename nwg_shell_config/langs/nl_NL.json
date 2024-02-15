@@ -48,6 +48,7 @@
   "desired-wallpaper-width": "Gewenste breedte achtergrond",
   "desktop-style": "Stijl van de Desktop",
   "desktop-styles": "Desktop stijlen",
+  "disable-splash-rendering": "Schakel weergave van het splash-scherm uit",
   "disable-input-inhibitor": "Zet de input inhibitor uit",
   "disable-input-inhibitor-tooltip": "Laat input events (zoals van het toetsenbord of de muis) toe op het lock screen.",
   "disabled": "Uitgezet",

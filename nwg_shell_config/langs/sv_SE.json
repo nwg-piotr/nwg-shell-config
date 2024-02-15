@@ -48,6 +48,7 @@
   "desired-wallpaper-width": "Önskad bakgrundsbredd",
   "desktop-style": "Skrivbordsstil",
   "desktop-styles": "Skrivbordsstilar",
+  "disable-splash-rendering": "Inaktivera startskärmsrendering",
   "disable-input-inhibitor": "Inaktivera ingångshämmare",
   "disable-input-inhibitor-tooltip": "Tillåter indatahändelser (som keyboard, mus) på låsskärmen",
   "disabled": "Inaktiverad",

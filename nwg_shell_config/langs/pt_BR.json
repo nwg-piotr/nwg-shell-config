@@ -46,6 +46,7 @@
   "desired-wallpaper-width": "Largura desejada do papel de parede",
   "desktop-style": "Estilo da Área de Trabalho",
   "desktop-styles": "Estilos da Área de Trabalho",
+  "disable-splash-rendering": "Desativar renderização da tela inicial",
   "disable-input-inhibitor": "Desabilitar o inibidor de comandos",
   "disable-input-inhibitor-tooltip": "Permite eventos de entrada (como teclado, mouse) na tela de bloqueio.",
   "disabled": "Desabilitado",

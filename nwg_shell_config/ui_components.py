@@ -1353,19 +1353,11 @@ def h_misc_tab(settings, voc):
     cb_logo.connect("toggled", set_from_checkbutton, settings, "misc-disable_hyprland_logo")
     grid.attach(cb_logo, 0, 1, 1, 1)
 
-    lbl = Gtk.Label.new("{}:".format(voc["vrr"]))
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 1, 1, 1, 1)
-
-    combo_vrr = Gtk.ComboBoxText()
-    combo_vrr.set_property("halign", Gtk.Align.START)
-    combo_vrr.set_tooltip_text(voc["vrr-tooltip"])
-    d = {0: voc["off"], 1: voc["on"], 2: voc["fullscreen-only"]}
-    for item in [0, 1, 2]:
-        combo_vrr.append(str(item), d[item])
-    combo_vrr.set_active_id(str(settings["misc-vrr"]))
-    combo_vrr.connect("changed", set_int_dict_key_from_combo, settings, "misc-vrr")
-    grid.attach(combo_vrr, 2, 1, 1, 1)
+    cb_splash = Gtk.CheckButton.new_with_label(voc["disable-splash-rendering"])
+    cb_splash.set_property("halign", Gtk.Align.START)
+    cb_splash.set_active(settings["misc-disable_splash_rendering"])
+    cb_splash.connect("toggled", set_from_checkbutton, settings, "misc-disable_splash_rendering")
+    grid.attach(cb_splash, 1, 1, 1, 1)
 
     cb_dpms_mouse = Gtk.CheckButton.new_with_label(voc["mouse-move-enables-dpms"])
     cb_dpms_mouse.set_property("halign", Gtk.Align.START)
@@ -1408,6 +1400,20 @@ def h_misc_tab(settings, voc):
     cb_mouse_mon.set_active(settings["misc-mouse_move_focuses_monitor"])
     cb_mouse_mon.connect("toggled", set_from_checkbutton, settings, "misc-mouse_move_focuses_monitor")
     grid.attach(cb_mouse_mon, 1, 4, 2, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["vrr"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 5, 1, 1)
+
+    combo_vrr = Gtk.ComboBoxText()
+    combo_vrr.set_property("halign", Gtk.Align.START)
+    combo_vrr.set_tooltip_text(voc["vrr-tooltip"])
+    d = {0: voc["off"], 1: voc["on"], 2: voc["fullscreen-only"]}
+    for item in [0, 1, 2]:
+        combo_vrr.append(str(item), d[item])
+    combo_vrr.set_active_id(str(settings["misc-vrr"]))
+    combo_vrr.connect("changed", set_int_dict_key_from_combo, settings, "misc-vrr")
+    grid.attach(combo_vrr, 1, 5, 1, 1)
 
     frame.show_all()
 

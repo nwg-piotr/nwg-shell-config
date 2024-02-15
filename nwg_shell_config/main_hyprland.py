@@ -927,6 +927,7 @@ def save_includes():
     if settings["misc-use-settings"]:
         includes.append("\n# MISC SETTINGS\nmisc {")
         includes.append('    disable_hyprland_logo = {}'.format(bool2lower(settings["misc-disable_hyprland_logo"])))
+        includes.append('    disable_splash_rendering = {}'.format(bool2lower(settings["misc-disable_splash_rendering"])))
         includes.append('    vrr = {}'.format(settings["misc-vrr"]))
         includes.append('    mouse_move_enables_dpms = {}'.format(bool2lower(settings["misc-mouse_move_enables_dpms"])))
         includes.append('    key_press_enables_dpms = {}'.format(bool2lower(settings["misc-key_press_enables_dpms"])))
@@ -1074,6 +1075,7 @@ def load_settings():
 
         "misc-use-settings": True,
         "misc-disable_hyprland_logo": True,
+        "misc-disable_splash_rendering": True,
         "misc-vrr": 0,
         "misc-mouse_move_enables_dpms": False,
         "misc-key_press_enables_dpms": False,

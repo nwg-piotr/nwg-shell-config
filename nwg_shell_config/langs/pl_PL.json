@@ -85,6 +85,7 @@
   "device": "Urządzenie",
   "device-tooltip": "Określa czy użyć konkretnego identyfikatora urządzenia\nczy tylko typu urządzenia wejściowego.",
   "disable-hyprland-logo": "Wyłącz logo Hyprland",
+  "disable-splash-rendering": "Wyłącz renderowanie ekranu powitalnego",
   "disable-hyprland-logo-tooltip": "Wyłącza logo Hyprland w tle",
   "disable-input-inhibitor": "Wyłącz blokadę wejścia",
   "disable-input-inhibitor-tooltip": "Zezwala na zdarzenia wejścia (jak klawiatura, mysz) na ekranie blokady.",
