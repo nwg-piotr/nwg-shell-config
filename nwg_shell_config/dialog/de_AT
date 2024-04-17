@@ -1,0 +1,9 @@
+{
+  "exit-hyprland": "Hyprland-Sitzung beenden?",
+  "exit-sway": "Sway-Sitzung beenden?",
+  "no": "Nein",
+  "poweroff": "Schalte den Computer aus?",
+  "reboot": "Den Computer neu starten?",
+  "sleep": "Den Computer in den Ruhezustand versetzen?",
+  "yes": "Ja"
+}

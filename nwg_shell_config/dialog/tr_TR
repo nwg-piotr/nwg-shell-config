@@ -1,0 +1,9 @@
+{
+  "exit-hyprland": "Hyprland oturumu sonlandırılsın mı?",
+  "exit-sway": "Sway oturumu sonlandırılsın mı?",
+  "no": "Hayır",
+  "poweroff": "Bilgisayarı Kapat?",
+  "reboot": "Bilgisayarı yeniden başlat?",
+  "sleep": "Bilgisayarı uyku moduna geçir?",
+  "yes": "Evet"
+}
