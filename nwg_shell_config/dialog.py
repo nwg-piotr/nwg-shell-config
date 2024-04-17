@@ -111,7 +111,6 @@ def main():
         for key in voc:
             if key in user_lang:
                 voc[key] = user_lang[key]
-        eprint(f"Vocabulary: {voc}")
 
     if args.dict:
         print(f"Key: value pairs for lang '{lang}':")
