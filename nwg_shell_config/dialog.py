@@ -60,11 +60,24 @@ def main():
                         type=str,
                         default="",
                         help='Command to execute if "Yes" clicked')
+
+    parser.add_argument("-d",
+                        "--dict",
+                        action="store_true",
+                        help="List dictionary for current $LANG")
+
     parser.add_argument("-i",
                         "--icon",
                         type=str,
                         default="dialog-question",
                         help="Icon name")
+
+    parser.add_argument("-l",
+                        "--lang",
+                        type=str,
+                        default="",
+                        help="force used Lang value (like en_US, pl_PL)")
+
     parser.add_argument("-p",
                         "--prompt",
                         type=str,
@@ -76,25 +89,37 @@ def main():
     args = parser.parse_args()
     eprint(f"args: {args}")
 
-    shell_data = load_shell_data()
-    user_locale = shell_data["interface-locale"] if "interface-locale" in shell_data and shell_data[
-        "interface-locale"] else locale.getlocale()[0]
-    eprint(f"User locale: {user_locale}")
+    if args.lang:
+        lang = args.lang
+    else:
+        shell_data = load_shell_data()
+        lang = shell_data["interface-locale"] if "interface-locale" in shell_data and shell_data[
+            "interface-locale"] else locale.getlocale()[0]
+    eprint(f"User locale: {lang}")
 
     langs_dir = os.path.join(dir_name, "dialog")
     translations = os.listdir(langs_dir)
 
-    if user_locale not in translations:
-        eprint(f"Translation into '{user_locale}' not found. en_US will be used.")
+    global voc
+    voc = load_json(os.path.join(langs_dir, "en_US"))
+
+    if lang not in translations:
+        eprint(f"Translation into '{lang}' not found. en_US will be used.")
     else:
-        eprint(f"Translation into '{user_locale}' found.")
-        global voc
-        voc = load_json(os.path.join(langs_dir, "en_US"))
-        user_lang = load_json(os.path.join(langs_dir, user_locale))
+        eprint(f"Translation into '{lang}' found.")
+        user_lang = load_json(os.path.join(langs_dir, lang))
         for key in voc:
             if key in user_lang:
                 voc[key] = user_lang[key]
         eprint(f"Vocabulary: {voc}")
+
+    if args.dict:
+        print(f"Key: value pairs for lang '{lang}':")
+        for key in voc:
+            print(f"'{key}': '{voc[key]}'")
+        sys.exit(0)
+
+    prompt = voc[args.prompt] if args.prompt in voc else args.prompt
 
     window = Gtk.Window.new(Gtk.WindowType.POPUP)
     window.set_size_request(200, 0)
@@ -118,7 +143,7 @@ def main():
 
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
     vbox.pack_start(box, False, False, 0)
-    lbl = Gtk.Label.new(args.prompt)
+    lbl = Gtk.Label.new(prompt)
     lbl.set_property("justify", Gtk.Justification.CENTER)
     box.pack_start(lbl, True, True, 0)
 

@@ -1,4 +1,6 @@
 {
+  "exit-hyprland": "Terminate Hyprland session?",
+  "exit-sway": "Terminate sway session?",
   "no": "No",
   "yes": "Yes"
 }
