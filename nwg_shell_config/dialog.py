@@ -45,7 +45,7 @@ def handle_keyboard(win, event):
 
 def launch(*arguments):
     if args.cmd:
-        print(f"Executing: {args.cmd}")
+        eprint(f"Executing: {args.cmd}")
         subprocess.Popen('{}'.format(args.cmd), shell=True)
         Gtk.main_quit()
     else:
