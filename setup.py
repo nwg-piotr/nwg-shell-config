@@ -9,7 +9,7 @@ def read(f_name):
 
 setup(
     name='nwg-shell-config',
-    version='0.5.35',
+    version='0.5.36',
     description='nwg-shell configuration utility',
     packages=find_packages(),
     include_package_data=True,
@@ -34,7 +34,8 @@ setup(
             'nwg-shell-updater = nwg_shell_config.updater:main',
             'nwg-shell-translate = nwg_shell_config.translate:main',
             'nwg-update-indicator = nwg_shell_config.update_indicator:main',
-            'nwg-screenshot-applet = nwg_shell_config.screenshot_applet:main'
+            'nwg-screenshot-applet = nwg_shell_config.screenshot_applet:main',
+            'nwg-dialog = nwg_shell_config.dialog:main'
         ]
     }
 )
