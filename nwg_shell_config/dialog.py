@@ -64,7 +64,7 @@ def main():
     parser.add_argument("-d",
                         "--dict",
                         action="store_true",
-                        help="List dictionary for current $LANG")
+                        help="list Dictionary for current $LANG")
 
     parser.add_argument("-i",
                         "--icon",
