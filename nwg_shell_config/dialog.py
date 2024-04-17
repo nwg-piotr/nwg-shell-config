@@ -41,19 +41,15 @@ def handle_keyboard(win, event):
     if event.type == Gdk.EventType.KEY_RELEASE:
         if event.keyval == Gdk.KEY_Escape:
             Gtk.main_quit()
-        if event.keyval == Gdk.KEY_Return:
-            launch()
 
 
-def launch(widget):
+def launch(*arguments):
     if args.cmd:
-        if os.getenv("SWAYSOCK"):
-            cmd = f"swaymsg exec '{args.cmd}'"
-        elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
-            cmd = f"hyprctl dispatch exec '{args.cmd}'"
-
-        print(f"Executing: {cmd}")
-        subprocess.Popen('{}'.format(cmd), shell=True)
+        print(f"Executing: {args.cmd}")
+        subprocess.Popen('{}'.format(args.cmd), shell=True)
+        Gtk.main_quit()
+    else:
+        eprint("No command provided")
         Gtk.main_quit()
 
 
@@ -72,7 +68,7 @@ def main():
     parser.add_argument("-p",
                         "--prompt",
                         type=str,
-                        default="Did you forget to include a prompt?",
+                        default="Did you forget\nto include a prompt?",
                         help="dialog window Prompt: string or a dictionary key")
 
     parser.parse_args()
@@ -123,6 +119,7 @@ def main():
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
     vbox.pack_start(box, False, False, 0)
     lbl = Gtk.Label.new(args.prompt)
+    lbl.set_property("justify", Gtk.Justification.CENTER)
     box.pack_start(lbl, True, True, 0)
 
     box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
