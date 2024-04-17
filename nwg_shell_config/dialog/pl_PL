@@ -2,5 +2,8 @@
   "exit-hyprland": "Zakończyć sesję Hyprland?",
   "exit-sway": "Zakończyć sesję sway?",
   "no": "Nie",
+  "poweroff": "Wyłączyć komputer?",
+  "reboot": "Uruchomić komputer ponownie?",
+  "sleep": "Uśpić komputer?",
   "yes": "Tak"
 }
