@@ -70,18 +70,18 @@ def main():
                         "--icon",
                         type=str,
                         default="dialog-question",
-                        help="Icon name")
+                        help="Icon name ('dialog-question' by default)")
 
     parser.add_argument("-l",
                         "--lang",
                         type=str,
                         default="",
-                        help="force used Lang value (like en_US, pl_PL)")
+                        help="force use of a Lang value (like 'en_US', 'pl_PL')")
 
     parser.add_argument("-p",
                         "--prompt",
                         type=str,
-                        default="Did you forget\nto include a prompt?",
+                        default="Did you forget to include a prompt?",
                         help="dialog window Prompt: string or a dictionary key")
 
     parser.parse_args()
