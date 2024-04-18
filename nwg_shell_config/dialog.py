@@ -167,6 +167,13 @@ def main():
     btn_y = Gtk.Button.new_with_label(voc["yes"])
     box.pack_start(btn_y, True, True, 0)
 
+    screen = Gdk.Screen.get_default()
+    provider = Gtk.CssProvider()
+    style_context = Gtk.StyleContext()
+    style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+    css = b"""window { border: solid 1px; border-color: #000; border-radius: 5px }"""
+    provider.load_from_data(css)
+
     window.show_all()
 
     btn_y.connect("clicked", launch)
