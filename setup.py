@@ -14,7 +14,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     package_data={
-        "": ["glade/*", "autotranslate/*", "langs/*", "shell/*", "updates/*"]
+        "": ["glade/*", "autotranslate/*", "langs/*", "dialog/*", "shell/*", "updates/*"]
     },
     url='https://github.com/nwg-piotr/nwg-shell-config',
     license='MIT',
@@ -34,7 +34,8 @@ setup(
             'nwg-shell-updater = nwg_shell_config.updater:main',
             'nwg-shell-translate = nwg_shell_config.translate:main',
             'nwg-update-indicator = nwg_shell_config.update_indicator:main',
-            'nwg-screenshot-applet = nwg_shell_config.screenshot_applet:main'
+            'nwg-screenshot-applet = nwg_shell_config.screenshot_applet:main',
+            'nwg-dialog = nwg_shell_config.dialog:main'
         ]
     }
 )
