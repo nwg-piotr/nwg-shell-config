@@ -76,7 +76,7 @@ def main():
                         "--lang",
                         type=str,
                         default="",
-                        help="force use of a Lang value (like 'en_US', 'pl_PL')")
+                        help="force use of a certain Lang value (like 'en_US', 'pl_PL')")
 
     parser.add_argument("-p",
                         "--prompt",
