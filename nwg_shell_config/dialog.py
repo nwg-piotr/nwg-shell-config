@@ -121,12 +121,13 @@ def main():
         print(f"Key: value pairs for lang '{lang}':")
         for key in voc:
             print(f"'{key}': '{voc[key]}'")
-        sys.exit(0)
 
     if args.translations:
         print(f"Available translations:")
         for t in sorted(translations):
             print(t)
+
+    if args.dict or args.translations:
         sys.exit(0)
 
     prompt = voc[args.prompt] if args.prompt in voc else args.prompt
