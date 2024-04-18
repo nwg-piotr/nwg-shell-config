@@ -169,9 +169,8 @@ def main():
 
     window.show_all()
 
-    if args.cmd:
-        btn_y.connect("clicked", launch)
-        btn_y.grab_focus()
+    btn_y.connect("clicked", launch)
+    btn_y.grab_focus()
 
     Gtk.main()
 
