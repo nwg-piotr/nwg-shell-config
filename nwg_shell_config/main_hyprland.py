@@ -678,7 +678,7 @@ def save_includes():
 
     # For vertical dock not to collide with horizontal panels, we need to start it w/ some delay
     if preset["dock-startup-delay"] > 0:
-        cmd_dock = "killall nwg-dock-hyprland\nexec = sleep {} && nwg-dock-hyprland".format(
+        cmd_dock = "exec-once = killall nwg-dock-hyprland\nexec = sleep {} && nwg-dock-hyprland".format(
             preset["dock-startup-delay"])
     else:
         cmd_dock = "exec = nwg-dock-hyprland"
