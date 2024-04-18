@@ -84,6 +84,11 @@ def main():
                         default="Did you forget to include a prompt?",
                         help="dialog window Prompt: string or a dictionary key")
 
+    parser.add_argument("-t",
+                        "--translations",
+                        action="store_true",
+                        help="list available Translations")
+
     parser.parse_args()
     global args
     args = parser.parse_args()
@@ -116,6 +121,12 @@ def main():
         print(f"Key: value pairs for lang '{lang}':")
         for key in voc:
             print(f"'{key}': '{voc[key]}'")
+        sys.exit(0)
+
+    if args.translations:
+        print(f"Available translations:")
+        for t in sorted(translations):
+            print(t)
         sys.exit(0)
 
     prompt = voc[args.prompt] if args.prompt in voc else args.prompt
