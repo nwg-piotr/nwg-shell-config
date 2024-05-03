@@ -512,8 +512,13 @@ def restore_from_tmp(btn, restore_warning_label, voc):
 
 
 def hyprctl(cmd, buf_size=20480):
+    # /tmp/hypr moved to $XDG_RUNTIME_DIR/hypr in #5788
+    xdg_runtime_dir = os.getenv("XDG_RUNTIME_DIR")
+    hypr_dir = f"{xdg_runtime_dir}/hypr" if xdg_runtime_dir and os.path.isdir(
+        f"{xdg_runtime_dir}/hypr") else "/tmp/hypr"
+
     s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    s.connect("/tmp/hypr/{}/.socket.sock".format(os.getenv("HYPRLAND_INSTANCE_SIGNATURE")))
+    s.connect(f"{hypr_dir}/{os.getenv('HYPRLAND_INSTANCE_SIGNATURE')}/.socket.sock")
 
     s.send(cmd.encode("utf-8"))
     output = s.recv(buf_size).decode('utf-8')
