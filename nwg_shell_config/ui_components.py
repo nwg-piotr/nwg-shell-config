@@ -1589,7 +1589,7 @@ def h_input_tab(settings, voc):
 
     sb_scroll_button = Gtk.SpinButton.new_with_range(0, 512, 1)
     sb_scroll_button.set_value(settings["input-scroll_button"])
-    sb_scroll_button.connect("value-changed", set_from_spinbutton, settings, "input-scroll_button", 1)
+    sb_scroll_button.connect("value-changed", set_int_from_spinbutton, settings, "input-scroll_button")
     sb_scroll_button.set_tooltip_text(voc["scroll-button-tooltip"])
     grid.attach(sb_scroll_button, 3, 10, 1, 1)
 
