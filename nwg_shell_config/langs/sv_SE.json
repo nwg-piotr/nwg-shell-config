@@ -186,6 +186,7 @@
   "restore-defaults": "Återställa standardvärden",
   "restore-defaults-tooltip": "Tryck för att återställa inaktivitetsinställningar.",
   "resume-command": "Återuppta-kommando",
+  "after-resume": "",
   "right": "Höger",
   "round-image": "Rund avatar",
   "screen-settings": "Skärminställningar",

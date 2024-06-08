@@ -318,6 +318,7 @@
   "restore-defaults": "Restore defaults",
   "restore-defaults-tooltip": "Press to restore default idle settings.",
   "resume-command": "Resume-command",
+  "after-resume": "After resume",
   "right": "Right",
   "round-image": "Round avatar",
   "run-through-compositor": "Run through compositor",

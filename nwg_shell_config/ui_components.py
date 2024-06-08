@@ -2163,23 +2163,33 @@ def lockscreen_tab(settings, voc):
     grid.attach(entry_resume_cmd, 1, 9, 1, 1)
     entry_resume_cmd.connect("changed", set_from_entry, settings, "resume-cmd")
 
+    lbl = Gtk.Label.new("{}:".format(voc["after-resume"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 10, 1, 1)
+
+    entry_after_resume = Gtk.Entry()
+    entry_after_resume.set_text(settings["after-resume"])
+    grid.attach(entry_after_resume, 1, 10, 1, 1)
+    entry_after_resume.connect("changed", set_from_entry, settings, "after-resume")
+
     defaults_btn = Gtk.Button.new_with_label(voc["restore-defaults"])
     defaults_btn.set_property("margin-top", 6)
     defaults_btn.set_property("halign", Gtk.Align.START)
     defaults_btn.set_tooltip_text(voc["restore-defaults-tooltip"])
     defaults_btn.connect("clicked", restore_defaults, {entry_sleep_cmd: 'swaymsg "output * dpms off"',
-                                                       entry_resume_cmd: 'swaymsg "output * dpms on"'})
+                                                       entry_resume_cmd: 'swaymsg "output * dpms on"',
+                                                       entry_after_resume: 'swaymsg "output * enable"'})
     grid.attach(defaults_btn, 1, 6, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["before-sleep"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 10, 1, 1)
+    grid.attach(lbl, 0, 11, 1, 1)
 
     entry_b4_sleep = Gtk.Entry()
     entry_b4_sleep.set_width_chars(24)
     entry_b4_sleep.set_text(settings["before-sleep"])
     entry_b4_sleep.set_tooltip_text(voc["before-sleep-tooltip"])
-    grid.attach(entry_b4_sleep, 1, 10, 1, 1)
+    grid.attach(entry_b4_sleep, 1, 11, 1, 1)
     entry_b4_sleep.connect("changed", set_from_entry, settings, "before-sleep")
 
     lbl = Gtk.Label()

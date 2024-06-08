@@ -184,6 +184,7 @@
   "restore-defaults": "Ripristina i valori predefiniti",
   "restore-defaults-tooltip": "Premere per ripristinare le impostazioni di inattività predefinite.",
   "resume-command": "Com. per riprendere",
+  "after-resume": "",
   "right": "Giusto",
   "round-image": "Avatar rotondo",
   "screen-settings": "Impostazioni dello schermo",

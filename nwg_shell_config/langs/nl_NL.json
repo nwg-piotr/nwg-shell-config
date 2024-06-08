@@ -186,6 +186,7 @@
   "restore-defaults": "Herstel standaard",
   "restore-defaults-tooltip": "Herstel de basis idle instellingen.",
   "resume-command": "Hervatten",
+  "after-resume": "",
   "right": "Rechts",
   "round-image": "Ronde avatar",
   "screen-settings": "Scherminstellingen",

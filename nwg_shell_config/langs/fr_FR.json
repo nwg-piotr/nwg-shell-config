@@ -185,6 +185,7 @@
   "restore-defaults": "Remettre les valeurs par défaut",
   "restore-defaults-tooltip": "Appuyer pour remettre les réglages d'inactivité par défaut.",
   "resume-command": "Commande de reprise",
+  "after-resume": "",
   "right": "droite",
   "round-image": "Image de profil ronde",
   "screen-settings": "Réglages de l'écran",
