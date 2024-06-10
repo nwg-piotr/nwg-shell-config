@@ -41,6 +41,7 @@ def main():
         sys.exit(1)
     try:
         subprocess.Popen(cmd.split())
+        sys.exit(0)
     except Exception as e:
         eprint(e)
         sys.exit(1)
