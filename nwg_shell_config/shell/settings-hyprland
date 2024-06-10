@@ -107,6 +107,7 @@
   "sleep-cmd": "systemctl suspend",
   "sleep-timeout": 1800,
   "resume-cmd": "",
+  "after-resume": "",
   "before-sleep": "",
   "backgrounds-custom-path": "",
   "backgrounds-use-custom-path": false,

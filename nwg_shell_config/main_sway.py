@@ -751,11 +751,13 @@ def save_includes():
         if c_sleep and "dpms off" in settings["sleep-cmd"] and "dpms on" not in settings["resume-cmd"]:
             c_resume = "swaymsg \"output * dpms on\""
 
+        c_after_resume = "after-resume '{}'".format(settings["after-resume"]) if settings["after-resume"] else ""
+
         c_before_sleep = "before-sleep {}".format(settings["before-sleep"]) if settings[
             "before-sleep"] else ""
 
-        cmd_idle = "exec swayidle timeout {} nwg-lock {} {} {}".format(settings["lockscreen-timeout"],
-                                                                       c_sleep, c_resume, c_before_sleep)
+        cmd_idle = "exec swayidle timeout {} nwg-lock {} {} {} {}".format(settings["lockscreen-timeout"],
+                                                                       c_sleep, c_resume, c_after_resume, c_before_sleep)
         autostart.append(cmd_idle)
         # We can't `exec_always swayidle`, as it would create multiple instances. Let's restart it here.
         subprocess.call("killall swayidle", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
@@ -937,6 +939,7 @@ def load_settings():
         "sleep-cmd": 'swaymsg "output * dpms off"',
         "sleep-timeout": 1800,
         "resume-cmd": 'swaymsg "output * dpms on"',
+        "after-resume": 'swaymsg "output * enable"',
         "before-sleep": "",
         "backgrounds-custom-path": "",
         "backgrounds-use-custom-path": False,

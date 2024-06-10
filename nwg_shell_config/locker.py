@@ -41,6 +41,7 @@ defaults = {
     "sleep-cmd": 'swaymsg "output * dpms off"',
     "sleep-timeout": 1800,
     "resume-cmd": 'swaymsg "output * dpms on"',
+    "after-resume": 'swaymsg "output * enable"',
     "before-sleep": "",
     "backgrounds-custom-path": "",
     "backgrounds-use-custom-path": False,

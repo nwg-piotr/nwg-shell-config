@@ -318,6 +318,7 @@
   "restore-defaults": "Przywróć domyślne",
   "restore-defaults-tooltip": "Naciśnij by przywrócić domyślne ustawienia bezczynności.",
   "resume-command": "Kom. wznowienia",
+  "after-resume": "Po wznowieniu",
   "right": "Prawo",
   "round-image": "Okrągły avatar",
   "run-through-compositor": "Uruchamiaj przez kompozytor",
