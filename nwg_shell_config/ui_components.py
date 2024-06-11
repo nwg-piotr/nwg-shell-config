@@ -1387,13 +1387,6 @@ def h_misc_tab(settings, voc):
     cb_focus_on_activate.connect("toggled", set_from_checkbutton, settings, "misc-focus_on_activate")
     grid.attach(cb_focus_on_activate, 1, 3, 2, 1)
 
-    cb_hide_cursor = Gtk.CheckButton.new_with_label(voc["hide-cursor-on-touch"])
-    cb_hide_cursor.set_property("halign", Gtk.Align.START)
-    cb_hide_cursor.set_tooltip_text(voc["hide-cursor-on-touch-tooltip"])
-    cb_hide_cursor.set_active(settings["misc-hide_cursor_on_touch"])
-    cb_hide_cursor.connect("toggled", set_from_checkbutton, settings, "misc-hide_cursor_on_touch")
-    grid.attach(cb_hide_cursor, 0, 4, 1, 1)
-
     cb_mouse_mon = Gtk.CheckButton.new_with_label(voc["mouse-move-focuses-monitor"])
     cb_mouse_mon.set_property("halign", Gtk.Align.START)
     cb_mouse_mon.set_tooltip_text(voc["mouse-move-focuses-monitor-tooltip"])

@@ -935,7 +935,6 @@ def save_includes():
         includes.append('    key_press_enables_dpms = {}'.format(bool2lower(settings["misc-key_press_enables_dpms"])))
         includes.append('    layers_hog_keyboard_focus = {}'.format(bool2lower(settings["misc-layers_hog_keyboard_focus"])))
         includes.append('    focus_on_activate = {}'.format(bool2lower(settings["misc-focus_on_activate"])))
-        includes.append('    hide_cursor_on_touch = {}'.format(bool2lower(settings["misc-hide_cursor_on_touch"])))
         includes.append('    mouse_move_focuses_monitor = {}'.format(bool2lower(settings["misc-mouse_move_focuses_monitor"])))
         includes.append('}')
 
@@ -1083,7 +1082,6 @@ def load_settings():
         "misc-key_press_enables_dpms": False,
         "misc-layers_hog_keyboard_focus": True,
         "misc-focus_on_activate": False,
-        "misc-hide_cursor_on_touch": True,
         "misc-mouse_move_focuses_monitor": True,
 
         "lockscreen-use-settings": True,
