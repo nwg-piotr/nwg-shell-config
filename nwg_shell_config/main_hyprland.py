@@ -853,7 +853,7 @@ def save_includes():
         includes.append('    allow_small_split = {}'.format(bool2lower(settings["master-allow_small_split"])))
         includes.append('    special_scale_factor = {}'.format(settings["master-special_scale_factor"]))
         includes.append('    mfact = {}'.format(settings["master-mfact"]))
-        includes.append('    new_is_master = {}'.format(bool2lower(settings["master-new_is_master"])))
+        # includes.append('    new_is_master = {}'.format(bool2lower(settings["master-new_is_master"])))
         includes.append('    new_on_top = {}'.format(bool2lower(settings["master-new_on_top"])))
         includes.append('    no_gaps_when_only = {}'.format(bool2lower(settings["master-no_gaps_when_only"])))
         includes.append('    orientation = {}'.format(settings["master-orientation"]))
