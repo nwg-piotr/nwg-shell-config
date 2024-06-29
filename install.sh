@@ -35,7 +35,9 @@ for filename in "${filenames[@]}"; do
   echo "Removing -f $filename"
 done
 
+echo "Building"
 python -m build --wheel --no-isolation
+echo "Installing"
 python -m installer dist/*.whl
 
 install -Dm 644 -t "/usr/share/applications" "$PROGRAM_NAME.desktop"
