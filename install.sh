@@ -19,10 +19,8 @@ done
 # Remove launcher scripts
 filenames=("/usr/bin/nwg-autotranslate" "/usr/bin/nwg-shell-config" "/usr/bin/nwg-shell-config-sway" "/usr/bin/nwg-shell-config-hyprland" "/usr/bin/nwg-lock" "/usr/bin/nwg-shell-help" "/usr/bin/nwg-autotiling" "/usr/bin/nwg-shell-updater" "/usr/bin/nwg-shell-translate" "/usr/bin/nwg-update-indicator" "/usr/bin/nwg-screenshot-applet" "/usr/bin/nwg-dialog")
 for filename in "${filenames[@]}"; do
-  if [ -f "$filename" ]; then
-    echo "Removing $filename"
-    rm filename
-  fi
+  rm -f "$filename"
+  echo "Removing $filename"
 done
 
 python -m build --wheel --no-isolation
