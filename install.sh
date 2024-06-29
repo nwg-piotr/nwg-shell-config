@@ -11,7 +11,7 @@ PATTERN="$SITE_PACKAGES/$MODULE_NAME*"
 # Remove from site_packages
 for path in $PATTERN; do
     if [ -e "$path" ]; then
-        echo "Removing -f $path"
+        echo "Removing $path"
         rm -r "$path"
     fi
 done
@@ -32,7 +32,7 @@ filenames=("/usr/bin/nwg-autotranslate"
 
 for filename in "${filenames[@]}"; do
   rm -f "$filename"
-  echo "Removing $filename"
+  echo "Removing -f $filename"
 done
 
 python -m build --wheel --no-isolation
