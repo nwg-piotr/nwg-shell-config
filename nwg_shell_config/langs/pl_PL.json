@@ -405,6 +405,8 @@
   "updates-page": "Strona aktualizacji",
   "use-active-for-splits": "Użyj aktywnego do podziału",
   "use-active-for-splits-tooltip": "Określa czy przy podziale preferować aktywne okno, czy pozycję myszy.",
+  "use-icon-theme": "Używaj tematu ikon w pasku zasilania",
+  "use-icon-theme-tooltip": "Używaj ikon z GTK icon theme zamiast wbudowanych",
   "use-these-settings": "Używaj tych ustawień",
   "userinfo-module": "Moduł userinfo",
   "userinfo-tooltip": "Ten moduł potrzebuje informacji o użytkowniku.\nMożesz użyć pakietu `mugshot` lub `SwaySettings`. \nMusisz też zainstalować pakiet `gtklock-userinfo-module`.",
