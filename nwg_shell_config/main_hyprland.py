@@ -645,6 +645,8 @@ def save_includes():
             cmd_launcher += f' -pbsleep \'{settings["pb-sleep"]}\''
         if preset["pb-size"] >= 8:
             cmd_launcher += f' -pbsize {preset["pb-size"]}'
+        if preset["pb-icon-theme"]:
+            cmd_launcher += ' -pbuseicontheme'
 
     if preset["launcher-on"]:
         if preset["launcher-resident"]:
@@ -1203,6 +1205,7 @@ def load_preset(file_name):
         "gtklock-playerctl-position": "top-right",
         "gtklock-playerctl-show-hidden": True,
         "powerbar-on": True,
+        "pb-icon-theme": False,
         "pb-size": 48
     }
     preset_file = os.path.join(data_dir, file_name)

@@ -2572,6 +2572,12 @@ def drawer_tab(preset, preset_name, outputs, voc):
     cb_show_power_bar.connect("toggled", set_from_checkbutton, preset, "powerbar-on")
     grid.attach(cb_show_power_bar, 2, 10, 2, 1)
 
+    cb_use_icon_theme = Gtk.CheckButton.new_with_label(voc["use-icon-theme"])
+    cb_use_icon_theme.set_tooltip_text(voc["use-icon-theme-tooltip"])
+    cb_use_icon_theme.set_active(preset["pb-icon-theme"])
+    cb_use_icon_theme.connect("toggled", set_from_checkbutton, preset, "pb-icon-theme")
+    grid.attach(cb_use_icon_theme, 2, 11, 2, 1)
+
     frame.show_all()
 
     return frame

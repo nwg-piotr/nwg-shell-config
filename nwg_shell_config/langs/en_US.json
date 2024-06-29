@@ -405,6 +405,8 @@
   "updates-page": "Updates page",
   "use-active-for-splits": "Use active for splits",
   "use-active-for-splits-tooltip": "Whether to prefer the active window or the mouse position for splits.",
+  "use-icon-theme": "Use icon theme in power bar",
+  "use-icon-theme-tooltip": "Use icon theme icons instead of built in",
   "use-these-settings": "Use these settings",
   "userinfo-module": "Userinfo module",
   "userinfo-tooltip": "For this module to work, you need to set the user info first. \nYou may use the `mugshot` or `SwaySettings` package. \nYou also need the `gtklock-userinfo-module` package.",
