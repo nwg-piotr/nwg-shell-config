@@ -417,5 +417,5 @@
   "xkb-kb-model-tooltip": "P.ej. 'pc101' o 'presario'; ver: '/usr/share/X11/xkb/rules/base.lst'",
   "xkb-kb-options-tooltip": "P.ej. 'caps:swapescape'; ver: '/usr/share/X11/xkb/rules/base.lst'",
   "xkb-kb-rules-tooltip": "Reglas que se utilizarán para la composición del mapeo del teclado",
-  "you-are-up-to-date": "Estas actualizado :)"
+  "you-are-up-to-date": "Estas actualizado :)."
 }
