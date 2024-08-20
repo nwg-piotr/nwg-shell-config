@@ -4,7 +4,7 @@
 # as well as related nwg-shell-config options.
 
 case "$2" in
-    "-pacman") pacman -Syu ;;
+    "-pacman") sudo pacman -Syu ;;
     "-yay") yay -Syu ;;
     "-baph") baph -u ;;
     "-scratch") scratch sysup ;;
