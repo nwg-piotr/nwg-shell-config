@@ -309,11 +309,6 @@ def main():
     else:
         eprint("nwg-update-indicator running on '{}'".format(distro))
 
-    if distro == "arch":
-        if not is_command("baph") and not is_command("yay"):
-            eprint("No supported AUR helper found, terminating")
-            sys.exit(1)
-
     global ind
     ind = Indicator(distro)  # Will check updates for the 1st time in the constructor
     # Check periodically in given intervals
