@@ -228,21 +228,22 @@ def h_list_devices_by_type(device_type):
 def get_lat_lon():
     eprint("Checking location for night light settings")
     # Placeholder in case something goes wrong
-    tz, lat, lon = "Europe/Warsaw", 52.2322, 20.9841
+    tz, lat, lon = "Warsaw", 52.2322, 20.9841
 
     lines = get_command_output("timedatectl show")
     if lines:
         for line in lines:
             if line.startswith("Timezone="):
-                tz = line.split("=")[1]
+                tz = line.split("=")[1].split("/")[-1]
         try:
             geolocator = Nominatim(user_agent="my_request")
             location = geolocator.geocode(tz)
             lat = round(location.latitude, 5)
             lon = round(location.longitude, 5)
         except:
-            print("Geocoder unavailable. Do you have internet connection?", file=sys.stderr)
+            eprint(f"Couldn't find coordinates for {tz}.")
 
+    eprint(f"Setting coordinates: {tz}, {lat}, {lon}")
     return tz, lat, lon
 
 

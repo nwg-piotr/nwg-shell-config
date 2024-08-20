@@ -189,8 +189,17 @@ class Indicator(object):
         # Below we could add update check commands for other distros
         global nwg_system_update_arg
         if self.distro == "arch":
-            nwg_system_update_arg = "-baph"
-            if is_command("yay"):
+            nwg_system_update_arg = "-pacman"
+
+            if is_command("baph"):
+                nwg_system_update_arg = "-baph"
+                eprint("Using baph")
+                output = subprocess.check_output("baph -c".split()).decode('utf-8').strip()
+                if output and output != "0 0":
+                    u = output.split()
+                    update_details = f"pacman: {u[1]}, AUR: {u[0]}"
+
+            elif is_command("yay"):
                 nwg_system_update_arg = "-yay"
                 eprint("Using yay")
                 pacman, aur = 0, 0
@@ -208,12 +217,17 @@ class Indicator(object):
                 if pacman or aur:
                     update_details = f"pacman: {pacman}, AUR: {aur}"
 
-            elif is_command("baph"):
-                eprint("Using baph")
-                output = subprocess.check_output("baph -c".split()).decode('utf-8').strip()
-                if output and output != "0 0":
-                    u = output.split()
-                    update_details = f"pacman: {u[1]}, AUR: {u[0]}"
+            else:
+                eprint("Using checkupdates")
+                pacman = 0
+                try:
+                    output = subprocess.check_output("checkupdates".split()).decode('utf-8').splitlines()
+                    pacman = len(output)
+                except subprocess.CalledProcessError:
+                    pass
+
+                if pacman:
+                    update_details = f"pacman: {pacman}"
 
             if update_details:
                 eprint(update_details)
@@ -294,11 +308,6 @@ def main():
         sys.exit(1)
     else:
         eprint("nwg-update-indicator running on '{}'".format(distro))
-
-    if distro == "arch":
-        if not is_command("baph") and not is_command("yay"):
-            eprint("No supported AUR helper found, terminating")
-            sys.exit(1)
 
     global ind
     ind = Indicator(distro)  # Will check updates for the 1st time in the constructor

@@ -183,7 +183,7 @@ class SideMenuRow(Gtk.ListBoxRow):
         self.eb.add(lbl)
 
 
-def screen_tab(settings, voc, pending_updates):
+def screen_tab(settings, voc):
     frame = Gtk.Frame()
     frame.set_label("  {}: {}  ".format(voc["common"], voc["screen-settings"]))
     frame.set_label_align(0.5, 0.5)
@@ -240,19 +240,19 @@ def screen_tab(settings, voc, pending_updates):
     btn.connect("clicked", launch, "nwg-panel-config")
     box.pack_start(btn, False, True, 0)
 
-    update_btn = Gtk.Button()
-    update_btn.set_property("name", "app-btn")
-    update_btn.set_always_show_image(True)
-    update_btn.set_image_position(Gtk.PositionType.TOP)
-    if pending_updates == 0:
-        update_btn.set_label(voc["updates"])
-        img = Gtk.Image.new_from_icon_name("nwg-shell", Gtk.IconSize.DIALOG)
-    else:
-        update_btn.set_label("Updates ({})".format(pending_updates))
-        img = Gtk.Image.new_from_icon_name("nwg-shell-update", Gtk.IconSize.DIALOG)
-    update_btn.set_image(img)
-    update_btn.connect("clicked", launch, "nwg-shell-updater")
-    box.pack_start(update_btn, False, True, 0)
+    # update_btn = Gtk.Button()
+    # update_btn.set_property("name", "app-btn")
+    # update_btn.set_always_show_image(True)
+    # update_btn.set_image_position(Gtk.PositionType.TOP)
+    # if pending_updates == 0:
+    #     update_btn.set_label(voc["updates"])
+    #     img = Gtk.Image.new_from_icon_name("nwg-shell", Gtk.IconSize.DIALOG)
+    # else:
+    #     update_btn.set_label("Updates ({})".format(pending_updates))
+    #     img = Gtk.Image.new_from_icon_name("nwg-shell-update", Gtk.IconSize.DIALOG)
+    # update_btn.set_image(img)
+    # update_btn.connect("clicked", launch, "nwg-shell-updater")
+    # box.pack_start(update_btn, False, True, 0)
 
     lbl = Gtk.Label()
     lbl.set_markup("<b>{}</b>".format(voc["desktop-style"]))
@@ -435,7 +435,7 @@ def screen_tab(settings, voc, pending_updates):
 
     frame.show_all()
 
-    return frame, update_btn
+    return frame
 
 
 def applications_tab(settings, voc, warn):

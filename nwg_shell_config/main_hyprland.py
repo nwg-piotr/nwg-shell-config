@@ -289,7 +289,7 @@ def set_up_screen_tab(*args):
     global content
     content.destroy()
     global update_btn
-    content, update_btn = screen_tab(settings, voc, pending_updates)
+    content = screen_tab(settings, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
@@ -718,7 +718,6 @@ def save_includes():
         includes.append("$dock = {}".format(cmd_dock))
 
     includes.append("\n# AUTOSTART")
-    includes.append("exec-once = rm {}".format(os.path.join(temp_dir(), "nwg-shell-check-update.lock")))
 
     # Kill wlsunset. We will need either to restart it or turn it off
     subprocess.call("pkill -f wlsunset", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
@@ -762,8 +761,6 @@ def save_includes():
 
     if preset["dock-on"] and (preset["dock-autohide"] or preset["dock-permanent"]):
         includes.append(cmd_dock)
-
-    includes.append("exec = nwg-shell-check-updates")
 
     if settings["lockscreen-use-settings"]:
         c_sleep = "timeout {} '{}'".format(settings["sleep-timeout"], settings["sleep-cmd"]) if settings[
