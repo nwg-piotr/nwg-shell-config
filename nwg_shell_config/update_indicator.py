@@ -192,6 +192,7 @@ class Indicator(object):
             nwg_system_update_arg = "-pacman"
 
             if is_command("baph"):
+                nwg_system_update_arg = "-baph"
                 eprint("Using baph")
                 output = subprocess.check_output("baph -c".split()).decode('utf-8').strip()
                 if output and output != "0 0":
