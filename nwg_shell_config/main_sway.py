@@ -279,7 +279,7 @@ def set_up_screen_tab(*args):
     global content
     content.destroy()
     global update_btn
-    content, update_btn = screen_tab(settings, voc)
+    content = screen_tab(settings, voc)
     grid.attach(content, 1, 0, 1, 1)
 
 
