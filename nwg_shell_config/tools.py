@@ -241,8 +241,9 @@ def get_lat_lon():
             lat = round(location.latitude, 5)
             lon = round(location.longitude, 5)
         except:
-            print(f"Couldn't find coordinates for {tz}, setting Warsaw, 52.2322, 20.9841", file=sys.stderr)
+            eprint(f"Couldn't find coordinates for {tz}.")
 
+    eprint(f"Setting coordinates: {tz}, {lat}, {lon}")
     return tz, lat, lon
 
 
