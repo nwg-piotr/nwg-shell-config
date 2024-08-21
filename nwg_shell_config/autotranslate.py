@@ -113,27 +113,27 @@ def main():
                 print(f"Saving {path}")
                 save_json(panels, path)
 
-            # Translate nwg-bar template
-            config_dir = os.path.join(config_home, "nwg-bar")
-            for template in ["bar.json", "hyprland.json"]:
-                path = os.path.join(config_dir, template)
-
-                bar = load_json(path)
-                for item in bar:
-                    if item["label"] == "Lock" or item["label"] == "Loc_k":
-                        item["label"] = translation["lock"]
-
-                    if item["label"] == "Logout" or item["label"] == "_Logout":
-                        item["label"] = translation["logout"]
-
-                    if item["label"] == "Reboot" or item["label"] == "_Reboot":
-                        item["label"] = translation["reboot"]
-
-                    if item["label"] == "Shutdown" or item["label"] == "_Shutdown":
-                        item["label"] = translation["shutdown"]
-
-                print(f"Saving {path}")
-                save_json(bar, path)
+            # Translate nwg-bar template (no longer in use)
+            # config_dir = os.path.join(config_home, "nwg-bar")
+            # for template in ["bar.json", "hyprland.json"]:
+            #     path = os.path.join(config_dir, template)
+            #
+            #     bar = load_json(path)
+            #     for item in bar:
+            #         if item["label"] == "Lock" or item["label"] == "Loc_k":
+            #             item["label"] = translation["lock"]
+            #
+            #         if item["label"] == "Logout" or item["label"] == "_Logout":
+            #             item["label"] = translation["logout"]
+            #
+            #         if item["label"] == "Reboot" or item["label"] == "_Reboot":
+            #             item["label"] = translation["reboot"]
+            #
+            #         if item["label"] == "Shutdown" or item["label"] == "_Shutdown":
+            #             item["label"] = translation["shutdown"]
+            #
+            #     print(f"Saving {path}")
+            #     save_json(bar, path)
 
             print("Marking autotranslation done.")
             shell_data["autotranslated"] = True
