@@ -2169,9 +2169,13 @@ def lockscreen_tab(settings, voc):
     defaults_btn.set_property("margin-top", 6)
     defaults_btn.set_property("halign", Gtk.Align.START)
     defaults_btn.set_tooltip_text(voc["restore-defaults-tooltip"])
-    defaults_btn.connect("clicked", restore_defaults, {entry_sleep_cmd: 'swaymsg "output * dpms off"',
-                                                       entry_resume_cmd: 'swaymsg "output * dpms on"',
-                                                       entry_after_resume: 'swaymsg "output * enable"'})
+    if os.getenv("SWAYSOCK"):
+        defaults_btn.connect("clicked", restore_defaults, {entry_sleep_cmd: 'swaymsg "output * dpms off"',
+                                                           entry_resume_cmd: 'swaymsg "output * dpms on"',
+                                                           entry_after_resume: 'swaymsg "output * enable"'})
+    elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+        defaults_btn.connect("clicked", restore_defaults, {entry_sleep_cmd: 'systemctl suspend'})
+
     grid.attach(defaults_btn, 1, 6, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["before-sleep"]))
