@@ -2582,6 +2582,12 @@ def drawer_tab(preset, preset_name, outputs, voc):
     cb_use_icon_theme.connect("toggled", set_from_checkbutton, preset, "pb-icon-theme")
     grid.attach(cb_use_icon_theme, 2, 11, 2, 1)
 
+    if os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+        cb_h_drawer_blur_bg = Gtk.CheckButton.new_with_label(voc["blur-background"])
+        cb_h_drawer_blur_bg.set_active(preset["launcher-blur-background"])
+        cb_h_drawer_blur_bg.connect("toggled", set_from_checkbutton, preset, "launcher-blur-background")
+        grid.attach(cb_h_drawer_blur_bg, 0, 12, 2, 1)
+
     frame.show_all()
 
     return frame

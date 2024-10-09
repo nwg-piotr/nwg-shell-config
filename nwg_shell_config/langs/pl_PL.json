@@ -44,6 +44,7 @@
   "backgrounds": "Tapety",
   "before-sleep": "Przed uśpieniem",
   "before-sleep-tooltip": "Komenda do wykonania zanim `systemd` uśpi komputer.",
+  "blur-background": "Rozmyj tło",
   "bottom": "Dół",
   "bottom-center": "Dół Środek",
   "bottom-left": "Dół Lewo",

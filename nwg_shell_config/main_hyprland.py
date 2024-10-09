@@ -943,6 +943,10 @@ def save_includes():
     if preset["launcher-super-key"]:
         includes.append('bindr = SUPER, SUPER_L, exec, $launcher')
 
+    includes.append('\n# LAYER RULES')
+    if preset["launcher-blur-background"]:
+        includes.append("layerrule = blur, nwg-drawer")
+
     p = os.path.join(config_home, "hypr/includes.conf")
     print("Saving includes to {}".format(p))
     save_list_to_text_file(includes, p)
@@ -1167,6 +1171,7 @@ def load_preset(file_name):
         "launcher-run-through-compositor": False,
         "launcher-super-key": False,
         "launcher-output": "Any",
+        "launcher-blur-background": False,
         "exit-position": "center",
         "exit-full": False,
         "exit-alignment": "middle",

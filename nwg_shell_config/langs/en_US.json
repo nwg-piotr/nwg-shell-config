@@ -44,6 +44,7 @@
   "backgrounds": "Backgrounds",
   "before-sleep": "Before sleep",
   "before-sleep-tooltip": "Command to execute before systemd puts the computer to sleep.",
+  "blur-background": "Blur background",
   "bottom": "Bottom",
   "bottom-center": "Bottom Center",
   "bottom-left": "Bottom Left",
