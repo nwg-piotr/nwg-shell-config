@@ -678,6 +678,9 @@ def save_includes():
     if preset["dock-exclusive"]:
         cmd_dock += " -x"
 
+    if preset["launcher-at-start"]:
+        cmd_dock += " -lp start"
+
     if "preset-" in settings["panel-preset"]:
         cmd_dock += " -s {}.css".format(settings["panel-preset"])
     elif preset["dock-css"]:
@@ -1000,6 +1003,7 @@ def load_presets():
 def load_preset(file_name):
     defaults = {
         "panel-css": "",
+        "launcher-at-start": False,
         "launcher-columns": 6,
         "launcher-icon-size": 64,
         "launcher-file-search-columns": 2,

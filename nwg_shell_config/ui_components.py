@@ -2704,25 +2704,31 @@ def dock_tab(preset, preset_name, outputs, voc):
     cb_permanent.set_active(preset["dock-permanent"])
     cb_permanent.connect("toggled", set_from_checkbutton, preset, "dock-permanent")
     cb_permanent.set_tooltip_text(voc["permanent-tooltip"])
-    grid.attach(cb_permanent, 0, 9, 2, 1)
+    grid.attach(cb_permanent, 0, 9, 1, 1)
 
     cb_full = Gtk.CheckButton.new_with_label(voc["full-width-height"])
     cb_full.set_active(preset["dock-full"])
     cb_full.connect("toggled", set_from_checkbutton, preset, "dock-full")
     cb_full.set_tooltip_text(voc["full-width-height-tooltip"])
-    grid.attach(cb_full, 0, 10, 2, 1)
+    grid.attach(cb_full, 0, 10, 1, 1)
 
     cb_autohide = Gtk.CheckButton.new_with_label(voc["auto-show-hide"])
     cb_autohide.set_active(preset["dock-autohide"])
     cb_autohide.connect("toggled", set_from_checkbutton, preset, "dock-autohide")
     cb_autohide.set_tooltip_text(voc["auto-show-hide-tooltip"])
-    grid.attach(cb_autohide, 0, 11, 2, 1)
+    grid.attach(cb_autohide, 0, 11, 1, 1)
 
     cb_exclusive = Gtk.CheckButton.new_with_label(voc["exclusive-zone"])
     cb_exclusive.set_active(preset["dock-exclusive"])
     cb_exclusive.connect("toggled", set_from_checkbutton, preset, "dock-exclusive")
     cb_exclusive.set_tooltip_text(voc["exclusive-zone-tooltip"])
-    grid.attach(cb_exclusive, 0, 12, 1, 1)
+    grid.attach(cb_exclusive, 1, 9, 1, 1)
+
+    cb_launcher_at_start = Gtk.CheckButton.new_with_label(voc["launcher-at-start"])
+    cb_launcher_at_start.set_active(preset["launcher-at-start"])
+    cb_launcher_at_start.connect("toggled", set_from_checkbutton, preset, "launcher-at-start")
+    cb_launcher_at_start.set_tooltip_text(voc["launcher-at-start-tooltip"])
+    grid.attach(cb_launcher_at_start, 1, 10, 1, 1)
 
     frame.show_all()
 

@@ -195,6 +195,8 @@
   "keywords-tooltip": "Comma-separated list of keywords",
   "latitude": "Latitude",
   "latitude-tooltip": "your location latitude: `wlsunset -l",
+  "launcher-at-start": "Launcher at start",
+  "launcher-at-start-tooltip": "Show launcher button at the beginning of the dock",
   "leave-blank-to-use-above": "Leave blank to use the above.",
   "layers-hog-keyboard-focus": "Layers hog keyboard focus",
   "layers-hog-keyboard-focus-tooltip": "If true, will make keyboard-interactive layers keep their focus on mouse move (e.g. panel, launchers)",
