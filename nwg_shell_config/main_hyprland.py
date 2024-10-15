@@ -825,6 +825,8 @@ def save_includes():
             includes.append('    no_cursor_warps = {}'.format(bool2lower(settings["gen-no_cursor_warps"])))
         if settings["gen-no_focus_fallback"]:
             includes.append('    no_focus_fallback = {}'.format(bool2lower(settings["gen-no_focus_fallback"])))
+        if settings["gen-allow_tearing"]:
+            includes.append('    allow_tearing = {}'.format(bool2lower(settings["gen-allow_tearing"])))
         if settings["gen-resize_on_border"]:
             includes.append('    resize_on_border = {}'.format(bool2lower(settings["gen-resize_on_border"])))
         if settings["gen-extend_border_grab_area"]:
@@ -1024,6 +1026,7 @@ def load_settings():
         "gen-resize_on_border": False,
         "gen-extend_border_grab_area": 15,
         "gen-hover_icon_on_border": True,
+        "gen-allow_tearing": False,
 
         "dwindle-use-settings": True,
         "dwindle-pseudotile": False,

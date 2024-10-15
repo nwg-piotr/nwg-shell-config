@@ -1087,6 +1087,13 @@ def h_general_tab(settings, voc):
     cb_no_focus_fallback.connect("toggled", set_from_checkbutton, settings, "gen-no_focus_fallback")
     grid.attach(cb_no_focus_fallback, 1, 6, 1, 1)
 
+    cb_allow_tearing = Gtk.CheckButton.new_with_label(voc["allow-tearing"])
+    cb_allow_tearing.set_tooltip_text(voc["allow-tearing-tooltip"])
+    cb_allow_tearing.set_property("halign", Gtk.Align.START)
+    cb_allow_tearing.set_active(settings["gen-allow_tearing"])
+    cb_allow_tearing.connect("toggled", set_from_checkbutton, settings, "gen-allow_tearing")
+    grid.attach(cb_allow_tearing, 1, 7, 1, 1)
+
     cb_resize_on_border = Gtk.CheckButton.new_with_label(voc["resize-on-border"])
     cb_resize_on_border.set_tooltip_text(voc["resize-on-border"])
     cb_resize_on_border.set_property("halign", Gtk.Align.START)
@@ -1096,14 +1103,14 @@ def h_general_tab(settings, voc):
 
     lbl = Gtk.Label.new("{}:".format(voc["extend-border-grab-area"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 1, 7, 2, 1)
+    grid.attach(lbl, 1, 8, 2, 1)
 
     sb_extend_grab_area = Gtk.SpinButton.new_with_range(0, 365, 1)
     sb_extend_grab_area.set_property("halign", Gtk.Align.START)
     sb_extend_grab_area.set_tooltip_text(voc["extend-border-grab-area-tooltip"])
     sb_extend_grab_area.set_value(settings["gen-extend_border_grab_area"])
     sb_extend_grab_area.connect("value-changed", set_int_from_spinbutton, settings, "gen-extend_border_grab_area")
-    grid.attach(sb_extend_grab_area, 3, 7, 1, 1)
+    grid.attach(sb_extend_grab_area, 3, 8, 1, 1)
 
     cb_hover = Gtk.CheckButton.new_with_label(voc["hover-icon-on-border"])
     cb_hover.set_tooltip_text(voc["hover-icon-on-border-tooltip"])

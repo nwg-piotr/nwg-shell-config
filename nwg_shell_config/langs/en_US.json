@@ -11,6 +11,8 @@
   "all-of-type": "All of this type",
   "allow-small-split": "Allow small split",
   "allow-small-split-tooltip": "Enable adding additional master windows in a horizontal split style.",
+  "allow-tearing": "Allow tearing",
+  "allow-tearing-tooltip": "Master switch for allowing tearing to occur.",
   "always-center-master": "Always center master",
   "always-center-master-tooltip": "When using orientation=center, keep the master window centered, even when it is the only window in the workspace.",
   "always-show": "Always show",

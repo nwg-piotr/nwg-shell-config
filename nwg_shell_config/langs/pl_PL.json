@@ -11,6 +11,8 @@
   "all-of-type": "Wszystkie tego typu",
   "allow-small-split": "Zezwól na mały podział",
   "allow-small-split-tooltip": "Umożliwia dodawanie dodatkowych okien Master w stylu podziału poziomego.",
+  "allow-tearing": "Zezwalaj na tearing",
+  "allow-tearing-tooltip": "Główny przełącznik dla ustawień tearingu.",
   "always-center-master": "Zawsze centruj master",
   "always-center-master-tooltip": "Gdy użyto orientacji 'środek', trzymaj okno master wycentrowane, nawet gdy jest jedynym w tym obszarze roboczym.",
   "always-show": "Zawsze wyświetlaj",
