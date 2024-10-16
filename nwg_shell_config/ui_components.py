@@ -2748,76 +2748,76 @@ def dock_tab(preset, preset_name, outputs, voc):
     return frame
 
 
-def bar_tab(preset, preset_name, voc):
-    frame = Gtk.Frame()
-    frame.set_label("  {}: {}  ".format(preset_name, voc["exit-menu"]))
-    frame.set_label_align(0.5, 0.5)
-    frame.set_property("hexpand", True)
-    grid = Gtk.Grid()
-    frame.add(grid)
-    grid.set_property("margin", 12)
-    grid.set_column_spacing(6)
-    grid.set_row_spacing(6)
-
-    cb_bar_on = Gtk.CheckButton.new_with_label(voc["exit-menu-on"])
-    cb_bar_on.set_active(preset["exit-on"])
-    cb_bar_on.connect("toggled", set_from_checkbutton, preset, "exit-on")
-    grid.attach(cb_bar_on, 0, 0, 2, 1)
-
-    lbl = Gtk.Label.new("{}:".format(voc["position"]))
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 1, 1, 1)
-
-    combo_position = Gtk.ComboBoxText()
-    combo_position.set_property("halign", Gtk.Align.START)
-    grid.attach(combo_position, 1, 1, 1, 1)
-    for item in ["center", "top", "bottom", "left", "right"]:
-        combo_position.append(item, voc[item])
-    combo_position.set_active_id(preset["exit-position"])
-    combo_position.connect("changed", set_dict_key_from_combo, preset, "exit-position")
-
-    lbl = Gtk.Label.new("{}:".format(voc["alignment"]))
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 2, 1, 1)
-
-    combo_alignment = Gtk.ComboBoxText()
-    combo_alignment.set_property("halign", Gtk.Align.START)
-    grid.attach(combo_alignment, 1, 2, 1, 1)
-    for item in ["middle", "start", "end"]:
-        combo_alignment.append(item, voc[item])
-    combo_alignment.set_active_id(preset["exit-alignment"])
-    combo_alignment.connect("changed", set_dict_key_from_combo, preset, "exit-alignment")
-    combo_alignment.set_tooltip_text("Alignment in full width/height.")
-
-    lbl = Gtk.Label.new("{}:".format(voc["icon-size"]))
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 3, 1, 1)
-
-    sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
-    sb_icon_size.set_value(preset["exit-icon-size"])
-    sb_icon_size.connect("value-changed", set_int_from_spinbutton, preset, "exit-icon-size")
-    sb_icon_size.set_tooltip_text(voc["item-icon-size-tooltip"])
-    grid.attach(sb_icon_size, 1, 3, 1, 1)
-
-    lbl = Gtk.Label.new("{}:".format(voc["margin"]))
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 4, 1, 1)
-
-    sb_margin = Gtk.SpinButton.new_with_range(0, 256, 1)
-    sb_margin.set_value(preset["exit-margin"])
-    sb_margin.connect("value-changed", set_int_from_spinbutton, preset, "exit-margin")
-    sb_margin.set_tooltip_text(voc["margin-tooltip"])
-    grid.attach(sb_margin, 1, 4, 1, 1)
-
-    cb_full = Gtk.CheckButton.new_with_label(voc["full-width-height"])
-    cb_full.set_active(preset["exit-full"])
-    cb_full.connect("toggled", set_from_checkbutton, preset, "exit-full")
-    cb_full.set_tooltip_text(voc["full-width-height-tooltip"])
-    grid.attach(cb_full, 0, 5, 2, 1)
-
-    frame.show_all()
-
-    return frame
+# def bar_tab(preset, preset_name, voc):
+#     frame = Gtk.Frame()
+#     frame.set_label("  {}: {}  ".format(preset_name, voc["exit-menu"]))
+#     frame.set_label_align(0.5, 0.5)
+#     frame.set_property("hexpand", True)
+#     grid = Gtk.Grid()
+#     frame.add(grid)
+#     grid.set_property("margin", 12)
+#     grid.set_column_spacing(6)
+#     grid.set_row_spacing(6)
+#
+#     cb_bar_on = Gtk.CheckButton.new_with_label(voc["exit-menu-on"])
+#     cb_bar_on.set_active(preset["exit-on"])
+#     cb_bar_on.connect("toggled", set_from_checkbutton, preset, "exit-on")
+#     grid.attach(cb_bar_on, 0, 0, 2, 1)
+#
+#     lbl = Gtk.Label.new("{}:".format(voc["position"]))
+#     lbl.set_property("halign", Gtk.Align.END)
+#     grid.attach(lbl, 0, 1, 1, 1)
+#
+#     combo_position = Gtk.ComboBoxText()
+#     combo_position.set_property("halign", Gtk.Align.START)
+#     grid.attach(combo_position, 1, 1, 1, 1)
+#     for item in ["center", "top", "bottom", "left", "right"]:
+#         combo_position.append(item, voc[item])
+#     combo_position.set_active_id(preset["exit-position"])
+#     combo_position.connect("changed", set_dict_key_from_combo, preset, "exit-position")
+#
+#     lbl = Gtk.Label.new("{}:".format(voc["alignment"]))
+#     lbl.set_property("halign", Gtk.Align.END)
+#     grid.attach(lbl, 0, 2, 1, 1)
+#
+#     combo_alignment = Gtk.ComboBoxText()
+#     combo_alignment.set_property("halign", Gtk.Align.START)
+#     grid.attach(combo_alignment, 1, 2, 1, 1)
+#     for item in ["middle", "start", "end"]:
+#         combo_alignment.append(item, voc[item])
+#     combo_alignment.set_active_id(preset["exit-alignment"])
+#     combo_alignment.connect("changed", set_dict_key_from_combo, preset, "exit-alignment")
+#     combo_alignment.set_tooltip_text("Alignment in full width/height.")
+#
+#     lbl = Gtk.Label.new("{}:".format(voc["icon-size"]))
+#     lbl.set_property("halign", Gtk.Align.END)
+#     grid.attach(lbl, 0, 3, 1, 1)
+#
+#     sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
+#     sb_icon_size.set_value(preset["exit-icon-size"])
+#     sb_icon_size.connect("value-changed", set_int_from_spinbutton, preset, "exit-icon-size")
+#     sb_icon_size.set_tooltip_text(voc["item-icon-size-tooltip"])
+#     grid.attach(sb_icon_size, 1, 3, 1, 1)
+#
+#     lbl = Gtk.Label.new("{}:".format(voc["margin"]))
+#     lbl.set_property("halign", Gtk.Align.END)
+#     grid.attach(lbl, 0, 4, 1, 1)
+#
+#     sb_margin = Gtk.SpinButton.new_with_range(0, 256, 1)
+#     sb_margin.set_value(preset["exit-margin"])
+#     sb_margin.connect("value-changed", set_int_from_spinbutton, preset, "exit-margin")
+#     sb_margin.set_tooltip_text(voc["margin-tooltip"])
+#     grid.attach(sb_margin, 1, 4, 1, 1)
+#
+#     cb_full = Gtk.CheckButton.new_with_label(voc["full-width-height"])
+#     cb_full.set_active(preset["exit-full"])
+#     cb_full.connect("toggled", set_from_checkbutton, preset, "exit-full")
+#     cb_full.set_tooltip_text(voc["full-width-height-tooltip"])
+#     grid.attach(cb_full, 0, 5, 2, 1)
+#
+#     frame.show_all()
+#
+#     return frame
 
 
 def notification_tab(preset, preset_name, voc):
