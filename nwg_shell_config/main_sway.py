@@ -233,9 +233,9 @@ def preset_menu(preset_id):
     row.eb.connect("button-press-event", set_up_dock_tab, preset, preset_name)
     list_box.add(row)
 
-    row = SideMenuRow(voc["exit-menu"], margin_start=18)
-    row.eb.connect("button-press-event", set_up_bar_tab, preset, preset_name)
-    list_box.add(row)
+    # row = SideMenuRow(voc["exit-menu"], margin_start=18)
+    # row.eb.connect("button-press-event", set_up_bar_tab, preset, preset_name)
+    # list_box.add(row)
 
     row = SideMenuRow(voc["notifications"], margin_start=18)
     row.eb.connect("button-press-event", set_up_notification_tab, preset, preset_name)
@@ -363,12 +363,12 @@ def set_up_dock_tab(event_box, event_button, preset, preset_name):
     grid.attach(content, 1, 0, 1, 1)
 
 
-def set_up_bar_tab(event_box, event_button, preset, preset_name):
-    hide_submenus()
-    global content
-    content.destroy()
-    content = bar_tab(preset, preset_name, voc)
-    grid.attach(content, 1, 0, 1, 1)
+# def set_up_bar_tab(event_box, event_button, preset, preset_name):
+#     hide_submenus()
+#     global content
+#     content.destroy()
+#     content = bar_tab(preset, preset_name, voc)
+#     grid.attach(content, 1, 0, 1, 1)
 
 
 def set_up_notification_tab(event_box, event_button, preset, preset_name):
