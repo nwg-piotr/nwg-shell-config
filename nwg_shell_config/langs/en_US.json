@@ -58,6 +58,8 @@
   "check-updates": "Check updates",
   "clickfinger-behavior": "Clickfinger behavior",
   "clickfinger-behavior-tooltip": "Button presses with 1, 2, or 3 fingers will be mapped to LMB, RMB, and MMB respectively.\nThis disables interpretation of clicks based on location on the touchpad.",
+  "click-method": "Click method",
+  "click-method-tooltip": "button_areas (default) - left/middle/right button click when pressing down the touchpad in specific areas (bottom left, middle and right by default)\nclickfinger - left/middle/right button click when pressing down the touchpad with 1, 2 or 3 fingers",
   "clipboard-history": "Clipboard history",
   "clipboard-history-tooltip": "Determines whether to store clipboard history to cliphist (add commands to autostart).",
   "close": "Close",

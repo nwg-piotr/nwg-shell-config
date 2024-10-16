@@ -58,6 +58,8 @@
   "check-updates": "Sprawdź aktualizacje",
   "clickfinger-behavior": "Zachowanie palca klikającego",
   "clickfinger-behavior-tooltip": "Button presses with 1, 2, or 3 fingers will be mapped to LMB, RMB, and MMB respectively.\nThis disables interpretation of clicks based on location on the touchpad.",
+  "click-method": "Metoda kliknięcia",
+  "click-method-tooltip": "button_areas (domyślne) - kliknięcie lewym/środkowym/prawym przyciskiem po naciśnięciu touchpada w określonych obszarach (domyślnie w lewym dolnym, środkowym i prawym dolnym rogu)\nclickfinger - kliknięcie lewym/środkowym/prawym przyciskiem po naciśnięciu touchpada 1, 2 lub 3 palcami",
   "clipboard-history": "Historia schowka",
   "clipboard-history-tooltip": "Określa czy zapisywać historię schowka w cliphist (dodaje komendy do autostart).",
   "close": "Zamknij",

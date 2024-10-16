@@ -1926,23 +1926,36 @@ def touchpad_tab(settings, voc):
     combo_dwt.connect("changed", set_dict_key_from_combo, settings, "touchpad-dwt")
     grid.attach(combo_dwt, 3, 7, 1, 1)
 
-    lbl = Gtk.Label.new("{}:".format(voc["custom-field"]))
+    lbl = Gtk.Label.new("{}:".format(voc["click-method"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 8, 1, 1)
+
+    combo_click_method = Gtk.ComboBoxText()
+    combo_click_method.set_property("halign", Gtk.Align.START)
+    combo_click_method.set_tooltip_text(voc["click-method-tooltip"])
+    for item in [("button_areas", "button_areas"), ("clickfinger", "clickfinger"), ("none", "None")]:
+        combo_click_method.append(item[0], item[1])
+    combo_click_method.set_active_id(settings["touchpad-click-method"])
+    combo_click_method.connect("changed", set_dict_key_from_combo, settings, "touchpad-click-method")
+    grid.attach(combo_click_method, 1, 8, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["custom-field"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 9, 1, 1)
 
     entry_cname = Gtk.Entry()
     entry_cname.set_tooltip_text(voc["custom-field-name-tooltip"])
     entry_cname.set_placeholder_text(voc["name"])
     entry_cname.set_text(settings["touchpad-custom-name"])
     entry_cname.connect("changed", set_from_entry, settings, "touchpad-custom-name")
-    grid.attach(entry_cname, 1, 8, 1, 1)
+    grid.attach(entry_cname, 1, 9, 1, 1)
 
     entry_cname = Gtk.Entry()
     entry_cname.set_tooltip_text(voc["custom-field-value-tooltip"])
     entry_cname.set_placeholder_text(voc["value"])
     entry_cname.set_text(settings["touchpad-custom-value"])
     entry_cname.connect("changed", set_from_entry, settings, "touchpad-custom-value")
-    grid.attach(entry_cname, 2, 8, 2, 1)
+    grid.attach(entry_cname, 2, 9, 2, 1)
 
     frame.show_all()
 
