@@ -243,9 +243,9 @@ def preset_menu(preset_id):
     row.eb.connect("button-press-event", set_up_dock_tab, preset, preset_name)
     list_box.add(row)
 
-    row = SideMenuRow(voc["exit-menu"], margin_start=18)
-    row.eb.connect("button-press-event", set_up_bar_tab, preset, preset_name)
-    list_box.add(row)
+    # row = SideMenuRow(voc["exit-menu"], margin_start=18)
+    # row.eb.connect("button-press-event", set_up_bar_tab, preset, preset_name)
+    # list_box.add(row)
 
     row = SideMenuRow(voc["notifications"], margin_start=18)
     row.eb.connect("button-press-event", set_up_notification_tab, preset, preset_name)
@@ -389,12 +389,12 @@ def set_up_dock_tab(event_box, event_button, preset, preset_name):
     grid.attach(content, 1, 0, 1, 1)
 
 
-def set_up_bar_tab(event_box, event_button, preset, preset_name):
-    hide_submenus()
-    global content
-    content.destroy()
-    content = bar_tab(preset, preset_name, voc)
-    grid.attach(content, 1, 0, 1, 1)
+# def set_up_bar_tab(event_box, event_button, preset, preset_name):
+#     hide_submenus()
+#     global content
+#     content.destroy()
+#     content = bar_tab(preset, preset_name, voc)
+#     grid.attach(content, 1, 0, 1, 1)
 
 
 def set_up_notification_tab(event_box, event_button, preset, preset_name):
@@ -709,6 +709,9 @@ def save_includes():
     if preset["dock-exclusive"]:
         cmd_dock += " -x"
 
+    if preset["launcher-at-start"]:
+        cmd_dock += " -lp start"
+
     if "preset-" in settings["panel-preset"]:
         cmd_dock += " -s {}.css".format(settings["panel-preset"])
     elif preset["dock-css"]:
@@ -822,6 +825,8 @@ def save_includes():
             includes.append('    no_cursor_warps = {}'.format(bool2lower(settings["gen-no_cursor_warps"])))
         if settings["gen-no_focus_fallback"]:
             includes.append('    no_focus_fallback = {}'.format(bool2lower(settings["gen-no_focus_fallback"])))
+        if settings["gen-allow_tearing"]:
+            includes.append('    allow_tearing = {}'.format(bool2lower(settings["gen-allow_tearing"])))
         if settings["gen-resize_on_border"]:
             includes.append('    resize_on_border = {}'.format(bool2lower(settings["gen-resize_on_border"])))
         if settings["gen-extend_border_grab_area"]:
@@ -943,6 +948,12 @@ def save_includes():
     if preset["launcher-super-key"]:
         includes.append('bindr = SUPER, SUPER_L, exec, $launcher')
 
+    includes.append('\n# LAYER RULES')
+    if preset["launcher-blur-background"]:
+        includes.append("layerrule = blur, nwg-drawer")
+    if preset["dock-blur-background"]:
+        includes.append("layerrule = blur, nwg-dock")
+
     p = os.path.join(config_home, "hypr/includes.conf")
     print("Saving includes to {}".format(p))
     save_list_to_text_file(includes, p)
@@ -1017,6 +1028,7 @@ def load_settings():
         "gen-resize_on_border": False,
         "gen-extend_border_grab_area": 15,
         "gen-hover_icon_on_border": True,
+        "gen-allow_tearing": False,
 
         "dwindle-use-settings": True,
         "dwindle-pseudotile": False,
@@ -1152,6 +1164,7 @@ def load_presets():
 def load_preset(file_name):
     defaults = {
         "panel-css": "",
+        "launcher-at-start": False,
         "launcher-columns": 6,
         "launcher-icon-size": 64,
         "launcher-file-search-columns": 2,
@@ -1167,6 +1180,7 @@ def load_preset(file_name):
         "launcher-run-through-compositor": False,
         "launcher-super-key": False,
         "launcher-output": "Any",
+        "launcher-blur-background": False,
         "exit-position": "center",
         "exit-full": False,
         "exit-alignment": "middle",
@@ -1188,6 +1202,7 @@ def load_preset(file_name):
         "dock-startup-delay": 0,
         "dock-css": "",
         "dock-on": False,
+        "dock-blur-background": False,
         "swaync-positionX": "right",
         "swaync-positionY": "top",
         "swaync-control-center-width": 500,

@@ -1,5 +1,6 @@
 {
   "panel-css": "preset-0.css",
+  "launcher-at-start": false,
   "launcher-columns": 6,
   "launcher-icon-size": 64,
   "launcher-file-search-columns": 2,

@@ -1087,6 +1087,13 @@ def h_general_tab(settings, voc):
     cb_no_focus_fallback.connect("toggled", set_from_checkbutton, settings, "gen-no_focus_fallback")
     grid.attach(cb_no_focus_fallback, 1, 6, 1, 1)
 
+    cb_allow_tearing = Gtk.CheckButton.new_with_label(voc["allow-tearing"])
+    cb_allow_tearing.set_tooltip_text(voc["allow-tearing-tooltip"])
+    cb_allow_tearing.set_property("halign", Gtk.Align.START)
+    cb_allow_tearing.set_active(settings["gen-allow_tearing"])
+    cb_allow_tearing.connect("toggled", set_from_checkbutton, settings, "gen-allow_tearing")
+    grid.attach(cb_allow_tearing, 1, 7, 1, 1)
+
     cb_resize_on_border = Gtk.CheckButton.new_with_label(voc["resize-on-border"])
     cb_resize_on_border.set_tooltip_text(voc["resize-on-border"])
     cb_resize_on_border.set_property("halign", Gtk.Align.START)
@@ -1096,14 +1103,14 @@ def h_general_tab(settings, voc):
 
     lbl = Gtk.Label.new("{}:".format(voc["extend-border-grab-area"]))
     lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 1, 7, 2, 1)
+    grid.attach(lbl, 1, 8, 2, 1)
 
     sb_extend_grab_area = Gtk.SpinButton.new_with_range(0, 365, 1)
     sb_extend_grab_area.set_property("halign", Gtk.Align.START)
     sb_extend_grab_area.set_tooltip_text(voc["extend-border-grab-area-tooltip"])
     sb_extend_grab_area.set_value(settings["gen-extend_border_grab_area"])
     sb_extend_grab_area.connect("value-changed", set_int_from_spinbutton, settings, "gen-extend_border_grab_area")
-    grid.attach(sb_extend_grab_area, 3, 7, 1, 1)
+    grid.attach(sb_extend_grab_area, 3, 8, 1, 1)
 
     cb_hover = Gtk.CheckButton.new_with_label(voc["hover-icon-on-border"])
     cb_hover.set_tooltip_text(voc["hover-icon-on-border-tooltip"])
@@ -1919,23 +1926,36 @@ def touchpad_tab(settings, voc):
     combo_dwt.connect("changed", set_dict_key_from_combo, settings, "touchpad-dwt")
     grid.attach(combo_dwt, 3, 7, 1, 1)
 
-    lbl = Gtk.Label.new("{}:".format(voc["custom-field"]))
+    lbl = Gtk.Label.new("{}:".format(voc["click-method"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 8, 1, 1)
+
+    combo_click_method = Gtk.ComboBoxText()
+    combo_click_method.set_property("halign", Gtk.Align.START)
+    combo_click_method.set_tooltip_text(voc["click-method-tooltip"])
+    for item in [("button_areas", "button_areas"), ("clickfinger", "clickfinger"), ("none", "None")]:
+        combo_click_method.append(item[0], item[1])
+    combo_click_method.set_active_id(settings["touchpad-click-method"])
+    combo_click_method.connect("changed", set_dict_key_from_combo, settings, "touchpad-click-method")
+    grid.attach(combo_click_method, 1, 8, 1, 1)
+
+    lbl = Gtk.Label.new("{}:".format(voc["custom-field"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 9, 1, 1)
 
     entry_cname = Gtk.Entry()
     entry_cname.set_tooltip_text(voc["custom-field-name-tooltip"])
     entry_cname.set_placeholder_text(voc["name"])
     entry_cname.set_text(settings["touchpad-custom-name"])
     entry_cname.connect("changed", set_from_entry, settings, "touchpad-custom-name")
-    grid.attach(entry_cname, 1, 8, 1, 1)
+    grid.attach(entry_cname, 1, 9, 1, 1)
 
     entry_cname = Gtk.Entry()
     entry_cname.set_tooltip_text(voc["custom-field-value-tooltip"])
     entry_cname.set_placeholder_text(voc["value"])
     entry_cname.set_text(settings["touchpad-custom-value"])
     entry_cname.connect("changed", set_from_entry, settings, "touchpad-custom-value")
-    grid.attach(entry_cname, 2, 8, 2, 1)
+    grid.attach(entry_cname, 2, 9, 2, 1)
 
     frame.show_all()
 
@@ -2582,6 +2602,12 @@ def drawer_tab(preset, preset_name, outputs, voc):
     cb_use_icon_theme.connect("toggled", set_from_checkbutton, preset, "pb-icon-theme")
     grid.attach(cb_use_icon_theme, 2, 11, 2, 1)
 
+    if os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+        cb_h_drawer_blur_bg = Gtk.CheckButton.new_with_label(voc["blur-background"])
+        cb_h_drawer_blur_bg.set_active(preset["launcher-blur-background"])
+        cb_h_drawer_blur_bg.connect("toggled", set_from_checkbutton, preset, "launcher-blur-background")
+        grid.attach(cb_h_drawer_blur_bg, 0, 12, 2, 1)
+
     frame.show_all()
 
     return frame
@@ -2698,101 +2724,113 @@ def dock_tab(preset, preset_name, outputs, voc):
     cb_permanent.set_active(preset["dock-permanent"])
     cb_permanent.connect("toggled", set_from_checkbutton, preset, "dock-permanent")
     cb_permanent.set_tooltip_text(voc["permanent-tooltip"])
-    grid.attach(cb_permanent, 0, 9, 2, 1)
+    grid.attach(cb_permanent, 0, 9, 1, 1)
 
     cb_full = Gtk.CheckButton.new_with_label(voc["full-width-height"])
     cb_full.set_active(preset["dock-full"])
     cb_full.connect("toggled", set_from_checkbutton, preset, "dock-full")
     cb_full.set_tooltip_text(voc["full-width-height-tooltip"])
-    grid.attach(cb_full, 0, 10, 2, 1)
+    grid.attach(cb_full, 0, 10, 1, 1)
 
     cb_autohide = Gtk.CheckButton.new_with_label(voc["auto-show-hide"])
     cb_autohide.set_active(preset["dock-autohide"])
     cb_autohide.connect("toggled", set_from_checkbutton, preset, "dock-autohide")
     cb_autohide.set_tooltip_text(voc["auto-show-hide-tooltip"])
-    grid.attach(cb_autohide, 0, 11, 2, 1)
+    grid.attach(cb_autohide, 0, 11, 1, 1)
 
     cb_exclusive = Gtk.CheckButton.new_with_label(voc["exclusive-zone"])
     cb_exclusive.set_active(preset["dock-exclusive"])
     cb_exclusive.connect("toggled", set_from_checkbutton, preset, "dock-exclusive")
     cb_exclusive.set_tooltip_text(voc["exclusive-zone-tooltip"])
-    grid.attach(cb_exclusive, 0, 12, 1, 1)
+    grid.attach(cb_exclusive, 1, 9, 1, 1)
+
+    cb_launcher_at_start = Gtk.CheckButton.new_with_label(voc["launcher-at-start"])
+    cb_launcher_at_start.set_active(preset["launcher-at-start"])
+    cb_launcher_at_start.connect("toggled", set_from_checkbutton, preset, "launcher-at-start")
+    cb_launcher_at_start.set_tooltip_text(voc["launcher-at-start-tooltip"])
+    grid.attach(cb_launcher_at_start, 1, 10, 1, 1)
+
+    if os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+        cb_blur_bg = Gtk.CheckButton.new_with_label(voc["blur-background"])
+        cb_blur_bg.set_active(preset["dock-blur-background"])
+        cb_blur_bg.connect("toggled", set_from_checkbutton, preset, "dock-blur-background")
+        grid.attach(cb_blur_bg, 1, 11, 1, 1)
 
     frame.show_all()
 
     return frame
 
 
-def bar_tab(preset, preset_name, voc):
-    frame = Gtk.Frame()
-    frame.set_label("  {}: {}  ".format(preset_name, voc["exit-menu"]))
-    frame.set_label_align(0.5, 0.5)
-    frame.set_property("hexpand", True)
-    grid = Gtk.Grid()
-    frame.add(grid)
-    grid.set_property("margin", 12)
-    grid.set_column_spacing(6)
-    grid.set_row_spacing(6)
-
-    cb_bar_on = Gtk.CheckButton.new_with_label(voc["exit-menu-on"])
-    cb_bar_on.set_active(preset["exit-on"])
-    cb_bar_on.connect("toggled", set_from_checkbutton, preset, "exit-on")
-    grid.attach(cb_bar_on, 0, 0, 2, 1)
-
-    lbl = Gtk.Label.new("{}:".format(voc["position"]))
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 1, 1, 1)
-
-    combo_position = Gtk.ComboBoxText()
-    combo_position.set_property("halign", Gtk.Align.START)
-    grid.attach(combo_position, 1, 1, 1, 1)
-    for item in ["center", "top", "bottom", "left", "right"]:
-        combo_position.append(item, voc[item])
-    combo_position.set_active_id(preset["exit-position"])
-    combo_position.connect("changed", set_dict_key_from_combo, preset, "exit-position")
-
-    lbl = Gtk.Label.new("{}:".format(voc["alignment"]))
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 2, 1, 1)
-
-    combo_alignment = Gtk.ComboBoxText()
-    combo_alignment.set_property("halign", Gtk.Align.START)
-    grid.attach(combo_alignment, 1, 2, 1, 1)
-    for item in ["middle", "start", "end"]:
-        combo_alignment.append(item, voc[item])
-    combo_alignment.set_active_id(preset["exit-alignment"])
-    combo_alignment.connect("changed", set_dict_key_from_combo, preset, "exit-alignment")
-    combo_alignment.set_tooltip_text("Alignment in full width/height.")
-
-    lbl = Gtk.Label.new("{}:".format(voc["icon-size"]))
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 3, 1, 1)
-
-    sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
-    sb_icon_size.set_value(preset["exit-icon-size"])
-    sb_icon_size.connect("value-changed", set_int_from_spinbutton, preset, "exit-icon-size")
-    sb_icon_size.set_tooltip_text(voc["item-icon-size-tooltip"])
-    grid.attach(sb_icon_size, 1, 3, 1, 1)
-
-    lbl = Gtk.Label.new("{}:".format(voc["margin"]))
-    lbl.set_property("halign", Gtk.Align.END)
-    grid.attach(lbl, 0, 4, 1, 1)
-
-    sb_margin = Gtk.SpinButton.new_with_range(0, 256, 1)
-    sb_margin.set_value(preset["exit-margin"])
-    sb_margin.connect("value-changed", set_int_from_spinbutton, preset, "exit-margin")
-    sb_margin.set_tooltip_text(voc["margin-tooltip"])
-    grid.attach(sb_margin, 1, 4, 1, 1)
-
-    cb_full = Gtk.CheckButton.new_with_label(voc["full-width-height"])
-    cb_full.set_active(preset["exit-full"])
-    cb_full.connect("toggled", set_from_checkbutton, preset, "exit-full")
-    cb_full.set_tooltip_text(voc["full-width-height-tooltip"])
-    grid.attach(cb_full, 0, 5, 2, 1)
-
-    frame.show_all()
-
-    return frame
+# def bar_tab(preset, preset_name, voc):
+#     frame = Gtk.Frame()
+#     frame.set_label("  {}: {}  ".format(preset_name, voc["exit-menu"]))
+#     frame.set_label_align(0.5, 0.5)
+#     frame.set_property("hexpand", True)
+#     grid = Gtk.Grid()
+#     frame.add(grid)
+#     grid.set_property("margin", 12)
+#     grid.set_column_spacing(6)
+#     grid.set_row_spacing(6)
+#
+#     cb_bar_on = Gtk.CheckButton.new_with_label(voc["exit-menu-on"])
+#     cb_bar_on.set_active(preset["exit-on"])
+#     cb_bar_on.connect("toggled", set_from_checkbutton, preset, "exit-on")
+#     grid.attach(cb_bar_on, 0, 0, 2, 1)
+#
+#     lbl = Gtk.Label.new("{}:".format(voc["position"]))
+#     lbl.set_property("halign", Gtk.Align.END)
+#     grid.attach(lbl, 0, 1, 1, 1)
+#
+#     combo_position = Gtk.ComboBoxText()
+#     combo_position.set_property("halign", Gtk.Align.START)
+#     grid.attach(combo_position, 1, 1, 1, 1)
+#     for item in ["center", "top", "bottom", "left", "right"]:
+#         combo_position.append(item, voc[item])
+#     combo_position.set_active_id(preset["exit-position"])
+#     combo_position.connect("changed", set_dict_key_from_combo, preset, "exit-position")
+#
+#     lbl = Gtk.Label.new("{}:".format(voc["alignment"]))
+#     lbl.set_property("halign", Gtk.Align.END)
+#     grid.attach(lbl, 0, 2, 1, 1)
+#
+#     combo_alignment = Gtk.ComboBoxText()
+#     combo_alignment.set_property("halign", Gtk.Align.START)
+#     grid.attach(combo_alignment, 1, 2, 1, 1)
+#     for item in ["middle", "start", "end"]:
+#         combo_alignment.append(item, voc[item])
+#     combo_alignment.set_active_id(preset["exit-alignment"])
+#     combo_alignment.connect("changed", set_dict_key_from_combo, preset, "exit-alignment")
+#     combo_alignment.set_tooltip_text("Alignment in full width/height.")
+#
+#     lbl = Gtk.Label.new("{}:".format(voc["icon-size"]))
+#     lbl.set_property("halign", Gtk.Align.END)
+#     grid.attach(lbl, 0, 3, 1, 1)
+#
+#     sb_icon_size = Gtk.SpinButton.new_with_range(8, 256, 1)
+#     sb_icon_size.set_value(preset["exit-icon-size"])
+#     sb_icon_size.connect("value-changed", set_int_from_spinbutton, preset, "exit-icon-size")
+#     sb_icon_size.set_tooltip_text(voc["item-icon-size-tooltip"])
+#     grid.attach(sb_icon_size, 1, 3, 1, 1)
+#
+#     lbl = Gtk.Label.new("{}:".format(voc["margin"]))
+#     lbl.set_property("halign", Gtk.Align.END)
+#     grid.attach(lbl, 0, 4, 1, 1)
+#
+#     sb_margin = Gtk.SpinButton.new_with_range(0, 256, 1)
+#     sb_margin.set_value(preset["exit-margin"])
+#     sb_margin.connect("value-changed", set_int_from_spinbutton, preset, "exit-margin")
+#     sb_margin.set_tooltip_text(voc["margin-tooltip"])
+#     grid.attach(sb_margin, 1, 4, 1, 1)
+#
+#     cb_full = Gtk.CheckButton.new_with_label(voc["full-width-height"])
+#     cb_full.set_active(preset["exit-full"])
+#     cb_full.connect("toggled", set_from_checkbutton, preset, "exit-full")
+#     cb_full.set_tooltip_text(voc["full-width-height-tooltip"])
+#     grid.attach(cb_full, 0, 5, 2, 1)
+#
+#     frame.show_all()
+#
+#     return frame
 
 
 def notification_tab(preset, preset_name, voc):
