@@ -951,6 +951,8 @@ def save_includes():
     includes.append('\n# LAYER RULES')
     if preset["launcher-blur-background"]:
         includes.append("layerrule = blur, nwg-drawer")
+    if preset["dock-blur-background"]:
+        includes.append("layerrule = blur, nwg-dock")
 
     p = os.path.join(config_home, "hypr/includes.conf")
     print("Saving includes to {}".format(p))
@@ -1200,6 +1202,7 @@ def load_preset(file_name):
         "dock-startup-delay": 0,
         "dock-css": "",
         "dock-on": False,
+        "dock-blur-background": False,
         "swaync-positionX": "right",
         "swaync-positionY": "top",
         "swaync-control-center-width": 500,
