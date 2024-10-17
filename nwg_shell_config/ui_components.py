@@ -2494,11 +2494,6 @@ def drawer_tab(preset, preset_name, outputs, voc):
     sb_fs_columns.set_tooltip_text(voc["file-search-columns-tooltip"])
     grid.attach(sb_fs_columns, 1, 3, 1, 1)
 
-    cb_search_files = Gtk.CheckButton.new_with_label(voc["search-files"])
-    cb_search_files.set_active(preset["launcher-search-files"])
-    cb_search_files.connect("toggled", set_from_checkbutton, preset, "launcher-search-files")
-    grid.attach(cb_search_files, 2, 3, 1, 1)
-
     lbl = Gtk.Label.new("{}:".format(voc["gtk-theme"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 4, 1, 1)
@@ -2558,55 +2553,60 @@ def drawer_tab(preset, preset_name, outputs, voc):
     cb_categories.set_tooltip_text(voc["show-category-buttons-tooltip"])
     cb_categories.set_active(preset["launcher-categories"])
     cb_categories.connect("toggled", set_from_checkbutton, preset, "launcher-categories")
-    grid.attach(cb_categories, 0, 8, 2, 1)
+    grid.attach(cb_categories, 0, 8, 1, 1)
 
     cb_resident = Gtk.CheckButton.new_with_label(voc["keep-resident"])
     cb_resident.set_tooltip_text(voc["keep-resident-tooltip"])
     cb_resident.set_active(preset["launcher-resident"])
     cb_resident.connect("toggled", set_from_checkbutton, preset, "launcher-resident")
-    grid.attach(cb_resident, 0, 9, 2, 1)
+    grid.attach(cb_resident, 0, 9, 1, 1)
 
     cb_super = Gtk.CheckButton.new_with_label(voc["open-on-super"])
     cb_super.set_tooltip_text(voc["open-on-super-tooltip"])
     cb_super.set_active(preset["launcher-super-key"])
     cb_super.connect("toggled", set_from_checkbutton, preset, "launcher-super-key")
-    grid.attach(cb_super, 0, 10, 2, 1)
+    grid.attach(cb_super, 0, 10, 1, 1)
 
     cb_overlay = Gtk.CheckButton.new_with_label(voc["open-on-overlay"])
     cb_overlay.set_tooltip_text(voc["open-on-overlay-tooltip"])
     cb_overlay.set_active(preset["launcher-overlay"])
     cb_overlay.connect("toggled", set_from_checkbutton, preset, "launcher-overlay")
-    grid.attach(cb_overlay, 0, 11, 2, 1)
+    grid.attach(cb_overlay, 0, 11, 1, 1)
 
     cb_force_theme = Gtk.CheckButton.new_with_label(voc["run-with-gtk-theme"])
     cb_force_theme.set_tooltip_text(voc["run-with-gtk-theme-tooltip"])
     cb_force_theme.set_active(preset["launcher-force-theme"])
     cb_force_theme.connect("toggled", set_from_checkbutton, preset, "launcher-force-theme")
-    grid.attach(cb_force_theme, 2, 8, 2, 1)
+    grid.attach(cb_force_theme, 1, 8, 1, 1)
 
     cb_run_through_compositor = Gtk.CheckButton.new_with_label(voc["run-through-compositor"])
     cb_run_through_compositor.set_tooltip_text(voc["run-through-compositor-tooltip"])
     cb_run_through_compositor.set_active(preset["launcher-run-through-compositor"])
     cb_run_through_compositor.connect("toggled", set_from_checkbutton, preset, "launcher-run-through-compositor")
-    grid.attach(cb_run_through_compositor, 2, 9, 2, 1)
+    grid.attach(cb_run_through_compositor, 1, 9, 1, 1)
 
     cb_show_power_bar = Gtk.CheckButton.new_with_label(voc["show-power-bar"])
     cb_show_power_bar.set_tooltip_text(voc["show-power-bar-tooltip"])
     cb_show_power_bar.set_active(preset["powerbar-on"])
     cb_show_power_bar.connect("toggled", set_from_checkbutton, preset, "powerbar-on")
-    grid.attach(cb_show_power_bar, 2, 10, 2, 1)
+    grid.attach(cb_show_power_bar, 1, 10, 1, 1)
 
     cb_use_icon_theme = Gtk.CheckButton.new_with_label(voc["use-icon-theme"])
     cb_use_icon_theme.set_tooltip_text(voc["use-icon-theme-tooltip"])
     cb_use_icon_theme.set_active(preset["pb-icon-theme"])
     cb_use_icon_theme.connect("toggled", set_from_checkbutton, preset, "pb-icon-theme")
-    grid.attach(cb_use_icon_theme, 2, 11, 2, 1)
+    grid.attach(cb_use_icon_theme, 1, 11, 1, 1)
+
+    cb_search_files = Gtk.CheckButton.new_with_label(voc["search-files"])
+    cb_search_files.set_active(preset["launcher-search-files"])
+    cb_search_files.connect("toggled", set_from_checkbutton, preset, "launcher-search-files")
+    grid.attach(cb_search_files, 1, 12, 1, 1)
 
     if os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
         cb_h_drawer_blur_bg = Gtk.CheckButton.new_with_label(voc["blur-background"])
         cb_h_drawer_blur_bg.set_active(preset["launcher-blur-background"])
         cb_h_drawer_blur_bg.connect("toggled", set_from_checkbutton, preset, "launcher-blur-background")
-        grid.attach(cb_h_drawer_blur_bg, 0, 12, 2, 1)
+        grid.attach(cb_h_drawer_blur_bg, 0, 12, 1, 1)
 
     frame.show_all()
 
