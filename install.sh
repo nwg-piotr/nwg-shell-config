@@ -37,7 +37,7 @@ done
 
 echo "Building"
 python -m build --wheel --no-isolation
-
+[ -f /usr/bin/nwg-shell-config ] && sudo rm /usr/bin/nwg-shell-config
 python -m installer dist/*.whl
 
 install -Dm 644 -t "/usr/share/applications" "$PROGRAM_NAME.desktop"
