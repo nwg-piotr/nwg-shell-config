@@ -1113,8 +1113,9 @@ def load_settings():
         "unsplash-height": 1080,
         "unsplash-keywords": ["nature", "water", "landscape"],
         "wallhaven-ratio": "16x9,16x10",
+        "wallhaven-atleast": "1920x1080",
         "wallhaven-api-key": "",
-        "wallhaven-tags": ["nature", "water", "landscape"],
+        "wallhaven-tags": ["nature", "landscape"],
         "help-font-size": 12,
         "help-layer-shell": True,
         "help-keyboard": False,
@@ -1134,9 +1135,11 @@ def load_settings():
         "update-command": "nwg-system-update"
     }
     global settings
+    print(">>>", settings)
     if os.path.isfile(settings_file):
         print("Loading settings from {}".format(settings_file))
         settings = load_json(settings_file)
+        print(">>>", settings, settings_file)
         missing = 0
         for key in defaults:
             if key not in settings:

@@ -122,10 +122,10 @@
     "landscape"
   ],
   "wallhaven-ratio": "16x9,16x10",
+  "wallhaven-atleast": "1920x1080",
   "wallhaven-api-key": "",
   "wallhaven-tags": [
     "nature",
-    "water",
     "landscape"
   ],
   "help-font-size": 12,

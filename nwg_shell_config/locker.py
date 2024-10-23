@@ -7,10 +7,15 @@ import os
 import random
 import subprocess
 import sys
-import requests
 
-from nwg_shell_config.tools import get_data_dir, temp_dir, load_json, load_text_file, save_string, gtklock_module_path, \
+from nwg_shell_config.tools import get_data_dir, temp_dir, load_json, gtklock_module_path, \
     playerctl_metadata, eprint
+
+try:
+    import requests
+except ModuleNotFoundError:
+    eprint("python-requests module not found, terminating")
+    sys.exit(1)
 
 config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(os.getenv("HOME"),
                                                                                              ".config/")
@@ -51,7 +56,8 @@ defaults = {
     "unsplash-keywords": ["nature", "water", "landscape"],
     "wallhaven-api-key": "",
     "wallhaven-ratio": "16x9,16x10",
-    "wallhaven-tags": ["jedi"],
+    "wallhaven-atleast": "1920x1080",
+    "wallhaven-tags": ["nature", "landscape"],
     "gtklock-disable-input-inhibitor": False,
     "gtklock-idle-timeout": 10,
     "gtklock-logout-command": "swaymsg exit",
@@ -94,18 +100,21 @@ def set_remote_wallpaper():
 
 def load_wallhaven_image(path):
     api_key_status = "set" if settings['wallhaven-api-key'] else "unset"
-    tags = settings['wallhaven-tags'] if settings['wallhaven-tags'] else []
+    tags = " ".join(settings['wallhaven-tags']) if settings['wallhaven-tags'] else "nature", "landscape"
+    ratios = settings['wallhaven-ratio'] if settings['wallhaven-ratio'] else "16x9,16x10"
+    atleast = settings["wallhaven-atleast"] if settings["wallhaven-atleast"] else "1920x1018"
     print(
-        f"Fetching random image from wallhaven.cc, tags: {tags}, ratio: {settings['wallhaven-ratio']}, API key: {api_key_status}")
+        f"Fetching random image from wallhaven.cc, tags: '{tags}', ratios: '{ratios}', atleast: '{atleast}', API key: {api_key_status}")
     # Wallhaven API endpoint
     url = "https://wallhaven.cc/api/v1/search"
 
     # Parameters for the API request
     params = {
-        "q": " ".join(settings['wallhaven-tags']),
-        "ratios": settings['wallhaven-ratio'],
+        "q": tags,
+        "ratios": ratios,
+        "atleast": atleast,
         "sorting": "random",
-        "purity": "100",
+        "purity": "100"
     }
 
     # Headers for the API request
