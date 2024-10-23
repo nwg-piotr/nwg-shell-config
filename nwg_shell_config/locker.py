@@ -99,6 +99,7 @@ def set_remote_wallpaper():
 
 
 def load_wallhaven_image(path):
+    api_key = settings['wallhaven-api-key'] if settings["wallhaven-api-key"] else None
     api_key_status = "set" if settings['wallhaven-api-key'] else "unset"
     tags = " ".join(settings['wallhaven-tags']) if settings['wallhaven-tags'] else "nature, landscape"
     ratios = settings['wallhaven-ratio'] if settings['wallhaven-ratio'] else "16x9,16x10"
@@ -113,15 +114,13 @@ def load_wallhaven_image(path):
         "q": tags,
         "ratios": ratios,
         "atleast": atleast,
-        "sorting": "random",
-        "purity": "100"
+        "sorting": "random"
     }
-
-    # Headers for the API request
-    headers = {"Authorization": f"Bearer {settings['wallhaven-api-key']}"} if settings['wallhaven-api-key'] else None
+    if api_key:
+        params["apikey"] = api_key
 
     # Make the API request
-    response = requests.get(url, params=params, headers=headers)
+    response = requests.get(url, params=params)
 
     # Get the image URL from the response
     if response.status_code == 200:

@@ -20,7 +20,7 @@
   "angle": "Kąt",
   "any": "Dowolne",
   "api-key": "Klucz API",
-  "api-key-tooltip": "Jeśli podasz klucz API, wyszukiwania będą przeprowadzane z wykorzystaniem Twoich ustawień przeglądania i domyślnych filtrów z wallhaven.cc.",
+  "api-key-tooltip": "Jeśli podasz klucz API, wyszukiwania będą przeprowadzane z wykorzystaniem Twoich ustawień przeglądania i domyślnych filtrów z wallhaven.cc. Bez klucza API zawsze będziesz widzieć bezpieczne treści SFW.",
   "app-drawer": "Szuflada aplikacji",
   "app-drawer-columns-tooltip": "W ilu kolumnach grupować ikony",
   "app-drawer-on": "Szuflada włączona",

@@ -20,7 +20,7 @@
   "angle": "Angle",
   "any": "Any",
   "api-key": "API key",
-  "api-key-tooltip": "If an API key is provided, searches will be preformed with that user's browsing settings and default filters from wallhaven.cc.",
+  "api-key-tooltip": "If an API key is provided, searches will be preformed with that user's browsing settings and default filters from wallhaven.cc. W/o API key you'll always see SFW content.",
   "app-drawer": "App drawer",
   "app-drawer-columns-tooltip": "Number of columns to show icons in",
   "app-drawer-on": "Drawer on",

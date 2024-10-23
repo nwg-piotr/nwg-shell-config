@@ -114,6 +114,7 @@ def set_from_workspaces(entry, settings):
 
 
 def set_from_entry(entry, settings, key):
+    # print(">>>", entry.get_text())
     settings[key] = entry.get_text()
 
 
@@ -2276,7 +2277,7 @@ def lockscreen_tab(settings, voc):
     entry_aspect_ratio.set_tooltip_text(voc["aspect-ratio-tooltip"])
     entry_aspect_ratio.set_text(settings["wallhaven-ratio"])
     entry_aspect_ratio.set_placeholder_text("16x9,16x10")
-    entry_aspect_ratio.connect("changed", set_from_entry, settings)
+    entry_aspect_ratio.connect("changed", set_from_entry, settings, "wallhaven-ratio")
     grid.attach(entry_aspect_ratio, 3, 9, 1, 1)
 
     lbl = Gtk.Label()
@@ -2289,7 +2290,7 @@ def lockscreen_tab(settings, voc):
     # entry_atleast.set_tooltip_text(voc["aspect-ratio-tooltip"])
     entry_atleast.set_text(settings["wallhaven-atleast"])
     entry_atleast.set_placeholder_text("1920x1080")
-    entry_atleast.connect("changed", set_from_entry, settings)
+    entry_atleast.connect("changed", set_from_entry, settings, "wallhaven-atleast")
     grid.attach(entry_atleast, 3, 10, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["api-key"]))
