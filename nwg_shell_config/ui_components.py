@@ -63,7 +63,7 @@ def set_keywords_from_entry(entry, settings):
             entry.set_text(txt)
     txt = txt.strip(",")
 
-    settings["unsplash-keywords"] = txt.split(",")
+    settings["wallhaven-tags"] = txt.split(",") if txt else []
 
 
 def validate_update_cmd(entry, cb, sb, settings):
@@ -2104,7 +2104,7 @@ def lockscreen_tab(settings, voc):
 
     combo_background = Gtk.ComboBoxText()
     combo_background.set_tooltip_text(voc["random-wallpaper-source"])
-    combo_background.append("unsplash", voc["unsplash"])
+    combo_background.append("wallhaven.cc", "wallhaven.cc")
     combo_background.append("local", voc["local"])
     combo_background.set_active_id(settings["lockscreen-background-source"])
     combo_background.connect("changed", set_dict_key_from_combo, settings, "lockscreen-background-source")
@@ -2218,7 +2218,7 @@ def lockscreen_tab(settings, voc):
     bcg_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS)
     bcg_window.set_propagate_natural_width(True)
 
-    grid.attach(bcg_window, 2, 2, 4, 4)
+    grid.attach(bcg_window, 2, 2, 4, 3)
     bcg_box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
     bcg_window.add(bcg_box)
 
@@ -2234,56 +2234,59 @@ def lockscreen_tab(settings, voc):
         cb.connect("toggled", on_folder_btn_toggled, settings)
         bcg_box.pack_start(cb, False, False, 0)
 
-    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
-    grid.attach(box, 2, 6, 3, 1)
-
     cb_custom_path = Gtk.CheckButton.new_with_label(voc["own-path"])
     cb_custom_path.set_active(settings["backgrounds-use-custom-path"])
     cb_custom_path.connect("toggled", set_key_from_checkbox, settings, "backgrounds-use-custom-path")
-    box.pack_start(cb_custom_path, False, False, 0)
+    grid.attach(cb_custom_path, 2, 5, 1, 1)
 
     fc_btn = Gtk.FileChooserButton.new(voc["select-folder"], Gtk.FileChooserAction.SELECT_FOLDER)
     fc_btn.set_tooltip_text(voc["select-folder-tooltip"])
     if settings["backgrounds-custom-path"]:
         fc_btn.set_current_folder(settings["backgrounds-custom-path"])
     fc_btn.connect("file-set", on_custom_folder_selected, cb_custom_path, settings)
-    box.pack_start(fc_btn, False, False, 0)
+    grid.attach(fc_btn, 3, 5, 1, 1)
 
     if not fc_btn.get_filename():
         cb_custom_path.set_sensitive(False)
 
     lbl = Gtk.Label()
-    lbl.set_markup("<b>{}</b>".format(voc["unsplash-random-image"]))
+    lbl.set_markup("<b>{}</b>".format(voc["wallhaven-random-image"]))
     lbl.set_property("halign", Gtk.Align.START)
     lbl.set_property("margin-top", 6)
     grid.attach(lbl, 2, 8, 4, 1)
 
-    sb_us_width = Gtk.SpinButton.new_with_range(640, 7680, 1)
-    sb_us_width.set_value(settings["unsplash-width"])
-    sb_us_width.connect("value-changed", set_int_from_spinbutton, settings, "unsplash-width")
-    sb_us_width.set_tooltip_text(voc["desired-wallpaper-width"])
-    grid.attach(sb_us_width, 2, 9, 1, 1)
+    lbl = Gtk.Label()
+    lbl.set_markup("{}:".format(voc["aspect-ratio"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    lbl.set_property("margin-top", 6)
+    grid.attach(lbl, 2, 9, 1, 1)
 
-    lbl = Gtk.Label.new("x")
-    grid.attach(lbl, 3, 9, 1, 1)
+    entry_aspect_ratio = Gtk.Entry()
+    entry_aspect_ratio.set_tooltip_text(voc["aspect-ratio-tooltip"])
+    entry_aspect_ratio.set_text(settings["wallhaven-ratio"])
+    entry_aspect_ratio.connect("changed", set_from_entry, settings)
+    grid.attach(entry_aspect_ratio, 3, 9, 1, 1)
 
-    sb_us_width = Gtk.SpinButton.new_with_range(480, 4320, 1)
-    sb_us_width.set_value(settings["unsplash-height"])
-    sb_us_width.connect("value-changed", set_int_from_spinbutton, settings, "unsplash-height")
-    sb_us_width.set_tooltip_text(voc["desired-wallpaper-height"])
-    grid.attach(sb_us_width, 4, 9, 1, 1)
+    lbl = Gtk.Label.new("{}:".format(voc["tags"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 10, 1, 1)
 
-    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
-    grid.attach(box, 2, 10, 3, 1)
-    lbl = Gtk.Label.new("{}:".format(voc["keywords"]))
-    lbl.set_property("halign", Gtk.Align.START)
-    box.pack_start(lbl, False, False, 0)
+    entry_keywords = Gtk.Entry()
+    entry_keywords.set_tooltip_text(voc["keywords-tooltip"])
+    entry_keywords.set_placeholder_text("nature,water,landscape")
+    entry_keywords.set_text(",".join(settings["wallhaven-tags"]))
+    entry_keywords.connect("changed", set_keywords_from_entry, settings)
+    grid.attach(entry_keywords, 3, 10, 1, 1)
 
-    entry_us_keywords = Gtk.Entry()
-    entry_us_keywords.set_tooltip_text(voc["keywords-tooltip"])
-    entry_us_keywords.set_text(",".join(settings["unsplash-keywords"]))
-    entry_us_keywords.connect("changed", set_keywords_from_entry, settings)
-    box.pack_start(entry_us_keywords, True, True, 0)
+    lbl = Gtk.Label.new("{}:".format(voc["api-key"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 2, 11, 1, 1)
+
+    entry_api_key = Gtk.Entry()
+    entry_api_key.set_tooltip_text(voc["api-key-tooltip"])
+    entry_api_key.set_text(settings["wallhaven-api-key"])
+    entry_api_key.connect("changed", set_from_entry, settings, "wallhaven-api-key")
+    grid.attach(entry_api_key, 3, 11, 1, 1)
 
     # WARNING about 'swayidle' in sway config
     config_home = os.getenv('XDG_CONFIG_HOME') if os.getenv('XDG_CONFIG_HOME') else os.path.join(

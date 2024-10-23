@@ -6,9 +6,8 @@
 import os
 import random
 import subprocess
-import signal
 import sys
-import urllib.request
+import requests
 
 from nwg_shell_config.tools import get_data_dir, temp_dir, load_json, load_text_file, save_string, gtklock_module_path, \
     playerctl_metadata, eprint
@@ -50,6 +49,9 @@ defaults = {
     "unsplash-width": 1920,
     "unsplash-height": 1080,
     "unsplash-keywords": ["nature", "water", "landscape"],
+    "wallhaven-api-key": "",
+    "wallhaven-ratio": "16:9",
+    "wallhaven-tags": ["nature", "water", "landscape"],
     "gtklock-disable-input-inhibitor": False,
     "gtklock-idle-timeout": 10,
     "gtklock-logout-command": "swaymsg exit",
@@ -76,21 +78,61 @@ preset_defaults = {
 
 
 def set_remote_wallpaper():
-    url = "https://source.unsplash.com/{}x{}/?{}".format(settings["unsplash-width"], settings["unsplash-height"],
-                                                         ",".join(settings["unsplash-keywords"]))
-    wallpaper = os.path.join(data_dir, "wallpaper.jpg")
+    wallpaper_path = os.path.join(data_dir, "wallpaper.jpg")
     try:
-        r = urllib.request.urlretrieve(url, wallpaper)
-        if r[1]["Content-Type"] in ["image/jpeg", "image/png"]:
-            if settings["lockscreen-locker"] == "swaylock":
-                subprocess.Popen('swaylock -i {}'.format(wallpaper), shell=True)
-            elif settings["lockscreen-locker"] == "gtklock":
-                eprint('{} -S -H -T 10 -b {}'.format(gtklock_command(), wallpaper))
-                subprocess.Popen('{} -S -H -T 10 -b {}'.format(gtklock_command(), wallpaper), shell=True)
+        load_wallhaven_image(wallpaper_path)
+        if settings["lockscreen-locker"] == "swaylock":
+            subprocess.Popen('swaylock -i {}'.format(wallpaper_path), shell=True)
+        elif settings["lockscreen-locker"] == "gtklock":
+            eprint('{} -S -H -T 10 -b {}'.format(gtklock_command(), wallpaper_path))
+            subprocess.Popen('{} -S -H -T 10 -b {}'.format(gtklock_command(), wallpaper_path), shell=True)
 
     except Exception as e:
         print(e)
         set_local_wallpaper()
+
+
+def load_wallhaven_image(path):
+    api_key_status = "set" if settings['wallhaven-api-key'] else "unset"
+    tags = settings['wallhaven-tags'] if settings['wallhaven-tags'] else ["nature", "water", "landscape"]
+    eprint(
+        f"Fetching image from wallhaven.cc, tags: {tags}, ratio: {settings['wallhaven-ratio']}, API key: {api_key_status}")
+    # Wallhaven API endpoint
+    url = "https://wallhaven.cc/api/v1/search"
+
+    # Parameters for the API request
+    params = {
+        "q": " ".join(settings['wallhaven-tags']),
+        "ratio": settings['wallhaven-ratio'],
+        "order": "random",
+        "purity": "100",
+        "page": str(random.randint(1, 100)),  # Random page number
+        "per_page": "1"
+    }
+
+    # Headers for the API request
+    headers = {"Authorization": f"Bearer {settings['wallhaven-api-key']}"} if settings['wallhaven-api-key'] else None
+
+    # Make the API request
+    response = requests.get(url, params=params, headers=headers)
+
+    # Get the image URL from the response
+    if response.status_code == 200:
+        image_data = response.json()
+        image_url = image_data["data"][0]["path"]
+
+        # Download the image
+        image_response = requests.get(image_url)
+
+        if image_response.status_code == 200:
+            # Save the image locally
+            with open(path, "wb") as file:
+                file.write(image_response.content)
+            eprint(f"Wallhaven image saved as {path}")
+        else:
+            print("Failed to download Wallhaven image")
+    else:
+        print("Failed to fetch Wallhaven image")
 
 
 def set_local_wallpaper():
@@ -220,7 +262,7 @@ def main():
         subprocess.Popen('exec {}'.format(settings["lockscreen-custom-cmd"]), shell=True)
         sys.exit(0)
 
-    if settings["lockscreen-background-source"] == "unsplash":
+    if settings["lockscreen-background-source"] == "wallhaven.cc":
         set_remote_wallpaper()
 
     elif settings["lockscreen-background-source"] == "local":

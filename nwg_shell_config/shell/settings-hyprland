@@ -121,6 +121,13 @@
     "water",
     "landscape"
   ],
+  "wallhaven-ratio": "16:9",
+  "wallhaven-api-key": "",
+  "wallhaven-tags": [
+    "nature",
+    "water",
+    "landscape"
+  ],
   "help-font-size": 12,
   "help-layer-shell": true,
   "help-keyboard": true,
