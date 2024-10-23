@@ -100,7 +100,7 @@ def set_remote_wallpaper():
 
 def load_wallhaven_image(path):
     api_key_status = "set" if settings['wallhaven-api-key'] else "unset"
-    tags = " ".join(settings['wallhaven-tags']) if settings['wallhaven-tags'] else "nature", "landscape"
+    tags = " ".join(settings['wallhaven-tags']) if settings['wallhaven-tags'] else "nature, landscape"
     ratios = settings['wallhaven-ratio'] if settings['wallhaven-ratio'] else "16x9,16x10"
     atleast = settings["wallhaven-atleast"] if settings["wallhaven-atleast"] else "1920x1018"
     print(
