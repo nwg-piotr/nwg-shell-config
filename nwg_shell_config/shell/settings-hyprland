@@ -121,7 +121,7 @@
     "water",
     "landscape"
   ],
-  "wallhaven-ratio": "16:9",
+  "wallhaven-ratio": "16x9,16x10",
   "wallhaven-api-key": "",
   "wallhaven-tags": [
     "nature",

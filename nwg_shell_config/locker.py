@@ -50,8 +50,8 @@ defaults = {
     "unsplash-height": 1080,
     "unsplash-keywords": ["nature", "water", "landscape"],
     "wallhaven-api-key": "",
-    "wallhaven-ratio": "16:9",
-    "wallhaven-tags": ["nature", "water", "landscape"],
+    "wallhaven-ratio": "16x9,16x10",
+    "wallhaven-tags": ["jedi"],
     "gtklock-disable-input-inhibitor": False,
     "gtklock-idle-timeout": 10,
     "gtklock-logout-command": "swaymsg exit",
@@ -88,26 +88,24 @@ def set_remote_wallpaper():
             subprocess.Popen('{} -S -H -T 10 -b {}'.format(gtklock_command(), wallpaper_path), shell=True)
 
     except Exception as e:
-        print(e)
+        eprint("Failed loading image from wallhaven.cc :/")
         set_local_wallpaper()
 
 
 def load_wallhaven_image(path):
     api_key_status = "set" if settings['wallhaven-api-key'] else "unset"
-    tags = settings['wallhaven-tags'] if settings['wallhaven-tags'] else ["nature", "water", "landscape"]
-    eprint(
-        f"Fetching image from wallhaven.cc, tags: {tags}, ratio: {settings['wallhaven-ratio']}, API key: {api_key_status}")
+    tags = settings['wallhaven-tags'] if settings['wallhaven-tags'] else []
+    print(
+        f"Fetching random image from wallhaven.cc, tags: {tags}, ratio: {settings['wallhaven-ratio']}, API key: {api_key_status}")
     # Wallhaven API endpoint
     url = "https://wallhaven.cc/api/v1/search"
 
     # Parameters for the API request
     params = {
         "q": " ".join(settings['wallhaven-tags']),
-        "ratio": settings['wallhaven-ratio'],
-        "order": "random",
+        "ratios": settings['wallhaven-ratio'],
+        "sorting": "random",
         "purity": "100",
-        "page": str(random.randint(1, 100)),  # Random page number
-        "per_page": "1"
     }
 
     # Headers for the API request
@@ -120,6 +118,9 @@ def load_wallhaven_image(path):
     if response.status_code == 200:
         image_data = response.json()
         image_url = image_data["data"][0]["path"]
+
+        for key in image_data["data"][0]:
+            print(f"{key}: {image_data["data"][0][key]}")
 
         # Download the image
         image_response = requests.get(image_url)

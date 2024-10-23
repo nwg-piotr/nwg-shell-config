@@ -1112,7 +1112,7 @@ def load_settings():
         "unsplash-width": 1920,
         "unsplash-height": 1080,
         "unsplash-keywords": ["nature", "water", "landscape"],
-        "wallhaven-ratio": "16:9",
+        "wallhaven-ratio": "16x9,16x10",
         "wallhaven-api-key": "",
         "wallhaven-tags": ["nature", "water", "landscape"],
         "help-font-size": 12,

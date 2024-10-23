@@ -2264,6 +2264,7 @@ def lockscreen_tab(settings, voc):
     entry_aspect_ratio = Gtk.Entry()
     entry_aspect_ratio.set_tooltip_text(voc["aspect-ratio-tooltip"])
     entry_aspect_ratio.set_text(settings["wallhaven-ratio"])
+    entry_aspect_ratio.set_placeholder_text("16x9,16x10")
     entry_aspect_ratio.connect("changed", set_from_entry, settings)
     grid.attach(entry_aspect_ratio, 3, 9, 1, 1)
 
