@@ -137,7 +137,7 @@ def load_wallhaven_image(path):
             # Save the image locally
             with open(path, "wb") as file:
                 file.write(image_response.content)
-            eprint(f"Wallhaven image saved as {path}")
+            print(f"Wallhaven image saved as {path}")
         else:
             eprint("Failed to download Wallhaven image")
     else:
