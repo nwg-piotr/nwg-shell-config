@@ -114,7 +114,6 @@ def set_from_workspaces(entry, settings):
 
 
 def set_from_entry(entry, settings, key):
-    # print(">>>", entry.get_text())
     settings[key] = entry.get_text()
 
 

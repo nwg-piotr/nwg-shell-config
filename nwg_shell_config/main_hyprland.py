@@ -1135,11 +1135,9 @@ def load_settings():
         "update-command": "nwg-system-update"
     }
     global settings
-    print(">>>", settings)
     if os.path.isfile(settings_file):
         print("Loading settings from {}".format(settings_file))
         settings = load_json(settings_file)
-        print(">>>", settings, settings_file)
         missing = 0
         for key in defaults:
             if key not in settings:

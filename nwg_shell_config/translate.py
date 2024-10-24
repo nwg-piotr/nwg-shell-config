@@ -212,13 +212,16 @@ def on_file_chooser_button(fc_btn, entry_lang, combo):
     global voc_user
     voc_user = load_json(fc_btn.get_file().get_path())
     global user_locale
-    user_locale = voc_user["_lang"]
-    entry_lang.set_text(user_locale)
-    # The "changed" signal must be emitted, even if we're setting the same id again.
-    global load_voc_user
-    load_voc_user = False
-    combo.set_active_id(None)
-    combo.set_active_id(voc_user["_module"])  # Triggers the load_dict_and_build_window() function.
+    if "_lang" in voc_user and "_module" in voc_user:
+        user_locale = voc_user["_lang"]
+        entry_lang.set_text(user_locale)
+        # The "changed" signal must be emitted, even if we're setting the same id again.
+        global load_voc_user
+        load_voc_user = False
+        combo.set_active_id(None)
+        combo.set_active_id(voc_user["_module"])  # Triggers the load_dict_and_build_window() function.
+    else:
+        eprint("Internal '_lang' or '_module' key missing, couldn't load the file")
 
 
 def load_dict_and_build_window(combo):
