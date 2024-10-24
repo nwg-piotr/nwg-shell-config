@@ -28,7 +28,7 @@
   "applications": "Applications",
   "apply": "Apply",
   "apply-tooltip": "Apply changes, export includes, reload sway.",
-  "aspect-ratio": "Aspect ratio",
+  "aspect-ratio": "Aspect ratios",
   "aspect-ratio-tooltip": "Your screen aspect ratio, e.g. 16x9",
   "auto-show-hide": "Auto-show/hide",
   "auto-show-hide-tooltip": "Auto-hide dock, show on hotspot pointed.",
