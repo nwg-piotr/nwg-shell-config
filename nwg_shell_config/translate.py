@@ -38,6 +38,7 @@ existing_langs = []
 keys = []
 voc_en_us = {}
 voc_user = {}
+load_voc_user = True
 app_in_edition = ""
 user_locale = None
 scrolled_window = None
@@ -214,11 +215,13 @@ def on_file_chooser_button(fc_btn, entry_lang, combo):
     user_locale = voc_user["_lang"]
     entry_lang.set_text(user_locale)
     # The "changed" signal must be emitted, even if we're setting the same id again.
+    global load_voc_user
+    load_voc_user = False
     combo.set_active_id(None)
     combo.set_active_id(voc_user["_module"])  # Triggers the load_dict_and_build_window() function.
 
 
-def load_dict_and_build_window(combo, load_voc_user=True):
+def load_dict_and_build_window(combo):
     if combo.get_active_id():
         global app_in_edition
         app_in_edition = combo.get_active_id()
@@ -258,6 +261,7 @@ def load_dict_and_build_window(combo, load_voc_user=True):
             keys.append(key)
         keys.sort()
 
+        global load_voc_user
         if load_voc_user:
             global voc_user
             voc_user = load_json(os.path.join(langs_dir, "{}.json".format(user_locale)))
@@ -266,6 +270,8 @@ def load_dict_and_build_window(combo, load_voc_user=True):
             else:
                 voc_user = {}
                 print("User lang '{}' does not yet exist, creating empty dictionary.".format(user_locale))
+
+        load_voc_user = True
 
         build_translation_window()
 
