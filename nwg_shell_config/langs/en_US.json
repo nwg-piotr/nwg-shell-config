@@ -408,8 +408,6 @@
   "touchpad-device-include-tooltip": "Determines if to export the 'touchpad' config include.",
   "two_finger": "Two finger",
   "under-clock": "Under clock",
-  "unsplash": "unsplash.com",
-  "unsplash-random-image": "Random image from unsplash.com",
   "update": "Update",
   "update-command-tooltip": "You may override the default system update command here",
   "update-indicator-interval-tooltip": "Specifies how often (in minutes) to check for updates",

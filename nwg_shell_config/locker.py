@@ -139,9 +139,9 @@ def load_wallhaven_image(path):
                 file.write(image_response.content)
             eprint(f"Wallhaven image saved as {path}")
         else:
-            print("Failed to download Wallhaven image")
+            eprint("Failed to download Wallhaven image")
     else:
-        print("Failed to fetch Wallhaven image")
+        eprint("Failed to fetch Wallhaven image")
 
 
 def set_local_wallpaper():
