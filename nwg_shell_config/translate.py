@@ -29,6 +29,7 @@ modules = {
     "nwg_shell_config": "nwg-shell-config",
     "nwg_panel": "nwg-panel",
     "nwg_displays": "nwg-displays",
+    "nwg_clipman": "nwg-clipman",
     "azote": "Azote"
 }
 # supported apps, that aren't python modules
