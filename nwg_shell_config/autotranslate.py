@@ -52,7 +52,7 @@ def main():
 
             # Translate panel configs
             config_dir = os.path.join(config_home, "nwg-panel")
-            items = ["preset-0", "preset-1", "preset-2", "preset-2", "hyprland-0", "hyprland-1", "hyprland-2",
+            items = ["preset-0", "preset-1", "preset-2", "preset-3", "hyprland-0", "hyprland-1", "hyprland-2",
                      "hyprland-3"]
             for item in items:
                 path = os.path.join(config_dir, item)
