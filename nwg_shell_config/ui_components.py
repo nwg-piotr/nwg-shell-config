@@ -1190,12 +1190,7 @@ def h_dwindle_tab(settings, voc):
     sb_swm.connect("value-changed", set_from_spinbutton, settings, "dwindle-split_width_multiplier", 2)
     grid.attach(sb_swm, 3, 2, 1, 1)
 
-    cb_ngwo = Gtk.CheckButton.new_with_label(voc["no-gaps-when-only"])
-    cb_ngwo.set_property("halign", Gtk.Align.START)
-    cb_ngwo.set_tooltip_text(voc["no-gaps-when-only-tooltip"])
-    cb_ngwo.set_active(settings["dwindle-no_gaps_when_only"])
-    cb_ngwo.connect("toggled", set_from_checkbutton, settings, "dwindle-no_gaps_when_only")
-    grid.attach(cb_ngwo, 0, 3, 2, 1)
+    # RiP no_gaps_when_only
 
     cb_uafs = Gtk.CheckButton.new_with_label(voc["use-active-for-splits"])
     cb_uafs.set_property("halign", Gtk.Align.START)
@@ -1293,12 +1288,7 @@ def h_master_tab(settings, voc):
     sb_ssf.connect("value-changed", set_from_spinbutton, settings, "master-special_scale_factor", 3)
     grid.attach(sb_ssf, 3, 2, 1, 1)
 
-    cb_ngwo = Gtk.CheckButton.new_with_label(voc["no-gaps-when-only"])
-    cb_ngwo.set_property("halign", Gtk.Align.START)
-    cb_ngwo.set_tooltip_text(voc["no-gaps-when-only-tooltip"])
-    cb_ngwo.set_active(settings["master-no_gaps_when_only"])
-    cb_ngwo.connect("toggled", set_from_checkbutton, settings, "master-no_gaps_when_only")
-    grid.attach(cb_ngwo, 0, 3, 1, 1)
+    # RiP no_gaps_when_only
 
     lbl = Gtk.Label.new("{}:".format(voc["master-orientation"]))
     lbl.set_property("halign", Gtk.Align.END)

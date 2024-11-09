@@ -846,7 +846,6 @@ def save_includes():
         includes.append('    smart_resizing = {}'.format(bool2lower(settings["dwindle-smart_resizing"])))
         includes.append('    special_scale_factor = {}'.format(settings["dwindle-special_scale_factor"]))
         includes.append('    split_width_multiplier = {}'.format(settings["dwindle-split_width_multiplier"]))
-        includes.append('    no_gaps_when_only = {}'.format(bool2lower(settings["dwindle-no_gaps_when_only"])))
         includes.append('    use_active_for_splits = {}'.format(bool2lower(settings["dwindle-use_active_for_splits"])))
         includes.append('    default_split_ratio = {}'.format(settings["dwindle-default_split_ratio"]))
         includes.append('}')
@@ -859,7 +858,6 @@ def save_includes():
         includes.append('    mfact = {}'.format(settings["master-mfact"]))
         # includes.append('    new_is_master = {}'.format(bool2lower(settings["master-new_is_master"])))
         includes.append('    new_on_top = {}'.format(bool2lower(settings["master-new_on_top"])))
-        includes.append('    no_gaps_when_only = {}'.format(bool2lower(settings["master-no_gaps_when_only"])))
         includes.append('    orientation = {}'.format(settings["master-orientation"]))
         includes.append('    inherit_fullscreen = {}'.format(bool2lower(settings["master-inherit_fullscreen"])))
         includes.append('    always_center_master = {}'.format(bool2lower(settings["master-always_center_master"])))
@@ -1039,7 +1037,6 @@ def load_settings():
         "dwindle-permanent_direction_override": False,
         "dwindle-special_scale_factor": 0.8,
         "dwindle-split_width_multiplier": 1.0,
-        "dwindle-no_gaps_when_only": False,
         "dwindle-use_active_for_splits": True,
         "dwindle-default_split_ratio": 1.0,
 
@@ -1049,7 +1046,6 @@ def load_settings():
         "master-mfact": 0.55,
         "master-new_is_master": True,
         "master-new_on_top": False,
-        "master-no_gaps_when_only": False,
         "master-orientation": "left",
         "master-inherit_fullscreen": True,
         "master-always_center_master": False,
