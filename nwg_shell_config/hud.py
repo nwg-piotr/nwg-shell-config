@@ -133,11 +133,11 @@ def main():
     window.connect('destroy', Gtk.main_quit)
     window.connect("key-release-event", handle_keyboard)
 
-    vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+    vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, 6)
     vbox.set_property("margin", 0)
     window.add(vbox)
 
-    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+    box = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 6)
     vbox.pack_start(box, False, False, 6)
 
     if args.icon:
