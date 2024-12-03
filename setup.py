@@ -9,12 +9,12 @@ def read(f_name):
 
 setup(
     name='nwg-shell-config',
-    version='0.5.51',
+    version='0.5.52',
     description='nwg-shell configuration utility',
     packages=find_packages(),
     include_package_data=True,
     package_data={
-        "": ["glade/*", "autotranslate/*", "langs/*", "dialog/*", "shell/*", "updates/*"]
+        "": ["glade/*", "autotranslate/*", "langs/*", "dialog/*", "hud/*", "shell/*", "updates/*"]
     },
     url='https://github.com/nwg-piotr/nwg-shell-config',
     license='MIT',
@@ -35,6 +35,7 @@ setup(
             'nwg-update-indicator = nwg_shell_config.update_indicator:main',
             'nwg-screenshot-applet = nwg_shell_config.screenshot_applet:main',
             'nwg-dialog = nwg_shell_config.dialog:main'
+            'nwg-hud = nwg_shell_config.hud:main'
         ]
     }
 )

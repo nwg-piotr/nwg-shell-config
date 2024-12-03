@@ -1,0 +1,10 @@
+window {
+    background: none;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+
+label {
+    color: #000;
+    font-size: 24px;
+}
