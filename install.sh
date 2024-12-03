@@ -28,7 +28,8 @@ filenames=("/usr/bin/nwg-autotranslate"
            "/usr/bin/nwg-shell-translate"
            "/usr/bin/nwg-update-indicator"
            "/usr/bin/nwg-screenshot-applet"
-           "/usr/bin/nwg-dialog")
+           "/usr/bin/nwg-dialog"
+           "/usr/bin/nwg-hud")
 
 for filename in "${filenames[@]}"; do
   rm -f "$filename"
