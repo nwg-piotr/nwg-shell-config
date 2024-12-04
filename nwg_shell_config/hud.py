@@ -10,7 +10,9 @@ License: MIT
 """
 
 import argparse
+import json
 import os
+import subprocess
 import sys
 
 import gi
@@ -66,6 +68,52 @@ def update_image(image, icon_name, icon_size):
     pixbuf = create_pixbuf(icon_name, icon_size)
     surface = Gdk.cairo_surface_create_from_pixbuf(pixbuf, scale, image.get_window())
     image.set_from_surface(surface)
+
+
+def list_outputs():
+    outputs_dict = {}
+    if os.getenv("SWAYSOCK"):
+        try:
+            from i3ipc import Connection
+        except ModuleNotFoundError:
+            print("'python-i3ipc' package required on sway, terminating")
+            sys.exit(1)
+
+        i3 = Connection()
+        outputs = i3.get_outputs()
+        for item in outputs:
+            outputs_dict[item.name] = {"description": f"{item.make} {item.model} {item.serial}",
+                                       "monitor": None}
+
+    elif os.getenv('HYPRLAND_INSTANCE_SIGNATURE') is not None:
+        cmd = "hyprctl -j monitors"
+        result = subprocess.check_output(cmd, shell=True).decode("utf-8").strip()
+        outputs = json.loads(result)
+        for item in outputs:
+            outputs_dict[item["name"]] = {"description": item["description"],
+                                          "monitor": None}
+
+    else:
+        eprint("nwg-hud script only works on sway or Hyprland, terminating")
+        sys.exit(1)
+
+    monitors = []
+    display = Gdk.Display.get_default()
+    for i in range(display.get_n_monitors()):
+        monitor = display.get_monitor(i)
+        monitors.append(monitor)
+
+    for key, monitor in zip(outputs_dict.keys(), monitors):
+        outputs_dict[key]["monitor"] = monitor
+
+    # map monitor descriptions to output names
+    mon_desc2output_name = {}
+    for key in outputs_dict:
+        if "description" in outputs_dict[key]:
+            mon_desc2output_name[outputs_dict[key]["description"]] = key
+
+    return outputs_dict, mon_desc2output_name
+
 
 def main():
     # disallow multiple instances
@@ -203,6 +251,21 @@ def main():
         GtkLayerShell.set_margin(window, GtkLayerShell.Edge.BOTTOM, settings["margin"])
         GtkLayerShell.set_margin(window, GtkLayerShell.Edge.LEFT, settings["margin"])
         GtkLayerShell.set_margin(window, GtkLayerShell.Edge.RIGHT, settings["margin"])
+
+    # assign to a monitor if output name or monitor description given
+    if settings["output"]:
+        outputs, mon_desc2output_name = list_outputs()
+        monitor = None
+        if settings["output"] in outputs and "monitor" in outputs[settings["output"]]:
+            monitor = outputs[settings["output"]]["monitor"]
+        elif settings["output"] in mon_desc2output_name:
+            name = mon_desc2output_name[settings["output"]]
+            monitor = outputs[name]["monitor"]
+        else:
+            eprint(f"Couldn't assign monitor to {settings['output']}")
+
+        if monitor:
+            GtkLayerShell.set_monitor(window, monitor)
 
     window.connect('destroy', Gtk.main_quit)
     window.connect("key-release-event", handle_keyboard)
