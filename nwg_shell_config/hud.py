@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 """
-This script displays a simple confirmation window and executes a command, if given.
+This script displays a window containing given icon and text, a closes it on timeout.
 Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project site: https://nwg-piotr.github.io/nwg-shell
 Author's email: nwg.piotr@gmail.com
-Copyright (c) 2021-2024 Piotr Miller
+Copyright (c) 2024 Piotr Miller
 License: MIT
 """
 
@@ -283,7 +283,8 @@ def main():
         update_image(img, settings["icon"], settings["icon-size"])
         hbox.pack_start(img, False, False, 0)
 
-    lbl = Gtk.Label.new(settings["message"])
+    lbl = Gtk.Label()
+    lbl.set_markup(settings["message"])
     hbox.pack_start(lbl, True, True, 0)
 
     # apply styling
