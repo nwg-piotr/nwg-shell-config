@@ -28,6 +28,7 @@ except ValueError:
 from gi.repository import Gtk, Gdk, GLib, GdkPixbuf, GtkLayerShell
 
 from shutil import copy2
+from psutil import process_iter
 
 from nwg_shell_config.tools import get_config_home, load_json, eprint
 
@@ -68,6 +69,11 @@ def update_image(image, icon_name, icon_size):
 
 
 def main():
+    for proc in process_iter():
+        if "nwg-hud" in proc.name():
+            eprint("[nwg-hud]\nRunning instance found, exiting")
+            sys.exit(1)
+
     # initiate config files if not found
     if not os.path.isdir(config_dir):
         os.mkdir(config_dir)
