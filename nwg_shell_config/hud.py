@@ -301,7 +301,7 @@ def main():
 
     window.show_all()
 
-    GLib.timeout_add(args.timeout, Gtk.main_quit)
+    GLib.timeout_add(settings["timeout"], Gtk.main_quit)
 
     Gtk.main()
 
