@@ -67,11 +67,11 @@ def update_image(image, icon_name, icon_size):
     surface = Gdk.cairo_surface_create_from_pixbuf(pixbuf, scale, image.get_window())
     image.set_from_surface(surface)
 
-
 def main():
+    # disallow multiple instances
     for proc in process_iter():
         if "nwg-hud" in proc.name() and proc.pid != os.getpid():
-            eprint("nwg-hud: running instance found, terminating")
+            eprint(f"nwg-hud: running instance found, PID {proc.pid}, terminating")
             sys.exit(1)
 
     # initiate config files if not found
@@ -139,7 +139,7 @@ def main():
     global args
     args = parser.parse_args()
     print("[nwg-hud]")
-    print(f"settings: {settings}")
+    print(f"settings from file: {settings}")
     print(f"args: {args}")
 
     # arguments override settings, if given
@@ -154,10 +154,10 @@ def main():
             settings["timeout"] = int(args.timeout)
         except Exception as e:
             eprint(e)
-    if args.horizontal_alignment:
-        settings["horizontal_alignment"] = args.horizontal_alignment
-    if args.vertical_alignment:
-        settings["vertical_alignment"] = args.vertical_alignment
+    if args.horizontal_alignment != "center":
+        settings["horizontal-alignment"] = args.horizontal_alignment
+    if args.vertical_alignment != "center":
+        settings["vertical-alignment"] = args.vertical_alignment
     if args.margin:
         try:
             settings["margin"] = int(args.margin)
@@ -179,12 +179,30 @@ def main():
         if key not in settings:
             settings[key] = defaults[key]
 
+    print("settings to use:", settings)
+
     window = Gtk.Window.new(Gtk.WindowType.POPUP)
 
     GtkLayerShell.init_for_window(window)
     GtkLayerShell.set_layer(window, GtkLayerShell.Layer.TOP)
     GtkLayerShell.set_exclusive_zone(window, 0)
     GtkLayerShell.set_keyboard_mode(window, GtkLayerShell.KeyboardMode.ON_DEMAND)
+    GtkLayerShell.set_namespace(window, "nwg-hud")
+
+    if settings["vertical-alignment"] == "top":
+        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.TOP, 1)
+    elif settings["vertical-alignment"] == "bottom":
+        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, 1)
+    if settings["horizontal-alignment"] == "left":
+        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.LEFT, 1)
+    elif settings["horizontal-alignment"] == "right":
+        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.RIGHT, 1)
+
+    if settings["margin"] > 0:
+        GtkLayerShell.set_margin(window, GtkLayerShell.Edge.TOP, settings["margin"])
+        GtkLayerShell.set_margin(window, GtkLayerShell.Edge.BOTTOM, settings["margin"])
+        GtkLayerShell.set_margin(window, GtkLayerShell.Edge.LEFT, settings["margin"])
+        GtkLayerShell.set_margin(window, GtkLayerShell.Edge.RIGHT, settings["margin"])
 
     window.connect('destroy', Gtk.main_quit)
     window.connect("key-release-event", handle_keyboard)
