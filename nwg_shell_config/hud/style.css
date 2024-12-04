@@ -1,10 +1,11 @@
 window {
-    background: none;
+    background-color: rgba(0, 0, 0, 0.5);
     border: 1px solid #000;
-    border-radius: 5px;
+    border-radius: 5px
 }
 
 label {
-    color: #000;
+    color: #eee;
     font-size: 24px;
+    font-weight: bold
 }
