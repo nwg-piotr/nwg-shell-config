@@ -183,12 +183,14 @@ def main():
                         default="",
                         help="name of the Output to display HUD on")
 
+    parser.add_argument("-d",
+                        "--debug",
+                        action="store_true",
+                        help="print debug messages to stderr")
+
     parser.parse_args()
     global args
     args = parser.parse_args()
-    print("[nwg-hud]")
-    print(f"settings from file: {settings}")
-    print(f"args: {args}")
 
     # arguments override settings, if given
     if args.icon:
@@ -211,6 +213,8 @@ def main():
             settings["margin"] = int(args.margin)
         except Exception as e:
             eprint(e)
+    if args.output:
+        settings["output"] = args.output
 
     # make sure we have all values
     defaults = {
@@ -226,8 +230,6 @@ def main():
     for key in defaults:
         if key not in settings:
             settings[key] = defaults[key]
-
-    print("settings to use:", settings)
 
     window = Gtk.Window.new(Gtk.WindowType.POPUP)
 
