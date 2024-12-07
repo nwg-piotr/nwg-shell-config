@@ -119,3 +119,65 @@ The nwg-shell-config module / package is also a home for several other utilities
 - `nwg-update-indicator`: a script responsible for the system update tray indicator (Arch and Venom Linux only so far)
 - `nwg-screenshot-applet`: provides the tray icon and menu, that executes the `/usr/local/bin/screenshot` script with appropriate arguments.  
 - `nwg-shell-help`: provides the keyboard shortcuts help window, together with the system tray icon
+
+### nwg-hud
+
+This script displays a window containing a given icon and some text, and closes it on timeout.
+
+Feature request: https://github.com/nwg-piotr/nwg-shell/discussions/450.
+
+Example usage (Hyprland): display the workspace change notification. You need to launch the script after
+switching to a workspace or moving an active window to it. Modify your hyprland.conf file:
+
+```text
+# SWITCH WORKSPACES with mainMod + [0-9]
+bind = $mainMod, 1, workspace, 1
+bind = $mainMod, 1, exec, nwg-hud -i xfce4-workspaces -m "WS 1"
+(and so on)
+
+# MOVE ACTIVE WINDOW TO A WORKSPACE with mainMod + SHIFT + [0-9]
+bind = $mainMod SHIFT, 1, movetoworkspace, 1
+bind = $mainMod SHIFT, 1, exec, nwg-hud -i xfce4-workspaces -m "WS 1"
+(and so on)
+```
+
+Script arguments:
+
+```text
+❯ nwg-hud -h
+usage: nwg-hud [-h] [-i ICON] [-z ICON_SIZE] [-m MESSAGE] [-t TIMEOUT] [-ha HORIZONTAL_ALIGNMENT] [-va VERTICAL_ALIGNMENT] [-r MARGIN] [-o OUTPUT]
+
+options:
+  -h, --help            show this help message and exit
+  -i ICON, --icon ICON  Icon name or path
+  -z ICON_SIZE, --icon_size ICON_SIZE
+                        icon size
+  -m MESSAGE, --message MESSAGE
+                        Message text to display
+  -t TIMEOUT, --timeout TIMEOUT
+                        window Timeout in milliseconds
+  -ha HORIZONTAL_ALIGNMENT, --horizontal_alignment HORIZONTAL_ALIGNMENT
+                        window Horizontal Alignment: 'left' or 'right', 'center' by default
+  -va VERTICAL_ALIGNMENT, --vertical_alignment VERTICAL_ALIGNMENT
+                        window Vertical Alignment: 'top' or 'bottom', 'center' by default
+  -r MARGIN, --margin MARGIN
+                        window margin in pixels
+  -o OUTPUT, --output OUTPUT
+                        name of the Output to display HUD on
+```
+
+To avoid adding all the arguments every time the script is called, you can define some defaults in the 
+`~/.config/nwg-hud/config.json` file. These settings will be overridden with arguments, if given.
+
+```json
+{
+  "icon": "",
+  "icon-size": 48,
+  "message": "",
+  "timeout": 1000,
+  "horizontal-alignment": "",
+  "vertical-alignment": "",
+  "margin": 0,
+  "output": ""
+}
+```
