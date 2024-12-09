@@ -280,7 +280,7 @@ def main():
     hbox.set_property("margin", 12)
     vbox.pack_start(hbox, False, False, 0)
 
-    if args.icon:
+    if settings["icon"]:
         img = Gtk.Image()
         update_image(img, settings["icon"], settings["icon-size"])
         hbox.pack_start(img, False, False, 0)
