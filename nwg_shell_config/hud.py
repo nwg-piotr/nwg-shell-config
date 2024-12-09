@@ -295,7 +295,7 @@ def main():
     style_context = Gtk.StyleContext()
     style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
     try:
-        provider.load_from_path(os.path.join(dir_name, "hud", "style.css"))
+        provider.load_from_path(os.path.join(config_dir, "style.css"))
     except Exception as e:
         eprint(e)
     css = provider.to_string().encode('utf-8')
