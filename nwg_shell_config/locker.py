@@ -128,7 +128,7 @@ def load_wallhaven_image(path):
         image_url = image_data["data"][0]["path"]
 
         for key in image_data["data"][0]:
-            print(f"{key}: {image_data["data"][0][key]}")
+            print(f"{key}: {image_data['data'][0][key]}")
 
         # Download the image
         image_response = requests.get(image_url)
