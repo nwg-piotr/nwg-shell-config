@@ -15,6 +15,7 @@
 ⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼
 <b>[S]+LMB</b> ........................ Move window
 <b>[S]+RMB</b> ...................... Resize window
+<b>[S]+r</b> .... Resize Submap (Esc/Enter to exit)
 <b>[S]+number</b> ................ Switch workspace
 <b>[S]+[Shift]+number</b> ....... Move to workspace
 <b>[S]+arrow</b> ....................... Move focus
