@@ -141,6 +141,12 @@ def main():
                         default="",
                         help='Icon name or path')
 
+    parser.add_argument("-k",
+                        "--keyboard",
+                        action="store_true",
+                        default=False,
+                        help='turn on Keyboard support (Esc to close)')
+
     parser.add_argument("-z",
                         "--icon_size",
                         type=int,
@@ -236,7 +242,8 @@ def main():
     GtkLayerShell.init_for_window(window)
     GtkLayerShell.set_layer(window, GtkLayerShell.Layer.TOP)
     GtkLayerShell.set_exclusive_zone(window, 0)
-    GtkLayerShell.set_keyboard_mode(window, GtkLayerShell.KeyboardMode.ON_DEMAND)
+    if args.keyboard:
+        GtkLayerShell.set_keyboard_mode(window, GtkLayerShell.KeyboardMode.ON_DEMAND)
     GtkLayerShell.set_namespace(window, "nwg-hud")
 
     if settings["vertical-alignment"] == "top":
