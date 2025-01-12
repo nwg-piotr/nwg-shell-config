@@ -151,7 +151,7 @@ def main():
                         "--icon_size",
                         type=int,
                         default=48,
-                        help="icon size")
+                        help="icon siZe")
 
     parser.add_argument("-m",
                         "--message",
@@ -181,18 +181,13 @@ def main():
                         "--margin",
                         type=int,
                         default=0,
-                        help="window margin in pixels")
+                        help="window maRgin in pixels")
 
     parser.add_argument("-o",
                         "--output",
                         type=str,
                         default="",
                         help="name of the Output to display HUD on")
-
-    parser.add_argument("-d",
-                        "--debug",
-                        action="store_true",
-                        help="print debug messages to stderr")
 
     parser.parse_args()
     global args
