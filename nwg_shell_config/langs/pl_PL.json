@@ -361,6 +361,7 @@
   "show-on-startup-tooltip": "Odznacz by nie uruchamiać tego okna podczas startu systemu.",
   "show-power-bar": "Pokazuj pasek zasilania",
   "show-power-bar-tooltip": "Pokazuj pasek zasilania poniżej siatki aplikacji",
+  "slave-count-for-center-master": "Liczba zależnych dla centrowania master",
   "sleep": "Uśpij",
   "sleep-command": "Komenda uśpienia",
   "sleep-timeout-tooltip": "Opóźnienie uśpienia w sekundach.\nMusi być dłuższe niż opóźnienie blokady.",

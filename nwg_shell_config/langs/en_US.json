@@ -361,6 +361,7 @@
   "show-on-startup-tooltip": "Uncheck to avoid running this window on startup",
   "show-power-bar": "Show power bar",
   "show-power-bar-tooltip": "Show power bar below the application grid",
+  "slave-count-for-center-master": "Slave count for centering master",
   "sleep": "Sleep",
   "sleep-command": "Sleep command",
   "sleep-timeout-tooltip": "Sleep timeout in seconds.\nMust be longer than Lock screen timeout.",

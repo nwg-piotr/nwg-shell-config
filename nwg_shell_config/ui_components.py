@@ -1288,7 +1288,14 @@ def h_master_tab(settings, voc):
     sb_ssf.connect("value-changed", set_from_spinbutton, settings, "master-special_scale_factor", 3)
     grid.attach(sb_ssf, 3, 2, 1, 1)
 
-    # RiP no_gaps_when_only
+    lbl = Gtk.Label.new("{}:".format(voc["slave-count-for-center-master"]))
+    lbl.set_property("halign", Gtk.Align.END)
+    grid.attach(lbl, 0, 3, 1, 1)
+
+    sb_slave_count = Gtk.SpinButton.new_with_range(0, 100, 1)
+    sb_slave_count.set_value(settings["master-slave_count_for_center_master"])
+    sb_slave_count.connect("value-changed", set_int_from_spinbutton, settings, "master-slave_count_for_center_master")
+    grid.attach(sb_slave_count, 1, 3, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["master-orientation"]))
     lbl.set_property("halign", Gtk.Align.END)
@@ -1311,13 +1318,6 @@ def h_master_tab(settings, voc):
     cb_inherit.set_active(settings["master-inherit_fullscreen"])
     cb_inherit.connect("toggled", set_from_checkbutton, settings, "master-inherit_fullscreen")
     grid.attach(cb_inherit, 0, 4, 1, 1)
-
-    cb_acenter = Gtk.CheckButton.new_with_label(voc["always-center-master"])
-    cb_acenter.set_property("halign", Gtk.Align.START)
-    cb_acenter.set_tooltip_text(voc["always-center-master-tooltip"])
-    cb_acenter.set_active(settings["master-always_center_master"])
-    cb_acenter.connect("toggled", set_from_checkbutton, settings, "master-always_center_master")
-    grid.attach(cb_acenter, 1, 4, 2, 1)
 
     frame.show_all()
 

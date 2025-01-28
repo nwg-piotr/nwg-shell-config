@@ -860,7 +860,7 @@ def save_includes():
         includes.append('    new_on_top = {}'.format(bool2lower(settings["master-new_on_top"])))
         includes.append('    orientation = {}'.format(settings["master-orientation"]))
         includes.append('    inherit_fullscreen = {}'.format(bool2lower(settings["master-inherit_fullscreen"])))
-        includes.append('    always_center_master = {}'.format(bool2lower(settings["master-always_center_master"])))
+        includes.append('    slave_count_for_center_master = {}'.format(settings["master-slave_count_for_center_master"]))
         includes.append('}')
 
     # Export input devices settings
@@ -1048,7 +1048,7 @@ def load_settings():
         "master-new_on_top": False,
         "master-orientation": "left",
         "master-inherit_fullscreen": True,
-        "master-always_center_master": False,
+        "master-slave_count_for_center_master": 2,
 
         "input-use-settings": True,
         "input-kb_layout": "us",
