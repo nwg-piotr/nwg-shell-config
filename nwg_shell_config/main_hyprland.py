@@ -953,10 +953,12 @@ def save_includes():
         includes.append("layerrule = blur, nwg-dock")
 
     p = os.path.join(config_home, "hypr/includes.conf")
+
+    reload()
+
     print("Saving includes to {}".format(p))
     save_list_to_text_file(includes, p)
 
-    reload()
 
 
 def reload():
