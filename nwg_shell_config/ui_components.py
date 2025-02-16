@@ -502,7 +502,7 @@ def applications_tab(settings, voc, warn):
 
     entry_te.connect("changed", set_from_entry, settings, "editor")
     if not settings["editor"]:
-        for cmd in ["mousepad", "geany", "atom", "emacs", "gedit"]:
+        for cmd in ["typobuster", "mousepad", "geany", "atom", "emacs", "gedit"]:
             if is_command(cmd):
                 entry_te.set_text(cmd)
                 break
