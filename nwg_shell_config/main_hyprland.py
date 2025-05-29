@@ -732,6 +732,10 @@ def save_includes():
                                                               settings["night-lat"],
                                                               settings["night-long"],
                                                               settings["night-gamma"])
+        if settings["night-outputs"]:
+            for output in settings["night-outputs"]:
+                cmd += " -o {}".format(output)
+
         try:
             subprocess.Popen(cmd, shell=True)
         except Exception as e:
@@ -995,6 +999,7 @@ def load_settings():
         "night-temp-high": 6500,
         "night-gamma": 1.0,
         "night-on": True,
+        "night-outputs": [],
         "terminal": "",
         "file-manager": "",
         "editor": "",

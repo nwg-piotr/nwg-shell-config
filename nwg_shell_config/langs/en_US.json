@@ -354,6 +354,8 @@
   "search-files": "Search files",
   "select-folder": "Select folder",
   "select-folder-tooltip": "Select your own path here.",
+  "select-outputs": "Select outputs",
+  "select-outputs-tooltip": "Select the outputs where to turn on the night light. If nothing selected, it'll remain turned on for all outputs.",
   "show-category-buttons": "Show category buttons",
   "show-category-buttons-tooltip": "Show freedesktop category buttons on top.",
   "show-labels": "Show labels",

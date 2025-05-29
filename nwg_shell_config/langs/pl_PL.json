@@ -354,6 +354,8 @@
   "search-files": "Szukaj plików",
   "select-folder": "Wybierz folder",
   "select-folder-tooltip": "Tu możesz wybrać własną ścieżkę.",
+  "select-outputs": "Wybierz wyjścia",
+  "select-outputs-tooltip": "Wybiera wyjścia, na których nocne światło ma być włączane. Jeśli nic nie wybierzesz, pozostanie włączone na wszystkich wyświetlaczach.",
   "show-category-buttons": "Pokazuj przyciski kategorii",
   "show-category-buttons-tooltip": "Pokazuj na górze przyciski kategorii freedesktop.",
   "show-labels": "Pokazuj etykiety",
