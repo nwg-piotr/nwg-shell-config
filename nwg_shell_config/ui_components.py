@@ -198,8 +198,11 @@ class OutputsSelectButton(Gtk.Button):
         self.menu = Gtk.Menu()
         self.check_items = []
 
+        print(">>>", self.settings["night-outputs"])
         for name in outputs:
             item = Gtk.CheckMenuItem(label=name)
+            if name in self.settings["night-outputs"]:
+                item.set_active(True)
             item.connect("toggled", self.get_selected_displays)
             self.menu.append(item)
             self.check_items.append(item)
@@ -211,7 +214,7 @@ class OutputsSelectButton(Gtk.Button):
         self.menu.popup_at_widget(button, Gdk.Gravity.SOUTH, Gdk.Gravity.NORTH, None)
 
     def get_selected_displays(self, item):
-        print([item.get_label() for item in self.check_items if item.get_active()])
+        print(">>>", [item.get_label() for item in self.check_items if item.get_active()])
         self.settings["night-outputs"] = [item.get_label() for item in self.check_items if item.get_active()]
 
 

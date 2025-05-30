@@ -7,6 +7,7 @@
   "night-temp-high": 6500,
   "night-gamma": 1.0,
   "night-on": true,
+  "night-outputs": [],
   "terminal": "",
   "file-manager": "",
   "editor": "",
