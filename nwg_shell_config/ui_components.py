@@ -7,10 +7,10 @@ from datetime import datetime
 from i3ipc import Connection
 
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 from nwg_shell_config.tools import is_command, get_lat_lon, list_background_dirs, load_text_file, \
     list_inputs_by_type, h_list_devices_by_type, gtklock_module_path, do_backup, unpack_to_tmp, restore_from_tmp, \
-    get_theme_names, get_icon_themes, get_command_output, hyprctl
+    get_theme_names, get_icon_themes, get_command_output, hyprctl, list_outputs, h_list_monitors
 
 
 def set_from_checkbutton(cb, settings, key):
@@ -183,6 +183,38 @@ class SideMenuRow(Gtk.ListBoxRow):
         self.eb.add(lbl)
 
 
+class OutputsSelectButton(Gtk.Button):
+    def __init__(self, settings, label):
+        Gtk.Button.__init__(self, label=label)
+
+        self.settings = settings
+
+        outputs = []
+        if os.getenv("SWAYSOCK"):
+            outputs = list_outputs()
+        elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+            outputs = h_list_monitors()
+
+        self.menu = Gtk.Menu()
+        self.check_items = []
+
+        for name in outputs:
+            item = Gtk.CheckMenuItem(label=name)
+            item.connect("toggled", self.get_selected_displays)
+            self.menu.append(item)
+            self.check_items.append(item)
+            item.show()
+
+        self.connect("clicked", self.on_button_clicked)
+
+    def on_button_clicked(self, button):
+        self.menu.popup_at_widget(button, Gdk.Gravity.SOUTH, Gdk.Gravity.NORTH, None)
+
+    def get_selected_displays(self, item):
+        print([item.get_label() for item in self.check_items if item.get_active()])
+        self.settings["night-outputs"] = [item.get_label() for item in self.check_items if item.get_active()]
+
+
 def screen_tab(settings, voc):
     frame = Gtk.Frame()
     frame.set_label("  {}: {}  ".format(voc["common"], voc["screen-settings"]))
@@ -284,6 +316,10 @@ def screen_tab(settings, voc):
     cb_night_light_on.connect("toggled", set_from_checkbutton, settings, "night-on")
     cb_night_light_on.set_tooltip_text(voc["night-light-tooltip"])
     grid.attach(cb_night_light_on, 1, 2, 1, 1)
+
+    btn_night_light_outputs = OutputsSelectButton(settings, voc["select-outputs"])
+    btn_night_light_outputs.set_tooltip_text(voc["select-outputs-tooltip"])
+    grid.attach(btn_night_light_outputs, 3, 2, 1, 1)
 
     lbl = Gtk.Label.new("{}:".format(voc["latitude"]))
     lbl.set_property("halign", Gtk.Align.END)
