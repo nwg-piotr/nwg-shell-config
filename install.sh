@@ -52,6 +52,7 @@ install -Dm 644 -t "/usr/share/pixmaps" nwg-screenshot.svg
 install -Dm 644 -t "/usr/share/pixmaps" nwg-3.svg
 install -Dm 644 -t "/usr/share/pixmaps" nwg-2.svg
 install -Dm 644 -t "/usr/share/pixmaps" nwg-1.svg
+install -Dm 644 -t "/usr/share/pixmaps" nwg-workspace.svg
 install -Dm 755 -t "/usr/bin" nwg-system-update
 
 install -Dm 644 -t "/usr/share/licenses/nwg-shell-config" LICENSE
