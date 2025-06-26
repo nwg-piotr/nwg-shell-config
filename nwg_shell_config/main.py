@@ -5,7 +5,7 @@ nwg-shell config utility
 Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project site: https://nwg-piotr.github.io/nwg-shell
 Author's email: nwg.piotr@gmail.com
-Copyright (c) 2021-2023 Piotr Miller & Contributors
+Copyright (c) 2021-2025 Piotr Miller & Contributors
 License: MIT
 """
 

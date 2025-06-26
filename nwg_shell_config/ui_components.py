@@ -17,6 +17,20 @@ def set_from_checkbutton(cb, settings, key):
     settings[key] = cb.get_active()
 
 
+def set_run_through_compositor(cb, settings, cb_run_through_uwsm):
+    if cb.get_active():
+        cb_run_through_uwsm.set_active(False)
+    settings["launcher-run-through-compositor"] = cb.get_active()
+    settings["launcher-run-through-uwsm"] = cb_run_through_uwsm.get_active()
+
+
+def set_run_through_uwsm(cb, settings, cb_run_through_compositor):
+    if cb.get_active():
+        cb_run_through_compositor.set_active(False)
+    settings["launcher-run-through-uwsm"] = cb.get_active()
+    settings["launcher-run-through-compositor"] = cb_run_through_compositor.get_active()
+
+
 def set_idle_use_from_checkbutton(cb, settings):
     settings["lockscreen-use-settings"] = cb.get_active()
     if not settings["lockscreen-use-settings"]:
@@ -142,6 +156,7 @@ def set_dict_key_from_combo(combo, settings, key):
 
 def set_int_dict_key_from_combo(combo, settings, key):
     settings[key] = int(combo.get_active_id())
+
 
 # def set_icon_theme_from_combo(combo, settings, key, theme_names):
 #     settings[key] = theme_names[combo.get_active_id()]
@@ -574,7 +589,8 @@ def applications_tab(settings, voc, warn):
             combo.set_active_id(key)
 
     if entry_browser.get_text():
-        for key in ["chromium", "google-chrome-stable", "firefox", "qutebrowser", "epiphany", "microsoft-edge-stable", "surf"]:
+        for key in ["chromium", "google-chrome-stable", "firefox", "qutebrowser", "epiphany", "microsoft-edge-stable",
+                    "surf"]:
             if entry_browser.get_text() == key:
                 combo.set_active_id(key)
 
@@ -2619,6 +2635,12 @@ def drawer_tab(preset, preset_name, outputs, voc):
     cb_overlay.connect("toggled", set_from_checkbutton, preset, "launcher-overlay")
     grid.attach(cb_overlay, 0, 11, 1, 1)
 
+    if os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
+        cb_h_drawer_blur_bg = Gtk.CheckButton.new_with_label(voc["blur-background"])
+        cb_h_drawer_blur_bg.set_active(preset["launcher-blur-background"])
+        cb_h_drawer_blur_bg.connect("toggled", set_from_checkbutton, preset, "launcher-blur-background")
+        grid.attach(cb_h_drawer_blur_bg, 0, 12, 1, 1)
+
     cb_force_theme = Gtk.CheckButton.new_with_label(voc["run-with-gtk-theme"])
     cb_force_theme.set_tooltip_text(voc["run-with-gtk-theme-tooltip"])
     cb_force_theme.set_active(preset["launcher-force-theme"])
@@ -2628,31 +2650,34 @@ def drawer_tab(preset, preset_name, outputs, voc):
     cb_run_through_compositor = Gtk.CheckButton.new_with_label(voc["run-through-compositor"])
     cb_run_through_compositor.set_tooltip_text(voc["run-through-compositor-tooltip"])
     cb_run_through_compositor.set_active(preset["launcher-run-through-compositor"])
-    cb_run_through_compositor.connect("toggled", set_from_checkbutton, preset, "launcher-run-through-compositor")
+    # connect moved down
     grid.attach(cb_run_through_compositor, 1, 9, 1, 1)
+
+    cb_run_through_uwsm = Gtk.CheckButton.new_with_label(voc["run-through-uwsm"])
+    cb_run_through_uwsm.set_tooltip_text(voc["run-through-uwsm-tooltip"])
+    cb_run_through_uwsm.set_active(preset["launcher-run-through-uwsm"])
+    # connect moved down
+    grid.attach(cb_run_through_uwsm, 1, 10, 1, 1)
+
+    cb_run_through_compositor.connect("toggled", set_run_through_compositor, preset, cb_run_through_uwsm)
+    cb_run_through_uwsm.connect("toggled", set_run_through_uwsm, preset, cb_run_through_compositor)
 
     cb_show_power_bar = Gtk.CheckButton.new_with_label(voc["show-power-bar"])
     cb_show_power_bar.set_tooltip_text(voc["show-power-bar-tooltip"])
     cb_show_power_bar.set_active(preset["powerbar-on"])
     cb_show_power_bar.connect("toggled", set_from_checkbutton, preset, "powerbar-on")
-    grid.attach(cb_show_power_bar, 1, 10, 1, 1)
+    grid.attach(cb_show_power_bar, 1, 11, 1, 1)
 
     cb_use_icon_theme = Gtk.CheckButton.new_with_label(voc["use-icon-theme"])
     cb_use_icon_theme.set_tooltip_text(voc["use-icon-theme-tooltip"])
     cb_use_icon_theme.set_active(preset["pb-icon-theme"])
     cb_use_icon_theme.connect("toggled", set_from_checkbutton, preset, "pb-icon-theme")
-    grid.attach(cb_use_icon_theme, 1, 11, 1, 1)
+    grid.attach(cb_use_icon_theme, 1, 12, 1, 1)
 
     cb_search_files = Gtk.CheckButton.new_with_label(voc["search-files"])
     cb_search_files.set_active(preset["launcher-search-files"])
     cb_search_files.connect("toggled", set_from_checkbutton, preset, "launcher-search-files")
-    grid.attach(cb_search_files, 1, 12, 1, 1)
-
-    if os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
-        cb_h_drawer_blur_bg = Gtk.CheckButton.new_with_label(voc["blur-background"])
-        cb_h_drawer_blur_bg.set_active(preset["launcher-blur-background"])
-        cb_h_drawer_blur_bg.connect("toggled", set_from_checkbutton, preset, "launcher-blur-background")
-        grid.attach(cb_h_drawer_blur_bg, 0, 12, 1, 1)
+    grid.attach(cb_search_files, 1, 13, 1, 1)
 
     frame.show_all()
 

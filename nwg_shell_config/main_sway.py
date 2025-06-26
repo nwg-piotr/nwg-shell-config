@@ -602,6 +602,8 @@ def save_includes():
 
     if preset["launcher-run-through-compositor"]:
         cmd_launcher += " -wm sway"
+    elif preset["launcher-run-through-uwsm"]:
+        cmd_launcher += " -wm uwsm"
 
     if preset["launcher-output"] and preset["launcher-output"] != "Any":
         cmd_launcher += " -o {}".format(preset["launcher-output"])
@@ -1028,6 +1030,7 @@ def load_preset(file_name):
         "launcher-gtk-icon-theme": "",
         "launcher-force-theme": False,
         "launcher-run-through-compositor": False,
+        "launcher-run-through-uwsm": False,
         "launcher-super-key": False,
         "launcher-output": "Any",
         "exit-position": "center",
