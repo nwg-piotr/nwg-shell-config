@@ -9,16 +9,26 @@ Copyright (c) 2021-2025 Piotr Miller & Contributors
 License: MIT
 """
 
+import argparse
 import os
 import sys
 import subprocess
 
 from nwg_shell_config.tools import eprint, load_shell_data
+from nwg_shell_config.__about__ import __version__
 
 arguments = " ".join(sys.argv[1:])
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-v",
+                        "--version",
+                        action="version",
+                        version="%(prog)s version {}".format(__version__),
+                        help="display version information")
+    parser.parse_args()
+
     shell_data = load_shell_data()
     if not shell_data["autotranslated"]:
         subprocess.Popen("nwg-autotranslate")
@@ -32,12 +42,10 @@ def main():
 
     if os.getenv("SWAYSOCK"):
         cmd = "nwg-shell-config-sway {}".format(arguments)
-        if not "-v" in sys.argv:
-            eprint("Starting sway version")
+        eprint("Starting sway version")
     elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
         cmd = "nwg-shell-config-hyprland {}".format(arguments)
-        if not "-v" in sys.argv:
-            eprint("Starting Hyprland version")
+        eprint("Starting Hyprland version")
     else:
         eprint("This program needs either sway or Hyprland environment")
         sys.exit(1)
