@@ -32,10 +32,12 @@ def main():
 
     if os.getenv("SWAYSOCK"):
         cmd = "nwg-shell-config-sway {}".format(arguments)
-        eprint("Starting sway version")
+        if not "-v" in sys.argv:
+            eprint("Starting sway version")
     elif os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
         cmd = "nwg-shell-config-hyprland {}".format(arguments)
-        eprint("Starting Hyprland version")
+        if not "-v" in sys.argv:
+            eprint("Starting Hyprland version")
     else:
         eprint("This program needs either sway or Hyprland environment")
         sys.exit(1)
