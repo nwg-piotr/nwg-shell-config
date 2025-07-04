@@ -21,7 +21,7 @@ arguments = " ".join(sys.argv[1:])
 
 
 def main():
-    # We don't really support any flags here, except for -v and -h. Added just to display proper help content.
+    # We actually support just -v and -h her. The rest is to display proper help content, as they're being passed farther anyway.
     parser = argparse.ArgumentParser()
     parser.add_argument("-v",
                         "--version",
