@@ -1054,6 +1054,7 @@ def load_preset(file_name):
         "dock-startup-delay": 0,
         "dock-css": "",
         "dock-on": False,
+        "dock-nolauncher": False,
         "swaync-positionX": "right",
         "swaync-positionY": "top",
         "swaync-control-center-width": 500,

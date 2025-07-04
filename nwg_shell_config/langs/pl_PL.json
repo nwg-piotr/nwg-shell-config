@@ -105,6 +105,7 @@
   "dock-css-name": "Arkusz stylów doku",
   "dock-css-name-tooltip": "Nazwa pliku css z arkuszem stylów doku",
   "dock-on": "Dok włączony",
+  "dock-nolauncher": "Ukryj przycisk programu uruchamiającego",
   "drag": "Przeciąganie",
   "drag-lock": "Blokada przeciągania",
   "drag-lock-tooltip": "Gdy włączone, podniesienie palca na chwilę podczas przeciągania nie przerwie przeciągania.",

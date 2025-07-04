@@ -105,6 +105,7 @@
   "dock-css-name": "Dock style name",
   "dock-css-name-tooltip": "Dock css style sheet file name",
   "dock-on": "Dock on",
+  "dock-nolauncher": "Don't show the launcher button",
   "drag": "Drag",
   "drag-lock": "Drag lock",
   "drag-lock-tooltip": "When enabled, lifting the finger off for a short time while dragging will not drop the dragged item.",

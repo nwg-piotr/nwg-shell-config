@@ -2821,11 +2821,16 @@ def dock_tab(preset, preset_name, outputs, voc):
     cb_launcher_at_start.set_tooltip_text(voc["launcher-at-start-tooltip"])
     grid.attach(cb_launcher_at_start, 1, 10, 1, 1)
 
+    cb_nolauncher = Gtk.CheckButton.new_with_label(voc["dock-nolauncher"])
+    cb_nolauncher.set_active(preset["dock-nolauncher"])
+    cb_nolauncher.connect("toggled", set_from_checkbutton, preset, "dock-nolauncher")
+    grid.attach(cb_nolauncher, 1, 11, 1, 1)
+
     if os.getenv("HYPRLAND_INSTANCE_SIGNATURE"):
         cb_blur_bg = Gtk.CheckButton.new_with_label(voc["blur-background"])
         cb_blur_bg.set_active(preset["dock-blur-background"])
         cb_blur_bg.connect("toggled", set_from_checkbutton, preset, "dock-blur-background")
-        grid.attach(cb_blur_bg, 1, 11, 1, 1)
+        grid.attach(cb_blur_bg, 1, 12, 1, 1)
 
     frame.show_all()
 

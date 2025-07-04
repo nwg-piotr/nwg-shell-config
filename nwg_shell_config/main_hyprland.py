@@ -719,6 +719,9 @@ def save_includes():
     elif preset["dock-css"]:
         cmd_dock += " -s {}".format(preset["dock-css"])
 
+    if preset["dock-nolauncher"]:
+        cmd_dock += " -nolauncher"
+
     if preset["dock-on"] and not preset["dock-autohide"] and not preset["dock-permanent"]:
         includes.append("$dock = {}".format(cmd_dock))
 
@@ -1213,6 +1216,7 @@ def load_preset(file_name):
         "dock-css": "",
         "dock-on": False,
         "dock-blur-background": False,
+        "dock-nolauncher": False,
         "swaync-positionX": "right",
         "swaync-positionY": "top",
         "swaync-control-center-width": 500,
