@@ -27,6 +27,22 @@ def main():
                         action="version",
                         version="%(prog)s version {}".format(__version__),
                         help="display version information")
+    parser.add_argument("-r",
+                        "--restore",
+                        action="store_true",
+                        help="restore default presets")
+
+    parser.add_argument("-b",
+                        "--restore_backup",
+                        type=str,
+                        default="",
+                        help="restore all configs from a backup file (given path)")
+
+    parser.add_argument("-s",
+                        "--save",
+                        action="store_true",
+                        help="load settings & Save includes (for use w/ external scripts)")
+
     parser.parse_args()
 
     shell_data = load_shell_data()
