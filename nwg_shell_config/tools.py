@@ -248,16 +248,7 @@ def get_lat_lon():
 
 
 def is_command(cmd):
-    cmd = cmd.split()[0]
-    cmd = "command -v {}".format(cmd)
-    try:
-        is_cmd = subprocess.check_output(
-            cmd, shell=True).decode("utf-8").strip()
-        if is_cmd:
-            return True
-
-    except subprocess.CalledProcessError:
-        return False
+    return shutil.which(cmd) is not None
 
 
 def gtklock_module_path(module_name):
