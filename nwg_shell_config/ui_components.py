@@ -3304,41 +3304,41 @@ def sys_info_tab(voc):
         lbl.set_property("halign", Gtk.Align.START)
         grid.attach(lbl, 3, 6, 1, 1)
 
-    output = get_command_output("nwg-bar -v")
-    if output:
-        lbl = Gtk.Label.new(output[0])
-        lbl.set_property("halign", Gtk.Align.START)
-        grid.attach(lbl, 3, 7, 1, 1)
+    # output = get_command_output("nwg-bar -v")
+    # if output:
+    #     lbl = Gtk.Label.new(output[0])
+    #     lbl.set_property("halign", Gtk.Align.START)
+    #     grid.attach(lbl, 3, 7, 1, 1)
 
     output = get_command_output("nwg-look -v")
     if output:
         lbl = Gtk.Label.new(output[0])
         lbl.set_property("halign", Gtk.Align.START)
-        grid.attach(lbl, 3, 8, 1, 1)
+        grid.attach(lbl, 3, 7, 1, 1)
 
     output = get_command_output("nwg-displays -v")
     if output:
         lbl = Gtk.Label.new(output[0])
         lbl.set_property("halign", Gtk.Align.START)
-        grid.attach(lbl, 3, 9, 1, 1)
+        grid.attach(lbl, 3, 8, 1, 1)
 
     output = get_command_output("gtklock -v")
     if output:
         lbl = Gtk.Label.new(output[0])
         lbl.set_property("halign", Gtk.Align.START)
-        grid.attach(lbl, 3, 10, 1, 1)
+        grid.attach(lbl, 3, 9, 1, 1)
 
     output = get_command_output("swaync -v")
     if output:
         lbl = Gtk.Label.new(output[0])
         lbl.set_property("halign", Gtk.Align.START)
-        grid.attach(lbl, 3, 11, 1, 1)
+        grid.attach(lbl, 3, 10, 1, 1)
 
     output = get_command_output("azote -h")
     if output:
         lbl = Gtk.Label.new(output[1])
         lbl.set_property("halign", Gtk.Align.START)
-        grid.attach(lbl, 3, 12, 1, 1)
+        grid.attach(lbl, 3, 11, 1, 1)
 
     frame.show_all()
 
