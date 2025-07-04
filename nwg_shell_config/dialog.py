@@ -5,7 +5,7 @@ This script displays a simple confirmation window and executes a command, if giv
 Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project site: https://nwg-piotr.github.io/nwg-shell
 Author's email: nwg.piotr@gmail.com
-Copyright (c) 2021-2024 Piotr Miller
+Copyright (c) 2021-2025 Piotr Miller
 License: MIT
 """
 

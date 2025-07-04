@@ -5,7 +5,7 @@ This script uses the i3ipc python module to switch the layout splith / splitv
 for the currently focused window, depending on its dimensions.
 It works both on sway and i3 window managers.
 Inspired by https://github.com/olemartinorg/i3-alternating-layout
-Copyright: 2019-2022 Piotr Miller & Contributors
+Copyright: 2019-2025 Piotr Miller & Contributors
 e-mail: nwg.piotr@gmail.com
 Project: https://github.com/nwg-piotr/nwg-shell
 License: MIT

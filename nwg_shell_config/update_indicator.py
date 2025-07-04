@@ -2,7 +2,7 @@
 
 """
 nwg-shell system tray update indicator
-Copyright: 2023 Piotr Miller & Contributors
+Copyright: 2023-2025 Piotr Miller & Contributors
 e-mail: nwg.piotr@gmail.com
 Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project: https://github.com/nwg-piotr/nwg-shell

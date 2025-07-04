@@ -2,7 +2,7 @@
 
 """
 nwg-shell helper script to display system help window
-Copyright (c) 2022 Piotr Miller
+Copyright (c) 2022-2025 Piotr Miller
 e-mail: nwg.piotr@gmail.com
 Project: https://github.com/nwg-piotr/nwg-shell
 License: MIT

@@ -2,7 +2,7 @@
 
 """
 nwg-shell translation utility
-Copyright: 2023 Piotr Miller
+Copyright: 2023-2025 Piotr Miller
 e-mail: nwg.piotr@gmail.com
 Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project: https://github.com/nwg-piotr/nwg-shell

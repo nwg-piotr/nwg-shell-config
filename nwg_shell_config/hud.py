@@ -5,7 +5,7 @@ This script displays a window containing given icon and text, a closes it on tim
 Repository: https://github.com/nwg-piotr/nwg-shell-config
 Project site: https://nwg-piotr.github.io/nwg-shell
 Author's email: nwg.piotr@gmail.com
-Copyright (c) 2024 Piotr Miller
+Copyright (c) 2024-2025 Piotr Miller
 License: MIT
 """
 
