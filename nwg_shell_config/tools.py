@@ -442,7 +442,8 @@ def do_backup(btn, config_home_dir, data_home_dir, backup_configs, backup_data, 
             tar.close()
             notify(voc["backup"], "{}".format(dest_file))
         except Exception as e:
-            notify(voc["backup"], e)
+            # notify(voc["backup"], e)
+            eprint("Couldn't backup data {}".format(e))
 
 
 def unpack_to_tmp(fcb, restore_btn, restore_warn, voc):
@@ -499,8 +500,8 @@ def restore_from_tmp(btn, restore_warning_label, voc):
         notify("{}".format(voc["backup"]), voc["backup-restore-success"], 10000)
         print("Configs and data restored.")
     except Exception as e:
-        notify(voc["backup"], "{}".format(e))
-        eprint("Error restoring data {}".format(e))
+        # notify(voc["backup"], "{}".format(e))
+        eprint("Couldn't restore data {}".format(e))
 
 
 def hyprctl(cmd, buf_size=20480):
