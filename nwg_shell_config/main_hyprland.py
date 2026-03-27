@@ -955,9 +955,9 @@ def save_includes():
 
     includes.append('\n# LAYER RULES')
     if preset["launcher-blur-background"]:
-        includes.append("layerrule = blur, nwg-drawer")
+        includes.append("layerrule = blur on, match:namespace nwg-drawer")
     if preset["dock-blur-background"]:
-        includes.append("layerrule = blur, nwg-dock")
+        includes.append("layerrule = blur on, match:namespace nwg-dock")
 
     p = os.path.join(config_home, "hypr/includes.conf")
 
