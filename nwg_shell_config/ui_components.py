@@ -1035,13 +1035,6 @@ def h_general_tab(settings, voc):
     sb_border_size.connect("value-changed", set_int_from_spinbutton, settings, "gen-border_size")
     grid.attach(sb_border_size, 1, 2, 1, 1)
 
-    cb_no_boarder = Gtk.CheckButton.new_with_label(voc["no-border-on-floating"])
-    cb_no_boarder.set_property("halign", Gtk.Align.START)
-    cb_no_boarder.set_property("margin-bottom", 6)
-    cb_no_boarder.set_active(settings["gen-no_border_on_floating"])
-    cb_no_boarder.connect("toggled", set_from_checkbutton, settings, "gen-no_border_on_floating")
-    grid.attach(cb_no_boarder, 2, 2, 2, 1)
-
     lbl = Gtk.Label.new("{}:".format(voc["gaps-in"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 0, 3, 1, 1)
@@ -1366,13 +1359,6 @@ def h_master_tab(settings, voc):
     combo_orientation.set_active_id(settings["master-orientation"])
     combo_orientation.connect("changed", set_dict_key_from_combo, settings, "master-orientation")
     grid.attach(combo_orientation, 3, 3, 1, 1)
-
-    cb_inherit = Gtk.CheckButton.new_with_label(voc["inherit-fullscreen"])
-    cb_inherit.set_property("halign", Gtk.Align.START)
-    cb_inherit.set_tooltip_text(voc["inherit-fullscreen-tooltip"])
-    cb_inherit.set_active(settings["master-inherit_fullscreen"])
-    cb_inherit.connect("toggled", set_from_checkbutton, settings, "master-inherit_fullscreen")
-    grid.attach(cb_inherit, 0, 4, 1, 1)
 
     frame.show_all()
 

@@ -809,7 +809,6 @@ def save_includes():
     if settings["gen-use-settings"]:
         includes.append("\n# GENERAL SETTINGS\ngeneral {")
         includes.append('    border_size = {}'.format(settings["gen-border_size"]))
-        includes.append('    no_border_on_floating = {}'.format(bool2lower(settings["gen-no_border_on_floating"])))
         includes.append('    gaps_in = {}'.format(settings["gen-gaps_in"]))
         includes.append('    gaps_out = {}'.format(settings["gen-gaps_out"]))
         if settings["gen-col-active_border-start"]:
@@ -868,7 +867,6 @@ def save_includes():
         # includes.append('    new_is_master = {}'.format(bool2lower(settings["master-new_is_master"])))
         includes.append('    new_on_top = {}'.format(bool2lower(settings["master-new_on_top"])))
         includes.append('    orientation = {}'.format(settings["master-orientation"]))
-        includes.append('    inherit_fullscreen = {}'.format(bool2lower(settings["master-inherit_fullscreen"])))
         includes.append('    slave_count_for_center_master = {}'.format(settings["master-slave_count_for_center_master"]))
         includes.append('}')
 
@@ -1022,7 +1020,6 @@ def load_settings():
 
         "gen-use-settings": True,
         "gen-border_size": 1,
-        "gen-no_border_on_floating": False,
         "gen-gaps_in": 5,
         "gen-gaps_out": 20,
         "gen-col-active_border-start": "33ccffee",
@@ -1059,7 +1056,6 @@ def load_settings():
         "master-new_is_master": True,
         "master-new_on_top": False,
         "master-orientation": "left",
-        "master-inherit_fullscreen": True,
         "master-slave_count_for_center_master": 2,
 
         "input-use-settings": True,
