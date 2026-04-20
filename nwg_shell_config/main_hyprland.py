@@ -829,8 +829,8 @@ def save_includes():
         if settings["gen-cursor_inactive_timeout"]:
             includes.append('    cursor_inactive_timeout = {}'.format(settings["gen-cursor_inactive_timeout"]))
         includes.append('    layout = {}'.format(settings["gen-layout"]))
-        if settings["gen-no_cursor_warps"]:
-            includes.append('    no_cursor_warps = {}'.format(bool2lower(settings["gen-no_cursor_warps"])))
+        # if settings["gen-no_cursor_warps"]:
+        #     includes.append('    no_cursor_warps = {}'.format(bool2lower(settings["gen-no_cursor_warps"])))
         if settings["gen-no_focus_fallback"]:
             includes.append('    no_focus_fallback = {}'.format(bool2lower(settings["gen-no_focus_fallback"])))
         if settings["gen-allow_tearing"]:
@@ -842,6 +842,14 @@ def save_includes():
                 '    extend_border_grab_area = {}'.format(bool2lower(settings["gen-extend_border_grab_area"])))
         if settings["gen-hover_icon_on_border"]:
             includes.append('    hover_icon_on_border = {}'.format(bool2lower(settings["gen-hover_icon_on_border"])))
+        includes.append('}')
+
+    # no_cursor_warps has been moved from general to the cursor section
+    # Export cursor settings
+    if settings["gen-use-settings"] and settings["gen-no_cursor_warps"]:
+        includes.append("\n# CURSOR SETTINGS\ncursor {")
+        if settings["gen-no_cursor_warps"]:
+            includes.append('    no_warps = {}'.format(bool2lower(settings["gen-no_cursor_warps"])))
         includes.append('}')
 
     # Export dwindle layout settings
