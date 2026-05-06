@@ -754,7 +754,7 @@ def save_includes():
         p = os.path.join(config_home, "swaync")
         includes.append("exec-once = swaync -c {}/hyprland.json -s {}/{}.css".format(p, p, name))
     elif is_command("nwg-notifications"):
-        includes.append("exec-once = nwg-notifications")
+        includes.append("exec-once = nwg-notifications --persist")
 
     if settings["appindicator"]:
         includes.append("exec-once = nm-applet --indicator")

@@ -718,8 +718,12 @@ def save_includes():
         autostart.append("exec {}".format(cmd))
 
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
-    p = os.path.join(config_home, "swaync")
-    autostart.append("exec swaync -s {}/{}.css".format(p, name))
+
+    if is_command("swaync"):
+        p = os.path.join(config_home, "swaync")
+        autostart.append("exec swaync -s {}/{}.css".format(p, name))
+    elif is_command("nwg-notifications"):
+        autostart.append("exec nwg-notifications --persist")
 
     if settings["appindicator"]:
         autostart.append("exec nm-applet --indicator")
