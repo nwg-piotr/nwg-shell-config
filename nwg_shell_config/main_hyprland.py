@@ -749,8 +749,12 @@ def save_includes():
         includes.append("exec-once = {}".format(cmd))
 
     name = settings["panel-preset"] if not settings["panel-preset"] == "custom" else "style"
-    p = os.path.join(config_home, "swaync")
-    includes.append("exec-once = swaync -c {}/hyprland.json -s {}/{}.css".format(p, p, name))
+
+    if is_command("swaync"):
+        p = os.path.join(config_home, "swaync")
+        includes.append("exec-once = swaync -c {}/hyprland.json -s {}/{}.css".format(p, p, name))
+    elif is_command("nwg-notifications"):
+        includes.append("exec-once = nwg-notifications")
 
     if settings["appindicator"]:
         includes.append("exec-once = nm-applet --indicator")
