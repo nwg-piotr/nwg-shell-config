@@ -1129,16 +1129,17 @@ def update_swaync_config(pos_x, pos_y, cc_width, window_width, mpris):
         swaync_settings = load_json(settings_file)
 
         # Check if some new keys appeared
-        defaults = load_json("/etc/xdg/swaync/config.json")
+        if os.path.isfile("/etc/xdg/swaync/config.json"):
+            defaults = load_json("/etc/xdg/swaync/config.json")
 
-        for key in defaults:
-            if key not in swaync_settings:
-                swaync_settings[key] = defaults[key]
+            for key in defaults:
+                if key not in swaync_settings:
+                    swaync_settings[key] = defaults[key]
 
-        swaync_settings["positionX"] = pos_x
-        swaync_settings["positionY"] = pos_y
-        swaync_settings["control-center-width"] = cc_width
-        swaync_settings["notification-window-width"] = window_width
+            swaync_settings["positionX"] = pos_x
+            swaync_settings["positionY"] = pos_y
+            swaync_settings["control-center-width"] = cc_width
+            swaync_settings["notification-window-width"] = window_width
     else:
         swaync_settings = {
             "positionX": pos_x,
