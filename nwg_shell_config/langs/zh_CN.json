@@ -321,8 +321,6 @@
   "preset": "预设",
   "preset-tooltip": "切换当前桌面样式。",
   "press-enter-to-exit": "按回车键退出...",
-  "pseudotiling": "伪平铺",
-  "pseudotiling-tooltip": "伪平铺的主开关。在键绑定部分，启用绑定到 mainMod + P。\n伪平铺的窗口在平铺时保持其浮动大小。",
   "random-wallpaper-source": "随机壁纸来源",
   "reboot": "重启",
   "reboot-tooltip": "重新启动计算机的命令。\n留空以禁用此功能。",

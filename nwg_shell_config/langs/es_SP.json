@@ -307,8 +307,6 @@
   "preset": "Preestablecido",
   "preset-tooltip": "Cambia el estilo de escritorio actual.",
   "press-enter-to-exit": "Oprima la tecla `Enter` para salir...",
-  "pseudotiling": "Pseudotiling",
-  "pseudotiling-tooltip": "Interruptor maestro para pseudotiling. La habilitación está vinculada a mainMod + P en la sección de combinaciones de teclas.\nLas ventanas pseudoen mosaico conservan su tamaño flotante cuando están en mosaico.",
   "random-wallpaper-source": "Fuente de fondo de pantalla aleatoria",
   "reboot": "Reiniciar",
   "reboot-tooltip": "Comando para reiniciar la computadora.\nDéjelo en blanco para desactivar esta función.",

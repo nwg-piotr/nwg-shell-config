@@ -321,8 +321,6 @@
   "preset": "Preset",
   "preset-tooltip": "Switches current desktop style.",
   "press-enter-to-exit": "Press Enter to exit...",
-  "pseudotiling": "Pseudotiling",
-  "pseudotiling-tooltip": "Master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section.\nPseudotiled windows retain their floating size when tiled.",
   "random-wallpaper-source": "Random wallpaper source",
   "reboot": "Reboot",
   "reboot-tooltip": "Command to reboot the computer.\nLeave blank to disable this feature.",

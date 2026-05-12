@@ -38,7 +38,6 @@
   "gen-extend_border_grab_area": 15,
   "gen-hover_icon_on_border": true,
   "dwindle-use-settings": true,
-  "dwindle-pseudotile": false,
   "dwindle-force_split": 0,
   "dwindle-permanent_direction_override": false,
   "dwindle-special_scale_factor": 0.8,

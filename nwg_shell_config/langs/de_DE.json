@@ -386,8 +386,6 @@
   "reboot-tooltip": "Befehl zum Neustarten des Computers.  \nLeer lassen, um diese Funktion zu deaktivieren.",
   "reboot": "Neustarten",
   "random-wallpaper-source": "Zufällige Hintergrundquelle",
-  "pseudotiling-tooltip": "Hauptschalter für Pseudotiling. Aktivierung ist an mainMod + P im Bereich Tastenkürzel gebunden.\nPseudogekachelte Fenster behalten ihre schwebende Größe bei, wenn sie gekachelt sind.",
-  "pseudotiling": "Pseudotiling",
   "press-enter-to-exit": "Drücken Sie Enter, um zu beenden...",
   "preset-tooltip": "Schaltet den aktuellen Desktop-Stil um.",
   "preset": "Voreinstellung",

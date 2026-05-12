@@ -321,8 +321,6 @@
   "preset": "Preset",
   "preset-tooltip": "Wybiera aktualny styl pulpitu.",
   "press-enter-to-exit": "Naciśnij Enter by zakończyć...",
-  "pseudotiling": "Pseudotiling",
-  "pseudotiling-tooltip": "Główny wyłącznik pseudotilingu. Przełączanie jest wykonywane skrótem klawiaturowym 'mainMod + P'.\nPseudotiling każe kafelkowanym oknom przybierać rozmiar okna pływającego.",
   "random-wallpaper-source": "Źródło losowych tapet",
   "reboot": "Restart",
   "reboot-tooltip": "Komenda do zrestartowania komputera.\nPozostaw puste by wyłączyć tę opcję.",

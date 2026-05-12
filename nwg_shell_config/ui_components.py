@@ -1191,13 +1191,6 @@ def h_dwindle_tab(settings, voc):
     cb_use_settings.connect("toggled", set_from_checkbutton, settings, "dwindle-use-settings")
     grid.attach(cb_use_settings, 0, 0, 2, 1)
 
-    cb_pseudotiling = Gtk.CheckButton.new_with_label(voc["pseudotiling"])
-    cb_pseudotiling.set_property("halign", Gtk.Align.START)
-    cb_pseudotiling.set_tooltip_text(voc["pseudotiling-tooltip"])
-    cb_pseudotiling.set_active(settings["dwindle-pseudotile"])
-    cb_pseudotiling.connect("toggled", set_from_checkbutton, settings, "dwindle-pseudotile")
-    grid.attach(cb_pseudotiling, 0, 1, 1, 1)
-
     lbl = Gtk.Label.new("{}:".format(voc["force-split"]))
     lbl.set_property("halign", Gtk.Align.END)
     grid.attach(lbl, 2, 1, 1, 1)

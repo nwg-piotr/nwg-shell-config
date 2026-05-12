@@ -859,7 +859,6 @@ def save_includes():
     # Export dwindle layout settings
     if settings["dwindle-use-settings"]:
         includes.append("\n# DWINDLE LAYOUT \ndwindle {")
-        includes.append('    pseudotile = {}'.format(bool2lower(settings["dwindle-pseudotile"])))
         includes.append('    force_split = {}'.format(settings["dwindle-force_split"]))
         includes.append('    preserve_split = {}'.format(bool2lower(settings["dwindle-preserve_split"])))
         includes.append('    smart_split = {}'.format(bool2lower(settings["dwindle-smart_split"])))
@@ -1050,7 +1049,6 @@ def load_settings():
         "gen-allow_tearing": False,
 
         "dwindle-use-settings": True,
-        "dwindle-pseudotile": False,
         "dwindle-force_split": 0,
         "dwindle-preserve_split": True,
         "dwindle-smart_split": False,
