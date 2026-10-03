@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Script for nwg-shell-config to work with it's update_indicator module
+
+as_root() {
+    if [ "$(id -u)" -eq 0 ]; then
+        "${@}"
+    elif [ -x /usr/bin/sudo ]; then
+        sudo "${@}"
+    elif [ -x /usr/bin/doas ]; then
+        doas "${@}"
+    else
+        su -c "${*}"
+    fi
+}
+
+# sync repos
+sync() {
+    as_root emerald sync >/dev/null 2>&1
+}
+
+# checking available updates
+check_updates() {
+    emerald outdated | wc -l
+}
+
+sync
+check_updates

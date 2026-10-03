@@ -8,5 +8,6 @@ case "$2" in
     "-yay") yay -Syu ;;
     "-baph") baph -u ;;
     "-scratch") scratch sysup ;;
+    "-emerald") emerald sysup ;;
 esac
 echo "$1"; read -r;
