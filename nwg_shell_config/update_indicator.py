@@ -117,6 +117,8 @@ def check_distro():
                     return "arch"
                 elif "Venom" in line:
                     return "venom"
+                elif "Vylen" in line:
+                    return "vylen"
                 # add elif for other distros
 
             if line.startswith("ID"):
@@ -124,9 +126,11 @@ def check_distro():
                     return "arch"
                 elif "venom" in line:
                     return "venom"
+                elif "vylen" in line:
+                    return "vylen"
                 # add elif for other distros
 
-    elif os.path.isfile("/etc/lsb=release"):
+    elif os.path.isfile("/etc/lsb-release"):
         lines = load_text_file("/etc/lsb-release").splitlines()
         for line in lines:
             if line.startswith("DISTRIB_ID"):
@@ -246,6 +250,20 @@ class Indicator(object):
 
             if scratch:
                 update_details = f"scratch: {scratch}"
+
+        elif self.distro == "vylen":
+            nwg_system_update_arg = "-vylen"
+            eprint("Using emerald")
+
+            emerald: int = 0
+
+            try:
+                emerald = int(subprocess.check_output("vylenupdates".split()).decode("utf-8").strip())
+            except subprocess.CalledProcessError:
+                pass
+
+            if emerald:
+                update_details = f"emerald: {emerald}"
 
         # elif self.distro == "something_else":
         #   place your code here
