@@ -153,6 +153,7 @@ class Indicator(object):
 
         self.ind = AppIndicator3.Indicator.new('nwg_update_indicator', '',
                                                AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
+        self.ind.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
 
         self.ind.set_menu(self.menu())
         self.ind.set_title(voc["updates"])

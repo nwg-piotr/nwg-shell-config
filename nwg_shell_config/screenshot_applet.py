@@ -158,7 +158,7 @@ class Indicator(object):
 
         self.ind = AppIndicator3.Indicator.new('nwg_screenshot_applet', '',
                                                AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
-
+        self.ind.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
         self.ind.set_menu(menu())
         self.ind.set_title(voc["screenshot"])
         self.ind.set_icon_full("nwg-screenshot", voc["screenshot"])
